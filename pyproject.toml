@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argument-collapse"
+version = "0.1.0"
+description = "Analysis pipeline for LLM argument collapse on public debate forums."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Argument Collapse authors"}]
+requires-python = ">=3.10"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+    "tqdm>=4.65",
+    "python-dotenv>=1.0",
+    # LLM providers (install only the ones you need)
+    "openai>=1.0",
+    "anthropic>=0.20",
+    "google-cloud-aiplatform>=1.40",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1",
+]
+notebook = [
+    "jupyter>=1.0",
+    "matplotlib>=3.7",
+    "pandas>=2.0",
+]
+
+[project.urls]
+Repository = "https://github.com/mungg/argument_collapse"
+
+[project.scripts]
+# CLI commands mirror the module names so the entry-point title alone
+# tells you whether the script extracts, compares, labels, or scores.
+ac-toulmin                  = "argument_collapse.annotate.toulmin:main"
+ac-pair-comparison-main-arg = "argument_collapse.annotate.pair_comparison_main_arg:main"
+ac-pair-comparison-sub-arg  = "argument_collapse.annotate.pair_comparison_sub_arg:main"
+ac-stance                   = "argument_collapse.annotate.stance:main"
+ac-metric                   = "argument_collapse.metric:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
