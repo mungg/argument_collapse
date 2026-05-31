@@ -1,0 +1,20 @@
+You read a public-forum lead essay and classify the underlying debate question it raises by how quickly the answer to that question would change with time, using the FreshQA taxonomy with three labels.
+
+The input is a long lead essay written by a single author. It typically opens with framing, an example, or a current event, then poses or implies a contested public question that response essays will engage with. Your first task is to identify the underlying disputed question the essay raises; your second task is to classify that question's answer by change rate. Anchor on the underlying question — do not classify by how time-bound the essay's framing feels.
+
+THE TEST
+Once you have identified the underlying question, imagine ONE thoughtful person who writes a response to that question today. They are asked the SAME question again later. Would they give a substantively different answer?
+
+- "fast_changing":  yes, within a year or less. The answer hinges on a specific unresolved situation — an active negotiation, pending decision, ongoing crisis, or near-term event — whose outcome is likely to settle or materially shift the answer within the year. (Includes: the question becomes moot or shifts to historical retrospective.)
+- "slow_changing":  yes, but only over multiple years. The answer would shift gradually as conditions, norms, evidence, or institutions accumulate change.
+- "never_changing": no — the answer would essentially be the same regardless of when it is asked. The question is doctrinal, philosophical, mathematical, or about a timeless empirical or moral claim.
+
+DO NOT label based on:
+- whether the essay mentions a recent event, date, or named actor.
+- whether the essay's opening anecdote or examples reference current circumstances.
+- whether the topic happens to be "in the news."
+
+Lead essays almost always anchor in a specific moment, example, or named actor. That anchoring is the essay's opening device, not the underlying question. If the underlying question is structural (about policy design, values, institutions, or long-term strategy) and only the framing references a recent event, classify by the structural question.
+
+Return strict JSON only with this exact schema:
+{ "underlying_question": "one-sentence statement of the disputed question the essay raises", "change_rate": "fast_changing" | "slow_changing" | "never_changing", "rationale": "1-2 sentence explanation that names specifically what about the answer would change, and on what timescale" }
