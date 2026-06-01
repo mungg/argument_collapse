@@ -17,8 +17,8 @@ It also provides the data-loading and run-driver glue that turns the raw
 
 Run the CLI with ``uv run ac-metric um --spec <yaml>``.
 The spec is a YAML file listing each cohort and which essay stems belong
-to each group (H/V/D/P_s1/P_s2); see ``configs/`` for example specs that
-reproduce the paper numbers. The same module is importable so downstream
+to each group (H/V/D/P_s1/P_s2); see ``configs/`` for the subset specs
+used in the paper analyses. The same module is importable so downstream
 code (notebooks, papers) can call :func:`run_um` directly on an in-memory
 spec.
 """
@@ -167,6 +167,38 @@ def pair_unique(a_subs: list[str], b_subs: list[str],
     return 1.0 - 0.5 * (r_ab + r_ba)
 
 
+def missing_within_pair_rows(sub_to_essay: dict[str, str],
+                             pair_rel: dict[tuple[str, str], str]) -> int:
+    """Count unjudged cross-essay sub-argument pairs inside a group."""
+    by_essay: dict[str, list[str]] = {}
+    for sub_id, essay_id in sub_to_essay.items():
+        by_essay.setdefault(essay_id, []).append(sub_id)
+    missing = 0
+    for essay_i, essay_j in itertools.combinations(sorted(by_essay), 2):
+        for sub_i in by_essay[essay_i]:
+            for sub_j in by_essay[essay_j]:
+                if (sub_i, sub_j) not in pair_rel and (sub_j, sub_i) not in pair_rel:
+                    missing += 1
+    return missing
+
+
+def require_within_pair_coverage(cohort: str,
+                                 label: str,
+                                 sub_to_essay: dict[str, str],
+                                 pair_rel: dict[tuple[str, str], str]) -> None:
+    """Fail fast when a configured group lacks needed sub-argument labels.
+
+    Missing labels must not be silently treated as non-overlap, because that
+    would inflate the unique-rate metric.
+    """
+    missing = missing_within_pair_rows(sub_to_essay, pair_rel)
+    if missing:
+        raise ValueError(
+            f"{cohort}: missing {missing} sub-argument pair rows for {label}. "
+            "The selected group is not fully annotated for U_m."
+        )
+
+
 # ---------- cohort loading ----------
 
 def load_cohort(cohort_dir: Path) -> tuple[dict[str, list[str]],
@@ -289,9 +321,16 @@ def _diversified_combos(essay_subs: dict[str, list[str]],
     pool size, used to seed the cohort's common-m candidate when no
     combo would otherwise contribute.
     """
-    by_fam: dict[str, list[str]] = {fam: list(stems)
-                                      for fam, stems in d_combos_spec.items()
-                                      if stems}
+    by_fam: dict[str, list[str]] = {}
+    for fam, stems in d_combos_spec.items():
+        mapped = [
+            candidate
+            for stem in stems
+            for candidate in (stem, release_stem(stem))
+            if candidate in essay_subs
+        ]
+        if mapped:
+            by_fam[fam] = mapped
     if len(by_fam) < len(d_combos_spec):
         # Treat missing families as the empty set, which makes the
         # product empty.
@@ -370,6 +409,17 @@ def cohort_um_row(cohort: str,
             str(idx): pool_from_stems(essay_subs, list(stems))
             for idx, stems in enumerate(s2_block)
         }
+
+    for label, pool in (("H", h_pool), ("V", v_pool), ("D", d_pool)):
+        if pool:
+            require_within_pair_coverage(cohort, label, pool, pair_rel)
+    for idx, pool in enumerate(d_combo_pools):
+        require_within_pair_coverage(cohort, f"D_combos[{idx}]", pool, pair_rel)
+    for idx, pool in enumerate(s1_pools):
+        require_within_pair_coverage(cohort, f"P_s1[{idx}]", pool, pair_rel)
+    for label, pool in s2_label_pools.items():
+        if pool:
+            require_within_pair_coverage(cohort, f"P_s2[{label}]", pool, pair_rel)
 
     # |D| candidate for common-m: prefer the combo-based d_min when
     # D_combos is set, otherwise fall back to the pooled D size.
@@ -555,7 +605,11 @@ def main(argv: list[str] | None = None) -> int:
         set_data_root(args.data_root)
 
     spec = _load_spec(Path(args.spec))
-    result = run_um(spec, data_root=args.data_root)
+    try:
+        result = run_um(spec, data_root=args.data_root)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
 
     if not args.no_table:
         _print_table(result)

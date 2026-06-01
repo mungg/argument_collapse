@@ -109,23 +109,17 @@ The loader detects whether you are using the public tables or the older per-deba
 
 ## Reproducing paper numbers
 
-To reproduce the headline sub-argument uniqueness numbers, run the wrapper after `uv sync`. It requires the final LLM-LLM sub-argument pair rows in `data/nyt/sub_argument_pairs.jsonl.gz`; if those rows are missing, it stops with a clear error.
+Main-argument and structure analyses use the broad NYT and BR tables. Sub-argument analysis is narrower by design, because it requires many pairwise judgments between supporting claims. The release therefore includes sub-argument pair annotations for selected analysis subsets, not for every possible essay pair in the full corpus.
+
+The current public-condition export contains `374,414` NYT sub-argument pair rows across `83` debates and `31,466` BR rows across `11` forums. It includes only the public conditions used in the paper: `human`, `vanilla`, `diversified`, and `position-guided`. Older internal conditions are not exported. The NYT rows cover the shared-main vanilla comparison; diversified, position-guided, and BR sub-argument rows are included where available and should be used with the coverage checks below.
+
+To compute the NYT sub-argument uniqueness table for a configured subset, run:
 
 ```bash
 ./scripts/reproduce_subarg_diversity.sh
 ```
 
-When the pair table is complete, the script runs `uv run ac-metric um --spec configs/subarg_diversity_16cohort_nyt.yaml` and writes details to `results/subarg_diversity_16cohort_nyt.json`. Expected output:
-
-| Metric                                    | Strict | Loose |
-|-------------------------------------------|--------|-------|
-| Humans                                    | 94.9%  | 41.0% |
-| Vanilla LLMs                              | 60.6%  |  9.1% |
-| Diversified LLMs                          | 81.4%  | 22.8% |
-| Same position, different LLMs (S1)        | 56.4%  |  6.8% |
-| Different positions, same LLM (S2)        | 72.7%  | 18.4% |
-
-The diversified row averages up to 200 fixed-seed samples per debate. The paper reports 22.9%, which is the same value up to sampling variation.
+The script runs `uv run ac-metric um --spec configs/subarg_diversity_16cohort_nyt.yaml` and writes details to `results/subarg_diversity_16cohort_nyt.json`. The metric code checks coverage before computing: if a config asks for a group whose sub-argument pairs are not fully annotated, it exits instead of treating missing labels as non-overlap. For configs that include diversified or position-guided groups, use a data root with the matching annotation subset.
 
 The dataset uses three LLM-condition codes:
 
@@ -171,21 +165,6 @@ uv run ac-metric um \
     --output results/subarg_diversity_16cohort_nyt.json
 ```
 
----
-
-
-## Note: sub-argument pair export needed
-
-The current `sub_argument_pairs.jsonl.gz` file is present, but it does not yet include the final LLM-LLM sub-argument pairs needed to reproduce the paper's sub-argument uniqueness table.
-
-For the 16 NYT debates used in the sub-argument analysis, the missing rows are:
-
-- `v1a` ↔ `v1a` for vanilla LLMs.
-- `v15a` ↔ `v15a` for diversified LLMs.
-- `v4a` ↔ `v4a` for position-guided LLMs.
-
-Human-LLM sub-argument pairs are not needed for this table. Human-human pairs for the same 16 debates are needed. Older `v3a`/`v25a` rows are not the final public conditions and should not be reused for these results.
-
 ## Data release
 
 The `data/` directory contains gzipped JSONL tables. Join debate-level rows with `(venue, debate_id)` and essay-level rows with `(venue, debate_id, essay_id)`.
@@ -199,7 +178,7 @@ data/
 │   ├── position_guides.jsonl.gz          1,039
 │   ├── toulmin.jsonl.gz                 17,703
 │   ├── main_argument_pairs.jsonl.gz    231,284
-│   ├── sub_argument_pairs.jsonl.gz      11,840
+│   ├── sub_argument_pairs.jsonl.gz     374,414
 │   ├── grounding_pairs.jsonl.gz          5,195
 │   ├── structure_argument.jsonl.gz      17,679
 │   └── structure_discourse_mode.jsonl.gz 17,679
@@ -210,7 +189,7 @@ data/
     ├── position_guides.jsonl.gz            448
     ├── toulmin.jsonl.gz                  7,168
     ├── main_argument_pairs.jsonl.gz     58,755
-    ├── sub_argument_pairs.jsonl.gz           0
+    ├── sub_argument_pairs.jsonl.gz      31,466
     ├── grounding_pairs.jsonl.gz          2,240
     ├── structure_argument.jsonl.gz       7,168
     └── structure_discourse_mode.jsonl.gz 7,168
@@ -224,7 +203,7 @@ data/
 | `position_guides.jsonl.gz` | One row per human source used for `position-guided` generation. Names are kept for traceability but are not shown to the model. |
 | `toulmin.jsonl.gz` | Extracted main argument and ordered sub-arguments, one row per essay, for humans and all three LLM conditions. |
 | `main_argument_pairs.jsonl.gz` | Pairwise judgments over each pair's main arguments, using a four-label scheme (`equivalent`, `strong_overlap`, `weak_overlap`, `different`) with a short rationale. |
-| `sub_argument_pairs.jsonl.gz` | Pairwise judgments over sub-arguments. The current NYT file contains the available human-human rows. Final LLM-LLM rows are still needed for the paper sub-argument uniqueness table. The BR file currently has zero rows. |
+| `sub_argument_pairs.jsonl.gz` | Pairwise judgments over sub-arguments for selected analysis subsets. This is not a full-corpus all-pairs table; it contains the annotated NYT and BR subsets used for sub-argument checks where available. |
 | `grounding_pairs.jsonl.gz` | A subset of main-argument pairs: each row compares one human essay with the position-guided essay based on that human. |
 | `structure_argument.jsonl.gz` | Per-paragraph argument-role labels: `thesis`, `support`, `concession`, `rebuttal`, `reframing`, `proposal`, `implication`, or `none`. |
 | `structure_discourse_mode.jsonl.gz` | Per-paragraph discourse-mode labels: `argumentation`, `exposition`, `narration`, or `description`. |

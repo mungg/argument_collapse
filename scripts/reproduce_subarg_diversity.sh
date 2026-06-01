@@ -2,11 +2,10 @@
 # Reproduce the sub-argument diversity (U_m) numbers from the paper.
 #
 # What this reproduces: the sub-argument within-group unique rate U_m
-# on the 16 NYT cohorts that satisfy the paper's shared-main-argument
-# filter (Section 4). This is the single U_m table in the paper. The
-# paper's main-argument analyses (cluster counts, recovery rates,
-# convergence figures) live in separate per-figure scripts and are NOT
-# part of this reproduction target.
+# for the NYT subset named in configs/subarg_diversity_16cohort_nyt.yaml.
+# Sub-argument annotation is a targeted subset, not a full-corpus all-pairs
+# table. The metric code verifies that every selected within-group
+# sub-argument pair is annotated before it computes U_m.
 #
 # Inputs (already shipped with the dataset release):
 #   <data_root>/nyt/toulmin.jsonl.gz
@@ -14,13 +13,6 @@
 #
 # Output:
 #   results/subarg_diversity_16cohort_nyt.json + printed summary table.
-#
-# Expected loose-threshold numbers (sub-argument U_m):
-#   Humans                            41.0%
-#   Vanilla LLMs (medoid)              9.1%
-#   Diversified (1-per-family)        22.8-22.9%  (combo-sampling noise)
-#   Same position, different LLMs      6.8%
-#   Different positions, same LLM     18.4%
 #
 # Set ARGUMENT_COLLAPSE_DATA_ROOT to point at the unpacked dataset, or pass
 # --data-root <path>.  Defaults to ./data.
@@ -59,8 +51,8 @@ if pairs.exists():
             kinds.add(r.get("kind_i"))
             kinds.add(r.get("kind_j"))
     if not ({"vanilla", "diversified", "position-guided"} & kinds):
-        print("error: released sub_argument_pairs.jsonl.gz does not contain LLM sub-argument pair rows.")
-        print("       Regenerate/export the final LLM sub-argument pair annotations before reproducing the paper U_m table.")
+        print("error: sub_argument_pairs.jsonl.gz does not contain LLM sub-argument pair rows.")
+        print("       Use a data root with the selected sub-argument annotation subset.")
         sys.exit(2)
 PY
 
@@ -78,5 +70,4 @@ else
 fi
 
 echo
-echo "==> Done. Headline numbers above should match the paper's sub-arg U_m table."
-echo "    Detailed per-cohort rows saved to $OUTPUT."
+echo "==> Done. Detailed per-cohort rows saved to $OUTPUT."

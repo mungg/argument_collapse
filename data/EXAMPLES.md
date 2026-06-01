@@ -131,6 +131,35 @@ Sample rows from every JSONL table, one venue at a time. Long text fields are sh
 }
 ```
 
+### `sub_argument_pairs.jsonl.gz`: Pairwise 4-label sub-argument judgment
+
+```json
+{
+  "venue": "nyt",
+  "debate_id": "23andme-and-the-promise-of-anonymous-genetic-testing-10",
+  "sub_i": "frank-pasquale::sub01",
+  "sub_j": "marcy-darnovsky::sub02",
+  "essay_i": "frank-pasquale",
+  "essay_j": "marcy-darnovsky",
+  "sub_index_i": 1,
+  "sub_index_j": 2,
+  "kind_i": "human",
+  "kind_j": "human",
+  "model_i": null,
+  "model_j": null,
+  "main_argument_i": "Commercial genetic testing companies that profit from selling user data should be held financially responsible for the privacy risks and potential discrimination their customers face by providing insurance or compensation funds for data bre …",
+  "main_argument_j": "Commercial companies should not be the primary vehicles for sharing genetic information for research because their profit-driven models compromise privacy and public interest.",
+  "sub_argument_i": "Data breaches can lead to lifelong consequences for users and their relatives, including potential discrimination in areas like health and employment.",
+  "sub_argument_j": "There is a lack of regulatory oversight regarding how direct-to-consumer genetic companies manage or use data once it has been collected and sold.",
+  "relation": "different",
+  "rationale": "The first sub-argument focuses on the specific harms and consequences of data breaches for individuals (discrimination), while the second sub-argument focuses on the systemic lack of regulatory oversight regarding data management and sales.",
+  "judge_provider": "vertex",
+  "judge_model": "gemini-3-flash-preview",
+  "judge_effort": "minimal",
+  "prompt_version": "sub_argument_judge_v1_4label"
+}
+```
+
 ### `grounding_pairs.jsonl.gz`: Diagonal (human, position-guided) grounding pair
 
 ```json
@@ -376,6 +405,35 @@ Sample rows from every JSONL table, one venue at a time. Long text fields are sh
   "judge_model": "gemini-3-flash-preview",
   "judge_effort": "minimal",
   "prompt_version": "main_argument_judge_v8_4label_lead"
+}
+```
+
+### `sub_argument_pairs.jsonl.gz`: Pairwise 4-label sub-argument judgment
+
+```json
+{
+  "venue": "br",
+  "debate_id": "forum_africas_turn",
+  "sub_i": "it-too-early-tell-if-africas-time-has-come::sub00",
+  "sub_j": "there-economic-growth-structures-africas-economies-remain-unaltered::sub00",
+  "essay_i": "it-too-early-tell-if-africas-time-has-come",
+  "essay_j": "there-economic-growth-structures-africas-economies-remain-unaltered",
+  "sub_index_i": 0,
+  "sub_index_j": 0,
+  "kind_i": "human",
+  "kind_j": "human",
+  "model_i": null,
+  "model_j": null,
+  "main_argument_i": "While sub-Saharan Africa’s recent economic and political progress is encouraging, sustaining this growth requires addressing structural vulnerabilities such as commodity dependence, manufacturing deficits, and social inequality.",
+  "main_argument_j": "While Africa has experienced significant economic and political progress since 2000, this transformation is more fragile and less fundamental than Edward Miguel suggests.",
+  "sub_argument_i": "The heavy reliance on primary commodity exports to China creates long-term risks of economic collapse when prices eventually fall or China shifts toward a knowledge-based economy.",
+  "sub_argument_j": "The recent economic growth is driven by external factors Miguel overlooks, such as the reintegration of South African capital, increased remittances from the African diaspora, and the expansion of the petroleum frontier.",
+  "relation": "different",
+  "rationale": "The two sub-arguments identify different external drivers or risks for Africa's economy: Sub-argument I focuses on the risks of commodity dependence and China's economic shifts, while Sub-argument J lists specific external factors it claims …",
+  "judge_provider": "vertex",
+  "judge_model": "gemini-3-flash-preview",
+  "judge_effort": "minimal",
+  "prompt_version": "sub_argument_judge_v1_4label_lead"
 }
 ```
 
