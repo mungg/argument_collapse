@@ -70,12 +70,10 @@ echo "    output: $OUTPUT"
 echo
 
 # Pass through any user-provided flags (e.g. --data-root /tmp/ac).
-if command -v ac-metric >/dev/null 2>&1; then
-  ac-metric um --spec "$SPEC" --output "$OUTPUT" "$@"
-elif command -v uv >/dev/null 2>&1; then
+if command -v uv >/dev/null 2>&1; then
   uv run ac-metric um --spec "$SPEC" --output "$OUTPUT" "$@"
 else
-  echo "error: ac-metric not found. Run pip install -e . first, or install uv."
+  echo "error: uv not found. Install uv, then run: uv sync"
   exit 1
 fi
 

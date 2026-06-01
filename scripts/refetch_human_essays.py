@@ -163,7 +163,7 @@ def main() -> int:
     args = ap.parse_args()
 
     if not args.dry_run and requests is None:
-        print("`requests` is required for fetching. Install with: pip install requests",
+        print("`requests` is required for fetching. Run `uv sync` from the repository root",
               file=sys.stderr)
         return 1
 

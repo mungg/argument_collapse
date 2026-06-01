@@ -1,8 +1,6 @@
 # Schema
 
-Every JSONL file under `data/` is newline-delimited JSON. Each row is self-contained. The only join keys you need are `(venue, debate_id)` for debate-level rows and `(venue, debate_id, essay_id)` for essay-level rows.
-
-Data is partitioned by venue. `data/nyt/` and `data/br/` each contain the full set of tables for that venue. Rows still carry `venue` and `debate_id`, so files can be concatenated cross-venue without ambiguity. For example:
+Every file under `data/` is newline-delimited JSON. Use `(venue, debate_id)` to join debate-level rows and `(venue, debate_id, essay_id)` to join essay-level rows. `data/nyt/` and `data/br/` use the same table names, so you can combine venues when needed:
 
 ```python
 pd.concat([
@@ -15,7 +13,7 @@ Conventions used across all tables:
 
 - `venue` is `"nyt"` or `"br"`, matching the parent directory.
 - `debate_id` is the debate slug (for example, `are-americans-too-obsessed-with-cleanliness`, or `forum_after_911`).
-- `essay_id` is the essay slug. For human responder essays, this is the filename slug. For LLM-generated essays, this is the full generated stem with the format `{provider_api}__{model_family}__{effort}__{condition}[__{position_source_id}]__{timestamp}`.
+- `essay_id` is the essay slug. For humans, it is the filename slug. For LLM essays, it is the generated filename stem: `{provider_api}__{model_family}__{effort}__{condition}[__{position_source_id}]__{timestamp}`.
 - `kind` is one of `"human"`, `"vanilla"`, `"diversified"`, or `"position-guided"`.
 - `model_short` is one of `"gpt"`, `"gemini"`, `"claude"`, `"minimax"`, `"deepseek"` for LLM-generated essays, and `null` for human essays.
 - `null` is used for absent values. The field is always present.
@@ -85,12 +83,12 @@ One row per LLM-generated essay. Full text included.
 | `model_family` | string | Full model family slug (for example, `"gpt-5.5"`, `"anthropic-claude-opus-4.7"`). |
 | `effort` | string | `"medium"` for most rows. `"xhigh"` marks the GPT-5.5 `diversified` reasoning-effort ablation. |
 | `position_source_id` | string or null | For `position-guided`, this is the human slug the essay was grounded on. For `diversified`, this is the within-batch index (`essay-01`, `essay-02`, and so on). `null` for `vanilla`. |
-| `is_representative` | bool or null | For `vanilla` rows only. `true` if the essay is the model-level representative (medoid of the model's modal equivalent cluster) for its debate, `false` for the other vanilla samples. `null` for `diversified` and `position-guided`, where the concept does not apply. The paper compares one representative per model against humans; filter on this field to recover that set. |
+| `is_representative` | bool or null | For `vanilla` rows only. `true` marks the one answer per model used in the paper. `false` marks other vanilla samples. `null` for `diversified` and `position-guided`. |
 | `generated_at_utc` | string | Timestamp of generation. |
 | `word_count` | int | |
 | `body_text` | string | Full generated essay text. |
 
-**Reproducing the representative selection from raw samples.** The `is_representative` field is precomputed for convenience. The reference implementation is shipped in `src/argument_collapse/cluster.py` (the `select_llm_representatives` function (in `argument_collapse.cluster`)). For each (debate, model), it identifies the model's modal equivalent-cluster across its vanilla samples and picks the medoid, defined as the essay with the highest summed similarity to other members of that cluster, with lexicographically smallest stem as a deterministic tie-break. Inputs are the cohort's `main_argument_pairs` rows plus the essay records.
+**How representatives are selected.** `is_representative` is precomputed. To reproduce it, use `select_llm_representatives` in `src/argument_collapse/cluster.py`. For each debate and model, it finds the most common vanilla main-argument group and picks the essay most similar to the rest of that group. Ties use the lexicographically smallest essay id.
 
 Quick filter to the representative set:
 
@@ -117,15 +115,15 @@ One row per human source used for `position-guided` generation. The position sou
 | `tone` | string | Stylistic register only (formality, person, emotional register). No structural or argumentative content. |
 | `word_count` | int | Word count of the source human essay. The `position-guided` essay is length-matched to this number. |
 | `schema_version` | int | `2` (current lean schema). |
-| `position_prompt_version` | string | The version tag of the position-guidance descriptor extraction prompt. |
+| `position_prompt_version` | string | Version tag for the prompt that created the position guide. |
 
-The full central claim that `position-guided` generation grounds on is pulled directly from `toulmin.main_argument` for the matching `(venue, debate_id, essay_id=position_source_id, kind="human")` row at generation time. It is not stored in the position guide itself.
+The central claim used for `position-guided` generation comes from the matching human row in `toulmin.main_argument`. It is not duplicated in this table.
 
 ---
 
 ## `toulmin.jsonl.gz`
 
-For each essay, the main argument (one sentence) plus an ordered list of distinct supporting sub-arguments.
+For each essay, the extracted main argument plus an ordered list of distinct supporting sub-arguments.
 
 | Field | Type | Description |
 |---|---|---|
@@ -139,7 +137,7 @@ For each essay, the main argument (one sentence) plus an ordered list of distinc
 | `annotator_provider` | string | `"vertex"`. |
 | `annotator_model` | string | `"gemini-3-flash-preview"`. |
 | `annotator_effort` | string | `"minimal"`, with `"low"` used as a retry for empty-output cases. |
-| `prompt_version` | string | Prompt slug. Matches a file under `prompts/`. NYT uses the question-aware variant; BR uses the lead-aware variant (`_lead` suffix). |
+| `prompt_version` | string | Prompt slug. Matches a file under `prompts/`. NYT uses the question version; BR uses the lead-essay version (`_lead` suffix). |
 
 ---
 
@@ -161,15 +159,15 @@ Pairwise judgments over each pair's main arguments, using a four-label scheme.
 | `judge_effort` | string | |
 | `prompt_version` | string | `"main_argument_judge_v8_4label"` (with `_lead` suffix for BR). |
 
-Continuous similarity weights, where useful for analyses: `equivalent = 1.0`, `strong_overlap = 0.7`, `weak_overlap = 0.3`, `different = 0.0`.
+If you need numeric scores, we use: `equivalent = 1.0`, `strong_overlap = 0.7`, `weak_overlap = 0.3`, `different = 0.0`.
 
-**Recommended cut for downstream analysis.** Treat `equivalent` plus `strong_overlap` as "substantial overlap" and `weak_overlap` plus `different` as "not substantial". This binary at `S ≥ 0.7` is the threshold our human annotators agreed on most reliably. The `equivalent`-vs-rest cut is lower-agreement.
+**Recommended threshold.** Treat `equivalent` and `strong_overlap` as substantial overlap. Treat `weak_overlap` and `different` as not substantial. Human annotators agreed most reliably at this split.
 
 ---
 
 ## `sub_argument_pairs.jsonl.gz`
 
-Pairwise judgments over supporting sub-arguments. The current NYT export contains the available human-human subset; the final LLM-pair export must be populated before reproducing the paper sub-argument U_m table. The BR file is present for schema symmetry and currently has zero rows.
+Pairwise judgments over supporting sub-arguments. The current NYT file contains the available human-human rows. Final LLM-LLM rows are still needed before reproducing the paper sub-argument uniqueness table. The BR file currently has zero rows.
 
 | Field | Type | Description |
 |---|---|---|
@@ -192,7 +190,7 @@ Pairwise judgments over supporting sub-arguments. The current NYT export contain
 
 ## `grounding_pairs.jsonl.gz`
 
-A convenience subset of `main_argument_pairs.jsonl.gz`. Each row is one (human, position-guided) pair where the position-guided essay was grounded on that specific human. This is the sanity check that the model preserved the assigned thesis under `position-guided` generation. Same schema as `main_argument_pairs.jsonl.gz`.
+A subset of `main_argument_pairs.jsonl.gz`. Each row compares one human essay with the position-guided LLM essay based on that human. Same schema as `main_argument_pairs.jsonl.gz`.
 
 You can reproduce this file from `main_argument_pairs.jsonl.gz`:
 

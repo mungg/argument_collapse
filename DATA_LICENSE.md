@@ -1,11 +1,11 @@
 # Data licensing
 
-This release combines content from three sources with different rights. We list each source separately below.
+This release combines materials with different rights. We list them separately below.
 
 1. **Original NYT *Room for Debate* debate prompts.** Included as `question_text` in `debates.jsonl.gz`.
 2. **Original Boston Review forum lead essays.** Included as `lead_essay_text` in `debates.jsonl.gz`.
 3. **Original human responder essays** (both venues). **Metadata only.** No body text. Reconstruct using `scripts/refetch_human_essays.py`.
-4. **All derived data** (LLM-generated essays, position-guidance descriptors, Toulmin extractions, pairwise judgments, structure annotations) and code. Produced by the authors of the paper.
+4. **Derived data and code.** This includes LLM essays, position guides, argument extractions, pairwise judgments, and structure annotations produced by the authors.
 
 ---
 
@@ -41,9 +41,9 @@ Author attribution is preserved in the `lead_essay_authors` field of `debates.js
 
 > Body text is not redistributed in this release. Only metadata (slug, author, date, word count, bio where available) is included in `human_essays.jsonl.gz`.
 
-To reconstruct the responder corpus, run `scripts/refetch_human_essays.py`. The script accepts a verified URL list and re-fetches each essay from the original publisher. Researchers are responsible for complying with the originating publisher's Terms of Service when downloading.
+To rebuild the responder corpus locally, run `scripts/refetch_human_essays.py`. Researchers are responsible for following each publisher's Terms of Service.
 
-**URL availability.** The original scraper used to assemble the working corpus did not preserve per-essay source URLs in the frontmatter. The `source_url` field in `human_essays.jsonl.gz` is therefore `null` for both venues. The re-fetcher includes a venue-specific URL-template constructor that attempts reconstruction from the available metadata (date plus slug). Where this fails, the script logs the entries for manual recovery. A verified URL list will be published as a versioned data update once available.
+**URL availability.** The original scraper did not preserve per-essay URLs, so `source_url` is currently `null`. The re-fetcher tries to rebuild URLs from each essay's date and slug. If it cannot, it logs the essay for manual recovery. We will publish a verified URL list once available.
 
 ---
 
@@ -65,7 +65,7 @@ Attribution string for derived data:
 
 ## Code and scripts, released under MIT
 
-The code in `scripts/`, plus the analysis pipelines released alongside in the parent research repository, is released under the **MIT License**. See `LICENSE`.
+The code in this repository is released under the **MIT License**. See `LICENSE`.
 
 ---
 

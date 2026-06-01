@@ -1,6 +1,6 @@
 # Data examples
 
-One sample row from every JSONL table per venue, pretty-printed. Long text fields (`body_text`, `question_text`, `lead_essay_text`, `main_argument`, `rationale`, `author_bio`, `role`, `tone`, `role_description`) are truncated to keep the page readable; the actual `.jsonl.gz` files carry the full text. See `SCHEMA.md` for column-level docs.
+Sample rows from every JSONL table, one venue at a time. Long text fields are shortened here for readability; the `.jsonl.gz` files contain the full text. See `SCHEMA.md` for field definitions.
 
 ## NYT  (`data/nyt/`)
 
@@ -70,7 +70,7 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
 }
 ```
 
-### `position_guides.jsonl.gz`: Position-guidance descriptor
+### `position_guides.jsonl.gz`: Position guide
 
 ```json
 {
@@ -86,7 +86,7 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
 }
 ```
 
-### `toulmin.jsonl.gz`: Toulmin extraction
+### `toulmin.jsonl.gz`: Argument extraction
 
 ```json
 {
@@ -317,7 +317,7 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
 }
 ```
 
-### `position_guides.jsonl.gz`: Position-guidance descriptor
+### `position_guides.jsonl.gz`: Position guide
 
 ```json
 {
@@ -333,7 +333,7 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
 }
 ```
 
-### `toulmin.jsonl.gz`: Toulmin extraction
+### `toulmin.jsonl.gz`: Argument extraction
 
 ```json
 {

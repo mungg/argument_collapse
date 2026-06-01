@@ -15,7 +15,7 @@ It also provides the data-loading and run-driver glue that turns the raw
 ``toulmin.jsonl`` + ``sub_argument_pairs.jsonl`` files emitted by
 :mod:`argument_collapse.annotate.pair_comparison_sub_arg` into per-cohort U_m rows.
 
-Run the CLI with ``python -m argument_collapse.metric um --spec <yaml>``.
+Run the CLI with ``uv run ac-metric um --spec <yaml>``.
 The spec is a YAML file listing each cohort and which essay stems belong
 to each group (H/V/D/P_s1/P_s2); see ``configs/`` for example specs that
 reproduce the paper numbers. The same module is importable so downstream
@@ -448,8 +448,7 @@ def run_um(spec: dict[str, Any],
     Returns ``{"rows": [...], "macro_strict": {...}, "macro_loose": {...}}``.
     """
     if np is None:
-        raise RuntimeError("numpy is required for run_um; install it via "
-                           "pip install numpy")
+        raise RuntimeError("numpy is required for run_um; run `uv sync` from the repository root")
 
     venue = spec["venue"]
     cohorts = spec["cohorts"]

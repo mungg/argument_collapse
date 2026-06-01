@@ -3,7 +3,7 @@
 #
 # Runs the annotation passes needed for the released content and sub-argument
 # diversity report: toulmin extraction, main-arg judge, sub-arg judge, and
-# structure labels. Stance labeling is available via `ac-stance` but is not
+# structure labels. Stance labeling is available via `uv run ac-stance` but is not
 # required for the U_m report. The script then prints the sub-argument diversity (U_m)
 # numbers. The final metric step uses
 # ``configs/subarg_diversity_16cohort_nyt.yaml`` so the report at the end
@@ -34,28 +34,28 @@ MODEL="${MODEL:-gemini-3-flash-preview}"
 WORKERS="${WORKERS:-20}"
 
 echo "==> Step 1/5: extract main+sub arguments per essay"
-ac-toulmin \
+uv run ac-toulmin \
   --venue "$VENUE" \
   --kinds human,vanilla,diversified,position-guided \
   --provider "$PROVIDER" --model "$MODEL" \
   --num-workers "$WORKERS"
 
 echo "==> Step 2/5: 4-label pairwise comparison over main arguments"
-ac-pair-comparison-main-arg \
+uv run ac-pair-comparison-main-arg \
   --venue "$VENUE" \
   --kinds human,vanilla \
   --provider "$PROVIDER" --model "$MODEL" \
   --num-workers "$WORKERS"
 
 echo "==> Step 3/5: 4-label pairwise comparison over sub-arguments"
-ac-pair-comparison-sub-arg \
+uv run ac-pair-comparison-sub-arg \
   --venue "$VENUE" \
   --kinds human,vanilla,diversified,position-guided \
   --provider "$PROVIDER" --model "$MODEL" \
   --num-workers "$WORKERS"
 
 echo "==> Step 4/5: paragraph-level structure annotation"
-ac-structure \
+uv run ac-structure \
   --venue "$VENUE" \
   --kinds human,vanilla,diversified,position-guided \
   --layer both \
@@ -64,7 +64,7 @@ ac-structure \
 
 echo "==> Step 5/5: compute sub-argument diversity (U_m) on the 16-cohort spec"
 mkdir -p results
-ac-metric um \
+uv run ac-metric um \
   --spec configs/subarg_diversity_16cohort_nyt.yaml \
   --output results/subarg_diversity_16cohort_nyt.json
 

@@ -4,24 +4,26 @@ Code and data for the paper *Argument Collapse: LLMs Narrow the Argument Content
 
 This repository contains:
 
-- A **Python package** (`src/argument_collapse/`) implementing the analysis pipeline. The package measures how LLM-generated argumentative essays collapse onto a narrower range of main arguments, supporting reasons, and paragraph-level structures than comparable human essays.
-- A **public data release** (`data/`) packaging the debates, essays, extractions, and judgments used in the paper as gzipped JSONL tables, alongside the prompts that produced them (`prompts/`).
+- **Code** in `src/argument_collapse/` for measuring whether LLM essays repeat the same main arguments, supporting reasons, and paragraph structures more than human essays do.
+- **Data** in `data/`, released as gzipped JSONL tables, plus the prompts used to generate and annotate the data in `prompts/`.
 
 ## Installation
+
+We use [`uv`](https://docs.astral.sh/uv/) for dependency management.
 
 ```bash
 git clone https://github.com/mungg/argument_collapse.git
 cd argument_collapse
-pip install -e .
+uv sync
 ```
 
-The package targets Python ≥ 3.10. LLM providers (OpenAI, Anthropic, Google Vertex, OpenRouter) are pulled in as optional clients; install only the ones you plan to call.
+The package targets Python ≥ 3.10. Run command-line tools through `uv run`, which uses the project environment created from `pyproject.toml` and `uv.lock`.
 
-If you only want to load and inspect the released data, the lighter `analysis` extra (for pandas) and `huggingface` extra (for the `datasets` library) avoid pulling in the LLM provider stack:
+For data-loading or notebook workflows, sync the relevant optional extra:
 
 ```bash
-pip install -e ".[analysis]"
-pip install -e ".[huggingface]"
+uv sync --extra analysis      # pandas-based inspection
+uv sync --extra huggingface   # Hugging Face datasets loader
 ```
 
 ## Repository structure
@@ -34,33 +36,30 @@ src/argument_collapse/   # main package
 │   ├── pair_comparison_sub_arg.py      # pairwise comparison of sub-arguments  (4-label)
 │   ├── structure.py                    # paragraph-level structure annotation
 │   └── stance.py                       # per-essay stance labelling (2 stages)
-├── cluster.py           # union-find argument clustering + medoid selection
-├── metric.py            # within-group unique rate U_m, recovery rates
-├── data.py              # cohort / essay loaders (handles two on-disk layouts)
+├── cluster.py           # grouping arguments and picking representative LLM answers
+├── metric.py            # uniqueness and recovery metrics
+├── data.py              # data loaders
 └── inference/           # LLM provider wrappers (OpenAI, Vertex, OpenRouter)
-configs/                 # paper-run YAML specs
-                         #   subarg_diversity_16cohort_nyt.yaml
-scripts/                 # reproduce_subarg_diversity.sh   (paper numbers)
-                         # run_annotation_pipeline.sh      (full pipeline)
-                         # refetch_human_essays.py         (reconstruct human bodies)
+configs/                 # YAML files for paper metrics
+scripts/                 # reproduce numbers, rerun annotation, and re-fetch human essays
 data/                    # released JSONL tables (see "Data release" below)
 prompts/                 # released system + user prompts
 ```
 
-After `pip install -e .` the following CLI entry points are available:
+After `uv sync`, the following CLI entry points are available through `uv run`:
 
 | Command                       | What it does                                                                            |
 |-------------------------------|-----------------------------------------------------------------------------------------|
 | `ac-toulmin`                  | **Extract** each essay's main argument + supporting sub-arguments via LLM prompt.       |
 | `ac-pair-comparison-main-arg` | **Compare** two essays' main arguments pairwise; emits one of four overlap labels.      |
 | `ac-pair-comparison-sub-arg`  | **Compare** two essays' sub-arguments pairwise; emits one of four overlap labels.       |
-| `ac-stance`                   | **Label** each essay's stance on the cohort's binary debate axis (`stage1` / `stage2`).|
+| `ac-stance`                   | **Label** each essay's stance on binary debate questions.                              |
 | `ac-structure`                | **Annotate** paragraph-level argumentative role and discourse mode.                      |
-| `ac-metric`                   | **Compute** within-group unique rate U_m from a YAML spec.                             |
+| `ac-metric`                   | **Compute** uniqueness and recovery metrics from a YAML file.                           |
 
-Each annotation row carries a `tagger_prompt_version` field so different prompt variants stay distinguishable in the released JSONL files:
+Annotation rows include a `tagger_prompt_version` field that points back to the prompt used:
 
-| Stage                          | Base tag                  | Suffix (per cohort context kind) |
+| Stage                          | Base tag                  | Suffix |
 |--------------------------------|---------------------------|-----------------------------------|
 | toulmin extraction             | `toulmin_annotation`      | `` / `_lead`                      |
 | main-argument pair comparison  | `pair_comparison_main_arg`| `` / `_lead`                      |
@@ -78,7 +77,7 @@ The data root resolves in this order:
 2. `ARGUMENT_COLLAPSE_DATA_ROOT` environment variable
 3. `./data` (default)
 
-The public release uses aggregate gzipped JSONL tables partitioned by venue:
+The public data is stored as gzipped JSONL tables, split by venue:
 
 ```
 <data_root>/
@@ -94,80 +93,80 @@ The public release uses aggregate gzipped JSONL tables partitioned by venue:
 │   ├── structure_argument.jsonl.gz
 │   └── structure_discourse_mode.jsonl.gz
 └── br/
-    └── ... same table names, with `sub_argument_pairs.jsonl.gz` empty when no BR sub-argument pair table is released
+    └── ... same table names
 ```
 
-The loader also supports the older cohort-grouped working layout used by the annotation pipeline:
+The loader also supports the older per-debate working layout used when rerunning annotation:
 
 ```
-<data_root>/<venue>/<cohort>/
+<data_root>/<venue>/<debate>/
 ├── human/{00_question.md,00_lead.md,<author>.md}
 ├── generated/<stem>.md
 └── analysis/{toulmin,main_argument_pairs,sub_argument_pairs}.jsonl
 ```
 
-`data.detect_layout(path)` returns `"aggregate"` for the public release and `"cohort_grouped"` for the working layout. The public API (`iter_cohort_jsonl`, `cohort_analysis_path`, `find_human_responses`, ...) hides the difference where possible.
+The loader detects whether you are using the public tables or the older per-debate layout.
 
 ## Reproducing paper numbers
 
-The reproduction wrapper for the headline sub-argument U_m numbers is included here. It expects the final LLM sub-argument pair rows in `data/nyt/sub_argument_pairs.jsonl.gz` and aborts with a clear error if the released table has not yet been populated with those rows:
+To reproduce the headline sub-argument uniqueness numbers, run the wrapper after `uv sync`. It requires the final LLM-LLM sub-argument pair rows in `data/nyt/sub_argument_pairs.jsonl.gz`; if those rows are missing, it stops with a clear error.
 
 ```bash
 ./scripts/reproduce_subarg_diversity.sh
 ```
 
-When the pair table is present, the script wraps `ac-metric um --spec configs/subarg_diversity_16cohort_nyt.yaml` and writes the detailed per-cohort breakdown to `results/subarg_diversity_16cohort_nyt.json`. Expected output (loose threshold, common-m, 16 NYT cohorts):
+When the pair table is complete, the script runs `uv run ac-metric um --spec configs/subarg_diversity_16cohort_nyt.yaml` and writes details to `results/subarg_diversity_16cohort_nyt.json`. Expected output:
 
 | Metric                                    | Strict | Loose |
 |-------------------------------------------|--------|-------|
-| Humans (cluster)                          | 94.9%  | 41.0% |
-| Vanilla LLMs (medoid)                     | 60.6%  |  9.1% |
-| Diversified (1-per-family)                | 81.4%  | 22.8% |
+| Humans                                    | 94.9%  | 41.0% |
+| Vanilla LLMs                              | 60.6%  |  9.1% |
+| Diversified LLMs                          | 81.4%  | 22.8% |
 | Same position, different LLMs (S1)        | 56.4%  |  6.8% |
 | Different positions, same LLM (S2)        | 72.7%  | 18.4% |
 
-The diversified row is computed by sampling up to 200 one-per-family combinations per cohort with a fixed seed; the paper reports 22.9%, which is within sampling noise of the value above.
+The diversified row averages up to 200 fixed-seed samples per debate. The paper reports 22.9%, which is the same value up to sampling variation.
 
 The dataset uses three LLM-condition codes:
 
 | Code | Setup |
 |---|---|
-| `vanilla` | Default LLM answer with no instruction to diversify or follow a human source. |
-| `diversified` | Single API call asking for a batch of N distinct responses. |
-| `position-guided` | The LLM receives an anonymized descriptor for one human responder, plus that responder's extracted main argument, and writes from that position. |
+| `vanilla` | The model answers normally. |
+| `diversified` | The model is asked to produce several different answers in one call. |
+| `position-guided` | The model writes from an anonymized human writer's main argument and background. |
 
-### Re-running the annotation pipeline
+### Re-running annotation
 
-To re-run the annotation pipeline end-to-end, provide a working-layout essay tree with local markdown bodies under `human/` and `generated/` (expensive: uses your own LLM API keys, on the order of $50 of spend, several hours). The public aggregate release does not redistribute human essay bodies. Use `./scripts/run_annotation_pipeline.sh` or invoke each stage directly:
+To rerun annotation, provide local markdown essays under `human/` and `generated/`. This uses your own LLM API keys and can cost about $50. The public release does not include human essay bodies. Use `./scripts/run_annotation_pipeline.sh` or run the steps directly:
 
 ```bash
 # Step 1 — EXTRACTION: per-essay main_argument + sub_arguments
-ac-toulmin  --venue NYT-Room-for-Debate-filtered \
+uv run ac-toulmin  --venue NYT-Room-for-Debate-filtered \
             --kinds human,vanilla,diversified,position-guided
 
 # Step 2 — PAIR COMPARISON: 4-label judge over main-argument pairs
-ac-pair-comparison-main-arg --venue NYT-Room-for-Debate-filtered \
+uv run ac-pair-comparison-main-arg --venue NYT-Room-for-Debate-filtered \
                             --kinds human,vanilla
 
 # Step 3 — PAIR COMPARISON: 4-label judge over sub-argument pairs
-ac-pair-comparison-sub-arg  --venue NYT-Room-for-Debate-filtered \
+uv run ac-pair-comparison-sub-arg  --venue NYT-Room-for-Debate-filtered \
                             --kinds human,vanilla,diversified,position-guided
 
 # Step 4 — STRUCTURE ANNOTATION: paragraph-level argument role + discourse mode
-ac-structure --venue NYT-Room-for-Debate-filtered \
+uv run ac-structure --venue NYT-Room-for-Debate-filtered \
              --kinds human,vanilla,diversified,position-guided \
              --layer both
 
 # Step 5 — STANCE LABELLING (binary cohorts only, two stages)
-ac-stance stage1 --venue NYT-Room-for-Debate-filtered \
+uv run ac-stance stage1 --venue NYT-Room-for-Debate-filtered \
                  --cohort are-americans-too-obsessed-with-cleanliness \
                  --output results/stance_sides.json
-ac-stance stage2 --venue NYT-Room-for-Debate-filtered \
+uv run ac-stance stage2 --venue NYT-Room-for-Debate-filtered \
                  --sides  results/stance_sides.json \
                  --output results/stance_labels.json
 
-# Step 6 — METRIC: sub-argument diversity U_m
-ac-metric um \
+# Step 6 — METRIC: sub-argument uniqueness
+uv run ac-metric um \
     --spec   configs/subarg_diversity_16cohort_nyt.yaml \
     --output results/subarg_diversity_16cohort_nyt.json
 ```
@@ -175,21 +174,21 @@ ac-metric um \
 ---
 
 
-## Temporary note: sub-argument pair export needed
+## Note: sub-argument pair export needed
 
-The current local release rebuild includes the aggregate `sub_argument_pairs.jsonl.gz` table, but the locally available source files do not yet contain the final LLM--LLM sub-argument pair rows needed to reproduce the paper's sub-argument U_m table.
+The current `sub_argument_pairs.jsonl.gz` file is present, but it does not yet include the final LLM-LLM sub-argument pairs needed to reproduce the paper's sub-argument uniqueness table.
 
-For the 16-cohort NYT sub-argument analysis, we need complete `analysis/sub_argument_pairs.jsonl` files that include within-group generated-generated pairs for the final conditions:
+For the 16 NYT debates used in the sub-argument analysis, the missing rows are:
 
-- `v1a` ↔ `v1a` for the vanilla/default LLM group.
-- `v15a` ↔ `v15a` for the diversified group.
-- `v4a` ↔ `v4a` for the position-guided group.
+- `v1a` ↔ `v1a` for vanilla LLMs.
+- `v15a` ↔ `v15a` for diversified LLMs.
+- `v4a` ↔ `v4a` for position-guided LLMs.
 
-The U_m table does not require human--LLM sub-argument pairs, because it measures within-group uniqueness/reuse. It does require the human--human rows for the same 16 cohorts, plus the generated-generated rows above. The older local sub-argument pair files mostly contain `v3a`/`v25a` rows, which are not the final public conditions and should not be silently mapped to the release conditions.
+Human-LLM sub-argument pairs are not needed for this table. Human-human pairs for the same 16 debates are needed. Older `v3a`/`v25a` rows are not the final public conditions and should not be reused for these results.
 
 ## Data release
 
-The `data/` directory packages the public-facing version of the corpus as gzipped JSONL tables. Each row is self-contained and joins on `(venue, debate_id)` plus `(venue, debate_id, essay_id)`. Data is partitioned by venue (`data/nyt/` and `data/br/`); rows still carry `venue`, so files can be concatenated cross-venue without ambiguity.
+The `data/` directory contains gzipped JSONL tables. Join debate-level rows with `(venue, debate_id)` and essay-level rows with `(venue, debate_id, essay_id)`.
 
 ```
 data/
@@ -221,12 +220,12 @@ data/
 |---|---|
 | `debates.jsonl.gz` | Per-debate metadata: title, source, topic, question type, the full debate question (NYT) or full lead essay (BR), and the essay count under each condition. |
 | `human_essays.jsonl.gz` | One row per human responder essay, with metadata only (author, bio, date, word count). The body text is not redistributed. See `scripts/refetch_human_essays.py` to recover it. |
-| `llm_essays.jsonl.gz` | One row per LLM-generated essay, full text included. Three conditions (`vanilla`, `diversified`, `position-guided`) across five frontier LLMs (GPT-5.5, Gemini 3.1 Pro, Claude Opus 4.7, MiniMax M2.7, DeepSeek v4 Pro). Vanilla rows carry an `is_representative` boolean that flags the model-level medoid for each debate. |
-| `position_guides.jsonl.gz` | One row per human source used for `position-guided` generation. Each row records the human source id, a name for traceability, an anonymized role description, and a tone description. Names are not shown to the generation model. |
+| `llm_essays.jsonl.gz` | One row per LLM essay, with full text. Includes three conditions (`vanilla`, `diversified`, `position-guided`) across five LLMs. For `vanilla`, `is_representative` marks the one answer per model used in the paper. |
+| `position_guides.jsonl.gz` | One row per human source used for `position-guided` generation. Names are kept for traceability but are not shown to the model. |
 | `toulmin.jsonl.gz` | Extracted main argument and ordered sub-arguments, one row per essay, for humans and all three LLM conditions. |
 | `main_argument_pairs.jsonl.gz` | Pairwise judgments over each pair's main arguments, using a four-label scheme (`equivalent`, `strong_overlap`, `weak_overlap`, `different`) with a short rationale. |
-| `sub_argument_pairs.jsonl.gz` | Pairwise judgments over sub-arguments. The current NYT export contains the available human-human subset; the final LLM-pair export must be populated before reproducing the paper sub-argument U_m table. The BR file is included for schema symmetry but currently has zero rows. |
-| `grounding_pairs.jsonl.gz` | A convenience subset: each row is one (human, position-guided) pair where the position-guided essay was grounded on that specific human. The sanity check that the model preserved the assigned thesis. |
+| `sub_argument_pairs.jsonl.gz` | Pairwise judgments over sub-arguments. The current NYT file contains the available human-human rows. Final LLM-LLM rows are still needed for the paper sub-argument uniqueness table. The BR file currently has zero rows. |
+| `grounding_pairs.jsonl.gz` | A subset of main-argument pairs: each row compares one human essay with the position-guided essay based on that human. |
 | `structure_argument.jsonl.gz` | Per-paragraph argument-role labels: `thesis`, `support`, `concession`, `rebuttal`, `reframing`, `proposal`, `implication`, or `none`. |
 | `structure_discourse_mode.jsonl.gz` | Per-paragraph discourse-mode labels: `argumentation`, `exposition`, `narration`, or `description`. |
 
@@ -259,11 +258,11 @@ toulmin = load_dataset("json", data_files="data/*/toulmin.jsonl.gz", split="trai
 
 ### Reconstructing the human-essay corpus
 
-Human responder essays are not redistributed here; their original publishers retain copyright. `human_essays.jsonl.gz` carries every field needed to re-locate each essay (debate slug, author, date, word count). Run `scripts/refetch_human_essays.py` to walk the index and recover bodies from the published URLs, then merge them back into your local corpus.
+Human essay bodies are not redistributed because the original publishers retain copyright. `human_essays.jsonl.gz` includes metadata for finding them again. Use `scripts/refetch_human_essays.py` to rebuild a local copy from the publishers' sites.
 
 ## Prompts
 
-`prompts/` ships every system and user prompt used in the pipeline, alongside rendered examples (`prompts/examples/`) and a programmatic index (`prompts/prompts.jsonl`) that maps each `prompt_version` tag to its full text. The index includes the annotation prompts (toulmin, main-argument judge, structure argument, structure discourse-mode), the dynamic generation prompts (with a Python helper that reproduces the exact text sent), and the preprocessing taggers (topic, question-type, sensitivity, position-guidance descriptor, temporal-change filter). See `prompts/README.md` for the map.
+`prompts/` contains the prompts used for generation and annotation. `prompts/prompts.jsonl` maps each `prompt_version` value in the data back to its prompt text. See `prompts/README.md` for details.
 
 ## License
 
@@ -275,7 +274,7 @@ Human responder essays are not redistributed here; their original publishers ret
 
 ```bibtex
 @inproceedings{argument_collapse_2026,
-  title = {Argument Collapse: LLMs Flatten Long-Form Public Debate},
+  title = {Argument Collapse: LLMs Narrow the Argument Content and Structure in Public Debate},
   author = {{TBD}},
   booktitle = {Proceedings of the Annual Meeting of the Association for Computational Linguistics},
   year = {2026},
