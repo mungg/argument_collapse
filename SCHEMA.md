@@ -167,7 +167,7 @@ If you need numeric scores, we use: `equivalent = 1.0`, `strong_overlap = 0.7`, 
 
 ## `sub_argument_pairs.jsonl.gz`
 
-Pairwise judgments over supporting sub-arguments. This table is intentionally a subset, not a full-corpus all-pairs export: sub-argument annotation was run for selected analysis subsets because every essay pair expands into many sub-argument pairs. The current export contains `374,414` NYT rows across `83` debates and `31,466` BR rows across `11` forums. It includes only public conditions (`human`, `vanilla`, `diversified`, and `position-guided`) and omits older internal conditions. The NYT rows cover the shared-main vanilla comparison; other sub-argument rows are available for selected checks.
+Pairwise judgments over supporting sub-arguments. This table is intentionally a subset, not a full-corpus all-pairs export: sub-argument annotation was run for selected analysis subsets because every essay pair expands into many sub-argument pairs. The current export contains `374,414` NYT rows across `83` debates and `46,638` BR rows across `21` forums. It includes only public conditions (`human`, `vanilla`, `diversified`, and `position-guided`) and omits older internal conditions. The NYT rows cover the shared-main vanilla comparison; other sub-argument rows are available for selected checks.
 
 Metric code checks that the configured subset is fully annotated before computing sub-argument unique rates. Missing pair labels should not be interpreted as `different`.
 
