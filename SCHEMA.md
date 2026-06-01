@@ -15,7 +15,7 @@ Conventions used across all tables:
 
 - `venue` is `"nyt"` or `"br"`, matching the parent directory.
 - `debate_id` is the debate slug (for example, `are-americans-too-obsessed-with-cleanliness`, or `forum_after_911`).
-- `essay_id` is the essay slug. For human responder essays, this is the filename slug. For LLM-generated essays, this is the full generated stem with the format `{provider_api}__{model_family}__{effort}__{condition}[__{persona_id}]__{timestamp}`.
+- `essay_id` is the essay slug. For human responder essays, this is the filename slug. For LLM-generated essays, this is the full generated stem with the format `{provider_api}__{model_family}__{effort}__{condition}[__{position_source_id}]__{timestamp}`.
 - `kind` is one of `"human"`, `"vanilla"`, `"diversified"`, or `"position-guided"`.
 - `model_short` is one of `"gpt"`, `"gemini"`, `"claude"`, `"minimax"`, `"deepseek"` for LLM-generated essays, and `null` for human essays.
 - `null` is used for absent values. The field is always present.
@@ -77,14 +77,14 @@ One row per LLM-generated essay. Full text included.
 |---|---|---|
 | `venue` | string | |
 | `debate_id` | string | |
-| `essay_id` | string | Full generated stem with the format `{provider_api}__{model_family}__{effort}__{kind}[__{persona_id}]__{timestamp}`. |
+| `essay_id` | string | Full generated stem with the format `{provider_api}__{model_family}__{effort}__{kind}[__{position_source_id}]__{timestamp}`. |
 | `kind` | string | One of `"vanilla"`, `"diversified"`, `"position-guided"`. (`condition` is an alias.) |
 | `condition` | string | Same value as `kind`. |
 | `model_short` | string | `"gpt"`, `"gemini"`, `"claude"`, `"minimax"`, or `"deepseek"`. |
 | `provider_api` | string | Inference API used (for example, `"openai-api"`, `"vertex-api"`, `"openrouter-api"`). |
 | `model_family` | string | Full model family slug (for example, `"gpt-5.5"`, `"anthropic-claude-opus-4.7"`). |
 | `effort` | string | `"medium"` for most rows. `"xhigh"` marks the GPT-5.5 `diversified` reasoning-effort ablation. |
-| `persona_id` | string or null | For `position-guided`, this is the human slug the essay was grounded on. For `diversified`, this is the within-batch index (`essay-01`, `essay-02`, and so on). `null` for `vanilla`. |
+| `position_source_id` | string or null | For `position-guided`, this is the human slug the essay was grounded on. For `diversified`, this is the within-batch index (`essay-01`, `essay-02`, and so on). `null` for `vanilla`. |
 | `is_representative` | bool or null | For `vanilla` rows only. `true` if the essay is the model-level representative (medoid of the model's modal equivalent cluster) for its debate, `false` for the other vanilla samples. `null` for `diversified` and `position-guided`, where the concept does not apply. The paper compares one representative per model against humans; filter on this field to recover that set. |
 | `generated_at_utc` | string | Timestamp of generation. |
 | `word_count` | int | |
@@ -103,23 +103,23 @@ reps = llm.query("condition == 'vanilla' and is_representative")
 
 ---
 
-## `personas.jsonl.gz`
+## `position_guides.jsonl.gz`
 
-One row per persona used to ground `position-guided` generation. Persona id matches the corresponding human responder's `essay_id`.
+One row per human source used for `position-guided` generation. The position source id matches the corresponding human responder's `essay_id`.
 
 | Field | Type | Description |
 |---|---|---|
 | `venue` | string | |
 | `debate_id` | string | |
-| `persona_id` | string | Matches the corresponding `human_essays.essay_id`. |
+| `position_source_id` | string | Matches the corresponding `human_essays.essay_id`. |
 | `name` | string | Author's name. Recorded for traceability. **Not shown to the LLM during generation.** |
 | `role` | string | Anonymized professional background (for example, `"legal scholar focused on data privacy"`). An LLM abstracts this from the author's bio with names and institutions stripped out. |
 | `tone` | string | Stylistic register only (formality, person, emotional register). No structural or argumentative content. |
 | `word_count` | int | Word count of the source human essay. The `position-guided` essay is length-matched to this number. |
 | `schema_version` | int | `2` (current lean schema). |
-| `persona_prompt_version` | string | The version tag of the persona-extraction prompt. |
+| `position_prompt_version` | string | The version tag of the position-guidance descriptor extraction prompt. |
 
-The full central claim that `position-guided` generation grounds on is pulled directly from `toulmin.main_argument` for the matching `(venue, debate_id, essay_id=persona_id, kind="human")` row at generation time. It is not stored in the persona itself.
+The full central claim that `position-guided` generation grounds on is pulled directly from `toulmin.main_argument` for the matching `(venue, debate_id, essay_id=position_source_id, kind="human")` row at generation time. It is not stored in the position guide itself.
 
 ---
 
@@ -164,6 +164,29 @@ Pairwise judgments over each pair's main arguments, using a four-label scheme.
 Continuous similarity weights, where useful for analyses: `equivalent = 1.0`, `strong_overlap = 0.7`, `weak_overlap = 0.3`, `different = 0.0`.
 
 **Recommended cut for downstream analysis.** Treat `equivalent` plus `strong_overlap` as "substantial overlap" and `weak_overlap` plus `different` as "not substantial". This binary at `S ≥ 0.7` is the threshold our human annotators agreed on most reliably. The `equivalent`-vs-rest cut is lower-agreement.
+
+---
+
+## `sub_argument_pairs.jsonl.gz`
+
+Pairwise judgments over supporting sub-arguments. The current NYT export contains the available human-human subset; the final LLM-pair export must be populated before reproducing the paper sub-argument U_m table. The BR file is present for schema symmetry and currently has zero rows.
+
+| Field | Type | Description |
+|---|---|---|
+| `venue` | string | |
+| `debate_id` | string | |
+| `sub_i`, `sub_j` | string | Sub-argument ids in the form `{essay_id}::subNN`. |
+| `essay_i`, `essay_j` | string | Essay ids for the two sub-arguments. |
+| `sub_index_i`, `sub_index_j` | int | Index of the sub-argument within each essay's `toulmin.sub_arguments` list. |
+| `kind_i`, `kind_j` | string | `"human"`, `"vanilla"`, `"diversified"`, or `"position-guided"`. |
+| `model_i`, `model_j` | string or null | LLM family for generated essays. |
+| `main_argument_i`, `main_argument_j` | string | Main arguments for the two source essays. |
+| `sub_argument_i`, `sub_argument_j` | string | The two supporting claims being compared. |
+| `relation` | string | One of `"equivalent"`, `"strong_overlap"`, `"weak_overlap"`, or `"different"`. |
+| `rationale` | string | A short justification from the judge. |
+| `judged_at_utc` | string | Timestamp of judgment. |
+| `judge_provider`, `judge_model`, `judge_effort` | string | Judge-call metadata. |
+| `prompt_version` | string | Prompt slug for the sub-argument judge. |
 
 ---
 

@@ -19,7 +19,7 @@ Every system and user prompt used to build the dataset. There are three ways to 
 | `topic_classifier.system.txt` + `topic_classifier.user_template.txt` | Preprocessing prompt that produced `debates.topic`. |
 | `question_type_classifier.system.txt` | Preprocessing prompt that produced `debates.question_type` (NYT only). |
 | `sensitivity_classifier.system.txt` | Preprocessing prompt that produced `debates.sensitivity` (NYT only). |
-| `persona_extraction.system.txt` | Preprocessing prompt that produced the rows in `personas.jsonl.gz`. |
+| `position_guide_extraction.system.txt` | Preprocessing prompt that produced the rows in `position_guides.jsonl.gz`. |
 | `temporal_change_filter.system.{question,lead}.txt` | FreshQA-style preprocessing filter applied during corpus selection. A debate was kept only if neither of two judges (gpt-5.4-mini and gemini-3-flash-preview) labeled it `fast_changing`. The judgment is not stored as a column in the release because debates that failed the filter were dropped from the corpus. |
 | `examples/generation/*.md` | One rendered example per (condition, venue) combination: `vanilla`, `diversified`, and `position-guided`, each for NYT and BR. |
 | `examples/toulmin__{nyt,br}.md` | One Toulmin extraction shown end-to-end: input essay, exact prompt sent, extracted output. |
@@ -39,7 +39,7 @@ Every system and user prompt used to build the dataset. There are three ways to 
 | `topic_classifier` | `topic_classifier.system.txt` plus `topic_classifier.user_template.txt`. Produced `debates.topic`. |
 | `question_type_classifier` | `question_type_classifier.system.txt`. Produced `debates.question_type`. |
 | `sensitivity_classifier` | `sensitivity_classifier.system.txt`. Produced `debates.sensitivity`. |
-| `persona_extraction` | `persona_extraction.system.txt`. Produced the rows in `personas.jsonl.gz`. |
+| `position_guide_extraction` | `position_guide_extraction.system.txt`. Produced the rows in `position_guides.jsonl.gz`. |
 | `temporal_change_filter` | `temporal_change_filter.system.question.txt`. Applied to NYT during corpus selection. |
 | `temporal_change_filter_lead` | `temporal_change_filter.system.lead.txt`. Applied to BR during corpus selection. |
 
@@ -61,7 +61,7 @@ Each generation call sends:
   - A **condition block** that varies by condition:
     - `vanilla`: minimal. Just the source label plus a generic write-a-response instruction.
     - `diversified`: adds an explicit diversification instruction. The model is asked to produce N distinct responses in a single call, separated by `===== ESSAY N =====` markers.
-    - `position-guided`: persona-faithful. Grounded on the human responder's extracted main argument (pulled from `toulmin.jsonl.gz` at generation time). Anonymized: the human's name is not shown to the model.
+    - `position-guided`: grounded on the human responder's extracted main argument (pulled from `toulmin.jsonl.gz` at generation time). Anonymized: the human's name is not shown to the model.
   - A **length clause** matching the target essay's word count.
   - An **evidence-cutoff clause** restricting world-knowledge to the debate's publication date.
 
@@ -69,7 +69,7 @@ To reproduce the exact prompt sent for an essay in `llm_essays.jsonl.gz`, use th
 
 ```python
 from prompts.generation import render_generation_prompt
-# the essay's metadata (debate_id, condition, persona_id, effort, model_short) is in the row
+# the essay's metadata (debate_id, condition, position_source_id, effort, model_short) is in the row
 rendered = render_generation_prompt(
     condition="v4a",                                    # source-side condition
     prompt_kind="question",                             # "question" for NYT, "lead" for BR
@@ -77,8 +77,8 @@ rendered = render_generation_prompt(
     source_text=debate_question_text,
     agent_source_path=Path("/tmp/_unused"),
     agent_output_path=Path("/tmp/_unused"),
-    target_words=persona["word_count"],
-    persona=persona,                                    # only for position-guided
+    target_words=position_guide["word_count"],
+    position_guide=position_guide,                      # only for position-guided
 )
 print(rendered.system_prompt, rendered.direct_user_prompt)
 ```

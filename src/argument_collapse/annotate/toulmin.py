@@ -217,15 +217,15 @@ def _model_from_family(family: str) -> str | None:
 def parse_generated_stem(stem: str) -> dict | None:
     """Parse a generated-essay filename stem.
 
-    The convention is ``{api}__{model_family}__{effort}__{kind}[__{persona}]__{timestamp}``.
-    Returns ``{kind, model, persona}`` or ``None`` if the stem doesn't match.
+    The convention is ``{api}__{model_family}__{effort}__{kind}[__{position_source}]__{timestamp}``.
+    Returns ``{kind, model, position_source}`` or ``None`` if the stem doesn't match.
     """
     parts = stem.split("__")
     if len(parts) < 5:
         return None
     _api, family, _effort, kind = parts[:4]
-    persona = parts[4] if len(parts) >= 6 else None
-    return {"kind": kind, "model": _model_from_family(family), "persona": persona}
+    position_source = parts[4] if len(parts) >= 6 else None
+    return {"kind": kind, "model": _model_from_family(family), "position_source": position_source}
 
 
 def discover_essays(venue: str, kinds: set[str],
@@ -235,7 +235,7 @@ def discover_essays(venue: str, kinds: set[str],
     Returns rows shaped like the essays index used elsewhere in the
     pipeline:
 
-      {cohort, stem, kind, model, persona, path}
+      {cohort, stem, kind, model, position_source, path}
     """
     root = Path(data_root) if data_root is not None else get_data_root()
     venue_root = root / venue
@@ -253,7 +253,7 @@ def discover_essays(venue: str, kinds: set[str],
             for path in find_human_responses(cohort_dir):
                 out.append({
                     "cohort": cohort, "stem": path.stem,
-                    "kind": "human", "model": None, "persona": None,
+                    "kind": "human", "model": None, "position_source": None,
                     "path": str(path),
                 })
         gen_dir = cohort_dir / "generated"
@@ -267,7 +267,7 @@ def discover_essays(venue: str, kinds: set[str],
                 out.append({
                     "cohort": cohort, "stem": path.stem,
                     "kind": parsed["kind"], "model": parsed["model"],
-                    "persona": parsed["persona"], "path": str(path),
+                    "position_source": parsed["position_source"], "path": str(path),
                 })
     return out
 
@@ -420,17 +420,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--data-root", default=None,
                    help="Dataset root directory; defaults to "
                         "$ARGUMENT_COLLAPSE_DATA_ROOT if set, otherwise "
-                        "./data/dataset.")
+                        "./data.")
     p.add_argument("--venue", required=True,
                    help="Venue subdirectory inside the data root.")
     p.add_argument("--cohort", action="append",
                    help="Restrict to this cohort; pass repeatedly to add more.")
-    p.add_argument("--kinds", default="human,vanilla,diversified,position",
+    p.add_argument("--kinds", default="human,vanilla,diversified,position-guided",
                    help="Comma-separated essay kinds to include "
-                        "(default: human,vanilla,diversified,position). "
-                        "'vanilla' = default LLM (no persona); "
+                        "(default: human,vanilla,diversified,position-guided). "
+                        "'vanilla' = default LLM; "
                         "'diversified' = 1-per-family diverse sampling; "
-                        "'position' = position-grounded.")
+                        "'position-guided' = position-grounded.")
     p.add_argument("--context-kind", default="question",
                    choices=["question", "lead"],
                    help="Shared cohort context fed to the tagger: 'question' "

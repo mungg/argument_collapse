@@ -9,8 +9,8 @@
 # part of this reproduction target.
 #
 # Inputs (already shipped with the dataset release):
-#   <data_root>/NYT-Room-for-Debate-filtered/<cohort>/analysis/toulmin.jsonl
-#   <data_root>/NYT-Room-for-Debate-filtered/<cohort>/analysis/sub_argument_pairs.jsonl
+#   <data_root>/nyt/toulmin.jsonl.gz
+#   <data_root>/nyt/sub_argument_pairs.jsonl.gz
 #
 # Output:
 #   results/subarg_diversity_16cohort_nyt.json + printed summary table.
@@ -23,7 +23,7 @@
 #   Different positions, same LLM     18.4%
 #
 # Set ARGUMENT_COLLAPSE_DATA_ROOT to point at the unpacked dataset, or pass
-# --data-root <path>.  Defaults to ./data/dataset.
+# --data-root <path>.  Defaults to ./data.
 #
 # Usage:
 #   ./scripts/reproduce_subarg_diversity.sh                       # default root
@@ -43,13 +43,41 @@ fi
 
 mkdir -p "$(dirname "$OUTPUT")"
 
+python - "$@" <<'PY'
+import gzip, json, sys
+from pathlib import Path
+root = Path("data")
+args = sys.argv[1:]
+if "--data-root" in args:
+    root = Path(args[args.index("--data-root") + 1])
+pairs = root / "nyt" / "sub_argument_pairs.jsonl.gz"
+if pairs.exists():
+    kinds = set()
+    with gzip.open(pairs, "rt") as f:
+        for line in f:
+            r = json.loads(line)
+            kinds.add(r.get("kind_i"))
+            kinds.add(r.get("kind_j"))
+    if not ({"vanilla", "diversified", "position-guided"} & kinds):
+        print("error: released sub_argument_pairs.jsonl.gz does not contain LLM sub-argument pair rows.")
+        print("       Regenerate/export the final LLM sub-argument pair annotations before reproducing the paper U_m table.")
+        sys.exit(2)
+PY
+
 echo "==> Reproducing sub-argument U_m on the 16 NYT cohorts"
 echo "    spec:   $SPEC"
 echo "    output: $OUTPUT"
 echo
 
 # Pass through any user-provided flags (e.g. --data-root /tmp/ac).
-ac-metric um --spec "$SPEC" --output "$OUTPUT" "$@"
+if command -v ac-metric >/dev/null 2>&1; then
+  ac-metric um --spec "$SPEC" --output "$OUTPUT" "$@"
+elif command -v uv >/dev/null 2>&1; then
+  uv run ac-metric um --spec "$SPEC" --output "$OUTPUT" "$@"
+else
+  echo "error: ac-metric not found. Run pip install -e . first, or install uv."
+  exit 1
+fi
 
 echo
 echo "==> Done. Headline numbers above should match the paper's sub-arg U_m table."

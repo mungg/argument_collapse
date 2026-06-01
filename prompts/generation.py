@@ -76,13 +76,13 @@ def system_prompt(condition: str, prompt_kind: str, target_words: int) -> str:
     # the only system-prompt difference is that they drop the "Have a clear thesis"
     # bullet, to test whether structural homogeneity in the outputs comes from
     # that prescription or is a deeper model default. v4a is a v3a variant
-    # (persona-faithful) grounded on the human's toulmin main_argument instead of
+    # (writer-guided) grounded on the human's toulmin main_argument instead of
     # thesis_1line.
     is_ablation = condition.endswith("a")
 
-    # v25/v3 (and ablations) inject a persona-specific word count via the user
+    # v25/v3 (and ablations) inject a position-source-specific word count via the user
     # prompt's length_clause, so suppress the venue-mean bullet here. v1a
-    # likewise uses a persona-specific length when one is supplied (the
+    # likewise uses a position-source-specific length when one is supplied (the
     # length-matched v1a variant), so suppress for v1a too — length_clause
     # will inject the right value.
     word_bullet = (
@@ -117,12 +117,12 @@ def evidence_cutoff_clause(prompt_path: Path, prompt_kind: str) -> str:
     )
 
 
-def length_clause(condition: str, target_words: int, persona: dict[str, Any] | None = None) -> str:
-    # v1a uses persona length when supplied (length-matched ablation variant);
+def length_clause(condition: str, target_words: int, position_guide: dict[str, Any] | None = None) -> str:
+    # v1a uses position-source length when supplied (length-matched ablation variant);
     # otherwise falls back to the venue-mean target_words.
-    if condition in {"v25", "v3", "v25a", "v3a", "v4a", "v1a"} and persona:
+    if condition in {"v25", "v3", "v25a", "v3a", "v4a", "v1a"} and position_guide:
         try:
-            wc = int(persona.get("word_count") or 0)
+            wc = int(position_guide.get("word_count") or 0)
         except (TypeError, ValueError):
             wc = 0
         if wc > 0:
@@ -130,28 +130,28 @@ def length_clause(condition: str, target_words: int, persona: dict[str, Any] | N
     return f"around {target_words} words"
 
 
-def thesis_conditioned_block(persona: dict[str, Any]) -> str:
-    thesis = str(persona.get("thesis_1line", "")).strip()
+def thesis_conditioned_block(position_guide: dict[str, Any]) -> str:
+    thesis = str(position_guide.get("thesis_1line", "")).strip()
     if not thesis:
-        raise ValueError("selected persona is missing thesis_1line")
+        raise ValueError("selected position guide is missing thesis_1line")
     return (
         "Your task is THESIS-CONDITIONED RESPONSE.\n\n"
         "## Target thesis\n"
         f"- Defend and develop this thesis: {thesis}\n\n"
         "## Instructions\n"
         "- Build an original argument that clearly advances this thesis.\n"
-        "- Do not imitate the original author's voice, biography, or persona."
+        "- Do not imitate the original author's voice or biography."
     )
 
 
-def thesis_conditioned_block_ablation(persona: dict[str, Any]) -> str:
+def thesis_conditioned_block_ablation(position_guide: dict[str, Any]) -> str:
     """v25a — strips the prescriptive language: drops 'Defend and develop',
     drops 'Build an original argument that clearly advances this thesis',
     and drops the vestigial 'Do not imitate the original author' instruction
-    (v25 doesn't pass the author's name/voice/persona to the model anyway)."""
-    thesis = str(persona.get("thesis_1line", "")).strip()
+    (v25 doesn't pass the author's name/voice/profile to the model anyway)."""
+    thesis = str(position_guide.get("thesis_1line", "")).strip()
     if not thesis:
-        raise ValueError("selected persona is missing thesis_1line")
+        raise ValueError("selected position guide is missing thesis_1line")
     return (
         "Your task is THESIS-CONDITIONED RESPONSE.\n\n"
         "## Central claim\n"
@@ -159,43 +159,43 @@ def thesis_conditioned_block_ablation(persona: dict[str, Any]) -> str:
     )
 
 
-def _persona_faithful_block_body(
-    persona: dict[str, Any], *, claim_label: str, claim_text: str | None = None
+def _writer_guided_block_body(
+    position_guide: dict[str, Any], *, claim_label: str, claim_text: str | None = None
 ) -> str:
     """Shared body for v3, v3a, and v4a. v3/v3a ground the central claim on the
-    persona's `thesis_1line`; v4a passes `claim_text` = the human's toulmin
+    position guide's `thesis_1line`; v4a passes `claim_text` = the human's toulmin
     `main_argument`. The other difference (v3 vs v3a) is the claim bullet label
     (`Main argument…` vs `Central claim`)."""
     claim = (claim_text if claim_text is not None
-             else str(persona.get("thesis_1line", ""))).strip()
+             else str(position_guide.get("thesis_1line", ""))).strip()
     if not claim:
-        raise ValueError("selected persona is missing a central claim "
+        raise ValueError("selected position guide is missing a central claim "
                          "(thesis_1line for v3/v3a, main_argument for v4a)")
 
     bullets: list[str] = []
-    name = str(persona.get("name") or persona.get("slug") or "").strip()
+    name = str(position_guide.get("name") or position_guide.get("slug") or "").strip()
     if name:
         bullets.append(f"- Name: {name}")
-    role = str(persona.get("role") or "").strip()
+    role = str(position_guide.get("role") or "").strip()
     if role:
         bullets.append(f"- Bio / role: {role}")
-    stance = str(persona.get("stance") or "").strip()
+    stance = str(position_guide.get("stance") or "").strip()
     if stance:
         bullets.append(f"- Stance toward the source prompt: {stance}")
     bullets.append(f"- {claim_label}: {claim}")
-    voice = str(persona.get("voice_abstract") or "").strip()
+    voice = str(position_guide.get("voice_abstract") or "").strip()
     if voice:
         bullets.append(f"- Voice: {voice}")
-    moves = [str(m).strip() for m in (persona.get("signature_moves_abstract") or []) if str(m).strip()]
+    moves = [str(m).strip() for m in (position_guide.get("signature_moves_abstract") or []) if str(m).strip()]
     if moves:
         moves_block = "\n".join(f"  - {m}" for m in moves)
         bullets.append(f"- Signature moves:\n{moves_block}")
-    perspective = str(persona.get("perspective_abstract") or "").strip()
+    perspective = str(position_guide.get("perspective_abstract") or "").strip()
     if perspective:
         bullets.append(f"- Perspective: {perspective}")
 
     return (
-        "Your task is PERSONA-FAITHFUL SIMULATION. Write as the following "
+        "Your task is WRITER-GUIDED RESPONSE SIMULATION. Write as the following "
         "writer would write — matching their voice, evidence preferences, "
         "and rhetorical habits — not as yourself.\n\n"
         "## The writer\n"
@@ -209,52 +209,52 @@ def _persona_faithful_block_body(
     )
 
 
-def persona_faithful_block(persona: dict[str, Any], prompt_kind: str) -> str:
-    return _persona_faithful_block_body(
-        persona,
+def writer_guided_block(position_guide: dict[str, Any], prompt_kind: str) -> str:
+    return _writer_guided_block_body(
+        position_guide,
         claim_label="Main argument (write the essay that makes this claim)",
     )
 
 
-def persona_faithful_block_ablation(persona: dict[str, Any], prompt_kind: str) -> str:
+def writer_guided_block_ablation(position_guide: dict[str, Any], prompt_kind: str) -> str:
     """v3a — same as v3 except the central-claim bullet drops the
     prescriptive '(write the essay that makes this claim)' parenthetical."""
-    return _persona_faithful_block_body(persona, claim_label="Central claim")
+    return _writer_guided_block_body(position_guide, claim_label="Central claim")
 
 
-def persona_faithful_block_main_arg(persona: dict[str, Any], prompt_kind: str) -> str:
-    """v4a — anonymized, de-leaked persona block. Uses ONLY an anonymized
+def position_guided_block_main_arg(position_guide: dict[str, Any], prompt_kind: str) -> str:
+    """v4a — anonymized, de-leaked position-guide block. Uses ONLY an anonymized
     background (role), tone (pure register), and the central claim (the human's
-    toulmin `main_argument`, attached as persona['main_argument'] by the driver).
+    toulmin `main_argument`, attached as position_guide['main_argument'] by the driver).
 
     Deliberately omits: the author's NAME (to avoid the model recalling the real
     person and reproducing their actual published arguments — NYT essays are old,
     public, likely-in-training text), and the v3a block's stance / voice /
     signature_moves / perspective (which leaked the human's sub-arguments). Reads
-    the lean persona schema in personas_v2.json (role is already anonymized)."""
-    main_arg = str(persona.get("main_argument", "")).strip()
+    the lean position-guide schema in position_guides.json (role is already anonymized)."""
+    main_arg = str(position_guide.get("main_argument", "")).strip()
     if not main_arg:
         raise ValueError(
-            "v4a requires the human's toulmin main_argument on persona['main_argument']")
+            "v4a requires the human's toulmin main_argument on position_guide['main_argument']")
 
     bullets: list[str] = []
-    role = str(persona.get("role") or "").strip()
+    role = str(position_guide.get("role") or "").strip()
     if role:
         bullets.append(f"- Background: {role}")
     bullets.append(f"- Central claim: {main_arg}")
-    tone = str(persona.get("tone") or "").strip()
+    tone = str(position_guide.get("tone") or "").strip()
     if tone:
         bullets.append(f"- Tone: {tone}")
 
     return (
-        "Your task is PERSONA-FAITHFUL SIMULATION: write a response essay as the "
-        "author profiled below would write it.\n\n"
-        "## The author\n"
+        "Your task is POSITION-GUIDED RESPONSE GENERATION: write a response essay from the "
+        "position profiled below.\n\n"
+        "## The position guide\n"
         + "\n".join(bullets) + "\n\n"
         "## Instructions\n"
         "- The central claim above is the main argument you should stay faithful to when writing your response. Don't shift to a "
         "different position or thesis.\n"
-        "- Write as this author would: match the background and tone described above.\n"
+        "- Match the background and tone described above.\n"
     )
 
 
@@ -262,7 +262,7 @@ def condition_block(
     condition: str,
     *,
     prompt_kind: str,
-    persona: dict[str, Any] | None = None,
+    position_guide: dict[str, Any] | None = None,
     stance: str = "",
 ) -> str:
     if condition in {"v0", "v1", "v1a"}:
@@ -282,25 +282,25 @@ def condition_block(
             f"**{STANCES[stance]}**\n\nDefend this stance."
         )
     if condition == "v25":
-        if not persona:
-            raise ValueError("v25 requires persona data")
-        return thesis_conditioned_block(persona)
+        if not position_guide:
+            raise ValueError("v25 requires position-guide data")
+        return thesis_conditioned_block(position_guide)
     if condition == "v25a":
-        if not persona:
-            raise ValueError("v25a requires persona data")
-        return thesis_conditioned_block_ablation(persona)
+        if not position_guide:
+            raise ValueError("v25a requires position-guide data")
+        return thesis_conditioned_block_ablation(position_guide)
     if condition == "v3":
-        if not persona:
-            raise ValueError("v3 requires persona data")
-        return persona_faithful_block(persona, prompt_kind)
+        if not position_guide:
+            raise ValueError("v3 requires position-guide data")
+        return writer_guided_block(position_guide, prompt_kind)
     if condition == "v3a":
-        if not persona:
-            raise ValueError("v3a requires persona data")
-        return persona_faithful_block_ablation(persona, prompt_kind)
+        if not position_guide:
+            raise ValueError("v3a requires position-guide data")
+        return writer_guided_block_ablation(position_guide, prompt_kind)
     if condition == "v4a":
-        if not persona:
-            raise ValueError("v4a requires persona data")
-        return persona_faithful_block_main_arg(persona, prompt_kind)
+        if not position_guide:
+            raise ValueError("v4a requires position-guide data")
+        return position_guided_block_main_arg(position_guide, prompt_kind)
     raise ValueError(f"unknown condition: {condition}")
 
 
@@ -313,16 +313,16 @@ def render_generation_prompt(
     agent_source_path: Path,
     agent_output_path: Path,
     target_words: int,
-    persona: dict[str, Any] | None = None,
+    position_guide: dict[str, Any] | None = None,
     stance: str = "",
     multi_essay_count: int = 1,
     word_range: tuple[int, int, int] | None = None,
 ) -> RenderedGenerationPrompt:
     label = source_label(prompt_kind)
     title = parse_frontmatter(prompt_path).get("title", "")
-    length = length_clause(condition, target_words, persona)
+    length = length_clause(condition, target_words, position_guide)
     evidence = evidence_cutoff_clause(prompt_path, prompt_kind)
-    block = condition_block(condition, prompt_kind=prompt_kind, persona=persona, stance=stance)
+    block = condition_block(condition, prompt_kind=prompt_kind, position_guide=position_guide, stance=stance)
     system = system_prompt(condition, prompt_kind, target_words)
     # For v15a, prefer asking for essays spread across the cohort's
     # human-response length range; fall back to "around X words each"

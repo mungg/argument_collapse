@@ -487,7 +487,7 @@ def _add_common_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--data-root", default=None,
                    help="Dataset root directory; defaults to "
                         "$ARGUMENT_COLLAPSE_DATA_ROOT if set, otherwise "
-                        "./data/dataset.")
+                        "./data.")
     p.add_argument("--venue", required=True,
                    help="Venue subdirectory inside the data root.")
     p.add_argument("--cache-dir", default=None,

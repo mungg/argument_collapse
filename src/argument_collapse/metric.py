@@ -33,7 +33,14 @@ from math import comb
 from pathlib import Path
 from typing import Any
 
-from argument_collapse.data import get_data_root, set_data_root
+from argument_collapse.data import (
+    LAYOUT_AGGREGATE,
+    detect_layout,
+    get_data_root,
+    iter_cohort_jsonl,
+    normalize_venue,
+    set_data_root,
+)
 
 try:
     import numpy as np
@@ -199,11 +206,59 @@ def load_cohort(cohort_dir: Path) -> tuple[dict[str, list[str]],
     return essay_subs, pair_rel
 
 
+def release_stem(stem: str) -> str:
+    """Map legacy source-side condition names inside generated essay stems
+    to the public release names. Human stems are returned unchanged."""
+    if "__" not in stem:
+        return stem
+    parts = stem.split("__")
+    if len(parts) >= 4:
+        parts[3] = {
+            "v1a": "vanilla",
+            "v15a": "diversified",
+            "v4a": "position-guided",
+        }.get(parts[3], parts[3])
+    return "__".join(parts)
+
+
 def pool_from_stems(essay_subs: dict[str, list[str]],
                     stems: list[str]) -> dict[str, str]:
     """Flatten ``[stem, ...]`` into a ``sub_id -> stem`` map used by
-    :func:`within_unique` and friends. Missing stems contribute nothing."""
-    return {sub: stem for stem in stems for sub in essay_subs.get(stem, [])}
+    :func:`within_unique` and friends. Specs written with old working-repo
+    stems (``v1a``/``v15a``/``v4a``) also work against the public release
+    names (``vanilla``/``diversified``/``position-guided``)."""
+    out: dict[str, str] = {}
+    for stem in stems:
+        for candidate in (stem, release_stem(stem)):
+            if candidate in essay_subs:
+                for sub in essay_subs[candidate]:
+                    out[sub] = candidate
+                break
+    return out
+
+
+def load_cohort_from_rows(toulmin_rows: list[dict],
+                          pair_rows: list[dict]) -> tuple[dict[str, list[str]],
+                                                           dict[tuple[str, str], str]]:
+    """Build ``(essay_subs, pair_rel)`` from aggregate release rows."""
+    essay_subs: dict[str, list[str]] = {}
+    for r in toulmin_rows:
+        stem = r.get("essay_id") or r.get("stem")
+        if not stem:
+            continue
+        essay_subs[stem] = [
+            f"{stem}::sub{i:02d}"
+            for i in range(len(r.get("sub_arguments", []) or []))
+        ]
+
+    pair_rel: dict[tuple[str, str], str] = {}
+    for r in pair_rows:
+        a, b, rel = r.get("sub_i"), r.get("sub_j"), r.get("relation")
+        if not a or not b or not rel:
+            continue
+        pair_rel[(a, b)] = rel
+        pair_rel[(b, a)] = rel
+    return essay_subs, pair_rel
 
 
 # ---------- spec-driven U_m driver ----------
@@ -366,9 +421,9 @@ def cohort_um_row(cohort: str,
             "U_human": u_h,
             "U_default": u_v,
             "U_diversified": u_d,
-            "U_persona_s1": u_s1,
-            "U_persona_s2": u_s2,
-            "U_persona_s2_per_label": u_s2_per,
+            "U_position_guided_s1": u_s1,
+            "U_position_guided_s2": u_s2,
+            "U_position_guided_s2_per_label": u_s2_per,
         }
     return row
 
@@ -387,8 +442,8 @@ def run_um(spec: dict[str, Any],
           H:    [stem, ...]            # humans pool (one pool)
           V:    [stem, ...]            # default-LLM pool (one pool)
           D:    [stem, ...]            # diversified pool (one pool)
-          P_s1: {persona: [stem, ...]} # per-persona pools (averaged)
-          P_s2: {label:   [stem, ...]} # per-label pools (averaged)
+          P_s1: {position: [stem, ...]} # same position, different LLMs
+          P_s2: {label:    [stem, ...]} # different positions, same LLM
 
     Returns ``{"rows": [...], "macro_strict": {...}, "macro_loose": {...}}``.
     """
@@ -402,18 +457,32 @@ def run_um(spec: dict[str, Any],
     selected_thresholds = {n: THRESHOLDS[n] for n in threshold_names}
 
     root = Path(data_root) if data_root is not None else get_data_root()
-    venue_root = root / venue
 
     rows: list[dict[str, Any]] = []
-    for cohort, groups in cohorts.items():
-        cohort_dir = venue_root / cohort
-        if not cohort_dir.is_dir():
-            continue
-        essay_subs, pair_rel = load_cohort(cohort_dir)
-        row = cohort_um_row(cohort, groups, essay_subs, pair_rel,
-                            thresholds=selected_thresholds)
-        if row is not None:
-            rows.append(row)
+    if detect_layout(root) == LAYOUT_AGGREGATE:
+        venue_key = normalize_venue(venue)
+        toulmin_by_cohort = dict(iter_cohort_jsonl(venue_key, "toulmin.jsonl", root))
+        sub_pairs_by_cohort = dict(iter_cohort_jsonl(venue_key, "sub_argument_pairs.jsonl", root))
+        for cohort, groups in cohorts.items():
+            essay_subs, pair_rel = load_cohort_from_rows(
+                toulmin_by_cohort.get(cohort, []),
+                sub_pairs_by_cohort.get(cohort, []),
+            )
+            row = cohort_um_row(cohort, groups, essay_subs, pair_rel,
+                                thresholds=selected_thresholds)
+            if row is not None:
+                rows.append(row)
+    else:
+        venue_root = root / venue
+        for cohort, groups in cohorts.items():
+            cohort_dir = venue_root / cohort
+            if not cohort_dir.is_dir():
+                continue
+            essay_subs, pair_rel = load_cohort(cohort_dir)
+            row = cohort_um_row(cohort, groups, essay_subs, pair_rel,
+                                thresholds=selected_thresholds)
+            if row is not None:
+                rows.append(row)
 
     def macro_avg(field: str, tname: str) -> float:
         vals = [r[tname][field] for r in rows
@@ -426,7 +495,7 @@ def run_um(spec: dict[str, Any],
         f"macro_{tname}": {
             field: macro_avg(field, tname)
             for field in ("U_human", "U_default", "U_diversified",
-                          "U_persona_s1", "U_persona_s2")
+                          "U_position_guided_s1", "U_position_guided_s2")
         }
         for tname in selected_thresholds
     }
@@ -453,8 +522,8 @@ def _print_table(result: dict[str, Any]) -> None:
         ("Humans (cluster)",                "U_human"),
         ("Default LLMs (vanilla medoid)",   "U_default"),
         ("Diversified (1-per-family)",      "U_diversified"),
-        ("Same persona, diff LLMs (S1)",    "U_persona_s1"),
-        ("Diff personas, same LLM (S2)",    "U_persona_s2"),
+        ("Same position, diff LLMs (S1)",   "U_position_guided_s1"),
+        ("Diff positions, same LLM (S2)",   "U_position_guided_s2"),
     ]:
         s = result.get("macro_strict", {}).get(key, float("nan"))
         l = result.get("macro_loose", {}).get(key, float("nan"))
@@ -474,7 +543,7 @@ def main(argv: list[str] | None = None) -> int:
     um.add_argument("--data-root", default=None,
                     help="Dataset root directory; defaults to "
                          "$ARGUMENT_COLLAPSE_DATA_ROOT if set, otherwise "
-                         "./data/dataset.")
+                         "./data.")
     um.add_argument("--output", default=None,
                     help="Write the JSON result to this path "
                          "(default: stdout only).")

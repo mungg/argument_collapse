@@ -62,26 +62,27 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
   "provider_api": "openai-api",
   "model_family": "gpt-5.5",
   "effort": "medium",
-  "persona_id": "essay-01",
+  "position_source_id": "essay-01",
+  "is_representative": null,
   "generated_at_utc": "20260517T030137063642Z",
   "word_count": 380,
   "body_text": "Commercial genetic companies should be allowed—even encouraged—to share genetic information for research, provided that customers give informed consent and that the data are stripped of direct identifiers. The potential public benefit is too large to dismiss because of hypothetical fears.\n\nGenetics research has long suffered from scale. A university lab might spend years assembling a cohort of a f …"
 }
 ```
 
-### `personas.jsonl.gz`: Persona descriptor (for `position-guided` grounding)
+### `position_guides.jsonl.gz`: Position-guidance descriptor
 
 ```json
 {
   "venue": "nyt",
   "debate_id": "23andme-and-the-promise-of-anonymous-genetic-testing-10",
-  "persona_id": "frank-pasquale",
+  "position_source_id": "frank-pasquale",
   "name": "Frank Pasquale",
   "role": "Legal scholar and professor specializing in the intersection of law, information technology, and algorithmic systems.",
   "tone": "Formal, cautionary, and authoritative. The register is third-person and analytical, maintaining a serious and ethically concerned emotional quality.",
   "word_count": 276,
   "schema_version": 2,
-  "persona_prompt_version": "cross_venue_persona_v2_lean"
+  "position_prompt_version": "cross_venue_position_guide_v2_lean"
 }
 ```
 
@@ -308,26 +309,27 @@ One sample row from every JSONL table per venue, pretty-printed. Long text field
   "provider_api": "openai-api",
   "model_family": "gpt-5.5",
   "effort": "medium",
-  "persona_id": "essay-01",
+  "position_source_id": "essay-01",
+  "is_representative": null,
   "generated_at_utc": "20260519T190312470947Z",
   "word_count": 1045,
   "body_text": "Edward Miguel is right to resist both Afro-pessimism and development triumphalism. The most compelling feature of his essay is not the claim that Africa is “turning,” but the insistence that the turn, if real, remains politically fragile. The image of Busia’s paved road is therefore apt: a road is a development achievement, but also a reminder that prosperity depends on public order, state capacit …"
 }
 ```
 
-### `personas.jsonl.gz`: Persona descriptor (for `position-guided` grounding)
+### `position_guides.jsonl.gz`: Position-guidance descriptor
 
 ```json
 {
   "venue": "br",
   "debate_id": "forum_africas_turn",
-  "persona_id": "elections-themselves-need-not-force-leaders-serve-public-good",
+  "position_source_id": "elections-themselves-need-not-force-leaders-serve-public-good",
   "name": "Smita Singh",
   "role": "Policy researcher and development specialist focused on governance and public accountability.",
   "tone": "Formal, analytical, and earnest. The writing utilizes a third-person perspective with occasional first-person plural to address a professional or academic community. The register is sober and measured …",
   "word_count": 908,
   "schema_version": 2,
-  "persona_prompt_version": "cross_venue_persona_v2_lean"
+  "position_prompt_version": "cross_venue_position_guide_v2_lean"
 }
 ```
 

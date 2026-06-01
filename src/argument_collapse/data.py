@@ -2,7 +2,24 @@
 
 Two on-disk layouts are supported and auto-detected.
 
-**Public-release layout (split)**::
+**Public-release layout (aggregate)**::
+
+    {DATA_ROOT}/
+        nyt/
+            debates.jsonl.gz
+            human_essays.jsonl.gz
+            llm_essays.jsonl.gz
+            toulmin.jsonl.gz
+            main_argument_pairs.jsonl.gz
+            sub_argument_pairs.jsonl.gz
+            ...
+        br/
+            debates.jsonl.gz
+            human_essays.jsonl.gz
+            llm_essays.jsonl.gz
+            ...
+
+**Legacy split layout**::
 
     {DATA_ROOT}/
         cohorts.jsonl                              # cohort index (one row each)
@@ -25,19 +42,18 @@ Two on-disk layouts are supported and auto-detected.
         analysis/toulmin.jsonl
         analysis/main_argument_pairs.jsonl
         analysis/sub_argument_pairs.jsonl
-        personas.json                              # persona definitions, optional
+        position_guides.json                       # position guides, optional
         question_type.json                         # binary/open, optional
 
-The two layouts carry the same content; the split layout is the form
-shipped in the public dataset release (Hugging-Face-friendly flat
-annotations, browsable per-cohort essays, dedicated cohort index), and
-the cohort_grouped layout is the working state produced by the
-annotation pipeline. Existing tooling that wrote per-cohort
-``analysis/<file>.jsonl`` continues to work; new tooling pointed at the
-split release reads through the same public API and sees identical rows.
+The aggregate layout is the public release format. The split and
+cohort_grouped layouts are retained for older local analysis and
+annotation workflows. Existing tooling that wrote per-cohort
+``analysis/<file>.jsonl`` continues to work; tooling pointed at the
+aggregate release reads through the same public API and groups rows by
+``debate_id``.
 
 ``DATA_ROOT`` defaults to ``$ARGUMENT_COLLAPSE_DATA_ROOT`` if that
-environment variable is set, otherwise ``./data/dataset``. Override
+environment variable is set, otherwise ``./data``. Override
 programmatically with :func:`set_data_root` or per call by passing
 ``data_root`` to the loader.
 
@@ -48,6 +64,7 @@ human response essays from prompts and meta files.
 """
 from __future__ import annotations
 
+import gzip
 import json
 import os
 import threading
@@ -65,7 +82,7 @@ from typing import Any, Iterable, Iterator
 DEFAULT_DATA_ROOT = Path(
     os.environ.get(
         "ARGUMENT_COLLAPSE_DATA_ROOT",
-        str(Path.cwd() / "data" / "dataset"),
+        str(Path.cwd() / "data"),
     )
 )
 
@@ -86,7 +103,7 @@ LEAD_FILENAME = "00_lead.md"
 
 # Per-cohort metadata files (cohort_grouped layout) and dataset-level index
 # (split layout).
-PERSONAS_FILENAME = "personas.json"
+POSITION_GUIDES_FILENAME = "position_guides.json"
 QUESTION_TYPE_FILENAME = "question_type.json"
 GENERATION_LOG_FILENAME = "generation_log.jsonl"
 COHORTS_INDEX_FILENAME = "cohorts.jsonl"
@@ -125,24 +142,37 @@ def _resolve_root(data_root: Path | str | None) -> Path:
 # Layout detection
 # ---------------------------------------------------------------------------
 
+LAYOUT_AGGREGATE = "aggregate"
 LAYOUT_SPLIT = "split"
 LAYOUT_COHORT_GROUPED = "cohort_grouped"
 
+VENUE_ALIASES = {
+    "nyt": "nyt",
+    "NYT-Room-for-Debate-filtered": "nyt",
+    "br": "br",
+    "Boston-Forum-filtered": "br",
+}
+
 
 def detect_layout(data_root: Path | str | None = None) -> str:
-    """Return ``"split"`` if the data root looks like the public release
-    layout (``essays/`` + ``annotations/`` subdirs), otherwise
-    ``"cohort_grouped"``.
+    """Detect the on-disk data layout.
 
-    The split layout is preferred when both ``essays/`` and ``annotations/``
-    exist; partial layouts (only one of the two) fall through to
-    ``cohort_grouped`` so that an in-progress migration does not silently
-    point the reader at empty inputs.
+    The public release uses aggregate gzipped JSONL tables under
+    ``data/nyt`` and ``data/br``. Older local workflows may use either the
+    split ``essays/`` + ``annotations/`` layout or the original per-cohort
+    working layout.
     """
     root = _resolve_root(data_root)
+    if (root / "nyt").is_dir() or (root / "br").is_dir():
+        return LAYOUT_AGGREGATE
     if (root / ESSAYS_DIRNAME).is_dir() and (root / ANNOTATIONS_DIRNAME).is_dir():
         return LAYOUT_SPLIT
     return LAYOUT_COHORT_GROUPED
+
+
+def normalize_venue(venue: str) -> str:
+    """Map working-repo venue names to public release venue keys."""
+    return VENUE_ALIASES.get(venue, venue)
 
 
 # ---------------------------------------------------------------------------
@@ -268,7 +298,8 @@ class Cohort:
 def essays_root(data_root: Path | str | None = None) -> Path:
     """Resolve the directory under which per-venue essay trees live.
 
-    Split layout: ``<data_root>/essays/``.
+    Aggregate layout has no per-cohort essay tree and returns
+    ``<data_root>`` for compatibility. Split layout: ``<data_root>/essays/``.
     Cohort_grouped layout: ``<data_root>/`` itself.
     """
     root = _resolve_root(data_root)
@@ -291,10 +322,11 @@ def annotations_root(data_root: Path | str | None = None) -> Path:
 def venue_dir(venue: str, data_root: Path | str | None = None) -> Path:
     """Path of a single venue's essay tree.
 
-    Split layout: ``<data_root>/essays/<venue>``.
+    Aggregate layout: ``<data_root>/<venue>`` where venue is ``nyt`` or
+    ``br``. Split layout: ``<data_root>/essays/<venue>``.
     Cohort_grouped layout: ``<data_root>/<venue>``.
     """
-    return essays_root(data_root) / venue
+    return essays_root(data_root) / normalize_venue(venue)
 
 
 # ---------------------------------------------------------------------------
@@ -315,12 +347,12 @@ def load_cohorts_index(
 
         {"cohort": str, "venue": str, "context_kind": "question" | "lead",
          "title": str, "question_type": str | null,
-         "n_humans": int, "n_personas": int,
+         "n_humans": int, "n_position_guides": int,
          "in_paper_subset": bool}
 
     Returns ``{}`` when the index file is absent (cohort_grouped layouts
     derive the same information from per-cohort ``question_type.json`` and
-    ``personas.json`` instead).
+    ``position_guides.json`` instead).
     """
     path = cohorts_index_path(data_root)
     if not path.exists():
@@ -396,7 +428,8 @@ def flat_append_lock() -> threading.Lock:
 
 def _read_jsonl(path: Path) -> list[dict]:
     rows: list[dict] = []
-    with path.open() as fh:
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rt", encoding="utf-8") as fh:
         for line in fh:
             line = line.strip()
             if not line:
@@ -425,16 +458,38 @@ def iter_cohort_jsonl(
     Cohort_grouped layout: walk ``<data_root>/<venue>/*/analysis/<filename>``
     in lexicographic order and yield one ``(cohort, rows)`` per file.
     """
-    if detect_layout(data_root) == LAYOUT_SPLIT:
+    layout = detect_layout(data_root)
+    venue_key = normalize_venue(venue)
+    if layout == LAYOUT_AGGREGATE:
+        root = _resolve_root(data_root)
+        path = root / venue_key / filename
+        if not path.exists() and not str(path).endswith(".gz"):
+            path = root / venue_key / f"{filename}.gz"
+        if not path.exists():
+            return
+        grouped: dict[str, list[dict]] = {}
+        for row in _read_jsonl(path):
+            row_venue = row.get("venue")
+            if row_venue is not None and normalize_venue(str(row_venue)) != venue_key:
+                continue
+            cohort = row.get("debate_id") or row.get("cohort")
+            if not cohort:
+                continue
+            grouped.setdefault(cohort, []).append(row)
+        for cohort in sorted(grouped):
+            yield cohort, grouped[cohort]
+        return
+
+    if layout == LAYOUT_SPLIT:
         path = annotations_path(filename, data_root)
         if not path.exists():
             return
         grouped: dict[str, list[dict]] = {}
         for row in _read_jsonl(path):
             row_venue = row.get("venue")
-            if row_venue is not None and row_venue != venue:
+            if row_venue is not None and normalize_venue(str(row_venue)) != venue_key:
                 continue
-            cohort = row.get("cohort")
+            cohort = row.get("cohort") or row.get("debate_id")
             if not cohort:
                 continue
             grouped.setdefault(cohort, []).append(row)
@@ -643,12 +698,12 @@ def find_human_responses(cohort: Cohort | Path) -> list[Path]:
     return responses
 
 
-def find_personas(cohort: Cohort | Path) -> dict[str, Any]:
-    """Load the ``personas.json`` for a cohort. Returns ``{}`` if the file
-    does not exist. Looks for it next to the humans directory and inside
-    it (cohort_grouped versus split conventions). The expected shape is
-    ``{"personas": {<name>: <spec>}}``; only the ``personas`` mapping is
-    returned."""
+def find_position_guides(cohort: Cohort | Path) -> dict[str, Any]:
+    """Load the optional ``position_guides.json`` for a cohort. Returns
+    ``{}`` if the file does not exist. Looks next to the humans directory
+    and inside it (cohort_grouped versus split conventions). The expected
+    shape is ``{"position_guides": {<source_id>: <spec>}}``; only that
+    mapping is returned."""
     if isinstance(cohort, Cohort):
         cohort_dir = cohort.cohort_dir
         humans_dir = cohort.humans_dir
@@ -656,11 +711,11 @@ def find_personas(cohort: Cohort | Path) -> dict[str, Any]:
         cohort_dir = cohort
         humans_dir = (cohort_dir / HUMANS_DIRNAME if (cohort_dir / HUMANS_DIRNAME).is_dir()
                       else cohort_dir / HUMAN_DIRNAME)
-    for candidate in (cohort_dir / PERSONAS_FILENAME,
-                      humans_dir / PERSONAS_FILENAME):
+    for candidate in (cohort_dir / POSITION_GUIDES_FILENAME,
+                      humans_dir / POSITION_GUIDES_FILENAME):
         if candidate.exists():
             blob = json.loads(candidate.read_text())
-            return blob.get("personas", blob)
+            return blob.get("position_guides", blob)
     return {}
 
 

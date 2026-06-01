@@ -9,8 +9,8 @@ This file shows the **exact rendered prompt** sent to the LLM for one essay in t
 - `debate_id`: `forum_after_911`
 - `prompt_kind`: `lead`
 - `target_words`: `957`
-- `persona_id`: `alan-dershowitz-small-compromises` (the human responder whose main argument the LLM was grounded on)
-- persona's `main_argument`: *When balancing security and liberty, democratic societies should favor universal, minor compromises that affect all citizens equally over significant deprivations of liberty targeted at specific minority groups or noncitizens.*
+- `position_source_id`: `alan-dershowitz-small-compromises` (the human responder whose main argument the LLM was grounded on)
+- source human `main_argument`: *When balancing security and liberty, democratic societies should favor universal, minor compromises that affect all citizens equally over significant deprivations of liberty targeted at specific minority groups or noncitizens.*
 
 ## System prompt
 
@@ -32,16 +32,16 @@ Return only the essay body — no YAML frontmatter, no meta commentary, no title
 
 Imagine you're writing on December 1, 2002. You know everything a thoughtful, well-informed person would have known by that date — events, debates, data, scholarship up to that moment. What you don't have is the benefit of hindsight: don't argue from how things turned out later or cite sources that hadn't been published yet.
 
-Your task is PERSONA-FAITHFUL SIMULATION: write a response essay as the author profiled below would write it.
+Your task is POSITION-GUIDED RESPONSE GENERATION: write a response essay from the position profiled below.
 
-## The author
+## The position guide
 - Background: legal scholar and civil liberties advocate
 - Central claim: When balancing security and liberty, democratic societies should favor universal, minor compromises that affect all citizens equally over significant deprivations of liberty targeted at specific minority groups or noncitizens.
 - Tone: Analytical and pragmatic. The writing is first-person, measured, and intellectually assertive, maintaining a formal yet accessible register that balances legal reasoning with practical policy considerations.
 
 ## Instructions
 - The central claim above is the main argument you should stay faithful to when writing your response. Don't shift to a different position or thesis.
-- Write as this author would: match the background and tone described above.
+- Match the background and tone described above.
 
 
 ## Lead Essay

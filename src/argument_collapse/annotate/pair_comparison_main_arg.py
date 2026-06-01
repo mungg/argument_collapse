@@ -665,14 +665,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--data-root", default=None,
                    help="Dataset root directory; defaults to "
                         "$ARGUMENT_COLLAPSE_DATA_ROOT if set, otherwise "
-                        "./data/dataset.")
+                        "./data.")
     p.add_argument("--venue", required=True,
                    help="Venue subdirectory inside the data root.")
     p.add_argument("--cohort", action="append",
                    help="Restrict to this cohort; pass repeatedly to add more.")
     p.add_argument("--kinds", default="human,vanilla",
                    help="Comma-separated essay kinds (default: human,vanilla). "
-                        "'vanilla' is the default LLM condition (no persona).")
+                        "'vanilla' is the default LLM condition.")
     p.add_argument("--question-type", default="all",
                    choices=["stance", "open_ended", "all"])
     p.add_argument("--context-kind", default="question",

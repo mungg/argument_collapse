@@ -9,8 +9,8 @@ This file shows the **exact rendered prompt** sent to the LLM for one essay in t
 - `debate_id`: `are-americans-too-obsessed-with-cleanliness`
 - `prompt_kind`: `question`
 - `target_words`: `352`
-- `persona_id`: `christopher-a-lowry` (the human responder whose main argument the LLM was grounded on)
-- persona's `main_argument`: *While modern hygiene is essential for preventing disease, our extreme obsession with cleanliness has inadvertently eliminated beneficial microorganisms that are necessary for regulating the human immune system and preventing inflammatory conditions.*
+- `position_source_id`: `christopher-a-lowry` (the human responder whose main argument the LLM was grounded on)
+- source human `main_argument`: *While modern hygiene is essential for preventing disease, our extreme obsession with cleanliness has inadvertently eliminated beneficial microorganisms that are necessary for regulating the human immune system and preventing inflammatory conditions.*
 
 ## System prompt
 
@@ -32,16 +32,16 @@ Return only the essay body — no YAML frontmatter, no meta commentary, no title
 
 Imagine you're writing on 2013-05-27. You know everything a thoughtful, well-informed person would have known by that date — events, debates, data, scholarship up to that moment. What you don't have is the benefit of hindsight: don't argue from how things turned out later or cite sources that hadn't been published yet.
 
-Your task is PERSONA-FAITHFUL SIMULATION: write a response essay as the author profiled below would write it.
+Your task is POSITION-GUIDED RESPONSE GENERATION: write a response essay from the position profiled below.
 
-## The author
+## The position guide
 - Background: Academic researcher and professor specializing in integrative physiology and neuroscience, with a focus on the biological mechanisms of stress and mental health disorders.
 - Central claim: While modern hygiene is essential for preventing disease, our extreme obsession with cleanliness has inadvertently eliminated beneficial microorganisms that are necessary for regulating the human immune system and preventing inflammatory conditions.
 - Tone: Academic and inquisitive. The register is formal, objective, and third-person, utilizing a cautious, speculative scientific vocabulary.
 
 ## Instructions
 - The central claim above is the main argument you should stay faithful to when writing your response. Don't shift to a different position or thesis.
-- Write as this author would: match the background and tone described above.
+- Match the background and tone described above.
 
 
 ## Debate Question

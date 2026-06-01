@@ -731,7 +731,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--data-root", default=None,
                    help="Dataset root directory; defaults to "
                         "$ARGUMENT_COLLAPSE_DATA_ROOT if set, otherwise "
-                        "./data/dataset.")
+                        "./data.")
     p.add_argument("--venue", required=True,
                    help="Venue subdirectory inside the data root.")
     p.add_argument("--cohort", action="append",
@@ -741,9 +741,9 @@ def main(argv: list[str] | None = None) -> int:
                    help="Shared cohort context fed to the judge: 'question' "
                         "loads 00_question.md (default), 'lead' loads "
                         "00_lead.md, 'none' skips context loading.")
-    p.add_argument("--kinds", default="human,vanilla,diversified,position",
+    p.add_argument("--kinds", default="human,vanilla,diversified,position-guided",
                    help="Comma-separated essay kinds to include "
-                        "(default: human,vanilla,diversified,position).")
+                        "(default: human,vanilla,diversified,position-guided).")
     p.add_argument("--question-type", default="all",
                    choices=["stance", "open_ended", "all"])
     p.add_argument("--include-same-essay-pairs", action="store_true",
@@ -764,9 +764,9 @@ def main(argv: list[str] | None = None) -> int:
                         "pairs per cohort.")
     p.add_argument("--shuffle-seed", type=int, default=17,
                    help="Seed used with --max-pairs-per-cohort.")
-    p.add_argument("--include-personas-file",
-                   help="JSON file mapping cohort -> list of persona slugs "
-                        "to keep; only LLM essays whose persona (stem field "
+    p.add_argument("--include-position-guides-file",
+                   help="JSON file mapping cohort -> list of position-source slugs "
+                        "to keep; only LLM essays whose position source (stem field "
                         "[4]) is in this list are included.")
     p.add_argument("--include-essays-file",
                    help="JSON file mapping cohort -> list of essay stems to "
@@ -804,24 +804,24 @@ def main(argv: list[str] | None = None) -> int:
     progress(f"loading sub-arguments from per-cohort {TOULMIN_FILENAME} ...")
     sub_idx = load_sub_arguments(args.venue, data_root=args.data_root)
     subs_by_cohort = group_by_cohort(sub_idx.values(), kinds)
-    if args.include_personas_file:
-        with open(args.include_personas_file) as f:
-            include_personas = {c: set(ps) for c, ps in json.load(f).items()}
+    if args.include_position_guides_file:
+        with open(args.include_position_guides_file) as f:
+            include_position_guides = {c: set(ps) for c, ps in json.load(f).items()}
 
-        def _persona_of(stem: str) -> str | None:
+        def _position_source_of(stem: str) -> str | None:
             parts = stem.split("__")
             return parts[4] if len(parts) > 4 else None
 
         before = sum(len(v) for v in subs_by_cohort.values())
         for cohort, items in list(subs_by_cohort.items()):
-            allowed = include_personas.get(cohort, set())
+            allowed = include_position_guides.get(cohort, set())
             subs_by_cohort[cohort] = [
                 it for it in items
                 if it["kind"] == "human"  # humans always kept
-                or _persona_of(it["essay_stem"]) in allowed
+                or _position_source_of(it["essay_stem"]) in allowed
             ]
         after = sum(len(v) for v in subs_by_cohort.values())
-        progress(f"  persona filter: {before} -> {after} sub-args kept (cluster personas only)")
+        progress(f"  position-source filter: {before} -> {after} sub-args kept (selected position sources only)")
 
     if args.include_essays_file:
         with open(args.include_essays_file) as f:
