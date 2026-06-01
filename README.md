@@ -111,7 +111,15 @@ The loader detects whether you are using the public tables or the older per-deba
 
 Main-argument and structure analyses use the broad NYT and BR tables. Sub-argument analysis is narrower by design, because it requires many pairwise judgments between supporting claims. The release therefore includes sub-argument pair annotations for selected analysis subsets, not for every possible essay pair in the full corpus.
 
-The current public-condition export contains `374,414` NYT sub-argument pair rows across `83` debates and `46,638` BR rows across `21` forums. It includes only the public conditions used in the paper: `human`, `vanilla`, `diversified`, and `position-guided`. Older internal conditions are not exported. The NYT rows cover the shared-main vanilla comparison; diversified, position-guided, and BR sub-argument rows are included for 21 selected forums, including all 16 BR forums used in the paper's sub-argument analysis, and should be used with the coverage checks below.
+The current public-condition export contains `374,414` NYT sub-argument pair rows across `83` debates and `43,065` BR rows across `16` forums. It includes only the public conditions used in the paper: `human`, `vanilla`, `diversified`, and `position-guided`. Older internal conditions are not exported. The NYT rows cover the shared-main vanilla comparison; diversified, position-guided, and BR sub-argument rows are included for the 16 BR forums used in the paper's sub-argument analysis and should be used with the coverage checks below.
+
+To compute the main-argument headline numbers, run:
+
+```bash
+./scripts/reproduce_main_arg_results.sh
+```
+
+This reads the released `main_argument_pairs`, `toulmin`, and `llm_essays` tables for NYT and BR, prints the vanilla uniqueness, vanilla-human overlap, diversified uniqueness, and diversified recovery summaries, and writes details to `results/main_arg_results.json`.
 
 To compute the NYT sub-argument uniqueness table for a configured subset, run:
 
@@ -189,7 +197,7 @@ data/
     ├── position_guides.jsonl.gz            448
     ├── toulmin.jsonl.gz                  7,168
     ├── main_argument_pairs.jsonl.gz     58,755
-    ├── sub_argument_pairs.jsonl.gz      46,638
+    ├── sub_argument_pairs.jsonl.gz      43,065
     ├── grounding_pairs.jsonl.gz          2,240
     ├── structure_argument.jsonl.gz       7,168
     └── structure_discourse_mode.jsonl.gz 7,168
