@@ -601,7 +601,7 @@ function openCardHtml(c) {
     <h3>${c.title}</h3>
     ${byline}
     <div class="clusters">
-      <div class="cl-header"><span class="ratio-label">% Unique main args<br>within source (paper, loose)</span></div>
+      <div class="cl-header"><span class="ratio-label">Share unique main args<br>within debate</span></div>
       ${ratioBar('h', cd.ratios.humans)}
       ${ratioBar('v', cd.ratios.vanilla)}
       ${ratioBar('d', cd.ratios.diversified)}
