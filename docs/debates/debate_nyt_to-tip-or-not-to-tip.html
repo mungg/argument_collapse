@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To Tip or Not to Tip · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Economy · Binary</div>
+  <h1 class="debate-title">To Tip or Not to Tip</h1>
+  <div class="question-body"><p>“Following the custom in Japan, Sushi Yasuda’s service staff are fully compensated by their salary. Therefore gratuities are not accepted. Thank you,” says a bill at the Midtown Manhattan Japanese restaurant, which decided to do away with tipping this month.</p><p>Instead of leaving a gratuity at the end of the meal, Sushi Yasuda customers are now expected to pay a higher all-around bill, which includes a service fee.</p><p>Should other restaurants and bars follow suit?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>restaurants and bars should not eliminate tipping</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>restaurants and bars should eliminate tipping</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 50%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 17%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 33%;"></div>
+      </div>
+      <span class="bar-num">n=6</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 80%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 31%;"></div>
+        <div class="seg wo" style="width: 11%;"></div>
+        <div class="seg n"  style="width: 14%;"></div>
+        <div class="seg ws" style="width: 11%;"></div>
+        <div class="seg ss" style="width: 33%;"></div>
+      </div>
+      <span class="bar-num">n=36</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_1.html">
+      <td class="arg-text">Restaurants and bars should move away from the tipping model in favor of paying employees a living wage to ensure fair remuneration and improve worker dignity.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_2.html">
+      <td class="arg-text">The practice of tipping should be maintained because it incentivizes high-quality service and provides essential financial flexibility for restaurant workers.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_3.html">
+      <td class="arg-text">The tipping system should be maintained until restaurants provide generous salaries, living wages, and comprehensive benefits to their staff.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_4.html">
+      <td class="arg-text">While a universal ban on tipping may be impractical, restaurants should transition toward a &#x27;service included&#x27; model where staff are paid stable salaries and gratuities are treated as optional bonuses rather than essential compensation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_5.html">
+      <td class="arg-text">Instead of mandating a universal shift away from tipping, the industry should prioritize fair worker compensation through diverse, market-specific models and experimentation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_6.html">
+      <td class="arg-text">All restaurants should be required to provide workers with a stable, livable base wage regardless of whether they allow tipping or include service fees.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_7.html">
+      <td class="arg-text">The United States should reform the tipping system to protect workers rather than abolishing the practice entirely, as tipping facilitates a personal social relationship between guests and servers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_8.html">
+      <td class="arg-text">Restaurants that prioritize culinary quality should adopt a no-tipping model to ensure fair compensation for both front-of-house and back-of-house staff.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_9.html">
+      <td class="arg-text">While abolishing tipping addresses some systemic flaws, a truly just restaurant industry requires comprehensive legislative reform and a living wage rather than simply replacing tips with mandatory service charges.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_10.html">
+      <td class="arg-text">Restaurants and bars should not abolish tipping because doing so would significantly reduce server income and diminish the professional autonomy of the service staff.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_11.html">
+      <td class="arg-text">While the move to a tip-free model is noble in theory, it is economically unsustainable for most mid-sized restaurants without industry-wide coordination or legislative mandates.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_12.html">
+      <td class="arg-text">The only effective way to move past the exploitative tipping model is through legislative action to abolish the subminimum wage for tipped workers rather than relying on voluntary changes by individual restaurants.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_13.html">
+      <td class="arg-text">Most American restaurants should not follow Sushi Yasuda’s lead in abolishing tipping because the necessary price increases would be commercially unsustainable due to consumer psychology.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_14.html">
+      <td class="arg-text">The no-tip model adopted by luxury restaurants is an impractical blueprint for the broader restaurant industry and distracts from more effective, granular policy reforms.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_15.html">
+      <td class="arg-text">Most American restaurants and bars should not abolish tipping because it remains a vital economic mechanism for attracting skilled labor and ensuring competitive wages in a high-cost industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_16.html">
+      <td class="arg-text">The legal subminimum wage for tipped workers should be abolished so that tips serve as a bonus for good service rather than a substitute for a guaranteed base salary.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_to-tip-or-not-to-tip_arg_17.html">
+      <td class="arg-text">While more restaurants should experiment with service-included dining to challenge tipping culture, it is not a universally applicable business strategy and requires broader policy reform to be sustainable.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">[&#x27;Erin O&#x27;Bryant&#x27;]</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/erin-obryant" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Kelly Fitzpatrick</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/kelly-fitzpatrick" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Len Penzo</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/len-penzo" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Saru Jayaraman</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/saru-jayaraman" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Steven A. Shaw</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/steven-a-shaw" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ty Batirbek-Wenzel</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/06/23/to-tip-or-not-to-tip/ty-batirbek-wenzel" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Yes, and the case for abolishing tipping in American restaurants is stronger than nostalgia for the ritual suggests.</p>
+      <p>Start with what tipping actually does. Research by Michael Lynn at Cornell has shown, repeatedly, that tip size correlates only weakly with service quality. It correlates much more robustly with the server&#x27;s attractiveness, the customer&#x27;s mood, whether the server touched the diner or drew a smiley face on the check, and—troublingly—with race: black servers earn smaller tips than white servers for equivalent service. A compensation system that rewards demographic luck more than competence is not a meritocratic marvel; it is a custom we&#x27;ve rationalized after the fact.</p>
+      <p>Tipping also offloads the employer&#x27;s payroll obligations onto customers, obscures the true price of a meal, and produces wildly volatile income for workers, especially those in the back of the house, who are legally barred from most tip pools. Including service in menu prices, as Sushi Yasuda and most of Europe and Japan do, lets restaurants pay cooks and dishwashers more equitably and lets diners compare prices honestly.</p>
+      <p>The usual objection—that service will collapse without the tip&#x27;s whip—is hard to credit when one considers that service in Tokyo, Paris, and Sydney is generally excellent. Restaurants compete for customers; managers can still discipline and reward staff. Sushi Yasuda is not making a quirky gesture; it is pointing at a better default.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The decision by Sushi Yasuda to eliminate tipping and build service costs into menu prices is a needed corrective that other restaurants and bars should seriously consider adopting. Tipping is not a benign tradition; it is an arbitrary, discriminatory, and economically unstable system that fails both workers and diners.</p>
+      <p>First, gratuities rest on the flawed assumption that customers will reliably reward quality. In practice, studies show tipping correlates more with a server’s race, gender, and appearance than with the actual service. Black servers, for example, earn smaller tips than white counterparts for the same performance. Moving to a service-inclusive price removes this hidden bias from the transaction.</p>
+      <p>Second, the tipped minimum wage remains a disgraceful $2.13 per hour federally, forcing millions of workers to live at the mercy of customers’ whims. Income fluctuates wildly on slow shifts, bad weather, or holiday weeks, making financial planning impossible. A salary model, as Sushi Yasuda now uses, gives staff predictable, dignified compensation, akin to professionals in other industries.</p>
+      <p>Critics claim tipping lets diners reward good service. But the social pressure to tip 15-20% is arbitrary and rarely reflects satisfaction. A service charge doesn&#x27;t erase accountability: managers still oversee quality and can dismiss poor performers. And as Europe and Asia show, restaurants thrive without gratuity when fair wages are paid. The shift also simplifies the experience for international visitors baffled by American tipping customs.</p>
+      <p>The Sushi Yasuda model is not anti-worker; it is pro-fairness. It deserves to spread beyond a single Manhattan sushi bar. By ending the guessing game of gratuity, restaurants can foster a more equitable workplace and a more transparent dining experience.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Sushi Yasuda’s decision to eliminate gratuities in favor of paying servers a living wage is a bold and necessary step that the rest of the American hospitality industry should follow. For too long, the United States has relied on an archaic compensation model that hurts workers and deceives consumers.</p>
+      <p>Americans cling to the tipping system because it provides an illusion of control. We like to believe that our gratuities directly reflect the quality of service we receive. However, extensive research, notably from Cornell University, demonstrates that tip amounts are overwhelmingly influenced by factors entirely outside a server&#x27;s control. Race, gender, physical attractiveness, and even the weather play a more significant role in determining a tip than the promptness of a refill. By maintaining this system, restaurants inadvertently perpetuate wage discrimination.</p>
+      <p>Furthermore, the federal minimum wage for tipped workers remains a dismal $2.13 an hour. This structure shifts the employer’s fundamental responsibility—paying their staff—directly onto the customer. It forces servers to endure volatile, unpredictable incomes. Transitioning to a European or Japanese model, where service is baked into the price of the meal, provides workers with financial stability and elevates waiting tables to a respected, predictable profession.</p>
+      <p>While consumers may initially experience sticker shock at higher menu prices, these numbers simply reflect the true cost of a meal. Abolishing the tip is the only way to ensure a fair, transparent, and equitable dining experience.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>More restaurants should try Sushi Yasuda’s approach, though not all need adopt the same mechanics at once. The American tipping system is defended as a reward for good service, but in practice it is a poor way to pay workers. Tips fluctuate with weather, table assignment, customer mood and prejudice as much as with skill. They also leave servers dependent on a federal tipped minimum wage of $2.13 an hour, with employers supposed to make up the difference if tips fall short—a rule that is difficult to monitor and easy to evade.</p>
+      <p>A service-included price is more honest. Diners already pay for labor; tipping merely hides that cost until the end of the meal. If a restaurant raises menu prices or adds a clearly disclosed service charge, it can budget wages, reduce income volatility and distribute compensation more fairly among servers, bussers, runners and kitchen staff. It can also make hospitality feel less like a performance for a score.</p>
+      <p>The strongest objection is practical: Americans are used to comparing menu prices before the tip, so an early adopter may look expensive. That is why restaurants must be explicit, as Sushi Yasuda is, that gratuity is included and staff are fully paid. Owners also must not use “no tipping” as cover for pocketing the service charge while holding wages down.</p>
+      <p>Good service can still be managed through training, promotion and dismissal, as in most industries. Tipping is custom, not necessity. A transparent wage model would be fairer to workers and clearer for customers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The no-tipping model gaining traction at establishments like Sushi Yasuda deserves serious consideration, though widespread adoption faces real obstacles. Tipping culture in America is less about rewarding excellence than perpetuating a system riddled with inconsistency and bias. Studies repeatedly demonstrate that tips correlate more strongly with a server&#x27;s appearance, race, and gender than with the quality of service rendered. Customers should not be put in the uncomfortable position of determining fair compensation for labor they cannot properly evaluate.</p>
+      <p>That said, the transition requires honest accounting of what workers actually earn. Many servers, particularly in high-end establishments, make substantially more through tips than they would through fixed salaries. A restaurant eliminating tips must raise prices significantly to recruit and retain capable staff—otherwise the change merely redistributes income from workers to owners. The most successful experiments, like those announced around this time by Union Square Hospitality Group, pair no-tipping policies with increased wages and show that diners will accept higher menu prices when the model is clearly explained.</p>
+      <p>The deeper issue is dignity. Compelling customers to navigate guilt, social pressure, and uncertainty about appropriate tip percentages creates anxiety and resentment. Service workers should not depend on the generosity—or caprice—of strangers. A salary-based model treats their work as professional labor deserving steady compensation, which may actually elevate service standards by removing the transactional taint from the server-customer relationship.</p>
+      <p>Whether the American dining public is ready for this shift remains the practical question. Cultural habits are stubborn, and competitive pressures may discourage adoption. But for restaurants willing to commit fully and communicate clearly, the no-tipping model offers genuine benefits for workers and customers alike.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Sushi Yasuda has done American dining a favor by exposing how irrational our tipping culture has become. The 15-to-20-percent gratuity is not really optional, not really tied to service quality, and not really fair to the people it ostensibly rewards. It is a ritual we perform to preserve the fiction that restaurant prices are lower than they actually are.</p>
+      <p>Consider what tipping actually does. It shifts labor costs from owners to customers, making menu prices look artificially attractive. It exposes servers to wild swings in income based on weather, season, and the prejudices of strangers. Studies by Cornell&#x27;s Michael Lynn have repeatedly found that tip size correlates only weakly with service quality and rather more disturbingly with the race, gender, and attractiveness of the server. It also leaves back-of-house workers — the cooks who actually prepared your meal — out of the bonanza, contributing to the yawning pay gap between dining room and kitchen.</p>
+      <p>A built-in service charge fixes most of this. Owners can pay cooks and servers more equitably. Diners know the real price up front. Servers get predictable wages and, often, actual benefits. The IRS gets accurate reporting, and unscrupulous managers lose the leverage that comes from controlling tip pools.</p>
+      <p>The standard objection is that tipping incentivizes good service. But every other developed country manages excellent restaurant service without it — Tokyo, Paris, and Rome are not known for surly waiters. Service quality is driven by training, management, and professional pride, not by the dangling carrot of a few extra dollars.</p>
+      <p>Should every restaurant follow Sushi Yasuda? Probably not overnight; the transition is hard when competitors still advertise lower menu prices. But the direction is clearly correct. Tipping is a relic that survives because each individual restaurant fears being the first to abandon it. The more high-profile establishments that lead the way, the easier it becomes for the rest of the industry to catch up to the rest of the world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Before we cheer Sushi Yasuda&#x27;s experiment as the future of American dining, let&#x27;s slow down. Tipping is annoying, sometimes unfair, and occasionally embarrassing — but it works better than its critics admit, and the alternatives have their own problems.</p>
+      <p>Start with the servers themselves. Ask waiters in fine-dining restaurants in New York whether they want to be put on straight salary, and the answer is overwhelmingly no. A good server at a busy Manhattan restaurant can earn $60,000 to $100,000 a year on tips, much of it lightly taxed. Replace that with a flat hourly wage plus service charge distributed by management, and most of that upside disappears. The &quot;abolish tipping&quot; movement is largely driven by owners and academics, not by the people who actually take home the cash.</p>
+      <p>Then there&#x27;s the customer&#x27;s leverage. The tip is one of the few mechanisms by which an ordinary diner can register displeasure in real time. Yes, the correlation between tip and service quality is weaker than we&#x27;d like to believe — but it isn&#x27;t zero, and the social expectation that good service earns a good tip shapes behavior even when individual tips don&#x27;t.</p>
+      <p>Service charges, meanwhile, are not the panacea they appear. In many European countries that include service, tipping has crept back in anyway, because customers still want to reward good waiters. Service charges are also often pocketed by ownership rather than distributed to staff, which is why some jurisdictions regulate them tightly. And a 20 percent all-in price hike on the menu may scare off customers who happily would have tipped 20 percent at the end.</p>
+      <p>Sushi Yasuda is a special case: a high-end restaurant invoking a specifically Japanese cultural norm to justify the change. That&#x27;s fine. But generalizing from one sushi bar to the whole industry ignores both what American servers want and how American diners behave. Let a thousand pricing experiments bloom — but don&#x27;t pretend the answer is obvious.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The interesting thing about the Sushi Yasuda story isn&#x27;t whether tipping is good or bad. It&#x27;s that we are even having the conversation. For decades, tipping in American restaurants has been treated as a fact of nature, like gravity. The fact that a prominent restaurant can drop it and stay in business reveals how much of our practice rests on inertia.</p>
+      <p>I&#x27;d frame the question this way: who should bear the risk of a restaurant&#x27;s business performance? Under the tipping system, much of that risk is pushed onto servers. A slow Tuesday lunch shift means a server might take home less than minimum wage in real terms (the federal tipped minimum is a notorious $2.13 an hour, with tips supposed to make up the difference — but enforcement is patchy). A blizzard, a bad review, a kitchen meltdown that&#x27;s not the server&#x27;s fault — all of these eat into wages that are supposed to be the worker&#x27;s livelihood.</p>
+      <p>A salary-plus-service-charge model pushes that risk back onto the owner, where it arguably belongs. The owner chose to open the restaurant; the owner sets the menu, hires the chef, and bears the rewards when things go well. Asking the owner also to bear the wage risk is just standard employment.</p>
+      <p>That doesn&#x27;t mean every restaurant should switch tomorrow. A diner or a neighborhood pub operates on margins that may not absorb the transition costs, and customers at lower price points are more sensitive to sticker shock. But high-end establishments, which already attract diners willing to spend, are well positioned to lead.</p>
+      <p>The deeper shift Sushi Yasuda represents is rhetorical: it treats waiters and sushi chefs as skilled professionals on stable salaries, not as performers begging for applause. That dignity matters. Whether or not the no-tipping model spreads, the industry should ask itself why it normalized a system in which the most basic question — what does this job pay? — has no clear answer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>There&#x27;s a quietly radical element to Sushi Yasuda&#x27;s move that the debate has largely missed: it&#x27;s not just about service, it&#x27;s about who counts as part of the restaurant.</p>
+      <p>Under the standard tipping model, the dining room and the kitchen live in different economies. Front-of-house staff — servers, bartenders, sometimes bussers — share in customer generosity. Back-of-house staff — line cooks, prep cooks, dishwashers — do not. Federal law in most states actually forbids sharing tips with cooks. The result is a structural inequality, often compounded by race and immigration status, that has nothing to do with skill or contribution. A skilled line cook running a hot station for ten hours may earn less than the server who carries her food to the table.</p>
+      <p>Folding gratuities into the price and then paying everyone from the same pot allows a restaurant to compensate kitchen workers more fairly. That&#x27;s especially important at sushi restaurants, where the chefs are literally performing for the customer — the idea that the person handing you the plate gets tipped while the person crafting the nigiri does not is absurd. Sushi Yasuda&#x27;s no-tipping policy is partly a way to honor the chef, who in Japanese tradition is the center of the meal.</p>
+      <p>If we want to debate whether American restaurants should follow, we should debate it on these terms: do we want a wage structure that rewards the whole team, or one that lavishes attention on whoever is closest to the customer&#x27;s wallet?</p>
+      <p>There are reasons to keep tipping in some contexts — casual restaurants, bars where bartenders genuinely earn their keep through hustle and personality. But for any restaurant that takes its cooking seriously, the no-tipping model is worth a hard look. It&#x27;s not about copying Japan. It&#x27;s about deciding whose work we value, and being honest about it on the menu.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>I waited tables for six years, and I would have hated working at a no-tipping restaurant. Let me explain why the abolition-of-tipping argument tends to come from people who have never lived on tips.</p>
+      <p>First, the money. On a good Saturday night at a decent restaurant, a server can clear $300 to $400 in five hours. No salary structure a restaurant would actually adopt is going to match that. When you hear about no-tip restaurants paying &quot;$15 to $25 an hour plus benefits,&quot; do the math: that&#x27;s less than half of what a competent server makes now, often less than a third. The &quot;benefits&quot; rhetoric is real but oversold; most servers I know would rather have the cash and buy their own health insurance.</p>
+      <p>Second, the autonomy. A tipped server effectively runs a small business inside the restaurant. You build regulars, you read tables, you upsell the right wine, you turn a four-top quickly when the line is out the door. The reward for being good at this is immediate and tangible. Take that away, and you&#x27;ve turned a craft into a clock-punching job.</p>
+      <p>Third, the customer relationship. Yes, tipping creates awkwardness, and yes, some customers stiff servers unfairly. But the tip is also a moment of connection — a small, voluntary acknowledgement that someone took care of you. Replacing it with a mandatory service charge feels cleaner on paper and colder in practice.</p>
+      <p>I&#x27;m not saying Sushi Yasuda is wrong for its own context. Sushi service is unusual; the chef-customer relationship is paramount; the staff knew what they signed up for. But generalizing this model across American dining would mean a significant pay cut for a lot of working people who can&#x27;t easily afford one, in exchange for a tidier theory of how restaurants should work. Before we reform tipping out of existence, we should listen to the people whose income actually depends on it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The tipping debate is usually framed as a binary — keep it or kill it — but the more useful question is what tipping is actually for, and whether something else could serve those purposes better in different settings.</p>
+      <p>Tipping does at least four distinct jobs in American dining. It supplements low base wages so owners can advertise lower menu prices. It offers customers a quality-control mechanism, however imperfect. It functions as a social ritual marking the end of a meal. And it provides servers with tax-advantaged, high-variance income that many of them prefer. Any reform has to grapple with all four.</p>
+      <p>Sushi Yasuda&#x27;s all-inclusive pricing addresses the first job neatly and probably improves on the second (managers can train and discipline staff without ceding control to customer whim). It eliminates the third, which some customers will miss and others won&#x27;t. And it likely reduces the fourth, depending on how the service charge is distributed.</p>
+      <p>For a high-end sushi restaurant, that tradeoff makes sense. The clientele is sophisticated, the staff is highly trained, the service style is formal, and the cultural reference point (Japan) gives the policy coherence. It also probably helps the restaurant retain skilled sushi chefs by sharing revenue across the whole staff.</p>
+      <p>For a neighborhood diner or a sports bar, the calculation is different. The service model is more transactional, the wage variance is part of the appeal for many workers, and customers expect to see lower prices on the menu. Mandating Sushi Yasuda&#x27;s approach across the industry would flatten distinctions that the market is actually pretty good at managing.</p>
+      <p>So: should other restaurants follow? Some, yes — especially fine-dining establishments where service charges already exist in everything but name, and where back-of-house equity matters. Most, probably not yet. The best outcome is a more varied landscape, in which diners can choose, and the assumption that 20 percent at the end is the only way to pay for dinner finally loses its grip.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>At last, a restaurant with the courage to admit that America’s tipping system is a relic that does more harm than good. Sushi Yasuda’s decision to pay its staff a full salary and eliminate gratuities should be applauded—and widely emulated. Tipping is not a benign custom; it is a vehicle for discrimination, economic instability, and a false narrative of meritocracy. Study after study has shown that black servers earn less in tips than white servers, that physically attractive women get tipped more, and that customer biases—not service quality—often determine a worker’s income. The subminimum wage for tipped employees, stuck at a federal level of $2.13 an hour, leaves workers dependent on the whims of diners, vulnerable to harassment they feel they must tolerate, and one slow shift away from financial crisis. Meanwhile, the illusion that tipping guarantees good service is just that—an illusion. Research by Cornell professor Michael Lynn suggests only a tenuous link between tip size and service evaluation. By building the cost of service into menu prices, restaurants like Sushi Yasuda create a more professional, equitable environment. Staff can focus on teamwork rather than competing for high-tipping tables, and customers are freed from the awkward end-of-meal math. Critics claim prices will skyrocket, but a 15–20 percent increase simply reflects what we were already paying—now transparently. Yes, some servers resist because they earn well under the current system, but those high earners are a minority; the majority of tipped workers struggle with poverty rates twice the national average. No one should have to smile through degradation to pay rent. The Sushi Yasuda model points toward a fairer industry. It’s time for other establishments to follow—not piecemeal, but as a national shift toward dignity for service workers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Eliminating tipping is an arrogant, tone-deaf move that misunderstands both the economic realities of the restaurant business and the preferences of those who work in it. Sushi Yasuda may have noble intentions, but its policy is a solution in search of a problem—one that will likely backfire for diners, workers, and the restaurant itself. First, tipping empowers the customer: it gives us a direct way to reward excellent service and to penalize poor service. Replace it with a guaranteed service charge, and where’s the incentive to go above and beyond? Servers will deliver the bare minimum, knowing their pay is fixed regardless of effort. Second, many servers and bartenders—often those most skilled—oppose ending tips because in a tipping system they can earn far above minimum wage, sometimes $20–$40 an hour. A fixed salary, even a generous one, rarely matches that earning potential. Why would we force a pay cut on the very people we claim to help? Third, restaurants operate on razor-thin margins. If a restaurant replaces tipping with higher salaries, it must raise menu prices significantly—not just by 15 percent, but more, to cover increased payroll taxes, benefits, and administrative overhead. Consumers are notoriously price-sensitive; many would balk at a $25 burger that used to be $16, even if the total outlay is similar. That kills business, especially for neighborhood joints. We’ve already seen experiments fail: The Linkery in San Diego eliminated tipping and closed after a few years, and other high-profile chefs who announced no-tipping policies eventually reverted. Tipping, for all its flaws, is a flexible, decentralized system that rewards hard work and lets customers calibrate their own experience. Before we kill it, we should listen to the workers who rely on it and the diners who value control. Sushi Yasuda might thrive as an upscale exception, but for the vast majority of restaurants, ditching tips is a recipe for disaster.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Sushi Yasuda’s decision to abolish tipping is a compelling provocation, but we should be wary of treating it as a one-size-fits-all remedy. The tipping system in the United States is indeed deeply flawed—it perpetuates a two-tiered wage structure, enables bias, and obscures the true cost of dining out. However, simply replacing discretionary tips with mandatory service charges or higher menu prices does not automatically create a just workplace. Without broader reforms to labor law, the shift could actually harm some workers while benefiting owners who use the new model to suppress labor costs by another name. The real discussion should be about guaranteeing a living wage for all restaurant employees, regardless of whether a tip jar sits on the counter. That means raising the federal subminimum wage for tipped workers—which is a disgraceful $2.13—and indexing it to inflation, while also ensuring that back-of-house staff, who rarely share in tips, are paid fairly. A hybrid approach might be best: a mandatory service charge distributed among all staff, with the option for customers to leave a small additional gratuity for truly exceptional service. This preserves the emotional ritual of rewarding excellence while providing baseline security. We also need to consider the variety of restaurant formats: what works at a high-end omakase counter in Manhattan may be ruinous for a diner in rural Ohio where customers are accustomed to leaving a few dollars on the table. Any transition must be incremental and sensitive to local economies. Sushi Yasuda’s move is valuable because it forces a conversation we have avoided for too long. But real change will come not from one sushi bar’s “Thank you” note, but from legislative action, union organizing, and a cultural shift that values service work as skilled labor deserving of dependable pay.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>I’ve been a server for eight years, and I have a love–hate relationship with tipping. On a busy Friday night, I can walk out with $300 in cash, which pays my rent and helps support my daughter. On a slow Tuesday, I might make $30 after a six-hour shift. The unpredictability is exhausting, and yes, I have put up with uncomfortable comments from customers because I didn’t dare risk the tip. So when I hear about Sushi Yasuda eliminating tips, I’m torn. Part of me cheers: a steady paycheck, paid sick days, and a professional environment where my income doesn’t depend on a customer’s mood sound like a dream. But the other part worries: can any restaurant afford to pay me the $25 an hour I average with tips? Most likely not. And if they switch to a flat service charge, owners might pocket a cut or use it to cover overhead that tips never touched. I’ve seen how some “service-inclusive” restaurants pay their staff a meager $10–$12 an hour—a pay cut for veterans like me. The people most eager to abolish tipping are often well-meaning diners and journalists who have never relied on tips to survive. They don’t understand that for many of us, tipping is not just a transaction but a performance that can be empowering. However, I also know that for every high-earning server, there are dozens of bussers, hosts, and kitchen workers who get nothing from the tip pool yet work just as hard. If eliminating tips means including them in a fair share, I support it—but only if the total compensation is truly livable. So before we ask “Should restaurants follow Sushi Yasuda?” we need to ask restaurant workers what they want, and we need to guarantee that no-tip means no pay cut.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Tipping is one of the strangest social rituals we have: a supposedly voluntary payment that is, in practice, compulsory. The Sushi Yasuda model strips away that ambiguity, forcing us to confront what dining out actually costs and what we owe the people who serve us. From a cultural psychology standpoint, tipping serves as a tangible gesture of gratitude, a small act of generosity that can create a moment of human connection between stranger and server. Without tips, the dining experience becomes more transactional, more like buying a product off a shelf. That loss is not trivial; it contributes to a broader atomization of service interactions. Yet the ritual comes with a dark side. The pressure to tip induces anxiety among customers—Am I being cheap? Will they judge me?—and can lead to performative overspending. For servers, the need to earn tips encourages emotional labor—smiling through exhaustion, tolerating unwanted advances—that can be psychologically draining. So is a service-included model emotionally healthier? Possibly, but it also flattens the interaction. When everyone’s compensation is guaranteed, the incentive to provide that extra bit of warmth or care may diminish. We might find ourselves in a world of indifferent, tip-free service like one sometimes encounters in parts of Europe. The question, then, is what kind of dining culture we want to cultivate. Sushi Yasuda’s decision pushes us to redesign a deeply ingrained norm. Perhaps we can imagine a future where the base obligation is covered by a service charge, but customers are still permitted to offer a small, truly voluntary bonus as a “thank you”—not out of guilt, but out of genuine appreciation. That could preserve the best of tipping while mitigating its worst excesses. The debate is not just economic; it’s about how we want to treat one another when we break bread.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>As a restaurateur with two mid-sized establishments, I’ve watched the Sushi Yasuda announcement with a mix of admiration and dread. The economics of going tip-free are far more treacherous than advocates admit. Consider the math: moving from tips to salary requires raising menu prices by 20–25 percent, not merely 15, because the restaurant must now pay employer payroll taxes (FICA, unemployment insurance) on the increased wages, and must also ensure that compensation remains competitive for front-of-house staff. If my servers currently average $18 an hour, I need to offer at least that much—plus benefits if I want to keep them. That cost gets passed to customers, who at first glance see a much more expensive menu. Even if the final bill is the same, the psychological sticker shock is real: a family accustomed to a $50 dinner will balk when it’s priced at $62, even if they’d have left a $12 tip. That can reduce traffic, and a 10 percent drop in covers can be the difference between profit and closure. High-end restaurants like Sushi Yasuda, where the average check is already high and the clientele less price-sensitive, may absorb this better than my gastropub, which competes on value. Moreover, in many states, the tip credit allows me to pay servers a lower cash wage, which keeps my labor costs manageable. Abolishing tips would increase my fixed costs dramatically, making my business more vulnerable to seasonal slumps. I’m sympathetic to the equity arguments—tipping is indeed discriminatory, and my kitchen staff deserve a share of service revenue. But I can’t make that leap without a coordinated shift across the industry, or a change in the minimum wage for all. If I go tip-free alone, I risk losing my best servers to competitors where they earn more in tips, and I risk losing customers to cheaper-looking menus. The Sushi Yasuda move is noble, but it’s a boutique solution. For a nationwide transformation, we’d need a level playing field—perhaps a legislative mandate phasing out the tip credit while raising the minimum wage, so all restaurants swim together. Until then, most of us will keep the tipping system, however imperfect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Sushi Yasuda’s decision to eliminate tipping is a necessary and long-overdue step toward modernizing the American restaurant industry. For far too long, the United States has relied on an antiquated, fundamentally unjust system to compensate its service workers. It is time for other establishments to follow suit and abandon the tip.</p>
+      <p>The core problem with tipping is that it offloads the employer’s responsibility to pay a living wage directly onto the whims of the customer. Under current federal law, the minimum wage for a tipped worker is a dismal $2.13 an hour. While employers are theoretically required to make up the difference if tips fall short of the standard minimum wage, labor advocates frequently point out that this rule is routinely ignored or poorly enforced. This leaves thousands of workers—predominantly women and minorities—vulnerable to wage theft and poverty.</p>
+      <p>Furthermore, tipping is inherently discriminatory. Studies from researchers like Michael Lynn at Cornell University have repeatedly demonstrated that tips are poorly correlated with actual service quality. Instead, gratuities are heavily influenced by the race, gender, and physical attractiveness of the server. A system that rewards implicit bias rather than professional competence has no place in a modern economy.</p>
+      <p>By replacing tips with a service fee and paying staff a proper salary, restaurants can provide their workers with something desperately lacking in the hospitality sector: stability. A fixed salary allows a waiter to budget for rent, groceries, and medical expenses without worrying whether a slow Tuesday night or a table of bad tippers will ruin their week.</p>
+      <p>Critics argue that eliminating tips will drive up menu prices, but customers are already paying that 15 to 20 percent premium at the end of the meal. Rolling it into the upfront price is simply a matter of transparency. It elevates serving from a precarious gig dependent on charity to a respected, stable profession. If high-end establishments can lead the way, they can begin to shift the cultural norm toward fair, equitable compensation for all restaurant workers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>While Sushi Yasuda’s new policy might generate good press, eliminating tipping across the American restaurant industry would be a disastrous mistake. Tipping is not just a cultural quirk; it is an economic engine that drives the world-class hospitality for which American restaurants are famous.</p>
+      <p>The beauty of the tipping system is that it aligns the incentives of the server, the customer, and the restaurant owner. When a server&#x27;s income is directly tied to the satisfaction of their guests, they are highly motivated to be attentive, efficient, and welcoming. They hustle to turn tables, keep water glasses full, and quickly resolve any issues with the food. Anyone who has traveled to Europe—where service is often included in the bill—has likely experienced the downside of a salaried waitstaff: servers who are indifferent, slow to bring the check, and generally unmotivated to go the extra mile.</p>
+      <p>Moreover, taking away tips would fundamentally harm the very workers advocates claim they want to protect. The restaurant industry operates on notoriously razor-thin profit margins. If a restaurant abolishes tipping, they must raise menu prices significantly to cover the new payroll costs. Will an independent diner or a mid-level bistro really be able to afford paying their top-performing servers the $25 or $30 an hour they currently take home on a busy Friday night? The likely answer is no. A shift to a flat hourly wage would essentially act as a pay cut for the best, most experienced servers in the industry.</p>
+      <p>The free market works. Diners have the power to reward excellent service and penalize poor service. Servers have the opportunity to earn well above minimum wage if they are skilled at their jobs. Stripping away this meritocratic system in favor of a bureaucratic service charge or a flat salary will only lead to higher sticker prices on menus, lower earnings for talented servers, and a noticeable decline in the quality of American hospitality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>Sushi Yasuda can afford to ban tipping because it is an elite, high-end establishment serving a specific, affluent clientele. For the vast majority of American restaurants, however, following this Japanese custom would amount to commercial suicide. The debate over abolishing gratuities ignores the harsh psychological realities of consumer behavior.</p>
+      <p>In the restaurant business, menu pricing is a delicate psychological game. Consumers have a set idea of what a hamburger, a bowl of pasta, or a draft beer should cost. If a neighborhood restaurant suddenly eliminates tipping and raises its menu prices by 18 to 20 percent to pay its staff a living wage, customers will experience immediate sticker shock. Even if the final out-of-pocket cost is exactly the same, a $15 burger suddenly priced at $18 looks expensive.</p>
+      <p>Unless every restaurant in a city agrees to abolish tipping simultaneously, the first-movers will be severely punished by the market. Diners will simply cross the street to a competitor whose menu prices appear artificially lower, forgetting or ignoring the fact that they will be expected to leave a 20 percent tip at the end of the meal.</p>
+      <p>This is precisely why we only see no-tipping experiments at the extreme ends of the dining spectrum: either at ultra-luxurious restaurants like Per Se and Sushi Yasuda, where price is already no object for the clientele, or at casual counter-service spots where tips were never a major factor.</p>
+      <p>The current system may be messy, but it allows restaurants to keep their advertised prices competitive. Until there is a fundamental shift in how Americans perceive the cost of dining out, expecting mid-tier chain restaurants or local diners to successfully transition to a European-style service-inclusive model is a pipe dream. It is a lovely idea in theory, but completely unworkable for the average American restaurateur.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>As a former waitress who spent years navigating the chaotic reality of the American restaurant industry, I find the prospect of abolishing tips deeply concerning. Well-meaning reformers look at a place like Sushi Yasuda and see a beacon of progressive labor practices. But when you ask the servers themselves, you quickly realize that the tipping system is the only reason many of us endure the physical and emotional toll of the job.</p>
+      <p>Let’s be honest about what restaurant work actually entails. It means being on your feet for eight to ten hours a day, carrying heavy trays, managing high-stress rushes, and dealing with demanding or downright rude customers. The saving grace of this grueling work is the payout at the end of the shift. On a good night, a skilled server in a busy restaurant can easily make $25 to $35 an hour.</p>
+      <p>If restaurants eliminate tipping and transition to a fixed hourly wage, what will they pay? Given the notoriously low profit margins in food service, it certainly won&#x27;t be $30 an hour. More likely, we would see wages hover around $12 to $15 an hour. For the industry&#x27;s best workers, that represents a massive reduction in earning potential.</p>
+      <p>The flexibility and immediate cash flow of tipped work have long made it an essential lifeline for college students, single parents, and artists. You can work a few busy shifts a week and make enough to survive. Replacing tips with a flat, mediocre salary transforms a potentially lucrative hustle into just another low-paying retail job.</p>
+      <p>While the current federal tipped minimum wage of $2.13 is indefensibly low and needs to be raised, throwing out the tipping system entirely is a drastic overcorrection. We should mandate higher base pay to protect workers during slow shifts, but we must retain the gratuity system. It is the only mechanism that allows servers to be fairly compensated for the tremendous effort required to deliver excellent hospitality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Dining out is supposed to be an escape from our daily anxieties, a brief window where we can relax, enjoy good food, and be taken care of. Yet in America, every meal ends with an unstated performance review and a math test. Sushi Yasuda has bravely pointed the way toward a better dining culture, and it is time for the rest of the country to embrace the end of the tip.</p>
+      <p>The American tipping ritual is exhausting for the consumer. When the check arrives, the patron is forced to evaluate the waitstaff’s performance. Was the water refilled promptly? Did the kitchen delay the entrees, and should the server be penalized for that? Should I leave 15, 18, or 20 percent? The transaction introduces an awkward power dynamic between the diner and the server that strips the evening of its genuine hospitality.</p>
+      <p>It is easy to forget that outside of North America, tipping is largely considered bizarre or even offensive. In Japan, as the Sushi Yasuda receipt notes, good service is a matter of professional pride, not a conditional transaction. In much of Europe, the cost of service is simply built into the price of the food. When you order a 10-euro pizza in Rome, you pay 10 euros. The waitstaff is paid a negotiated wage, and the customer is freed from the burden of calculating their server’s livelihood.</p>
+      <p>The argument that service will decline without the &quot;incentive&quot; of a tip is an insult to the professionalism of service workers. A chef doesn&#x27;t need a direct tip to cook a delicious steak; they do it because it is their job. Serving should be no different. By raising prices to include service, restaurants can offer their staff a professional, predictable salary. In return, the diner gets back the simple, unadulterated joy of eating out.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Sushi Yasuda’s shift away from tipping is an admirable gesture, but framing this as a choice for individual restaurants misses the broader structural problem. We cannot rely on the goodwill of high-end sushi bars to fix a deeply exploitative labor system. The only way to move past the tipping model in America is through legislative action to abolish the subminimum wage for tipped workers.</p>
+      <p>In 2013, the federal tipped minimum wage sits at an appalling $2.13 an hour, a rate that has not budged since 1991. The restaurant industry lobby, led by the National Restaurant Association, has fought tooth and nail to keep this dual-wage system in place, shifting the burden of paying their employees directly onto the consumer.</p>
+      <p>Expecting individual restaurants to voluntarily end tipping while their competitors continue to exploit the $2.13 loophole is terrible public policy. If a neighborhood restaurant tries to do the right thing—paying their staff a flat, living wage and raising menu prices to cover it—they are put at a massive competitive disadvantage. Their burgers will look significantly more expensive than the joint down the street that pays its staff practically nothing.</p>
+      <p>Voluntary bans on tipping will only ever be a niche luxury trend. To create real change, we need to mandate a level playing field. Organizations like the Restaurant Opportunities Centers (ROC) United are right to push for legislative solutions rather than relying on consumer boycotts or rogue restaurateurs.</p>
+      <p>States like California and Oregon have already eliminated the tipped subminimum wage, requiring employers to pay the standard state minimum wage before tips. This is the crucial first step. Once all restaurants are legally required to pay their staff a real, living base wage, the reliance on tipping will naturally recede. Until the law changes, however, noble experiments like Sushi Yasuda’s will remain exceptions to a fundamentally broken rule.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Yes. Restaurants should move toward the model Sushi Yasuda has adopted, not because Japan’s customs can be imported wholesale, but because American tipping has become a bad way to pay people.</p>
+      <p>The strongest argument against tipping is not that it is awkward for diners, though it is. It is that it makes workers’ income unstable and arbitrary. A server’s rent should not depend on whether a customer is generous, distracted, foreign, cheap, intoxicated or annoyed about a kitchen delay the server did not cause. In much of the country, tipped workers can be paid a federal cash wage of just $2.13 an hour so long as tips make up the difference. In theory employers must ensure workers reach the minimum wage. In practice, enforcement is weak, hours fluctuate, and many workers bear the risk.</p>
+      <p>Tipping also distributes money irrationally within restaurants. The dining room may earn far more than the kitchen, even though cooks, dishwashers and bussers are essential to the meal. Tip pooling can help, but it is constrained by labor rules and often becomes another source of conflict. A built-in service charge or higher menu price allows management to compensate the whole staff more deliberately.</p>
+      <p>The usual defense is that tips reward good service. But anyone who has eaten out knows that tipping is only loosely connected to merit. People tip according to habit, social pressure, bill size, perceived attractiveness, mood and alcohol consumption. A server at an expensive steakhouse may earn much more than an equally skilled server at a diner simply because the check is larger. That is not a performance system; it is a lottery with etiquette attached.</p>
+      <p>The transition would be messy. Menu prices would appear higher, and some customers would wrongly think they were being gouged. Restaurants that abolish tipping must be transparent: “service included” should mean workers are paid decently, not that owners have found a new way to capture gratuities. But if enough restaurants moved together, diners would adjust. We already accept tax, corkage, delivery charges and prix fixe menus.</p>
+      <p>Tipping is an old custom, not a sacred principle. A profession as demanding as restaurant service deserves wages, not wishes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>Other restaurants should be cautious before following Sushi Yasuda. Tipping is imperfect, but abolishing it may solve the wrong problem while creating new ones.</p>
+      <p>Restaurants operate on thin margins, and customers are extraordinarily sensitive to menu prices. A $25 entree plus tip feels different to many diners than a $30 entree with “service included,” even if the final bill is identical. That may be irrational, but restaurants cannot ignore psychology. A well-known Midtown sushi restaurant serving expense-account diners can probably make the change with little damage. A neighborhood bar, a diner or a family restaurant may not have that luxury.</p>
+      <p>There is also a reason many servers defend tipping. In busy restaurants, good servers can earn more through tips than they would under a flat wage set by management. Tipping gives workers some upside. It also gives them a measure of independence: their income is not entirely determined by the owner. If tipping disappears, will the extra revenue truly flow to the staff? Some owners will do the right thing. Others will simply raise prices, pay a modest hourly wage and keep the difference. Diners may feel virtuous while workers end up worse off.</p>
+      <p>Nor is the incentive argument entirely imaginary. Tips do not perfectly measure service, but they do create a direct relationship between attentiveness and reward. Bartenders who remember regulars, servers who handle complicated tables gracefully, and staff who turn a potentially bad evening into a good one often benefit. A salary system may professionalize service, but it may also flatten distinctions between the excellent and the indifferent unless restaurants build in serious internal evaluation.</p>
+      <p>The better reform is not to ban tipping restaurant by restaurant, but to improve the floor beneath it. Raise the tipped minimum wage. Enforce wage laws. Make tip-pooling transparent. Prevent employers from using tips to subsidize poverty wages. Let restaurants experiment with service-included pricing if their customers and staff want it.</p>
+      <p>Tipping can be embarrassing, inconsistent and culturally odd. But it is also woven into how American restaurants price meals and how many servers make a living. Before declaring it obsolete, we should ask whether workers prefer the replacement, not just whether diners find it tidier.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The question should not be framed as “tipping or no tipping,” but as “who bears the risk?” Under the American tipping system, the answer is usually the worker. Under a poorly designed service-charge system, the answer may still be the worker, only less visibly. Restaurants should move away from tipping, but only with rules that make the change real.</p>
+      <p>A service-included restaurant ought to meet three conditions. First, menu prices or service charges should be honest. Customers should know before they order that gratuity is included and that no additional tip is expected. Second, employees should receive a guaranteed wage meaningfully above the minimum, not a token raise funded by eliminating tips. Third, the restaurant should explain how the service charge is used: dining room staff, kitchen staff, benefits, payroll taxes, paid sick leave, or some combination.</p>
+      <p>Without those safeguards, “hospitality included” can become a slogan. Diners may stop tipping while workers discover that management has converted a variable but sometimes lucrative income stream into a lower fixed wage. That is especially dangerous in cities like New York, where rent and transit costs are high and restaurant work is physically demanding.</p>
+      <p>Still, the case for change is strong. Tipping is a strange institution. It asks customers to become amateur payroll supervisors at the end of a meal. It punishes servers for things outside their control: slow kitchens, bad weather, table assignments, customers who linger, or prejudices customers bring with them. Research and common experience both suggest that tips are affected by race, gender, age and appearance, not just service. That should trouble anyone who believes wages should be earned rather than begged for.</p>
+      <p>Sushi Yasuda’s move is useful because it makes the true cost of dining visible. Americans often prefer artificially low prices followed by a moral test. But the food, the space and the labor all cost money. If we want skilled, stable hospitality, we should pay for it directly.</p>
+      <p>So yes, other restaurants should follow—but not as a gimmick and not as a way to pocket gratuities. The goal should be to replace tipping with a transparent wage system that treats service as work, not as a favor awaiting a reward.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>I would not want every restaurant and bar to abolish tipping, because tipping is more than a payment mechanism. At its best, it is part of a social relationship between guest and server. That relationship can be abused, and it should be protected by better labor laws. But it should not be dismissed as mere irrationality.</p>
+      <p>In a good restaurant or bar, hospitality is personal. A bartender who knows how a regular likes his martini, a waiter who senses when a table wants conversation and when it wants privacy, a server who saves an anniversary dinner after a kitchen mistake—these things are hard to price in advance. A tip is a way for the guest to recognize that human element. It is not simply a bribe for better service; it is a small ritual of gratitude.</p>
+      <p>The Japanese model works beautifully in Japan partly because it rests on a different service culture. Excellent service there is built into professional duty and social expectation. In the United States, tipping has developed alongside a more informal and entrepreneurial culture. That does not make our system morally superior, but it does mean that copying the surface feature—no gratuities—may not reproduce the underlying norms.</p>
+      <p>Bars are an especially poor fit for a universal no-tip rule. Bartending often involves speed, memory, crowd management and ongoing relationships with regulars. The tip jar or added dollar per drink is crude, but it also allows customers to acknowledge effort in real time. A mandatory service charge on every round may feel more like a cover charge than hospitality.</p>
+      <p>That said, the current system needs repair. The tipped minimum wage is scandalously low. Employers should not be allowed to shift nearly all wage responsibility onto customers. Service workers should have a reliable legal floor, protection from wage theft, and clear rules about tip sharing. Customers, too, should tip fairly and not treat gratuity as an outlet for petty power.</p>
+      <p>Let high-end restaurants experiment with service-included bills if they wish. Let diners choose them. But a blanket move away from tipping would make American hospitality more bureaucratic and less personal. Reform the custom; do not abolish it everywhere.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>If restaurants abolish tipping, they should also abolish the fiction that cheap food is cheap. That is the real value of Sushi Yasuda’s decision. It forces the customer to confront the full price of being served.</p>
+      <p>The American restaurant bill is a small exercise in concealment. The menu lists one price. Sales tax appears later. Then the customer is expected to calculate 15, 18 or 20 percent, with anxiety about whether the percentage should apply before or after tax, whether wine counts, whether bad service justifies a lower amount, and whether the server will think poorly of them. The result is not freedom. It is confusion masquerading as choice.</p>
+      <p>Worse, the custom lets owners advertise prices that do not include the labor needed to deliver the meal. Imagine a clothing store listing a jacket for $100 and then asking customers at the register to add whatever they think the salesperson deserves. We would immediately see the absurdity. In restaurants we call it tradition.</p>
+      <p>A service-included model is more honest. It says: this is what dinner costs, including the people who take your order, bring your food, clear your plates and keep the evening moving. Diners can then compare restaurants on a real basis. If one restaurant charges $80 service included and another charges $65 plus tip, the difference is not as large as it appears. Transparent pricing would improve competition, not weaken it.</p>
+      <p>The main objection is that service will decline without tips. But many professions provide good service without being tipped: nurses, teachers, flight attendants, hotel clerks, retail workers. They are motivated by training, supervision, pride, job security and wages. Restaurant workers are not uniquely incapable of professionalism unless bribed table by table.</p>
+      <p>The transition would be easiest if influential restaurants move first and explain the policy plainly. “No tipping” should not mean “no reward for workers”; it should mean wages, benefits and promotion paths. Some customers will grumble, especially those who enjoy the power of deciding a server’s pay. But that is not a good enough reason to preserve a confusing, inequitable system. The price of service belongs on the bill, not in a diner’s conscience.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The answer may differ for a sushi temple, a diner and a dive bar. Sushi Yasuda can eliminate tipping because its service is controlled, its clientele is relatively affluent, and its cultural reference point—Japan—fits the cuisine. That does not mean every restaurant should immediately follow. But the experiment points in the right direction, especially for full-service dining.</p>
+      <p>Tipping persists partly because each restaurant fears moving alone. If one place raises prices by 20 percent and says “service included,” it may look more expensive on a menu than the place next door, even though the final cost is the same. That first mover problem is real. It explains why the custom survives even among people who dislike it. Diners overestimate the posted price and underestimate the add-ons.</p>
+      <p>For that reason, change should begin in sectors where customers are most likely to understand it: fine dining, tasting-menu restaurants, hotel restaurants, and places with strong reputations. These businesses can explain that service is included, pay staff salaries, and build the cost into reservations or prix fixe menus. If it works there, the norm may spread downward. If it fails, the damage is limited.</p>
+      <p>Casual restaurants and bars require more care. A bartender serving quick beers to regulars and a server managing a three-hour tasting menu do not have the same job. A universal rule would be clumsy. Some workers also like tipping because busy shifts can produce high earnings. Reformers should not ignore those voices in the name of tidiness.</p>
+      <p>Still, the present system is too dependent on customer whim. It produces volatile income, invites discrimination, and relies on a subminimum wage structure that is hard to defend. The long-term goal should be to separate basic compensation from gratuity. If customers want to leave something extra for extraordinary service, fine—but that should be a bonus, not the worker’s paycheck.</p>
+      <p>So other restaurants should follow Sushi Yasuda selectively and experimentally. The best model may not be “tips forbidden” everywhere, but “service included” as the default, with wages high enough that no employee has to depend on a stranger’s arithmetic at the end of the night.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>Other restaurants should follow Sushi Yasuda’s lead, provided they do it honestly: raise prices, pay staff real wages, and stop pretending that a waiter’s livelihood should depend on a diner’s mood at 10:15 p.m.</p>
+      <p>The American tipping system is often defended as meritocratic, but that claim is thin. Studies of tipping behavior have long suggested that tips correlate only weakly with service quality and often reflect race, gender, attractiveness, accent, table size, and customer bias. A server can do everything right and still be punished because the kitchen was slow, the weather was bad, or the customer is cheap. That is not a performance wage; it is wage volatility disguised as consumer freedom.</p>
+      <p>The deeper problem is that tipping allows restaurants to shift payroll risk onto workers. The federal tipped minimum wage is still $2.13 an hour, with the assumption that tips will make up the difference. In theory, employers must ensure workers receive the regular minimum wage. In practice, enforcement is uneven, workers may not know their rights, and many fear retaliation if they complain. A salary or dependable hourly wage brings restaurant work closer to other forms of employment: the employer hires, schedules, supervises and pays the worker.</p>
+      <p>The change would also help correct the divide between front-of-house and kitchen staff. Diners tip the person they see, not the dishwasher, prep cook or line cook whose labor shaped the meal. A service-included model lets a restaurant allocate compensation across the whole team.</p>
+      <p>Yes, menu prices will look higher. But customers already pay the extra 15 to 20 percent; they just pay it through ritual, arithmetic and anxiety. Better to put the true cost of hospitality on the bill from the beginning. Sushi Yasuda is unusual enough to try this first, but the principle is not exotic. A restaurant should charge what it costs to provide food and service, and then pay its employees accordingly.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Sushi Yasuda may be able to abolish tipping, but that does not mean most restaurants and bars should rush to copy it. Tipping is imperfect, sometimes arbitrary, and too often used to justify low base wages. Still, in many American dining rooms it remains part of the economic bargain that attracts skilled servers and bartenders to the job.</p>
+      <p>A busy server in a successful restaurant may earn substantially more through tips than through any “fair salary” an owner is likely to offer. That is especially true in cities like New York, where restaurant margins are narrow, rents are high and customers can be highly price-sensitive. If menu prices jump 18 or 20 percent, some diners will simply trade down or go elsewhere, even if the total cost would have been the same after a tip. Restaurants compete on displayed prices, not on the final mental arithmetic.</p>
+      <p>There is also a real danger that “service included” becomes a euphemism for management control of money that customers believe is going to staff. Unless workers can see clearly how the added revenue is being distributed, they may lose the transparency and immediacy of cash tips without gaining security. The problem is not merely cultural; it is institutional. A mandatory charge belongs to the restaurant unless there are rules or promises about where it goes.</p>
+      <p>Japan’s customs cannot simply be imported. Japanese restaurants operate within a different service culture, labor market and consumer expectation. In the United States, tipping is not just a reward for exceptional service; it is how many workers judge whether a workplace is worth staying in. Abolishing it could flatten incomes in ways that hurt the best servers and bartenders most.</p>
+      <p>The better reform is to raise the tipped minimum wage, enforce wage laws, and require clearer disclosure of tip pooling and service charges. Let restaurants experiment, certainly. But making tipping disappear by managerial decree is not automatically more just. For many workers, the question is not whether tipping is elegant. It is whether the alternative pays as well.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The strongest argument against tipping is not economic efficiency. It is dignity. A restaurant server should not have to perform gratitude, flirtation, deference or silent endurance in order to be paid. Yet that is what the American tipping system often requires, particularly of women, immigrants and workers of color.</p>
+      <p>When the customer controls a large share of compensation, the customer becomes a temporary boss. That boss can be generous, but also biased, patronizing or abusive. A diner can penalize a server for enforcing a reservation policy, for refusing another drink, for having an accent, or simply for not smiling enough. In bars, where alcohol changes behavior, this can be even more coercive. The tip makes harassment harder to resist because the harasser is holding the worker’s income hostage.</p>
+      <p>Sushi Yasuda’s model points toward a healthier relationship. Hospitality can be gracious without being servile. Professional service should be compensated by the employer, just as professional cooking is. We do not ask customers to decide at the end of an appointment how much of the nurse’s or airline mechanic’s wage they feel like paying. Restaurant work is work, not a popularity contest.</p>
+      <p>But the reform should be done as “service included,” not as a confusing surcharge that feels like an automatic tip. The price on the menu should be the price, with labor built in. Diners should not be asked to solve a moral puzzle at the end of the meal. Nor should restaurants use the end of tipping as a way to cut take-home pay. Workers must know what they will earn, and customers should be told plainly that staff are fully compensated.</p>
+      <p>Some diners will miss the small power of rewarding or punishing service. That is precisely the power we should give up. People can still praise excellent service, complain about bad service, and choose where to spend their money. What should disappear is the idea that a server’s rent depends on whether strangers feel magnanimous after dessert.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>As a principle, service-included dining is appealing. As a business strategy, it is treacherous. That is why the answer should be: yes, more restaurants should experiment with it, but no, we should not pretend that every restaurant can simply do what Sushi Yasuda has done.</p>
+      <p>A well-known Midtown sushi restaurant with a distinctive clientele has advantages that a neighborhood diner, family Mexican restaurant or sports bar does not. Its customers may be more willing to accept a cultural explanation, a higher check average and a formal no-tipping policy. In a more price-sensitive setting, a 20 percent increase on the menu can look like a price hike even when the final bill is unchanged. Customers compare menu prices before they compare all-in costs.</p>
+      <p>There is also the problem of coordination. If one restaurant pays full wages and builds service into prices while its competitors keep lower menu prices and rely on tips, the reformer may look expensive. The same dynamic traps many decent employers: they can improve conditions only to a point before the market punishes them. That is not an argument against change; it is an argument for policy.</p>
+      <p>The federal tipped minimum wage of $2.13 an hour is indefensible. Raising it would do more for restaurant workers than asking a handful of individual owners to redesign American dining culture one menu at a time. Stronger enforcement of wage laws, clearer rules on service charges, and more transparent tip pooling would also help. If society wants restaurant workers to have stable incomes, society should not leave the matter entirely to voluntary experiments by high-end establishments.</p>
+      <p>Still, experiments matter. Sushi Yasuda may help customers understand that service has always been part of the cost of a meal. Other restaurants should watch carefully: What happens to staff income? Turnover? Customer satisfaction? Repeat business? The goal should be neither nostalgia for tipping nor romantic faith in service charges. It should be a compensation system that works for workers, customers and businesses. Getting there will require more than a note at the bottom of the bill.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The debate should not be framed as tipping versus no tipping. The real question is whether tips should be allowed to substitute for wages. They should not.</p>
+      <p>There is nothing inherently wrong with a customer leaving extra money for especially good service. Voluntary gratitude can be pleasant, and in some settings it is deeply embedded in American habits. The injustice begins when that voluntary gesture becomes the foundation of a worker’s paycheck. A server should earn at least the ordinary minimum wage from the employer before a single tip is counted. Tips, if they exist, should be additional compensation.</p>
+      <p>That reform would preserve what many diners and workers like about tipping while eliminating its worst feature: insecurity. Under the current tipped-wage system, workers depend on customer behavior to reach a basic wage floor. Slow nights, bad sections, bad weather and biased customers all become labor-market events. The law says employers must make up the difference if tips fall short, but workers in low-wage industries are not always in a position to demand perfect compliance.</p>
+      <p>A service-charge model like Sushi Yasuda’s may solve this in one elegant way, but it raises its own questions. Who gets the money? Is it shared with bussers, runners and kitchen staff? Are former tipped workers actually earning as much as before? If a restaurant says “no gratuities,” customers may feel relieved, while workers may quietly lose bargaining power.</p>
+      <p>So yes, restaurants should be free to adopt service-included pricing if they commit to fair, transparent wages. But the broader reform should be legal: end the subminimum tipped wage. Once all servers and bartenders receive a real base wage, tipping can become what many people mistakenly think it already is — a bonus for service, not a lifeline.</p>
+      <p>That compromise is also more realistic. Americans are unlikely to abandon tipping overnight, especially in bars, taxis and casual restaurants. But we can stop using custom as an excuse for a two-tier wage system. Keep the tip jar if you must. Just do not build the payroll around it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Restaurants and bars should move away from tipping because the current system is bad not only for workers, but also for customers. It turns the end of a meal into a small social negotiation: How much is enough? Was the service bad, or was the kitchen overwhelmed? Do I tip on tax? What if the wine was expensive? What if the server hovered, disappeared, smiled, failed to smile? A practice defended as personal choice often feels more like compulsory etiquette with a math quiz attached.</p>
+      <p>The apparent freedom is mostly illusion. In most American restaurants, a decent person understands that tipping around 15 to 20 percent is expected. If it is expected, it should be priced in. We do not improve markets by hiding part of the cost until the end and calling it discretion. Clear prices are better prices.</p>
+      <p>Service-included pricing would also make restaurants more honest competitors. Today one restaurant can look cheaper than another because its labor cost is partly outsourced to the customer’s conscience. A no-tipping restaurant says: here is what the meal costs, including the people who welcome you, bring it, clear it and make the evening work. That is a more transparent transaction.</p>
+      <p>Bars may be harder to change, because tipping is tied to speed, recognition and regular-customer rituals. But the same principle applies. Bartenders should not have to rely on a pile of singles to know whether the night was worth working. A properly priced drink should include the labor of making and serving it.</p>
+      <p>The transition will require care. Restaurants should tell customers that prices have risen because service is included, not because owners are pocketing a hidden fee. They should publish or at least clearly explain their compensation policy to staff. And they should resist the worst hybrid: a service charge followed by a blank tip line, which merely adds guilt to confusion.</p>
+      <p>Sushi Yasuda’s policy feels unusual because American diners are used to ritualized underpricing. But unusual is not the same as wrong. The final bill should not be a moral test. It should be a bill.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The tipping system in American restaurants is a historical relic that deserves to die. Sushi Yasuda&#x27;s decision to eliminate gratuities represents the kind of principled innovation that the restaurant industry desperately needs. When servers are dependent on tips for their income, we create a bizarre dynamic where customers effectively become bosses, judging and rewarding workers based on subjective criteria that often reflect bias rather than quality of service.</p>
+      <p>Consider the evidence: numerous studies have shown that tips correlate more with customer demographics—including race and gender—than with the actual quality of food or service. A server&#x27;s income shouldn&#x27;t fluctuate based on whether a customer finds them attractive or shares their background. By building fair wages into menu prices, restaurants create stability and dignity for their workers while eliminating an inherently discriminatory compensation structure.</p>
+      <p>From a consumer standpoint, the transparency alone is valuable. The current system obscures the true cost of dining, with service charges varying unpredictably based on factors customers often can&#x27;t control. Knowing upfront exactly what a meal will cost—with no awkward calculation at the end—makes for a cleaner, more honest transaction.</p>
+      <p>Critics will argue that tipping incentivizes excellent service, but this assumes customers are qualified judges of kitchen operations, which they rarely are. Quality control should rest with management, not with diners who know nothing about food preparation times or kitchen complexity. A flat service fee included in prices allows restaurants to reward high performers through proper performance reviews, not arbitrary pocket change.</p>
+      <p>The restaurant industry has resisted meaningful reform for too long. Other establishments should recognize that Sushi Yasuda&#x27;s model isn&#x27;t radical—it&#x27;s simply more honest about what dining actually costs.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>Sushi Yasuda&#x27;s no-tip policy may work for a high-end sushi establishment serving a specific clientele, but applying this model broadly would be a disaster for the American restaurant industry and the workers it employs.</p>
+      <p>The uncomfortable truth is that most restaurants operate on razor-thin margins. If mandatory service charges replace tips, either menu prices skyrocket—pricing out middle-class diners—or restaurants absorb costs they can&#x27;t afford, leading to layoffs and closures. The economics simply don&#x27;t work for most establishments.</p>
+      <p>More critically, removing tipping dismantles a system that, whatever its flaws, actually empowers servers to earn significantly more than minimum wage. In cities like New York, experienced servers at busy restaurants can earn $50,000 or more annually through tips. Under a fixed wage model, even if employers technically raise base pay to compensate, the bureaucracy of collective bargaining and corporate pricing structures would likely result in lower take-home pay for workers.</p>
+      <p>There&#x27;s also something valuable about the direct connection between service quality and compensation. When a server knows their income depends on customer satisfaction, they have genuine incentive to excel. A flat service fee, by contrast, pays the attentive server the same as the inattentive one.</p>
+      <p>Finally, tipping respects consumer sovereignty. Americans generally prefer having control over how much they pay for service. Removing this choice imposes a one-size-fits-all model that treats adults like children who can&#x27;t be trusted to make appropriate judgments about quality.</p>
+      <p>Let Sushi Yasuda serve its upscale clientele as it sees fit. But the broader restaurant industry should recognize that tipping, for all its quirks, serves important economic and social functions that aren&#x27;t easily replaced.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The debate over tipping versus inclusive pricing misses the real issue: what matters is whether restaurant workers receive fair, stable compensation. The mechanism matters less than the outcome.</p>
+      <p>In theory, eliminating tipping and raising base wages sounds progressive. Workers gain predictable income; customers pay transparent prices; discrimination based on customer bias diminishes. These are genuine benefits.</p>
+      <p>But we shouldn&#x27;t romanticize the transition. Many restaurant owners, particularly independent establishments outside major cities, cannot simply raise prices and maintain customer traffic. The reality is that customers in 2013 are price-sensitive, and significant menu increases would push them toward cheaper alternatives. The result? Reduced dining-out overall, fewer restaurant jobs, and economic contraction in an industry that employs millions.</p>
+      <p>A more pragmatic approach might involve hybrid models: restaurants could implement service charges while communicating clearly about how those charges benefit workers, rather than hiding behind optional gratuities. Some establishments have experimented with service charges that go entirely to staff, distributed through transparent systems. This preserves some flexibility while reducing the most egregious aspects of tip-based discrimination.</p>
+      <p>We should also acknowledge that tipping serves important signaling functions. When a customer tips well, it communicates genuine satisfaction; when they tip poorly, that also communicates something. Managers can observe these patterns and address problems. A flat service fee eliminates these valuable feedback mechanisms.</p>
+      <p>Rather than demanding universal adoption of Sushi Yasuda&#x27;s model, we should encourage innovation and experimentation while respecting that different restaurants serve different markets. The goal is worker welfare, not ideological purity about compensation structures.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>I spent ten years as a server in restaurants ranging from dive bars to fine dining establishments, and I can tell you: most servers don&#x27;t want to eliminate tipping.</p>
+      <p>The restaurant industry&#x27;s wage structure is genuinely broken, but tipping isn&#x27;t the villain. Poverty-level server wages mandated by the tipped minimum wage are the problem. Currently, federal law allows employers to pay servers as little as $2.13 per hour, counting on tips to reach minimum wage. This creates a system where workers bear enormous financial risk and where employer accountability disappears.</p>
+      <p>The solution isn&#x27;t eliminating tips—it&#x27;s raising the tipped minimum wage to a living standard and enforcing it. If every server automatically earned $12 or $15 per hour regardless of shift quality, we could eliminate the most exploitative aspects of the current system while preserving the earning potential that makes restaurant work worthwhile for experienced servers.</p>
+      <p>Here&#x27;s what I observed repeatedly: good servers at busy restaurants earned substantially more than kitchen staff or managers. This reflects the market reality that good service is genuinely valuable. Eliminating tips doesn&#x27;t liberate servers—it strips them of a compensation mechanism that often worked to their advantage.</p>
+      <p>As for discrimination in tipping, yes, it exists. But eliminating tips doesn&#x27;t eliminate discrimination—it just changes who does the discriminating. Now it&#x27;s managers making hiring and scheduling decisions, and research shows managers can be just as biased as customers.</p>
+      <p>The real villains are restaurant owners who exploit the tipped minimum wage, not the tipping system itself. We should demand fair wages and enforcement, not a wholesale restructuring that might benefit some workers while harming others.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>Cultural context matters enormously in this debate, and Americans should examine their assumptions more carefully.</p>
+      <p>Tipping in America emerged from post-Civil War labor practices specifically designed to avoid paying freed slaves fairly. The tradition was explicitly racist in origin, with restaurant owners arguing that formerly enslaved people would work harder if their compensation depended on white customers&#x27; goodwill. We inherit this system not because it&#x27;s efficient or fair, but because of historical momentum and employer convenience.</p>
+      <p>Meanwhile, Japan—where Sushi Yasuda&#x27;s owners clearly drew inspiration—has a fundamentally different cultural approach to service. Japanese restaurant workers typically receive comprehensive training, career-track employment, and social respect for their craft. Service is understood as professional duty, not performance for optional compensation. This is the correct model.</p>
+      <p>For American diners who resist change, consider: would you tip your doctor? Your accountant? Your child&#x27;s teacher? We don&#x27;t tip professionals in other industries because we understand their compensation should be fair and predictable, negotiated between employer and employee rather than crowdsourced from customers. Why should restaurant work be different?</p>
+      <p>The Sushi Yasuda model represents cultural maturity. It treats service staff as professionals deserving of stable employment rather than supplicants dependent on customer generosity. Other restaurants should follow this lead not because economics force them to, but because it&#x27;s the ethical thing to do.</p>
+      <p>Will the transition be easy? No. Will some customers resist? Certainly. But cultural practices can and should change when they rest on questionable foundations. Tipping is neither efficient nor dignified; it&#x27;s simply familiar. And familiarity alone is not a defense.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>The Sushi Yasuda announcement is clever marketing disguised as policy reform. Let&#x27;s be honest: an exclusive Manhattan sushi restaurant catering to wealthy customers can experiment with no-tip policies because its clientele has money to spend and novelty to appreciate. This tells us almost nothing about what would work for the Olive Garden, the local Chinese buffet, or the neighborhood diner that most Americans actually frequent.</p>
+      <p>Real restaurant reform requires addressing real economic realities. The National Restaurant Association estimates that nearly half of American restaurant workers receive tips, and the industry employs approximately 12 million people. Any policy change affecting this workforce must account for the vast diversity of establishments, from food trucks to five-star establishments, from rural diners to urban chains.</p>
+      <p>What would actually help? Mandatory minimum wage floors for tipped workers with no tip credit. Aggressive enforcement against employers who steal tips or fail to pay legally required minimums. Portable benefits that follow workers across employers. These concrete measures address worker welfare without requiring expensive menu restructurings that smaller establishments cannot absorb.</p>
+      <p>The fetishization of single-model solutions—whether all-tipping or no-tipping—distracts from the complicated policy work that would actually help restaurant workers. We should be suspicious of simple answers to complex economic problems, regardless of how progressive they sound.</p>
+      <p>Sushi Yasuda can do whatever it wants. But let&#x27;s not pretend that a luxury restaurant&#x27;s staffing experiment provides a blueprint for an industry employing one in ten Americans. Real reform requires granular, enforceable, widely applicable policies—not gestures that look good in a New York Times Room for Debate feature.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

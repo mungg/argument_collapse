@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While Breznitz correctly identifies diverse stages of innova... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_innovation_2.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_innovation_2.html">What Silicon Valley Gets Wrong about Innovation</a> · Cluster 1 of 40</div>
+  <h1 class="arg-title">"While Breznitz correctly identifies diverse stages of innovation beyond the Silicon Valley model, his framework lacks a practical political and economic strategy for how communities can actually build the social and institutional infrastructure required to succeed."</h1>
+  <div class="arg-meta">2 human · 5 LLM · 7 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Josh Whitford</span>
+        </div>
+        <p class="essay-quote">"While Breznitz correctly identifies diverse stages of innovation beyond the Silicon Valley model, his framework lacks a practical political and economic strategy for how communities can actually build the social and institutional infrastructure required to succeed."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/120012-2/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">The success of global innovation hubs like Taiwan depends on firms &#x27;starring in their roles&#x27; by complementing rather than competing with established comparative advantages.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Identifying diverse innovation paths is insufficient without addressing the political difficulty of generating the will to invest in &#x27;social infrastructure&#x27; over traditional physical infrastructure.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Achieving inclusive prosperity requires moving beyond fixing &#x27;market failures&#x27; to addressing &#x27;network failures&#x27; by fostering collaborative relationships between public and private stakeholders.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Effective innovation policy requires empowering &#x27;street-level bureaucrats&#x27; with the discretion to blur public-private boundaries and build genuine industrial communities.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Ben Armstrong</span>
+        </div>
+        <p class="essay-quote">"Successful regional innovation depends less on replicating the Silicon Valley model and more on how local ecosystem organizations balance the specific needs of private firms with broader community interests."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/what-silicon-valley-gets-wrong-about-innovation/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Struggling regions often fail because they attempt to attract high-tech startups and large firms without first cultivating the necessary skilled labor and technical infrastructure.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Relying too heavily on organizations focused on serving specific dominant firms risks economic stagnation if those particular industries or companies decline.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Narrowly targeting specific industries for investment can blind regional leaders to unexpected long-term innovation opportunities in emerging domains.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">The most effective innovation ecosystems are those that integrate the technical expertise of industry-focused groups with the public-service missions of universities and community colleges.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Successful regional development requires leadership that can align private sector demands for specialized skills and technology with public mandates for broad career opportunities and tax base growth.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While Breznitz correctly identifies that cities should pursue diverse stages of innovation beyond the Silicon Valley model, his framework overlooks the institutional, political, and labor-market structures required to actually achieve inclusive prosperity."</p>
+        <button class="essay-view-full" data-target="full-1-43520">View full essay</button>
+        <div class="essay-full" id="full-1-43520" style="display:none;">
+            <p>Breznitz&#x27;s essay performs a valuable service by puncturing the cargo-cult mentality that has gripped local economic development since the 1990s. Walk into almost any mayor&#x27;s office from Columbus to Cairo and you will find the same PowerPoint slides: incubators, accelerators, &quot;innovation districts,&quot; tax breaks for venture capital, a science park named after some local notable. The implicit theory is that if you assemble enough of the visible furniture of Silicon Valley, the magic that produced Google and Facebook will somehow materialize. Breznitz is right that this almost never works, and that even when something like it does work—as in Israel—the social results are often dismaying.</p>
+            <p>Where I want to push back, or at least complicate, is in three areas: the cleanness of the four-stage taxonomy, the political economy of choosing a stage, and the question of what the Silicon Valley model actually is.</p>
+            <p>First, the four stages. Breznitz presents Shimano, Giant, MediaTek, Brenta footwear, and Shenzhen assembly as exemplars of distinct innovational &quot;stages,&quot; each capable of supporting inclusive prosperity if cultivated correctly. The framework is illuminating as a corrective—it forces us to see that Apple&#x27;s industrial designers and TSMC&#x27;s process engineers and Foxconn&#x27;s logistics planners are all doing innovation, not merely executing on Cupertino&#x27;s ideas. But in practice these stages bleed into one another. Giant did not stay a stage-three improver; its work on carbon fiber frames is, by any reasonable definition, novel product development. MediaTek&#x27;s reference designs are arguably as inventive as anything Qualcomm produces. The Pearl River Delta&#x27;s &quot;stage four&quot; prowess increasingly drives stage-one decisions upstream, because firms like DJI emerged precisely because Shenzhen&#x27;s assembly ecosystem made it cheap to iterate on drone prototypes. The danger of a four-stage taxonomy is that policymakers, who love nothing more than a checklist, may treat the stages as discrete bins to be chosen between rather than as overlapping capabilities that reinforce each other.</p>
+            <p>Second, the political economy. Breznitz is admirably blunt that to excel at one stage you must forgo others, and that public-private leadership is required to make these choices. But the essay is curiously quiet about who, in a place like Youngstown or Saint-Étienne, is supposed to do the choosing. Taiwan&#x27;s Industrial Technology Research Institute, the Israeli Innovation Authority, and the Brenta footwear consortium are products of unusual institutional histories: developmental states emerging from existential security threats, regional craft traditions with centuries of accumulated tacit knowledge, post-authoritarian industrial planning capacity. When American cities try to copy these models, they typically run into the same problem they encountered with Silicon Valley emulation—you cannot conjure the institutional substrate by force of will. The U.S. lacks a national innovation agency on the ITRI model; its community colleges are starved of operating funds; its industrial extension service (the Manufacturing Extension Partnership) operates on a budget that would embarrass a mid-sized Taiwanese ministry. Telling Cleveland to &quot;become a stage-three hub&quot; without addressing this institutional deficit risks producing yet another round of disappointment.</p>
+            <p>Third, on what Silicon Valley actually is. Breznitz frames the Valley as a stage-one VC-and-exit machine, and for the post-1995 Valley this is largely accurate. But the deeper history is more interesting and more supportive of Breznitz&#x27;s own argument than he acknowledges. The Valley that produced Fairchild, Intel, Hewlett-Packard, and even the early Apple was itself a stage-two-and-three hub: it had fabs, it had production engineering, it had thousands of mid-skill manufacturing jobs, and it had massive sustained public investment via Defense Department procurement. The thing we now call &quot;Silicon Valley&quot;—an asset-light, software-and-finance complex producing extreme inequality—is what the original Silicon Valley turned into after it offshored its production capacity. So the cautionary tale is not just &quot;don&#x27;t copy Silicon Valley&quot;; it is &quot;don&#x27;t let your successful stage-one cluster hollow out its connections to the other stages,&quot; which is exactly what Schwinn did and what the U.S. semiconductor industry mostly did before TSMC&#x27;s belated invitation to Arizona.</p>
+            <p>This sharpens Breznitz&#x27;s policy conclusions in a useful way. The &quot;tech teens&quot; argument is the strongest part of the essay, and it deserves more emphasis than it gets. Companies in the five-to-fifteen-year range, with revenue, real customers, and local roots, are systematically underserved by both public policy and private capital, which are calibrated to the bimodal distribution of seed-stage moonshots and Fortune 500 giants. The Small Business Innovation Research program, the Manufacturing Extension Partnership, and procurement-based instruments like Operation Warp Speed are tools that can be expanded without waiting for Washington to develop ITRI-grade planning capacity. They are the kind of unglamorous instruments that Breznitz&#x27;s argument actually calls for.</p>
+            <p>One last note: Breznitz says little about the labor side of inclusive prosperity. Taiwan and Germany sustain mid-skill jobs not only through stage-three innovation but through vocational training systems, sectoral wage bargaining, and labor-market institutions that the United States has largely dismantled. A community that becomes a stage-three hub without union density or wage standards will discover that &quot;good jobs at all skill levels&quot; do not automatically follow from innovation capacity. Innovation policy and labor policy must be designed together, or the inclusive part of inclusive prosperity will once again go missing.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The four-stage innovation taxonomy is overly rigid because in practice these stages overlap and reinforce one another rather than acting as discrete categories.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Successful innovation hubs like Taiwan or Brenta rely on deep-seated institutional histories and public-sector capacities that cannot be easily replicated by struggling American cities.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The modern Silicon Valley model is a cautionary tale of what happens when a successful innovation cluster offshores its production and hallows out its connections to other stages of development.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Focusing on &#x27;tech teens&#x27; and existing unglamorous policy tools like procurement and industrial extension is more practical than attempting to build new national innovation agencies.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Innovation capacity alone does not guarantee inclusive prosperity without supporting labor-market institutions like vocational training and sectoral wage bargaining.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While disaggregating innovation into different stages is a useful framework, achieving inclusive prosperity requires moving beyond technical innovation models to implement a political economy that actively protects workers and prevents wealth extraction."</p>
+        <button class="essay-view-full" data-target="full-1-89843">View full essay</button>
+        <div class="essay-full" id="full-1-89843" style="display:none;">
+            <p>Dan Breznitz is right to insist that innovation is not synonymous with venture-backed invention, and that the Silicon Valley model is a poor guide for places seeking broad-based prosperity. In fact, the most useful part of his argument is not the criticism of Silicon Valley itself, which many people now share, but the disaggregation of innovation into different stages. Once we see innovation as design, engineering, production, maintenance, scaling, and continuous improvement—not only as the launch of a new platform or app—we can begin to imagine economic strategies that are less glamorous but more democratic.</p>
+            <p>Still, the hardest question is not whether there are many forms of innovation. There are. The harder question is how to make any of them inclusive under contemporary capitalism. The danger is that policymakers will replace one fetish with another: instead of fetishizing startups and venture capital, they may fetishize “advanced manufacturing,” “clusters,” “supply chains,” or “ecosystems” without confronting the institutions that determine who captures the gains. A region can be innovative in production and still generate precarious work, low wages, environmental damage, and political dependency. The lesson to draw from Silicon Valley’s failures is not simply that we should innovate at other stages of production. It is that innovation policy must be joined to labor policy, social policy, competition policy, and democratic planning.</p>
+            <p>Consider Silicon Valley itself. Its early history was not only a story of entrepreneurs and venture capitalists; it was also a story of federal procurement, Cold War spending, university research, immigration policy, and a dense regional labor market. Public money helped create the technological base, while private firms captured much of the upside. Over time, as the region shifted toward software platforms, network effects, intellectual property, and financialized exits, the distance between winners and everyone else widened. Housing costs exploded, service workers were pushed into punishing commutes, and local governments competed to host firms whose tax strategies often minimized their local contribution. The problem was not innovation as such. The problem was a political economy that allowed innovation to become a mechanism for extraction.</p>
+            <p>That same risk exists in the alternative models Breznitz describes. Taiwan’s semiconductor ecosystem is rightly admired, and the United States has much to learn from it. But the lesson is not simply “build fabs.” Semiconductor production requires enormous capital investment, patient coordination, technical training, supplier depth, and reliable demand. It also requires decisions about water, energy, land use, and the distribution of public subsidies. If the United States pays foreign or domestic firms billions of dollars to locate plants in Arizona, Ohio, or Texas without demanding strong labor standards, technology diffusion, supplier development, and local training, it may get impressive facilities without durable regional prosperity. A fab can be a cathedral in the desert unless it is embedded in a broader institutional system.</p>
+            <p>The same is true of stage four production and assembly. Shenzhen’s rise is one of the most important economic stories of the last forty years. Its capacity to prototype, source, assemble, and scale at astonishing speed is a genuine form of innovation. But the Pearl River Delta also grew through migrant labor systems, long hours, dormitory work regimes, and environmental costs that should not be treated as incidental. To call production innovation “inclusive” because it employs millions risks setting the bar too low. Employment matters enormously, especially compared with jobless growth. But inclusion must also mean voice, mobility, safety, bargaining power, and the ability to build a stable life.</p>
+            <p>This point matters for American regions trying to recover from deindustrialization. Many communities do not just lack startups; they lack institutional power. They have lost anchor firms, union density, vocational systems, local banks, technical schools, and the civic associations that once connected business decisions to community welfare. When a city or state chases the next big employer with tax abatements, it is often negotiating from desperation. The resulting jobs may be better than nothing, but they rarely rebuild the local capacity to shape economic development. Amazon’s HQ2 competition was an extreme example of this dynamic, but smaller versions happen constantly. Public officials offer subsidies; firms promise jobs; the public receives little guarantee of long-term commitment.</p>
+            <p>Breznitz’s emphasis on “tech teens” is therefore especially promising. Firms that are past the fragile startup phase but not yet dominant are often more rooted in place and more likely to need exactly the kinds of public goods that governments can provide: testing facilities, export assistance, workforce training, procurement contracts, and help meeting regulatory standards. Operation Warp Speed’s support for vaccine-related manufacturing showed that public procurement can do more than buy finished goods; it can create capabilities. The same principle could apply to heat pumps, grid equipment, batteries, medical supplies, public transit, building retrofits, and low-carbon industrial materials. Decarbonization is not merely an environmental imperative. It is a chance to organize demand for useful production.</p>
+            <p>But public support should come with public obligations. If taxpayers help firms scale, taxpayers should not merely hope that benefits trickle down. Contracts can require domestic or regional production where appropriate, prevailing wages, apprenticeship programs, neutrality toward union organizing, profit-sharing, limits on stock buybacks, and commitments to local supplier development. Public equity stakes or revenue-sharing arrangements may also be justified when the state assumes major technological or market risk. This is not hostility to business. It is recognition that innovation is collective, and that collective investment should produce collective returns.</p>
+            <p>The United States has some institutional models to build on. Community colleges, land-grant universities, manufacturing extension partnerships, national laboratories, and sectoral training initiatives can all support non-Silicon Valley innovation. Germany’s Fraunhofer Institutes are often invoked for a reason: they help translate research into industrial capability, especially for small and medium-size firms. The American Manufacturing USA institutes created over the last decade point in a similar direction, though they remain too small relative to the scale of the challenge. The problem is not an absence of examples; it is the weakness and fragmentation of the American developmental state.</p>
+            <p>A further challenge is that local strategy cannot be purely local. Breznitz’s examples are place-based, but they succeed in relation to national and global systems. Taiwan’s achievements depended on national industrial policy, export discipline, public research institutions, and geopolitical positioning. Italian industrial districts depended on craft traditions, regional institutions, and access to high-value European markets. Israeli high tech depended on military research, immigration, and deep integration with U.S. capital markets. Local leaders matter, but they cannot overcome every macroeconomic force. Exchange rates, trade rules, antitrust enforcement, health care costs, infrastructure, and federal research spending all shape what localities can plausibly do.</p>
+            <p>This is especially important because globalization did not merely “open entry points”; it also created hierarchies. Lead firms often control branding, standards, data, customer relationships, and intellectual property, while suppliers compete on thinner margins. A region specializing in production engineering or components may do well, but it may also become vulnerable to the purchasing power of dominant multinationals. Apple’s supply chain, for example, contains extraordinary manufacturing knowledge, but Apple captures a disproportionate share of profits because it controls design, software, brand, and ecosystem. Any strategy focused on middle stages of innovation must ask how local firms will avoid being permanently squeezed.</p>
+            <p>That brings us back to competition policy. If a small number of platform companies, pharmaceutical giants, agribusiness firms, or defense contractors dominate markets, local innovation ecosystems will struggle to flourish independently. Antitrust enforcement, open standards, interoperability, limits on exclusionary contracting, and public options in key sectors can all create space for smaller firms and regions. Innovation policy without competition policy may simply subsidize future acquisition targets for incumbents.</p>
+            <p>The most attractive vision in Breznitz’s essay is of innovation as a collective civic project. That vision is badly needed. For too long, American economic development has oscillated between two inadequate models: laissez-faire faith that entrepreneurs will save us, and subsidy-driven recruitment of footloose corporations. Neither builds the thick local capacities required for shared prosperity. Communities need institutions that can diagnose their strengths, coordinate investment, train workers, share technical knowledge, and adapt over time. They need patience, because capabilities accumulate slowly. And they need humility, because not every place can or should pursue the same niche.</p>
+            <p>Yet humility should not become resignation. The pandemic exposed the fragility of supply chains built only for cost minimization. It revealed shortages in masks, testing supplies, ventilator components, pharmaceutical inputs, and semiconductors. It also showed that government can move quickly when it chooses to: funding research, guaranteeing markets, coordinating production, and absorbing risk. The question now is whether that emergency capacity can be turned into a durable democratic capacity.</p>
+            <p>Silicon Valley’s greatest error was not that it celebrated invention. Invention is necessary and often magnificent. Its error was to present one narrow, financialized version of invention as the whole of innovation and then to confuse private fortunes with public success. A better innovation politics would value the machinist improving a production process, the nurse helping redesign care delivery, the engineer making batteries safer, the technician maintaining a water system, and the small manufacturer adapting a component for a new use. But valuing them rhetorically is not enough. We must build institutions that give them power, security, and a share of the gains.</p>
+            <p>The future of inclusive prosperity will not be found by copying Silicon Valley, but neither will it be found by copying Taiwan, Germany, Italy, Israel, or Shenzhen wholesale. It will require communities to discover where they can contribute to solving real problems—and governments willing to make markets, discipline capital, and protect workers. Innovation can be a road out of Cobalt. But only politics can decide who gets to travel that road, who pays the tolls, and who owns what is built along the way.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Innovation at any stage of production can still result in precarious work and inequality if it is not governed by robust labor, social, and competition policies.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The failure of the Silicon Valley model is rooted in a political economy that allowed public investments to be captured for private extraction rather than public gain.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Alternative innovation models, such as those in Taiwan or Shenzhen, carry their own risks of exploitation and environmental damage unless they are embedded in broader institutional systems that prioritize democratic planning.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Public support for &#x27;tech teens&#x27; and regional industries should be contingent on public obligations, such as prevailing wages, union neutrality, and local supplier development.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Local innovation strategies cannot succeed in isolation; they require national-level support through antitrust enforcement, trade rules, and a stronger developmental state to prevent local firms from being squeezed by dominant multinationals.</span></li>
+              <li class="src-v"><span class="num">06</span><span class="sub-text">Inclusive prosperity depends on building thick local capacities and civic institutions that give workers and communities the power to shape economic development and share in its rewards.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While Breznitz correctly identifies diverse stages of innovation beyond the Silicon Valley model, his proposal fails to account for the deep-seated political and institutional barriers that prevent policymakers from adopting these alternative strategies."</p>
+        <button class="essay-view-full" data-target="full-1-22294">View full essay</button>
+        <div class="essay-full" id="full-1-22294" style="display:none;">
+            <p>The Stages Are Right, the Politics Are Missing</p>
+            <p>Dan Breznitz has done the field of economic development a real service by offering a vocabulary—novelty, design, second-generation, production—that lets us escape the suffocating monoculture of &quot;be the next Silicon Valley.&quot; His Taiwanese and Italian examples are genuinely illuminating, and the contrast between Giant and Schwinn ought to be taught in every business school that still treats outsourcing as an unmitigated good. But I want to register a worry: Breznitz writes as though the central problem is intellectual, a matter of policymakers being seduced by the wrong model. I think the problem is mostly political, and that any serious effort to implement his program will run into obstacles he largely sidesteps.</p>
+            <p>Consider the politics of &quot;tech teens.&quot; Breznitz is right that five-to-fifteen-year-old firms with fifty employees are the workhorses of local economies, and right that they sit in a blind spot between venture capital and corporate-incentive packages. But why is that blind spot there? It is not because nobody noticed. It is because the political economy of state and local development policy rewards visible, photogenic interventions: ribbon-cuttings at new Amazon HQ2s, splashy &quot;innovation district&quot; launches, science parks named after sitting governors. A program that quietly capitalizes a hundred mid-sized firms over a decade generates no such payoff for the politicians who fund it. Foxconn in Wisconsin was a fiasco on the merits, but it made perfect political sense. Until we change the incentives facing elected officials, the Cobalt-style boondoggles will keep happening regardless of how persuasive Breznitz&#x27;s taxonomy is.</p>
+            <p>A related problem: Breznitz&#x27;s most successful cases—Taiwan, the Italian industrial districts, Japan&#x27;s component giants—all rest on institutional substrates that took decades to build and that involved degrees of state coordination American polities find culturally hard to accept. The Industrial Technology Research Institute did not appear because someone in Taipei read a good policy memo. It is the product of a developmental state with a particular history, a particular relationship between bureaucratic elites and industry, and a particular tolerance for picking winners. The Brenta shoe cluster reflects centuries of accumulated craft knowledge plus a postwar Italian regional politics of small-firm cooperation that, frankly, we do not have. Telling Cleveland to become Brenta is only marginally less utopian than telling it to become Palo Alto.</p>
+            <p>I also think Breznitz lets his enthusiasm for stages two through four make stage one sound easier to dispense with than it really is. Yes, novelty is overrated in popular discourse. But novelty is also where the largest rents accrue, and a country that does only second-generation innovation eventually finds itself paying license fees and IP royalties to the country that does the first. Taiwan is a magnificent example of stage three excellence, but it is also a country whose semiconductor preeminence rests on ASML in the Netherlands and on tools and IP from the United States. The strategy works, but it works within a global division of labor that depends on someone doing the front-end work. The United States&#x27;s mistake was not pursuing stage one innovation; it was pursuing stage one innovation while letting stages two through four atrophy. Both/and, not either/or.</p>
+            <p>The deepest tension in the essay, though, concerns inequality. Breznitz uses Israel to show that VC-led stage one growth produces inequality, and Taiwan to show that stage three growth produces broad-based prosperity. Fair enough as a first cut. But Taiwan&#x27;s relative equality also reflects high union density in certain sectors, an aggressive land reform in the late 1940s and 1950s, near-universal health care, and a labor market structure quite unlike the American one. Even if Cleveland successfully reinvented itself as a stage three hub tomorrow, the resulting good jobs would land in a labor market with weak unions, employer-tied insurance, and dramatic regional cost-of-living differentials. The same production strategy can yield very different distributional outcomes depending on the surrounding institutions. Innovation policy is necessary but nowhere near sufficient for inclusive prosperity.</p>
+            <p>None of this is to dismiss the argument. I think Breznitz is right that the menu of innovation strategies is broader than the Valley evangelists admit, right that incremental innovation is undersung, and right that public-private R&amp;D ecosystems of the Taiwanese kind deserve emulation. What I want to add is that the binding constraints on adopting his program are political and institutional, not cognitive. Policymakers don&#x27;t pursue the Silicon Valley dream because they haven&#x27;t heard of the alternatives. They pursue it because it offers them political cover, because the donor class wants it, and because the institutional capacities needed for the alternatives have been allowed to wither. Rebuilding those capacities—public R&amp;D agencies with real autonomy, vocational education systems with industry buy-in, financing instruments that reward patient growth—is a generation-long project.</p>
+            <p>So I would amend Breznitz&#x27;s conclusion. Yes, we have more choices than Silicon Valley evangelists admit. But choices require choosers, and the choosers in American local economic policy are operating in a system that systematically discourages the very strategies Breznitz recommends. The essay&#x27;s policy advice is excellent. The political theory needed to make it stick is the next book.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The political economy of local development favors high-profile, photogenic projects like &#x27;innovation districts&#x27; over the quiet, long-term capitalization of mid-sized &#x27;tech teen&#x27; firms.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Successful international models like Taiwan and Italy rely on decades of state coordination and cultural institutional substrates that are currently absent in the American context.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Stage-one innovation remains essential because it is where the highest economic rents and intellectual property control accrue, meaning it must be pursued alongside other stages rather than replaced by them.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Inclusive prosperity is determined more by labor market institutions, such as unions and universal healthcare, than by the specific stage of innovation a region pursues.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The failure to adopt diverse innovation strategies is a result of misaligned political incentives and withered public capacity rather than a simple lack of intellectual alternatives.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While Breznitz correctly identifies the flaws of the Silicon Valley model, his proposed four-stage framework underestimates the immense difficulty of deliberately cultivating specific innovation capabilities and ignores the political and economic barriers to implementing alternative models."</p>
+        <button class="essay-view-full" data-target="full-1-59388">View full essay</button>
+        <div class="essay-full" id="full-1-59388" style="display:none;">
+            <p>Breznitz is right that the Silicon Valley model has been oversold to local policymakers. But in correcting one set of myths, he risks constructing another. His four-stage framework is analytically elegant, yet it understates how difficult it is for any community to deliberately cultivate stage-specific capabilities, and it glosses over what may be the real obstacle to inclusive innovation: not the absence of better models, but the political economy that makes those models so hard to implement.</p>
+            <p>The Israel example is compelling but not entirely fair. By 2021, Israel had achieved remarkable things beyond high-tech prosperity. Its start-up density per capita remained the highest in the world, and companies like Mobileye and Jerusalem&#x27;s own tech ecosystem had created genuine wealth. The inequality is real, but so are the tens of thousands of middle-class jobs in cybersecurity, biotech, and enterprise software that didn&#x27;t exist in 1968. Breznitz frames Israel&#x27;s trajectory as a cautionary tale, yet the country navigated from a post-socialist economic backwater to a global innovation powerhouse in a single generation. That is not nothing, even if the distribution of its benefits was uneven.</p>
+            <p>The more interesting question is whether Taiwan&#x27;s model is actually exportable. Breznitz presents it as a paradigm to emulate, but Taiwan&#x27;s success in stages two and three emerged from highly specific conditions: a government that made industrial policy a national priority for decades, a geographic position that made it indispensable to global supply chains during the Cold War, and a society that invested heavily in technical education before the high-tech boom. The Industrial Technology Research Institute was not created in a vacuum; it reflected a state-led development philosophy rooted in Taiwan&#x27;s particular circumstances. Other regions have tried similar approaches—Brazil&#x27;s attempt to build a domestic aircraft industry through Embraer, South Korea&#x27;s cultivation of Samsung and Hyundai—with mixed results. The lesson may be less &quot;follow Taiwan&#x27;s stages&quot; and more &quot;understand your specific position in global networks and build from there.&quot;</p>
+            <p>More fundamentally, the four-stage framework assumes a clarity of strategic choice that most local economies do not possess. Breznitz argues that communities should &quot;foster particular capacities—to the exclusion of others.&quot; But this implies a degree of coordination between public and private sectors that is exceptionally rare. The firms that know which stage they occupy are making that calculation moment by moment, responding to global competitive pressures, not following a government blueprint. Giant knew to pivot to carbon fiber frames because Schwinn abandoned it; that was opportunistic adaptation, not stage-based planning. The Taiwan Semiconductor Manufacturing Company became a pure-play foundry because it recognized an opening in the early 1990s, not because policymakers had designated &quot;stage three&quot; as the national priority. Strategy emerges from market signals and firm-level capabilities, not from stages that scholars impose retrospectively.</p>
+            <p>There is also the challenge of political sustainability. Breznitz calls for investment in &quot;collective goods&quot;—education systems, shared production facilities, collaborative public spaces. These are precisely the investments that have proven hardest to sustain in an era of fiscal austerity and short-term electoral cycles. The community colleges, technical schools, and regional development agencies that once supported stage-two and stage-three industries have been hollowed out across the United States and Europe. Restoring them would require not just money but a political consensus that markets alone cannot provide the coordination needed for inclusive growth. Breznitz acknowledges this at the end of the essay, but the difficulty deserves more weight than a closing paragraph suggests.</p>
+            <p>The &quot;tech teens&quot; concept is the most promising idea in the essay and deserves fuller treatment. Breznitz is right that the focus on start-ups and giants misses the companies that actually anchor local tech ecosystems. But the mechanisms that sustain tech teens—patient capital, patient customers, institutional networks that reward longevity over exit—are exactly what VC-dominated markets have eroded. Creating them requires not just policy tweaks but a willingness to question the financialization of innovation itself. That is a harder argument than &quot;learn from Taiwan,&quot; and it may be the one we most need to hear.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The portrayal of Israel as a cautionary tale overlooks the significant creation of middle-class jobs and the country&#x27;s successful transformation from an economic backwater to a global powerhouse.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Taiwan’s success was the result of highly specific historical, geographical, and political conditions that may not be replicable or exportable to other regions.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The framework assumes a level of strategic coordination between public and private sectors that rarely exists, as innovation strategies usually emerge from opportunistic market adaptation rather than government blueprints.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The &#x27;collective goods&#x27; required for inclusive growth, such as technical education and shared facilities, are politically difficult to sustain in an era of fiscal austerity and short-term electoral cycles.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Supporting &#x27;tech teens&#x27; requires a fundamental challenge to the financialization of innovation and venture-capital-dominated markets, which is a much harder task than simply adopting a new stage-based model.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"While Dan Breznitz correctly identifies that communities should look beyond the Silicon Valley model for inclusive growth, his framework overlooks the necessary symbiosis between innovation stages and the critical role of political governance in ensuring equitable outcomes."</p>
+        <button class="essay-view-full" data-target="full-1-51603">View full essay</button>
+        <div class="essay-full" id="full-1-51603" style="display:none;">
+            <p>Dan Breznitz’s sweeping critique of the Silicon Valley model is both timely and necessary. In the wake of COVID-19, as communities scramble to rebuild, his warning against chasing shimmering mirages of high-tech start-ups and venture capital is a vital antidote to the boosterism that has drained local coffers from Kansas to Kazakhstan. His framework—distinguishing innovation that yields inclusive prosperity from the winner-take-all dynamics of stage-one novelty—offers a granular and hopeful map for economic renewal. Yet in his eagerness to debunk myths, Breznitz at times underplays the symbiosis among the four stages he describes, and skates too quickly over the political economy of their implementation. Without addressing these tensions, his otherwise compelling blueprint risks replacing one kind of cargo-cult thinking with another.</p>
+            <p>Breznitz’s account of Israel’s high-tech miracle is a case in point. He rightly shows that an obsessive focus on NASDAQ exits and foreign VC widened Israel’s gulf between a “geek elite” and the rest, leaving a fifth of households in relative poverty. But the problem was not stage-one innovation itself; it was the way Israel’s innovation agency, for all its foresight, embedded its tech sector almost entirely within U.S. financial circuits. Israeli firms innovated, then handed profits and intellectual property over to overseas investors. That extractive design is a political choice, not an inherent feature of novel-product development. Taiwan, which Breznitz celebrates for its stage-three prowess, has also attracted vast foreign capital into its semiconductor foundries. Yet Taiwan’s model—with state-led research institutes, local ownership structures, and dense supplier networks—kept the gains circulating domestically. The lesson is not to abandon stage one for later stages but to demand that the fruits of any innovation stage be anchored locally through deliberate policy. Tech teens, which Breznitz champions as better rooted in community, could thrive in stage one too, if given patient capital and public procurement, as Operation Warp Speed demonstrated. The SiO2 success in Alabama was a stage-one breakthrough in material science, funded by the government, that simultaneously expanded local employment. The villain is not novelty but the exit-obsessed venture model.</p>
+            <p>A second strain in Breznitz’s argument is that communities must choose which stage to specialize in, cultivating “particular capacities—to the exclusion of others.” This makes strategic sense in a global division of labor, but it understates how stages feed on one another in the medium term. The ascent of MediaTek, a Taiwanese stage-three champion, relied on stage-one breakthroughs in integrated-circuit design from the wider industry, along with advances from global giants like Qualcomm and ARM, whose early R&amp;D was supported by U.S. public investment. If every region had abandoned stage-one research in favor of incremental improvement, the technological frontier would stall—harming even those who specialize in making existing products better and cheaper. The United States’ belated panic over losing semiconductor fabrication capacity is illustrative: by allowing stage-three capabilities to wither, America jeopardized its own stage-one design firms, which depend on close collaboration with cutting-edge fabs. Regions do need to focus, but the most resilient ecosystems—like Taiwan’s or even Silicon Valley’s own early decades—maintain a strategic mix across stages, often with public institutions bridging the gaps. The binary “pick your stage” framing may mislead local leaders into creating another kind of brittle monoculture.</p>
+            <p>Then there is the question of what “inclusive prosperity” actually means across Breznitz’s successful examples. He praises the Pearl River Delta’s stage-four innovation for creating millions of jobs and lifting migrants out of rural subsistence. That is no small achievement. But by 2021, the region had become synonymous with grueling working conditions, wage suppression, and rampant labor-rights violations that critics have likened to a new form of exploitation. Shenzhen may have offered a path out of deeper poverty, but the quality of its inclusion is heavily contested. Brenta’s shoe-design ecosystem, by contrast, relies on highly skilled craftspeople and has secured a premium position in global luxury supply chains—yet it serves only a narrow, artisanal labor market. Taiwan’s stage-three model has kept inequality relatively low, but it has done so in a society with a distinct history of state-led development, universal education, and small-firm networks that are not easily replicable. Breznitz is right that stage-two and stage-three innovation can support a wider range of skills, but his case studies hint that context—especially labor protection regimes, education systems, and the political will to redistribute—determines whether “inclusive” means decent wages for many or a slightly larger middle class amid stark divides.</p>
+            <p>Breznitz is on firmer ground when he calls for robust public goods: collaborative spaces, shared production facilities, and active networks that stitch industries into communities. Yet the political conditions for such investment are fragile. The Biden administration’s early pushes for industrial policy have been beset by partisan gridlock, and the Trump administration’s last-minute plea to TSMC to build fabs in Arizona came with no coherent plan for training workers or developing the supplier base that makes Taiwanese foundries so agile. Brenta’s artisanal revival and Taiwan’s institute-led partnerships each emerged from decades of sustained, often undemocratic, government steering. Today’s local leaders may lack the patience or power to replicate those conditions, especially when they are pressured to show quick wins to taxpayers and bond markets.</p>
+            <p>Ultimately, Breznitz’s essay succeeds in its primary mission: smashing the myth that Silicon Valley is the one true path. But the response should not be to then elevate stage two, three, or four as magic bullets. The deeper insight—which the essay gestures toward but does not fully explore—is that the governance of innovation trumps its stage. Equity, local ownership, reinvestment of profits, and the creation of high-road employment depend on deliberate institutional design, not just on finding the “right” niche in the global production chain. As communities scarred by deindustrialization and pandemic disruptions weigh their next moves, they would do well to heed Breznitz’s call to look beyond high-tech hype. But they must also resist the lure of any single-stage template, and instead build the messy, adaptive, and deeply political ecosystems that let innovation of many kinds serve the many, not the few.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The failure of the Israeli model was not due to stage-one innovation itself, but rather a political choice to embed the sector in extractive U.S. financial circuits instead of local ownership structures.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Breznitz’s recommendation that regions specialize in one stage to the exclusion of others risks creating brittle economic monocultures, as different stages of innovation often depend on one another for long-term resilience.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The &#x27;inclusive prosperity&#x27; found in stage-four hubs like the Pearl River Delta often masks significant labor exploitation, suggesting that innovation stages do not inherently guarantee high-quality employment.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The success of alternative innovation models in places like Taiwan and Italy depends more on specific historical and political contexts—such as labor protections and state-led steering—than on the chosen stage of production.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The governance of innovation, including institutional design and the reinvestment of profits, is more important for achieving equity than simply finding a specific niche in the global production chain.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

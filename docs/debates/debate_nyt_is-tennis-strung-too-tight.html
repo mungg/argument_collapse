@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is Tennis Strung Too Tight? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Culture · Open-ended</div>
+  <h1 class="debate-title">Is Tennis Strung Too Tight?</h1>
+  <div class="question-body"><p>Rowdy fans are not something you associate with tennis. Indeed, noise during a match has always been frowned upon. But that may be changing.</p><p>What aspects of tennis etiquette should be updated?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_1.html">
+      <td class="arg-text">Tennis should abandon its rigid etiquette of silence and allow fans to be vocal and expressive throughout matches.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_2.html">
+      <td class="arg-text">Tennis etiquette should prioritize the quality of play and the skill of the athletes over gimmicks like tolerating crowd noise or encouraging player outbursts.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_3.html">
+      <td class="arg-text">Tennis etiquette should prioritize reforming player conduct and on-court decorum over addressing the behavior of the crowd.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_4.html">
+      <td class="arg-text">Tennis should modernize its etiquette by replacing exclusionary, class-based formalities with inclusive rules that prioritize accessibility and mutual respect over tradition.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_5.html">
+      <td class="arg-text">Tennis should abandon the tradition of apologizing for net cords and mis-hits because these occurrences are an inherent part of the game rather than genuine faults.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_6.html">
+      <td class="arg-text">Tennis etiquette should continue to evolve to embrace more creative, diverse, and stylish apparel on the court.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_7.html">
+      <td class="arg-text">Tennis etiquette should be modernized by correcting the unfair imbalance between the excessive behavioral freedom granted to players and the strict restrictions imposed on spectators.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_8.html">
+      <td class="arg-text">Tennis must modernize its restrictive etiquette and traditions to become more inclusive and grow its audience.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_9.html">
+      <td class="arg-text">Tennis etiquette should be modernized through specific, structured updates that clarify rules rather than through vague calls for more noise or traditional silence.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_10.html">
+      <td class="arg-text">Tennis etiquette should be updated to create a more consistent noise policy that limits player grunting while allowing fans more freedom to react during play.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_11.html">
+      <td class="arg-text">To modernize tennis etiquette and better engage audiences, the sport should focus on increasing the pace of play and allowing in-match coaching rather than just addressing crowd noise.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_12.html">
+      <td class="arg-text">Tennis etiquette should be modernized to prioritize fairness, transparency, and consistency over outdated ideals of gentlemanly self-containment.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_13.html">
+      <td class="arg-text">Tennis etiquette regarding spectator silence during points should be preserved and better enforced because it is essential to the sport&#x27;s competitive integrity and fairness.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-tennis-strung-too-tight_arg_14.html">
+      <td class="arg-text">Tennis should modernize its rigid etiquette by allowing more crowd noise and movement to foster a more passionate and engaging atmosphere.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Marija Zivlak</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/08/25/is-tennis-strung-too-tight/marija-zivlak" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Megan Fernandez</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/08/25/is-tennis-strung-too-tight/megan-fernandez" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Peter Dizikes</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/08/25/is-tennis-strung-too-tight/peter-dizikes" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Simon Cambers</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/08/25/is-tennis-strung-too-tight/simon-cambers" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Tennis etiquette evolved for a quieter, more genteel sport, but the game itself has changed. Players grunt at 100 decibels, hit serves at 140 mph, and compete in arenas wired for broadcast drama. The hushed reverence demanded between points feels increasingly out of step with both the athletic intensity on court and the way modern audiences engage with live sport.</p>
+      <p>The most obvious candidate for reform is the rule against noise during play. Other sports thrive on continuous crowd energy, and there&#x27;s no reason a baseline rally should require library silence. Letting fans react organically — cheering a long exchange before the next serve, even murmuring during points — would reward shotmaking and bring atmosphere to early-round matches that currently feel sepulchral. The U.S. Open&#x27;s night sessions already lean this way, and the sky has not fallen.</p>
+      <p>Coaching is another anachronism. Everyone knows players glance at their boxes; everyone knows coaches signal back. The WTA has experimented with on-court coaching during changeovers, and it&#x27;s added rather than subtracted from the spectacle. Grand Slams should follow.</p>
+      <p>Dress codes deserve scrutiny too. Wimbledon&#x27;s all-white rule has tipped from tradition into self-parody, with officials reportedly policing the color of undergarments. Heritage is worth preserving, but not at the cost of treating adult professionals like schoolchildren.</p>
+      <p>What should stay? The handshake at the net, the deference to line calls (now buttressed by Hawk-Eye), and the expectation that players don&#x27;t berate ball kids. Those rituals express something genuine about the sport&#x27;s respect for opponents and officials. Silence between first and second serves does not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The hush of a tennis cathedral—the pause before a serve, the rustle of a spectator earning a glare—has long been as central to the sport’s identity as the white attire at Wimbledon. But that whispered reverence is starting to feel less like tradition and more like a straitjacket. The question of whether tennis is “strung too tight” is overdue, because the game’s insistence on near-silent spectatorship increasingly works against its own future.</p>
+      <p>Tennis etiquette calcified in a Victorian era when the sport was a lawn-party diversion for the well-heeled. Today, it is a global, power-driven athletic spectacle contested by hyper-conditioned professionals. Yet fan behavior remains frozen in time. In other sports, crowd roar is not a disruption but fuel—think of the rhythmic chaos of basketball arenas or the deafening chants of soccer terraces. Tennis, by stigmatizing spontaneous applause or a cry between first and second serves, signals that passion must be repressed. That atmosphere can alienate younger audiences accustomed to interactive, high-energy entertainment.</p>
+      <p>Contrary to the purist’s anxiety, a livelier environment need not destroy the fabric of the game. At the U.S. Open’s night sessions, the rumble of a New York crowd has coexisted with high-stakes brilliance for decades; Davis Cup ties often feature flag-waving, horn-blowing bedlam, yet players rise to the occasion and often cite the electricity as a career highlight. The idea that competitors require monastic silence is undercut every time a player shrugs off a heckler or a gust of wind mid-toss. The real line should be drawn at sustained, malicious interruptions, not at the raw expression of joy or tension.</p>
+      <p>The fix is not anarchic noise but a sensible calibration. Allow murmuring and occasional shouts during play rather than demanding a museum stillness. Loosen the rule against clapping on a fault—a petty enforcement that makes umpires seem like schoolmasters. Some tournaments could even experiment with designated “amplified” sections, akin to college basketball student zones, while preserving quiet enclosures for those who prefer them.</p>
+      <p>Tennis does not need to become a rock concert, but it cannot afford to remain a period piece. By loosening a few strings, the sport can amplify its emotional reach without breaking the instrument. The game should trust its players to adapt, and trust its fans to love it loudly.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Tennis has long prided itself on being a gentleman’s sport, fiercely guarding its traditions of absolute silence during rallies and polite applause only after a point is won. But as the sport competes for the attention of a younger generation, this suffocating etiquette increasingly feels like a relic. It is time for tennis to loosen its collar.</p>
+      <p>The demand for complete silence during play ignores the fundamental reality of athletic focus. Basketball players shoot crucial free throws in arenas vibrating with the screams of opposing fans. Baseball players hit 95-mile-per-hour fastballs over deafening crowd noise. If athletes in other sports can maintain concentration amidst a roar, surely elite tennis players can handle a baseline rally without requiring the stadium to mimic a library.</p>
+      <p>The U.S. Open, with its electric night matches at Arthur Ashe Stadium, proves that a more raucous atmosphere actually elevates the sport. Fans want to feel engaged, to organically express their excitement as a spectacular point builds, rather than stifling their awe until the umpire signals it is acceptable.</p>
+      <p>Tennis does not need to devolve into the unruly chaos of a European soccer derby, nor should players be actively heckled. However, permitting natural crowd reactions during play, easing restrictions on movement in the stands, and relaxing archaic dress codes would strip away the sport&#x27;s elitist veneer. By allowing modern audiences to genuinely express their passion, tennis could expand its reach and step firmly into the twenty-first century.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Tennis should not become a football stadium with lines. Its silence is not mere snobbery; it is part of the contest. A serve at 125 miles an hour, a half-volley off the baseline, a disputed line call: these require concentration, and spectators should still be quiet during the toss and the rally.</p>
+      <p>But the sport is too precious about everything around those moments. Noise between points should be treated as atmosphere, not a breach of civilization. Cheering a double fault is ungenerous, but chanting, music on changeovers, national flags and spontaneous support are not threats to tennis. Davis Cup proves that players can handle passion without the game collapsing.</p>
+      <p>The etiquette most in need of reform is the one aimed at fans who are new to tennis. Too often “quiet, please” carries an undertone of “you do not belong here.” Ushers should enforce clear rules—no shouting during play, no flash photography, phones silenced—rather than vague standards of decorum that favor insiders. Children should not be glared out of the grounds for being children. Nor should spectators be treated as props after paying high ticket prices.</p>
+      <p>Players, too, deserve updated expectations: less tolerance for theatrical delay, abuse of officials and gamesmanship, more tolerance for visible emotion. Tennis can remain civilized without being embalmed. The goal should be respect for play, not reverence for stillness.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Tennis has long occupied a unique space among major sports, its character defined as much by silence as by skill. The gentle crack of gut against ball, the murmur of wind through stadium architecture, the focused hush of spectators — these define the sport&#x27;s atmosphere as surely as any baseline rally. But traditions, however venerable, should earn their place rather than merely inherit it, and on the question of updating tennis etiquette, I believe the sport should proceed thoughtfully but without excessive conservatism.</p>
+      <p>The case for evolution is strongest regarding the absolute prohibition on any noise whatsoever. While players deserve concentration during points, the rigid silence maintained between serves — indeed, during serves themselves — strikes an increasingly strange note. Other sports celebrate crowd energy as integral to competition. Tennis might reasonably permit cheering immediately after points rather than only at breaks, or allow tournament-appropriate background ambiance during less critical moments. Some experimental formats and mixed events have explored exactly this territory, with encouraging results.</p>
+      <p>However, certain core protections should remain. Anything disrupting a player&#x27;s service motion or concentration during actual play remains genuinely harmful and should be firmly discouraged. Flash photography, unauthorized movement near courts during action, and deliberate disruption serve no legitimate interest in sport entertainment. The distinction matters: welcoming appropriate crowd expression differs fundamentally from permitting actual interference with competition.</p>
+      <p>The deeper question concerns tennis&#x27;s identity. The sport has always attracted players and fans who value its meditative quality, its emphasis on individual focus and mental discipline. These qualities need not be abandoned, but neither should they become obstacles to broader appeal. Younger audiences accustomed to interactive sporting experiences may find traditional tennis etiquette alienating rather than dignified.</p>
+      <p>Ultimately, etiquette should serve the sport&#x27;s flourishing. Traditions worthy of preservation enhance that flourishing; those maintained merely from inertia deserve reconsideration. The key lies in distinguishing between silence that protects competition and silence that merely preserves habit.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Tennis has always prided itself on being a sport of gentlemen and ladies, but the rituals of silence have curdled into something closer to a museum&#x27;s hush. The umpire&#x27;s &quot;Quiet, please&quot; has the same effect as a librarian&#x27;s glare: it announces that this is a space for the few, not the many. If tennis wants to grow its audience — and the USTA&#x27;s own attendance data and television ratings show it badly needs to — it should drop the pretense that a baseline rally is a religious experience.</p>
+      <p>Start with crowd noise. There is no good reason a fan can&#x27;t shout during a point the way they do at basketball games or soccer matches. Players already practice with traffic noise, music, and barking coaches. Roger Federer and Serena Williams are professionals; a yelp from row 14 will not undo their second serve. The convention that the stadium must imitate a tomb between &quot;ready&quot; and the ball striking the racquet is an arbitrary inheritance from lawn tennis at Wimbledon, not a law of physics.</p>
+      <p>Second, the dress code at Wimbledon and the country-club aesthetics elsewhere need updating. When Venus Williams was reportedly told her undergarments were too colorful in 2014, the sport made itself a punchline. Let players wear what they want; the spectacle of personality is what sells tickets in every other sport.</p>
+      <p>Third, on-court coaching. The WTA already permits it, and the sky has not fallen. Allowing it across the men&#x27;s tour and the Slams would make matches more strategic, more transparent, and more interesting for fans who want to understand what they&#x27;re watching.</p>
+      <p>None of this requires abandoning what makes tennis great: the one-on-one drama, the long rallies, the absence of teammates to hide behind. It just means letting the audience participate in that drama. Sports thrive when fans feel invited in. Tennis has spent a century telling them to sit down and be quiet. Time to open the door.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Before we tear down tennis&#x27;s traditions, it&#x27;s worth asking what they&#x27;re for. The silence during points is not snobbery; it is a structural feature of a sport where margins are measured in millimeters and milliseconds. A first serve travels at 130 mph. The receiver picks up cues from the toss, the shoulder turn, the sound of the strings. A shouted distraction at the wrong moment doesn&#x27;t just irritate the player — it materially changes the outcome of the point. That is different from a free throw in basketball, where the shooter operates from a fixed line at a stationary target.</p>
+      <p>The comparison to other sports also misunderstands tennis&#x27;s appeal. People who love tennis love it precisely because it is not football. The hush before a championship point at the U.S. Open, the collective intake of breath as the ball is tossed — these are among the most thrilling moments in sport. Replacing them with the ambient roar of a hockey arena would not add excitement; it would subtract a unique aesthetic experience that no other game offers.</p>
+      <p>There is room to relax certain conventions. Between points, between games, between sets — let the crowd holler, sing, wave flags. Davis Cup ties already operate this way, and they&#x27;re terrific. The &quot;Big Cat&quot; chants at Cincinnati or the partisan crowds at the U.S. Open night sessions show that tennis can absorb passionate fandom without becoming a circus. The line should be drawn at the toss, not at the gate.</p>
+      <p>As for dress codes, on-court coaching, and grunting rules — these are minor housekeeping matters that tournaments can sort out individually. The core etiquette, the silence during play, should be defended. Tradition is not always a fossil; sometimes it is the thing that makes the experience worth having. Tennis is not strung too tight. It is, in this one important respect, strung exactly right.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The &quot;rowdy fans&quot; framing of this debate is a bit of a red herring. The real etiquette problems in tennis today are not about whether spectators should shout — they are about the gap between what players are allowed to do and what fans are allowed to do. The result is an asymmetry that feels increasingly absurd.</p>
+      <p>Consider grunting. Maria Sharapova&#x27;s shrieks have been measured at over 100 decibels. Players routinely scream, curse, smash racquets, harangue umpires, and demand bathroom breaks at strategically convenient moments. Yet a fan who calls out encouragement during a rally is shushed and threatened with ejection. If the players are permitted to make the stadium loud, the audience deserves the same latitude.</p>
+      <p>Consider also the absurdity of time-wasting. Rafael Nadal&#x27;s pre-serve routine has stretched matches past the four-hour mark on a regular basis. Novak Djokovic bounces the ball twenty times. Meanwhile fans are told to sit still through endless changeovers and to hold their applause until precisely the right millisecond. The clock should be enforced on players before the silence is enforced on crowds.</p>
+      <p>Three concrete updates would help. First, enforce the 25-second serve clock visibly and consistently; respect for the fan&#x27;s time is itself a form of etiquette. Second, allow continuous crowd noise during rallies in early rounds and at smaller events, and study the effect before deciding on Slam policy. Third, normalize on-court coaching across all tours; the pretense that players are entirely on their own is already a fiction, given the elaborate hand signals coaches deploy from the box.</p>
+      <p>Tennis&#x27;s etiquette problem isn&#x27;t that fans are too rowdy or too quiet. It&#x27;s that the rules have evolved to indulge the players while disciplining the audience. Correcting that imbalance — asking more of the pros and allowing more of the spectators — would do more to modernize the sport than any debate about decibels.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>I write as someone who has been going to the U.S. Open since the 1980s, and I want to push back gently on the assumption that tennis etiquette needs an overhaul at all. The premise of this debate — that tradition is stuffy and modernization is overdue — has been the premise of every &quot;shake up tennis&quot; essay for thirty years. And yet the sport keeps producing some of the most riveting individual contests in athletics: Nadal-Federer at Wimbledon in 2008, Djokovic-Nadal in Melbourne in 2012, the Williams sisters&#x27; decade of finals. The product is not broken.</p>
+      <p>What has actually changed is the venue. Arthur Ashe Stadium seats 23,000 people, many of whom paid hundreds of dollars and want a show. Night sessions there are already raucous — anyone who has heard a New York crowd will Jimmy Connors or, more recently, urge on an American underdog knows that tennis fandom is not actually repressed. The same is true at the Australian Open&#x27;s outer courts and at Roland Garros when a French player is on the rise. The &quot;silence&quot; the question worries about is largely a stereotype derived from Wimbledon, which is, and should remain, sui generis.</p>
+      <p>If anything needs updating, it is small things: clearer rules on coaching signals, consistent enforcement of the serve clock, better between-points entertainment for casual fans, and dress codes that let players express themselves without becoming distracting. None of this requires abandoning the convention that points are played in quiet. That convention is part of what differentiates tennis from the wall-to-wall noise of every other televised sport, and differentiation is a commercial asset, not a liability.</p>
+      <p>Tennis is not strung too tight. It is one of the few remaining sporting environments where concentration is visible, where you can hear the ball, where the drama emerges from restraint rather than from spectacle. That is worth conserving. Update the edges; leave the center alone.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Tennis is strung so tightly it’s snapping under its own tension. The near-monastic silence demanded during points belongs to a Victorian drawing room, not a modern global sport fighting for relevance. Fans today crave atmosphere—a collective roar after a breathtaking rally, not a polite patter of gloved hands. Consider the Davis Cup, where flag-waving, chanting crowds create an electric environment that players often cite as the most memorable of their careers. The tennis itself isn’t diminished; it’s amplified. The argument that noise breaks concentration is a myth of privilege, one that conveniently ignores the fact that players routinely perform in stadiums buzzing with camera clicks, coughs, and the constant murmur of 15,000 people shifting in their seats. True focus isn’t the absence of sound, it’s the ability to work through it, a skill demanded in every other major sport.</p>
+      <p>Updating etiquette to allow more spontaneous fan reaction would do more than just boost ticket sales. It would dismantle the barriers that make tennis seem stuffy and inaccessible to younger, more diverse audiences. The silence rule is a relic of a country-club past that actively signals who the sport is for. By letting crowds cheer during points as they do at a basketball game, we’d strip away the pretense and invite a new generation to connect emotionally with the athleticism on display. The genteel hush doesn’t protect the integrity of the game; it protects an outdated social hierarchy. It’s time to let tennis breathe.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>To call tennis “strung too tight” misunderstands the very nature of the sport. The quiet during a point is not a stuffy hang-up; it is an integral component of the psychological and physical contest. Tennis is a game of extreme, isolated concentration played out in a one-on-one crucible. A server bouncing the ball, calculating a 130-mph delivery, operates on a knife-edge of focus that a sudden, partisan roar would shatter. This isn&#x27;t about players being precious—it’s about preserving the basis for fair competition. The etiquette isn’t for the fans&#x27; comfort, but for the athletes’ ability to perform their craft without an external variable carelessly tilting the balance.</p>
+      <p>Moreover, the sustained silence creates a unique dramatic tension. The collective intake of breath, the echo of the ball off the strings, the player’s self-admonishing mutter—these are the sounds that build a narrative arc within each rally. The explosion of applause only *after* a point is won is a release that feels earned precisely because it was withheld. Changing this would erase a sensory signature that distinguishes tennis from the bombastic cacophony of an NFL stadium. Some sports thrive on chaos; tennis flourishes in pocket of intensity cradled by order. The etiquette doesn’t need updating because its function isn’t to entertain bystanders with noise, but to frame a sporting drama that is, by design, a dialogue of skill and nerve conducted largely in silence.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The debate over tennis etiquette is often framed as an all-or-nothing choice: monastic silence or anarchic cheering. This is a false dichotomy. The sport can, and should, update its norms to embrace a more vibrant atmosphere while fiercely protecting the core of the sport—the point itself. The key is to formalize what already happens informally: unbundling the rules for in-play and out-of-play moments.</p>
+      <p>The current, often arbitrary, enforcement is the real problem. Fans are shushed for a murmuring during a tense deuce, while a single, piercing shout between a first and second serve rarely draws a reprimand. We need a clear, modernized code: absolute quiet from the moment the server begins their motion until the point finishes, but enthusiastic, celebratory noise actively encouraged during the 20-second changeover clock, between points, and during medical timeouts. Stadiums could incorporate fan cams, music snippets, and emcee-led engagement during these windows, similar to basketball or cricket’s shorter formats. This approach channels fan energy into designated breaks, building a festive ebb and flow. It lowers the intimidating barrier for newcomers who fear a whispered joke will get them ejected, while still safeguarding the concentration professional tennis demands. We don’t need to tear down the house; we just need to stop confusing the living room with the library.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The hand-wringing over rowdy fans is a diversion. The aspect of tennis etiquette most urgently in need of an update isn’t the volume of the crowd, but the conduct of the players themselves. For every fan silenced for a sneeze, there’s a player shattering the auditory peace with a grunt that registers as loud as a lawnmower on the decibel meter. The current tolerance for prolonged, high-decibel shrieking—a feature of the modern power game, not an accident—borders on farcical. It’s a form of gamesmanship that distracts an opponent and drowns out the sound of the ball off the racket, which is both a safety issue and a fundamental deprivation of the auditory cues tennis is built upon.</p>
+      <p>After grunting, the next target for reform is coaching. The pretense that a player is a lone gladiator receiving zero tactical help from their box is a charade. We see the surreptitious signals, the coded claps, and occasionally outright verbal instructions from the stands. Updating the etiquette to legalize limited on-court coaching, as the WTA has experimented with, would bring an honest, teachable dynamic to the game without the farce. Finally, the liberal use of injury timeouts for strategic momentum-shifting needs a clear, enforceable criteria that prioritizes integrity over drama. Cleaning up the players’ own on-court decorum would restore more dignity to the sport than any redefinition of the audience&#x27;s role. Before we let the crowd shout, the sport itself needs to stop yelling.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>As the 2014 U.S. Open kicks off, the annual debate over crowd etiquette in tennis resurfaces. The sport&#x27;s traditional mandate of absolute silence during points has long been a hallmark of its country-club roots. But if tennis wants to thrive in the modern entertainment landscape and expand its global reach, it needs to loosen its collar and let the fans be heard.</p>
+      <p>The insistence on total silence is increasingly out of touch with how contemporary audiences consume live sports. Fans attend events to feel a collective energy, to loudly cheer their heroes, and to be active participants in the atmosphere. Expecting thousands of paying spectators in Arthur Ashe Stadium to sit quietly like they are at a golf tournament or a chamber music concert stifles the very passion that drives sports fandom. When a spectacular rally is unfolding, the natural human instinct is to react.</p>
+      <p>Moreover, the &quot;silence please&quot; rule creates an exclusionary, elitist vibe. It sends a message to casual fans that they don&#x27;t quite belong, or that they don&#x27;t know how to behave properly in polite society. We see this dynamic play out whenever umpires scold the crowd, treating paying adults like unruly schoolchildren.</p>
+      <p>Other sports require intense concentration from their athletes. Basketball players shoot crucial free throws amidst deafening, targeted noise; baseball players hit 95-mph fastballs with 40,000 people screaming in their ears. Tennis players are world-class professionals; they can certainly handle some crowd murmuring and organic reactions. Embracing a louder, more dynamic atmosphere wouldn&#x27;t destroy the integrity of the game. Instead, it would inject it with much-needed vitality, attract a younger demographic, and finally shed the sport&#x27;s stuffy, antiquated reputation. It is time to let the fans cheer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Tennis is uniquely demanding. It is an individual sport that relies entirely on a player’s mental fortitude, delicate timing, and precise rhythm. The requirement for silence during a point is not some arbitrary relic of upper-crust snobbery; it is an absolutely essential component of the game&#x27;s competitive integrity. Stripping away this tradition to appease a modern desire for rowdiness would fundamentally alter, and ultimately damage, the sport.</p>
+      <p>Unlike team sports where players can rely on teammates or constant tactical adjustments from the sidelines, a tennis player is utterly alone on the court. The sound of the ball coming off the opponent&#x27;s racket provides critical acoustic feedback that helps a player subconsciously judge the speed, spin, and trajectory of the incoming shot. If a crowd is screaming, murmuring, or chanting during a rally, this vital sensory input is entirely lost, reducing the quality of play.</p>
+      <p>Furthermore, the dramatic tension in tennis is built specifically around the contrast between explosive athletic movement and absolute silence. The hush that falls over Center Court at Wimbledon before a championship point is electrifying. It focuses the attention of everyone in the stadium on the sheer pressure of the moment. The silence itself is a powerful form of drama, creating a psychological theater that simply doesn&#x27;t exist in a perpetually loud arena.</p>
+      <p>We should not lower our standards of etiquette to match the lowest common denominator of modern sports entertainment. The expectation of quiet respect for the athletes is a beautiful tradition that teaches discipline and appreciation for the immense difficulty of the task at hand. Instead of turning grand slam events into chaotic free-for-alls, we should preserve the unique, respectful atmosphere that makes professional tennis so special.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The current debate over whether tennis crowds should be allowed to make more noise misses the glaring hypocrisy at the heart of the sport&#x27;s acoustic etiquette. Tennis officials demand absolute silence from the spectators to protect the players&#x27; concentration, yet they allow the players themselves to shatter that silence with excessive, ear-splitting grunting.</p>
+      <p>If the governing bodies of tennis were truly concerned about noise interfering with the game, they would have already cracked down on the shrieks and wails that have become commonplace on both the men&#x27;s and women&#x27;s tours. Players routinely produce decibel levels that rival heavy machinery. This on-court noise is far more disruptive to the opponent—and often to the fans—than a murmur in the stands. Crucially, it masks the sound of the ball on the strings, which is exactly what the spectator silence rule is supposedly designed to prevent.</p>
+      <p>Until tennis addresses the noise pollution generated by its own athletes, it is difficult to take its strict policing of crowd behavior seriously. We need a more consistent approach to etiquette across the board. If players are allowed to vocalize their exertion at top volume, then fans should be granted a little more leeway to express their excitement during play.</p>
+      <p>A reasonable compromise would be to enforce a strict noise limit on the players—with point penalties for those who cross the line—while relaxing the rules for the crowd slightly. Let fans cheer right up to the server&#x27;s toss without being scolded, and be more forgiving of gasps or organic reactions during spectacular points. Etiquette shouldn&#x27;t be a one-way street where fans are constantly muzzled while players are permitted to scream with impunity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The conversation about tennis etiquette shouldn&#x27;t just be about whether fans can yell during a rally; it should be about dragging the sport’s broader rules of engagement into the 21st century. The fixation on crowd noise distracts from the actual structural problems that alienate modern audiences. If tennis wants to update its etiquette, it should start with the pace of play and the artificial isolation of the athletes.</p>
+      <p>First, the sport desperately needs to address the agonizing delays between points. Current etiquette allows the server to dictate the pace, leading to endless towel-downs, excessive ball bouncing, and nervous tics that drag matches out for hours. While the rulebook dictates 20 or 25 seconds between points depending on the tournament, enforcement is notoriously lax and subjective. Implementing a visible, automated shot clock on the court would eliminate the awkward enforcement by umpires, significantly speed up the game, and provide a better entertainment product. Fans wouldn&#x27;t feel the need to get restless or rowdy if the action simply kept moving.</p>
+      <p>Second, the ban on in-match coaching is an antiquated piece of etiquette that serves no real purpose today. Tennis is the only major sport where athletes cannot communicate with their coaches during competition. The current situation—where coaches try to secretly use hand signals from the player&#x27;s box and umpires hand out arbitrary code violations—is farcical and applied unevenly. Allowing coaching during changeovers would not only legitimize what is already happening covertly, but it would also add a fascinating tactical layer for the fans to observe and analyze.</p>
+      <p>Updating tennis etiquette doesn&#x27;t require turning stadiums into loud, chaotic frat parties. It requires pragmatic changes to the rules that respect the modern fan&#x27;s time and desire for deeper engagement. Faster play and open tactical adjustments will do far more to modernize tennis than simply letting the crowd make a racket.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Tennis should stop pretending it is played in a cathedral. It is a sport, not a library with linesmen. The old bargain — absolute silence during points, polite clapping afterward, no movement except at changeovers — made sense when tennis sold itself as a club pastime. But the professional game now competes for attention with soccer, basketball and cricket, and it asks spectators who have paid considerable sums to behave as if they are incidental to the event.</p>
+      <p>That does not mean turning Centre Court into a football terrace. Tennis depends on concentration, and a shout during a toss or a cough at the top of a backswing can materially affect a point. But there is room between monastic silence and chaos. Fans should be allowed, even encouraged, to cheer more spontaneously between first and second serves, after long rallies, and during changeovers. National-team atmospheres in Davis Cup and Fed Cup show that tennis can survive passion. In fact, it often improves it: players feed off energy, and television viewers notice when a match feels alive.</p>
+      <p>The etiquette most in need of revision is not “don’t be rude”; it is “don’t be visible.” Ushers still treat spectators as if shifting in a seat were a moral failure. Late-arriving fans are corralled for long stretches, sometimes missing multiple games. Children are shushed before they have learned what they are watching. The message is: tennis is for people who already know its codes.</p>
+      <p>The update should be simple: protect the point, liberate everything around it. No yelling during service motions. No personal abuse. No flash photography. No deliberate distraction. But let fans chant between points. Let them react. Let tournaments create livelier sections, especially on outer courts. Let the sport have a pulse.</p>
+      <p>Tennis will always have rituals — the coin toss, the towel, the hush before a serve. But etiquette should serve the match, not smother it. A little more noise would not cheapen tennis. It would admit that the crowd is part of the contest.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The one piece of tennis etiquette most worth preserving is the one now most often mocked: quiet. It is tempting to say that tennis must modernize by becoming louder, looser and more like other sports. But the distinctive appeal of tennis lies precisely in what it is not. It is not a stadium roar interrupted by action; it is action framed by attention.</p>
+      <p>Silence during points is not an aristocratic affectation. It is a practical condition of fair play. A tennis point can turn on a fraction of a second: the sound of the ball off the strings, the opponent’s footwork, the scrape that signals a slide, the line call that comes late. A shout as a player prepares to serve or hit an overhead is not atmosphere; it is interference. Unlike a basketball player shooting a free throw, a tennis player is not standing still in a repetitive, protected moment. He or she is making constant, reactive decisions in a small arena where one voice can cut through.</p>
+      <p>Nor should we pretend that “rowdy” crowds are equally available to all players. In a global individual sport, a partisan crowd can quickly become unfair. Davis Cup is thrilling partly because it is exceptional: national allegiance is built into the format. At a Grand Slam, where players already face unequal scheduling, court assignments and media pressure, tournaments should be cautious about adding another variable that rewards the local favorite or the loudest fan base.</p>
+      <p>That said, some etiquette deserves updating. Tennis should be less fussy about spectators moving to seats at reasonable breaks, less hostile to children, and less punitive toward ordinary human noise. A dropped program is not a scandal. A laugh at a funny bounce is not sacrilege. The sport can be warmer without becoming unruly.</p>
+      <p>The correct standard is not silence everywhere, always. It is respect for the point. Cheer loudly after a winner. Groan after a double fault if you must. Applaud a brilliant rally by either player. But once the server steps to the line, the crowd should give both competitors the same gift: the chance to decide the point themselves. In an era when so many games are packaged as noise, tennis should not be embarrassed by concentration. It should defend it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The etiquette tennis most needs to update is not about decibels. It is about whom the sport makes comfortable. Tennis still carries too much of the country-club assumption that the “right” fan or player already knows how to dress, when to sit, when to clap, what not to say, and how not to look out of place. That code may seem harmless to insiders, but to newcomers it can feel like a velvet rope.</p>
+      <p>Start with clothing. At the recreational level, clubs should stop treating all-white rules, collared-shirt requirements and fussy footwear policies as if they were the guardians of civilization. Of course shoes must protect courts, and professional tournaments can have brand identities. Wimbledon’s white clothing rule is part of its theater. But when dress codes become a way to signal class rather than facilitate play, they keep people out. The sport should be eager for children in public parks, immigrants, city kids, and adults who did not grow up with lessons. It should not ask them first to learn the costume.</p>
+      <p>Spectator etiquette needs the same rethinking. Tennis can keep quiet during points while being less severe around the edges. Explain the customs on tickets, scoreboards and apps rather than relying on ushers to scold. Create family sections where a restless child is not treated as an act of vandalism. Let fans enter at more frequent natural breaks on large courts. Encourage applause for good defense, not just obvious winners, so new fans learn the game’s subtleties.</p>
+      <p>Technology also requires a calmer code. Phones are now cameras, scoreboards and lifelines. Banning them outright is unrealistic, but flash, ringtones and filming that blocks another fan’s view should be policed. The rule should be courtesy, not nostalgia.</p>
+      <p>Finally, players and officials have obligations too. It is strange to demand monk-like discipline from spectators while tolerating endless towel requests, slow play, gamesmanship over medical timeouts, or abuse of ball kids and umpires. Etiquette should not run only downhill from the club to the cheap seats.</p>
+      <p>Tennis should remain a game of manners. But manners at their best are not barriers; they are tools that allow strangers to share a space. The sport should trade exclusionary formality for generous, clearly explained respect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>If tennis etiquette is to be modernized, the most important changes should concern the players, not the spectators. Fans are an easy target because a loud shout is obvious. But much of what slows and sours the professional game happens on court under the cover of “routine.”</p>
+      <p>The first reform should be a stricter culture around time. The rules already set limits between points, yet enforcement is inconsistent and often depends on the chair umpire’s courage and the player’s stature. Viewers can admire Rafael Nadal’s intensity or Novak Djokovic’s ball-bouncing without wanting every service game to become a ritual drama. When one player routinely exceeds the limit, the opponent is forced to live inside that rhythm. A visible shot clock, or at least more automatic warnings, would not be a gimmick. It would make the etiquette of pace transparent.</p>
+      <p>Second, tennis should rethink the towel ritual. Ball kids are not personal valets. Somewhere along the line it became normal for players to demand a towel after nearly every point, even when they have barely perspired. Put towel boxes at the back of the court and make players retrieve them. It would be more sanitary, more dignified for the children, and quicker once players adjusted.</p>
+      <p>Third, the sport needs a clearer attitude toward gamesmanship. Tactical medical timeouts, bathroom breaks taken to halt momentum, exaggerated challenges to catch a breath, and complaints designed to pressure officials all erode the compact between opponents. Tennis prides itself on honor because, historically, players called their own lines. The professional version should still expect more than “do whatever the umpire permits.”</p>
+      <p>On coaching, however, etiquette may be too rigid. The ban on coaching in most major competition is increasingly artificial when players communicate with boxes through glances, gestures and coded encouragement. Either enforce the rule seriously or allow limited, transparent coaching at set breaks. What looks dignified on paper can look hypocritical in practice.</p>
+      <p>As for crowds, preserve quiet during points and allow enthusiasm around them. That balance is not difficult. The harder task is asking stars to accept that etiquette is not merely something imposed on paying customers. It is the shared discipline that keeps an individual sport from becoming a collection of private indulgences.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Yes, tennis should loosen its strings. The sport’s hush has a purpose: a player cannot chase a 120-mile-an-hour serve while someone yells during the toss. But too often the rule has become less about competitive fairness than about enforcing a museum atmosphere. Tennis is not played in a library. It is an athletic contest, and spectators should be allowed to sound as if they care.</p>
+      <p>The model is already available. Davis Cup crowds are loud, partisan and sometimes wonderfully chaotic. The U.S. Open night session has long had a different pulse from a weekday afternoon at Wimbledon. Players survive it. Many even feed off it. Tennis should make more room for that energy, especially if it wants to attract younger fans who are used to sports as communal events rather than solemn recitals.</p>
+      <p>The obvious line is this: no deliberate disruption during a service motion or a rally. Shouting “out” mid-point, calling a double fault before a second serve, or targeting a player personally should remain unacceptable. But spontaneous noise after great gets, gasps during a rally, chants between points and national-team-style enthusiasm should not be treated as moral decline. Tournament organizers could designate louder sections for certain sessions, use music and announcements more imaginatively during changeovers, and stop making ushers act as etiquette police for every late cough or misplaced cheer.</p>
+      <p>Tennis also needs to be less precious about movement. At large stadiums, especially in the upper decks, insisting that every fan freeze until a changeover can feel absurd. Let people move quietly between points. The players on court are professionals; they can handle a little life in the building.</p>
+      <p>The danger is not that tennis will become soccer. The danger is that it will remain too self-consciously genteel, mistaking stiffness for tradition. The sport’s best moments—Connors stirring a New York crowd, Nadal and Federer drawing roars by sheer artistry, Serena Williams turning a match into an event—are not quiet moments. Tennis should protect play, not smother passion.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Tennis etiquette does not need a revolution. It needs better explanation and more consistent enforcement. The sport’s quiet is not an aristocratic affectation; it is part of the contest. Players rely on sound—the contact of ball on strings, the call of a line judge, the rhythm of an opponent’s movement. A shout during a serve toss is not the equivalent of cheering during a basketball free throw. In tennis, the point begins with one athlete alone, exposed, and timing matters.</p>
+      <p>The case for preserving silence is strongest precisely because modern tennis has become so physical and fast. The margins are tiny. A lapse of concentration can decide a tiebreak, a set, a title and a ranking. Fans may want to feel involved, but their involvement should not become a variable in the result. The fairest arena is one where both players are tested by each other, not by a crowd trying to insert itself into the match.</p>
+      <p>That said, defenders of etiquette should not confuse respect with stiffness. Tournaments can be more welcoming without turning points into noise contests. Ushers should politely educate first-time spectators rather than scold them. Crowds should be encouraged to cheer loudly after points, to bring flags where appropriate, to react emotionally to great play. The silence that matters is during the point and especially during the serve motion; outside that, tennis can afford warmth.</p>
+      <p>Other rules deserve more urgent updating than crowd behavior. Time violations should be enforced consistently, not only when an umpire feels bold. Players should not be allowed to turn towel retrieval into a ritual after every point. Medical timeouts and bathroom breaks need transparent standards. Coaching rules should be clarified so that everyone understands what is permitted and what is not.</p>
+      <p>Tennis has many problems: uneven officiating, slow play, opaque codes of conduct, and the rising cost of attending major events. The expectation that spectators stay quiet during points is not one of them. It is a simple courtesy that helps preserve the integrity of a one-on-one sport.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The question is not whether tennis should become rowdy. The question is whose behavior tennis has historically labeled “rowdy.” A polite cough from a corporate box is treated differently from an excited outburst by a teenager in the cheap seats. A seasoned club member who knows when to sit and when to clap belongs; a newcomer who cheers at the wrong moment is made to feel foolish. That is the etiquette tennis most needs to update.</p>
+      <p>The sport has benefited enormously from players who did not fit old country-club expectations. The Williams sisters, Rafael Nadal’s fist-pumping physicality, Novak Djokovic’s theatrical edge, and the global crowds at the U.S. Open have all widened the game’s emotional range. Yet the audience code still often feels designed for an earlier, narrower tennis culture: sit still, speak softly, know the rituals before you arrive, and never disturb the paying calm.</p>
+      <p>Some rules should stay. No one should shout during a serve, call balls from the stands, or abuse a player. But tournaments should stop treating every breach as a lapse in breeding. Put clear etiquette instructions on tickets, scoreboards and broadcasts: cheer after points, remain quiet during play, silence phones, no flash photography, move only at designated times unless in upper-deck areas where quiet movement is reasonable. Make the rules legible rather than tribal.</p>
+      <p>Tennis should also examine the etiquette embedded in dress codes, club access and event presentation. Wimbledon’s all-white tradition is charming to some and fussy to others, but at local clubs “proper attire” rules can become a way to signal who belongs. If the sport wants new fans and players, especially from public courts and urban programs, it should distinguish between respect for the game and respectability politics.</p>
+      <p>The best tennis atmosphere is not silent; it is attentive. It has gasps, laughter, partisan roars, nervous murmurs and then quiet when the ball is in play. Updating etiquette should mean replacing social gatekeeping with shared norms. The goal is not to make tennis less respectful. It is to make respect easier for everyone to join.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>Tennis is strung too tight, but not mainly because fans are told to be quiet. It is strung too tight because it clings to old ideas of gentlemanly self-containment while the professional game has become a high-pressure, high-money global business. The etiquette most in need of reform is the pretense that players should compete as isolated, silent, unassisted figures once they step on court.</p>
+      <p>Coaching is the clearest example. Everyone can see players looking to their boxes. Coaches signal, players complain, umpires sometimes intervene and often do not. The WTA has experimented with on-court coaching, while men’s tennis and the Grand Slams largely preserve the ban. This is not moral clarity; it is inconsistency. Tennis should either enforce the no-coaching rule strictly or, better, allow limited, transparent coaching for all players. One visit per set or brief coaching during changeovers would be fairer than the current wink-and-nod system that benefits those who are better at disguising communication.</p>
+      <p>The same principle applies to pace of play. Tennis etiquette celebrates ritual—bounce the ball, towel off, reset, confer with the sky—but television viewers and stadium fans are right to grow impatient. If there is a time rule, use a visible clock and apply it evenly to stars and qualifiers. Do not leave it to the courage or mood of the chair umpire.</p>
+      <p>Technology should also be embraced more fully. Electronic review has reduced arguments and added drama. Where tournaments can provide it, they should. If a point turns on a line call, accuracy is more important than preserving the romance of human error.</p>
+      <p>As for spectators, the rule should be simple: silence during play, freedom between points. Fans should be allowed to cheer faults if they are openly partisan, especially in Davis Cup-style settings, though personal abuse should remain out of bounds. Tennis can tolerate noise. What it cannot tolerate is a code of etiquette that is vague, selectively enforced and built around appearances rather than fairness.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The hush that envelops a tennis court serves a purpose deeper than mere tradition—it protects the concentration that separates tennis from sports where crowd noise is part of the spectacle. Those who argue for updating tennis etiquette misunderstand what makes the sport distinctive. Tennis is chess with athletic exertion; every point demands split-second decision-making where auditory distraction can genuinely alter outcomes. A baseball fan cheering at a critical moment enhances the atmosphere; the same behavior at a tennis match represents a genuine competitive disadvantage for one player.</p>
+      <p>The comparison to other sports misses the point. Tennis never promised to be football. Grand Slam venues have cultivated an atmosphere for over a century that honors the game&#x27;s cerebral nature. Players who enter this arena consent to that framework, as do spectators who purchase tickets understanding the norms. The quiet isn&#x27;t an arbitrary restriction—it&#x27;s integral to the sport&#x27;s identity.</p>
+      <p>Furthermore, the claim that etiquette must &quot;evolve&quot; assumes change is inherently positive. Rowdiness doesn&#x27;t make tennis more exciting; it makes it less tennis. The noise complaints at the 2014 US Open came largely from players who built careers adapting to traditional expectations. Rewarding disruptive behavior punishes those who prepared properly.</p>
+      <p>What troubles me most about the &quot;update etiquette&quot; argument is its inevitability framing. Social media and younger fans are blamed for changing expectations, as if resisting cultural drift is itself unreasonable. But traditions persist because they work. The quiet between points isn&#x27;t oppressive—it&#x27;s the heartbeat of the game. Those who find it stifling might consider golf, where similar concentration dynamics apply, or perhaps welcome the quieter sports to offset those that thrive on chaos.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Every sport evolves with its audience, and tennis has remained oddly resistant to that reality. The hand-wringing over &quot;rowdy&quot; fans at the 2014 US Open reveals more about tennis&#x27;s insularity than any problem with audience behavior. Professional tennis generates billions in television revenue and draws millions of recreational players—it&#x27;s time the spectator experience reflected the sport&#x27;s true cultural status.</p>
+      <p>Modern audiences grew up with sports that embrace passion. They cheer touchdowns, jeer referees, and make their presence felt. Expecting them to sit in reverent silence because Wimbledon established protocols in 1877 is nostalgia masquerading as principle. Tennis courts are entertainment venues, not libraries.</p>
+      <p>The players themselves bear responsibility here. While stars like Andy Murray have complained about crowd noise, others—Serena Williams, Novak Djokovic—have shown that genuine engagement with audiences enhances rather than diminishes the product. The 2013 Wimbledon final, where the Centre Court crowd erupted throughout, remains one of the mostwatched tennis matches in recent memory. Viewers tune in for drama, and drama includes crowd energy.</p>
+      <p>Technology changes everything. Mobile phones, social media, and instant replay have transformed how we experience live events. Trying to freeze tennis in amber for purist sensibilities ignores that the audience arriving in 2014 is fundamentally different from those who endured the pre-digital era. Refusing to adapt doesn&#x27;t preserve tradition—it accelerates irrelevance.</p>
+      <p>The practical case is equally compelling. A more engaged crowd brings more first-time viewers, more casual fans, more sponsorship interest. Traditionalists may mourn the passing of cathedral silence, but they should recognize that a thriving, loud sport still generates more revenue and attention than a dying, quiet one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The debate over tennis etiquette often presents a false binary: preserve the sacred quiet or surrender to chaos. In reality, the answer lies in nuance. Some aspects of traditional etiquette deserve protection; others genuinely need reconsideration.</p>
+      <p>The core protection—silence during points—should remain largely intact. This isn&#x27;t nostalgia; it&#x27;s practical necessity. Tennis&#x27;s scoring system means any point could be match-defining, and players deserve the opportunity to compete without manufactured distraction. A basketball team doesn&#x27;t need perfect silence to function; a tennis player does. This distinction matters.</p>
+      <p>But the rigid enforcement of silence between points deserves updating. The pretense that 15,000 people should sit mute for seconds at a time serves no competitor and little tradition. Cheering between points—acknowledging great shots, appreciating remarkable rallies—adds energy without compromising the actual competition. The line between &quot;engaged audience&quot; and &quot;disruptive noise&quot; is clearer than etiquette enforcers suggest.</p>
+      <p>The deeper issue is consistency. Grand Slam tournaments apply rules unevenly, with some venues tolerating crowd sounds that others would discipline. Players receive contradictory signals about what behavior they&#x27;ll face. Standardizing expectations—clear, enforced during points, welcoming between points—would serve everyone better than either maintaining strict silence or abandoning all restraint.</p>
+      <p>I suspect most reasonable fans already understand this distinction. The problem isn&#x27;t with spectators broadly; it&#x27;s with those at either extreme who either demand dead silence or treat the match as their personal performance venue. Effective, predictable crowd management can address both.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>What strikes me about the &quot;tennis etiquette update&quot; debate is how few specifics get offered. Critics of traditional silence rarely tell us what exactly should change, when, and enforced by whom. Precision matters here.</p>
+      <p>The practical question isn&#x27;t whether tennis should become louder—it&#x27;s what specific behaviors require reconsideration. Take the controversial moment in the 2014 US Open when a fan&#x27;s shout arguably affected a point. The current rules technically prohibit disruption, but enforcement is inconsistent and subjective. A player claiming distraction has no reliable recourse; a referee making that call faces crowd backlash.</p>
+      <p>The solution isn&#x27;t abolishing etiquette but clarifying it. Consider what would happen if tournaments implemented structured crowd engagement: designated moments for applause, clear signals when noise is acceptable, perhaps even audio guidelines explained during entry. This isn&#x27;t lowering standards—it&#x27;s making standards coherent.</p>
+      <p>We might also distinguish between venue types. Arthur Ashe Stadium, holding 23,000, operates differently than Court 17. A packed Center Court for a Nadal-Thiem epic should function differently from a sunny outside court where friends of players watch. Different contexts warrant different expectations.</p>
+      <p>The player perspective deserves weight too. Surveys and player comments suggest genuine divide: some thrive with crowd energy, others require quiet to perform at their best. Any etiquette update should account for this variation, perhaps allowing players to indicate venue preferences within reasonable bounds.</p>
+      <p>What I resist is vague cultural nostalgia from either side—either mourning lost silence or celebrating new chaos. Tennis can thoughtfully modernize without abandoning what makes it distinctive. That requires specific proposals, not general assertions about evolution or tradition.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

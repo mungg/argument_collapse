@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Readers should embrace an eclectic and guilt-free approach t... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_summertime-and-the-reading-is-easy.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_summertime-and-the-reading-is-easy.html">Summertime and the Reading Is Easy</a> · Cluster 1 of 32</div>
+  <h1 class="arg-title">"Readers should embrace an eclectic and guilt-free approach to summer reading rather than adhering to rigid cultural hierarchies or prestige titles."</h1>
+  <div class="arg-meta">0 human · 22 LLM · 22 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Readers should embrace an eclectic and guilt-free approach to summer reading rather than adhering to rigid cultural hierarchies or prestige titles."</p>
+        <button class="essay-view-full" data-target="full-1-83516">View full essay</button>
+        <div class="essay-full" id="full-1-83516" style="display:none;">
+            <p>Summer reading shouldn&#x27;t require a defense, and the very phrase &quot;guilty pleasure&quot; deserves some scrutiny. Why should anyone feel sheepish about Aeschylus on a beach towel, or about devouring a Rick Springfield memoir between dips in the pool? The guilt usually says more about the reader&#x27;s anxiety over cultural hierarchy than about the book itself.</p>
+            <p>What&#x27;s appealing about the novelists&#x27; picks is precisely their unpredictability — the reminder that serious writers are also magpies, drawn to whatever glitters. A summer list built only from prestige titles is really just homework with sunscreen. Better to follow curiosity wherever it wanders: ancient tragedy one afternoon, glam-rock confessional the next. The lazy weekend rewards omnivores.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The concept of a &#x27;guilty pleasure&#x27; reflects a reader&#x27;s anxiety over cultural status rather than the actual quality of the literature.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Serious writers find inspiration in a wide variety of sources, demonstrating that intellectual curiosity is more valuable than following a curated list of prestige books.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">A summer reading list composed solely of high-brow titles functions more like a chore than a relaxing leisure activity.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The ideal summer reading experience rewards the &#x27;omnivore&#x27; who is willing to jump between disparate genres like ancient tragedy and pop culture memoirs.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Readers should reject the hierarchy of &#x27;guilty pleasures&#x27; and embrace any book that provides a meaningful, engaging experience regardless of its perceived literary status."</p>
+        <button class="essay-view-full" data-target="full-1-99189">View full essay</button>
+        <div class="essay-full" id="full-1-99189" style="display:none;">
+            <p>Summer reading should not require an alibi. The phrase “guilty pleasure” is charming, but it smuggles in a dreary hierarchy: Greek epics and prizewinners are virtuous; thrillers, celebrity memoirs and fat paperbacks are dessert. Yet readers often find in supposedly light books the very things literature is praised for providing — escape, recognition, suspense, moral complication and a sharpened sense of other lives.</p>
+            <p>A lazy weekend with a book is not a retreat from seriousness; it is one way to make room for attention in a distracted culture. Read Homer, read Elmore Leonard, read a pop star’s memoir. The useful distinction is not high versus low, but alive versus dull.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Supposedly light literature often provides the same essential qualities as high art, such as moral complication and a sharpened sense of other lives.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The act of dedicated summer reading serves as a necessary exercise in attention within a distracted culture.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The value of a book should be judged by whether it is &#x27;alive&#x27; or &#x27;dull&#x27; rather than by its classification as high or low culture.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Readers should embrace books that genuinely move them during the summer without feeling the need to apologize for their choices."</p>
+        <button class="essay-view-full" data-target="full-1-46072">View full essay</button>
+        <div class="essay-full" id="full-1-46072" style="display:none;">
+            <p>Summer reading should be what truly moves you, no apologies.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Literary pleasures can range from ancient classics to modern pop culture memoirs.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Personal enjoyment should take precedence over traditional literary standards when selecting summer books.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Readers should embrace their summer book choices without apology or guilt, as the distinction between serious literature and escapism is artificial."</p>
+        <button class="essay-view-full" data-target="full-1-20736">View full essay</button>
+        <div class="essay-full" id="full-1-20736" style="display:none;">
+            <p>The perennial summer-reading debate pits serious literature against breezy escapism, but novelists who admit to devouring ancient epics and pop-culture memoirs reveal such distinctions as artificial. Why call it a “guilty” pleasure? Guilt implies a transgression, yet there is no reading police. The mind needs rest; a gripping page-turner refreshes as surely as a nap. The novelists’ varied confessions underscore a simple truth: a good read is whatever moves you. If a beach book sparks joy, it has done its job. The real guilt should belong to those who shame readers’ choices. This summer, let pleasure be your compass. After all, the beach is no place for literary guilt trips. Read without apology.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The concept of a &#x27;guilty&#x27; pleasure in reading is a false construct because there are no objective rules governing personal literary enjoyment.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Lighthearted or gripping books provide necessary mental rest and refreshment similar to physical sleep.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The value of a book should be measured by its ability to move the reader or spark joy rather than its perceived intellectual status.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Social shaming of reading preferences is more problematic than the choice to read popular or easy literature.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The concept of the literary &quot;guilty pleasure&quot; should be retired because readers should feel no shame in choosing books that bring them joy."</p>
+        <button class="essay-view-full" data-target="full-1-93694">View full essay</button>
+        <div class="essay-full" id="full-1-93694" style="display:none;">
+            <p>The concept of the literary &quot;guilty pleasure&quot; needs to be retired, especially during the summer. Why should we feel guilt over what brings us joy on a July afternoon? The eclectic mix of novelists’ choices—ranging from classical antiquity to 1980s pop culture memoirs—proves that literary escapism defies strict categorization.</p>
+            <p>Summer reading is about absolute immersion, not intellectual posturing. Whether you are unpacking the tragedies of the ancient Greeks or devouring a gossipy celebrity autobiography, the value lies entirely in the reader&#x27;s experience. Furthermore, the ubiquity of e-readers means we no longer have to hide our supposedly lowbrow selections on the boardwalk. We should abandon the guilt and simply embrace the pleasure.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The wide variety of novelists&#x27; reading choices demonstrates that literary escapism cannot be confined to strict highbrow or lowbrow categories.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The primary value of summer reading is the reader&#x27;s personal immersion and experience rather than intellectual posturing.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The use of e-readers has removed the social pressure to hide certain books, making the idea of a visible &#x27;guilty&#x27; choice obsolete.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Readers should reject the concept of &quot;guilty pleasures&quot; and embrace books they genuinely enjoy, regardless of genre or perceived literary status."</p>
+        <button class="essay-view-full" data-target="full-1-10820">View full essay</button>
+        <div class="essay-full" id="full-1-10820" style="display:none;">
+            <p>I have never liked the idea of “guilty” reading. The guilt is usually class guilt in disguise: we are supposed to be embarrassed by books with plots, jokes, murders, ghosts, sex, dragons, or happy endings. Yet these are among the oldest engines of storytelling. The ancient Greeks did not sit around feeling sheepish about monsters and family curses.</p>
+            <p>A summer reading list should make room for appetite. If someone wants to spend a hot weekend with Agatha Christie, Stephen King, Raymond Chandler, Terry Pratchett, Nora Roberts, George R. R. Martin or Sue Grafton, that person is participating in a real literary tradition: suspense, comedy, romance, fantasy, detection. These genres require craft. Bad literary fiction can be every bit as formulaic as a bad thriller; it merely hides the formula behind better furniture and more weather.</p>
+            <p>This does not mean all pleasures are equal, or that taste is meaningless. Some books are deeper, sharper, more original, more durable. But the way to develop taste is not through shame. It is through reading widely and noticing what lasts after the plot is gone. The pleasure that begins with “what happens next?” can lead to “how did the writer do that?” and eventually to “what does this reveal about us?”</p>
+            <p>So my recommendation is simple: take the book you actually want to read, not the one you want strangers to see you holding. If it embarrasses you, remove the dust jacket. Better yet, remove the embarrassment.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The stigma against genre fiction is often a form of class-based elitism that unfairly devalues fundamental storytelling elements like plot, suspense, and fantasy.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Popular genre fiction belongs to a legitimate literary tradition and requires a level of craft that is often comparable to literary fiction.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Developing genuine literary taste is best achieved through wide, unashamed reading rather than through social performance or shame.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The initial pleasure of a compelling plot serves as a necessary gateway to deeper literary analysis and understanding of the human condition.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Individuals should feel free to read whatever they choose without judgment or restriction."</p>
+        <button class="essay-view-full" data-target="full-1-04163">View full essay</button>
+        <div class="essay-full" id="full-1-04163" style="display:none;">
+            <p>Read whatever you want. That&#x27;s the whole sermon.</p>
+            <p>===== END =====</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The act of reading should be driven by personal preference rather than external expectations or literary standards.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Readers should reject the concept of &quot;guilty pleasures&quot; and embrace summer reading as a time for uninhibited, indiscriminate enjoyment regardless of a book&#x27;s perceived cultural status."</p>
+        <button class="essay-view-full" data-target="full-1-16206">View full essay</button>
+        <div class="essay-full" id="full-1-16206" style="display:none;">
+            <p>The very phrase &quot;guilty pleasure&quot; is one we should examine before we use it. Why should any reading be guilty? The notion presumes a hierarchy in which Proust is virtue and a Jackie Collins paperback is vice, and that the reader&#x27;s soul must be accounted for at the end of August. I reject this framework entirely.</p>
+            <p>Summer reading is not a confession booth. It is one of the few stretches in the calendar when adults give themselves permission to read the way children read: greedily, indiscriminately, for the sheer narrative rush. A nine-year-old does not feel guilty for tearing through a stack of paperbacks at the public library&#x27;s summer reading program. Why should her parents?</p>
+            <p>The novelists asked to confess their secret pleasures inevitably name things that are not, in fact, embarrassing — the ancient Greeks, mid-century memoirs, genre classics. This is itself revealing. Even when invited to slum it, the literary class performs taste. The real guilty pleasure — the airport thriller bought in a hurry, the celebrity tell-all read in a single sweaty afternoon — rarely makes the list, because admitting to it costs cultural capital.</p>
+            <p>I would rather we drop the pretense. Read what holds you. If that is Aeschylus on the porch, wonderful. If it is a Danielle Steel novel inherited from your aunt&#x27;s beach house, equally wonderful. The page does not know who is looking at it, and neither, in July, should you.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The term &quot;guilty pleasure&quot; relies on a false hierarchy that moralizes certain types of literature over others.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Summer reading offers adults a rare opportunity to recapture the childhood experience of reading purely for narrative excitement rather than intellectual obligation.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The tendency for intellectuals to name high-brow works as their &quot;guilty pleasures&quot; is a performative act designed to protect their cultural capital.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The value of a book should be determined by its ability to hold the reader&#x27;s attention rather than its literary prestige.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Summer reading should be defined by personal enjoyment and completion rather than the pursuit of aspirational or difficult literature."</p>
+        <button class="essay-view-full" data-target="full-1-53012">View full essay</button>
+        <div class="essay-full" id="full-1-53012" style="display:none;">
+            <p>There&#x27;s a reason the summer reading list is a perennial feature of every newspaper&#x27;s culture pages: it speaks to a real and slightly anxious ritual. Americans, who read less than they used to according to NEA surveys from the last decade, treat summer as the season when they will finally catch up. The tote bag is packed with three hardcovers; two will come home unopened.</p>
+            <p>What the &quot;guilty pleasures&quot; framing captures is the gap between aspirational reading and actual reading. We pack &quot;Infinite Jest&quot; and we read Carl Hiaasen. We mean to finish &quot;The Goldfinch&quot; — or whatever weighty volume sits atop the season&#x27;s list — and instead we finish a Robert B. Parker mystery in two sittings on the deck.</p>
+            <p>This gap is not a failure. It&#x27;s a useful piece of self-knowledge. Summer reveals what we actually want from books when no syllabus, book club, or dinner-party conversation is policing the choice. The honest reader notices this and adjusts. Perhaps the lesson is not &quot;read more difficult books&quot; but &quot;stop pretending the difficult books are what relaxes you.&quot;</p>
+            <p>The novelists in this feature, of course, are professionals — for them difficult books may genuinely be relaxing, because reading is their craft and their pleasure both. The rest of us should take their lists as suggestions, not assignments. The best summer book is the one that gets finished.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The common ritual of packing ambitious books for summer often results in them remaining unread in favor of lighter fare.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The discrepancy between what we plan to read and what we actually read reveals our true literary preferences when free from social or academic pressure.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Readers should embrace the self-knowledge that difficult books are often not relaxing and stop pretending otherwise.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">While professional writers may find complex texts enjoyable, the average reader should treat reading lists as suggestions rather than mandatory assignments.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Summer reading should be defined by books that fit the actual constraints and emotional needs of one&#x27;s life rather than the idealized marketing fantasy of leisure."</p>
+        <button class="essay-view-full" data-target="full-1-98190">View full essay</button>
+        <div class="essay-full" id="full-1-98190" style="display:none;">
+            <p>I would like to put in a word for reading against the season. Summer is sold to us as leisure: hammocks, lemonade, paperbacks with turquoise covers. But many people are not on vacation. They are working in heat, looking after children, worrying about rent, taking summer classes, or riding buses with bad air-conditioning. The fantasy of the lazy weekend is pleasant, but it is not universal.</p>
+            <p>For that reason, my summer reading pleasure is the short book. Not because it is less serious, but because it respects fractured time. A story collection by Alice Munro, a novella by Denis Johnson, a play by August Wilson, poems by Seamus Heaney, essays by Joan Didion — these can be read in pieces without being trivial. They give the reader completion, which is its own luxury.</p>
+            <p>The publishing world often treats summer as a marketing category, and the “guilty pleasure” frame helps sell the idea that reading is indulgence. But reading can also be maintenance: of sanity, memory, language, self-respect. A person who reads ten pages after a brutal day has not failed to join the grand summer ritual. That person has kept a small appointment with freedom.</p>
+            <p>My advice is to choose books that fit the actual shape of your life, not the stock photograph version. If you have hours, take on a doorstop. If you have minutes, read something concentrated. If you are exhausted, let the book be funny. If you are numb, let it be strange. The point is not to perform leisure correctly. The point is to make room, however small, for another mind to meet yours.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The popular image of summer as a time of universal relaxation ignores the reality of those who must work or face hardships during the season.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Short literary forms like novellas, essays, and poems are ideal for summer because they respect the fractured time of a busy life while still providing a sense of completion.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Reading should be viewed as a necessary act of mental and emotional maintenance rather than a guilty indulgence or a performance of leisure.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The value of reading lies in the connection between minds, which can be achieved in small increments regardless of a book&#x27;s length or genre.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Readers should reject the label of &quot;guilty pleasures&quot; and embrace their reading choices without shame, as all forms of storytelling possess inherent value."</p>
+        <button class="essay-view-full" data-target="full-1-72572">View full essay</button>
+        <div class="essay-full" id="full-1-72572" style="display:none;">
+            <p>Let’s stop pretending that “guilty pleasures” are some charming confession. The label itself diminishes perfectly valid forms of storytelling and, by extension, the people who enjoy them. When we call a memoir from the 1980s a guilty pleasure, we’re implying that the only proper objects of literary attention are the serious, the difficult, the canonized. That’s not just snobbery; it’s a failure of critical imagination. A gossipy Hollywood tell-all can be a sharp social document, a masterclass in narrative voice, or a richly textured piece of cultural history. The novelists who contributed their unpredictable lists to this forum clearly know that. Their answers — ranging from ancient texts to pop culture artifacts — aren’t guilty at all; they’re liberated. I read a tattered Tom Clancy novel on the beach last summer and found myself thinking harder about Cold War masculinity than I ever did in a seminar. So this year, take the guilt out of your beach bag. Read what moves you, and call it simply pleasure.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The term &quot;guilty pleasure&quot; reinforces literary snobbery by implying that only canonized or difficult works are worthy of serious attention.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Popular or commercial genres often provide significant social, historical, and narrative insights that are overlooked by traditional critical standards.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Categorizing diverse reading lists as &quot;liberated&quot; rather than &quot;guilty&quot; acknowledges the intellectual and emotional validity of all types of literature.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Summer reading should be a guilt-free pursuit of joy and uncomplicated satisfaction rather than an exercise in intellectual improvement or literary pretension."</p>
+        <button class="essay-view-full" data-target="full-1-93617">View full essay</button>
+        <div class="essay-full" id="full-1-93617" style="display:none;">
+            <p>There&#x27;s something liberating about abandoning literary pretension during the summer months. While I spend most of the year grinding through dense criticism and demanding fiction, July and August are my permission to indulge without apology.</p>
+            <p>The phrase &quot;guilty pleasure&quot; has always struck me as condescending toward the reader. What guilt should I feel about savoring a pulpy thriller on a beach towel? These books deliver what they promise: tension, escape, characters I&#x27;ll remember long after closing the cover. If that&#x27;s a sin, I&#x27;m unrepentant.</p>
+            <p>I&#x27;ve developed a summer tradition of rereading genre fiction I&#x27;d dismissed in my twenties as beneath consideration. I&#x27;m thinking of authors like Elmore Leonard, whose dialogue crackles with life, or Ross Macdonald&#x27;s detective novels, which offer psychological depth masked by procedural mechanics. These books don&#x27;t pretend to be literature, but they accomplish something literature often fails at: pure, uncomplicated satisfaction.</p>
+            <p>Summer reading shouldn&#x27;t be about intellectual improvement. It should be about joy. The beach book exists to make you forget your sunburn, your overdue emails, the traffic on the way home. A novel that demands nothing but your attention, that rewards you page after page without requiring annotation or research, serves a legitimate purpose.</p>
+            <p>So this summer, I&#x27;m leaving my bookmarks at home and picking up whatever catches my eye at the airport newsstand. Guilt is optional.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The term &#x27;guilty pleasure&#x27; is a condescending label for books that successfully deliver tension, escape, and memorable characters.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Genre fiction often provides a level of psychological depth and pure satisfaction that high-brow literature fails to achieve.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The primary purpose of a summer book is to provide a total escape from daily stresses and responsibilities.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A book that demands only the reader&#x27;s attention without requiring research or annotation serves a legitimate and valuable purpose.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Summer reading should be a guilt-free, personal pursuit that prioritizes genuine interest and eclectic variety over academic expectations or literary prestige."</p>
+        <button class="essay-view-full" data-target="full-1-84387">View full essay</button>
+        <div class="essay-full" id="full-1-84387" style="display:none;">
+            <p>When I was a teenager, summer reading meant a furious, furtive binge on fantasy novels I’d never admit to my English teacher. As a young adult, I spent a sweltering August pretending to enjoy a Spanish-language classic that I still haven’t finished. Now, in middle age, my relationship with summer reading has changed again. The guilt has drained away, replaced by a sharper sense of time’s finitude. A lazy weekend with a book is not a luxury I can waste on something I’m supposed to like. The novelists in this debate, with their wildly democratic tastes, have given me a strange kind of permission. They’ve reminded me that the intellectual life isn’t a straight line; it’s a messy, soiled, beautiful collage. This summer, I will read a volume of Sappho and then immediately, unashamedly, pick up a yellowed memoir by a 1980s pop group. The combination will probably teach me more about the human voice than either book would alone. And if I doze off on the back porch in the middle of a paragraph, I’ll count that as part of the ritual, too.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The limited nature of time makes it impractical to spend leisure hours on books read solely out of a sense of obligation.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">An intellectual life is enriched by a diverse and unconventional mix of high and low culture rather than a narrow, linear path of study.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Combining disparate genres, such as ancient poetry and pop culture memoirs, can provide unique insights into the human experience that a single genre cannot.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The physical relaxation and leisure associated with summer reading are essential components of the reading ritual itself.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"The traditional summer-reading roundup is a disingenuous marketing tool that prioritizes curated charm over an honest depiction of how people actually read."</p>
+        <button class="essay-view-full" data-target="full-1-30338">View full essay</button>
+        <div class="essay-full" id="full-1-30338" style="display:none;">
+            <p>I&#x27;m skeptical of the whole genre of the summer-reading roundup, and the Times&#x27; version is no exception. These features are essentially marketing dressed up as conversation: novelists with books to promote and publishers with backlists to move are invited to chat amiably about what they&#x27;re reading, and we are invited to feel that we&#x27;ve eavesdropped on something intimate. We haven&#x27;t. We&#x27;ve read a press release.</p>
+            <p>The &quot;guilty pleasure&quot; angle is a particularly clever hook because it flatters the writer (look how charmingly down-to-earth she is, reading mysteries between novels) and the reader (you and your favorite novelist share a secret vice). But the picks are curated. No working novelist is going to admit to reading something genuinely embarrassing in a New York Times feature.</p>
+            <p>I&#x27;d rather see honest accounts of how writers actually read — distractedly, professionally, often for work, sometimes resentfully. Or, better, honest accounts of how ordinary people read in summer, which would include falling asleep on the porch with the same page open for an hour, abandoning books a third of the way through, and re-reading the same comfort novel for the fifth August in a row.</p>
+            <p>There is a real subject in summer reading. The roundup format mostly buries it under charm.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Summer-reading features are essentially press releases designed to promote novelists and publishers rather than facilitate genuine conversation.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The &#x27;guilty pleasure&#x27; framing is a calculated tactic used to flatter both the writer and the reader through a false sense of intimacy.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Novelists curate their reading lists for public consumption and will not admit to reading anything truly embarrassing in a major publication.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A more authentic approach to summer reading would highlight the messy realities of reading, such as distraction, abandonment of books, and repetitive comfort reading.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"The concept of &quot;guilty pleasures&quot; in reading should be rejected in favor of embracing intellectual curiosity and relaxation without judgment."</p>
+        <button class="essay-view-full" data-target="full-1-09735">View full essay</button>
+        <div class="essay-full" id="full-1-09735" style="display:none;">
+            <p>I don’t believe in guilty pleasures. The phrase itself feels like a hangover from a more judgmental era, when someone else’s literary gatekeepers could make you blush for loving a romance novel or a celebrity memoir. In the span of a year, my mind works hard enough: teaching, parenting, wrestling with the news. When July rolls around, I want to sink into a book the way I sink into a warm ocean. If that book happens to be a reissued 1970s rock biography full of backstage gossip, I’m not going to apologize. The novelists in this forum prove the point beautifully. Here are serious writers admitting they read ancient Greeks one week and a forgotten pop star’s autobiography the next. That’s not guilt; it’s intellectual omnivorousness. Summer frees us to follow curiosity wherever it leads. So I’ll be on my porch with a dog-eared paperback, no guilt in sight, just an ice cube melting in my glass and the sound of a page turning.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The term &quot;guilty pleasure&quot; is a relic of elitist literary gatekeeping that unfairly shames readers for their personal tastes.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Summer reading should serve as a necessary mental reprieve from the cognitive demands of work and daily life.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The diverse reading habits of serious writers demonstrate that being an intellectual means being an omnivorous reader rather than a restricted one.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Summer provides a unique seasonal freedom to follow one&#x27;s curiosity into any genre without the need for apology.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Readers should reject the concept of &#x27;guilty pleasures&#x27; and embrace entertaining books without shame or the need for academic justification."</p>
+        <button class="essay-view-full" data-target="full-1-12190">View full essay</button>
+        <div class="essay-full" id="full-1-12190" style="display:none;">
+            <p>The whole concept of &quot;guilty pleasures&quot; in reading reveals something uncomfortable about literary culture. We use that phrase to signal that we&#x27;re temporarily lowering our standards, that we&#x27;ll return to respectable literature once vacation ends. But why should pleasure itself require defense?</p>
+            <p>The truth is, my most memorable reading experiences often come from books I&#x27;d be embarrassed to mention in academic company. Beach reading, for me, means unapologetic consumption of whatever captures my imagination: a trashy celebrity memoir, a worn paperback mystery, maybe some science fiction from a garage sale. These books don&#x27;t challenge me in the ways serious literature does, but they offer something equally valuable.</p>
+            <p>When I&#x27;m lying in the sun with a book, I&#x27;m not trying to become a better person. I&#x27;m trying to inhabit a different world for a few hours. A memoir about a musician&#x27;s life in the 1970s does that beautifully, particularly if it&#x27;s written with honesty and humor. Pop culture reflections can illuminate an era as effectively as any sociological study.</p>
+            <p>The &quot;guilty&quot; in guilty pleasure is just internalized gatekeeping. I refuse to feel ashamed of wanting stories that entertain rather than instruct. Summer exists for recharging, and sometimes that means turning off the critical faculties and simply enjoying narrative.</p>
+            <p>Let books be what they are, without the burden of being &quot;important.&quot;</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The term &#x27;guilty pleasure&#x27; is a form of internalized gatekeeping that suggests enjoyment of popular literature requires a defense.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Popular genres like celebrity memoirs and mysteries offer valuable immersion and imaginative escape that serious literature may not provide.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Pop culture narratives can provide historical and social insights that are as effective as formal academic studies.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Summer reading should focus on personal recharging and the simple joy of narrative rather than the burden of self-improvement or critical instruction.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Summer reading should be embraced as a sensory, memory-shaping experience that transcends traditional cultural hierarchies and the concept of &#x27;guilty pleasures.&#x27;"</p>
+        <button class="essay-view-full" data-target="full-1-33959">View full essay</button>
+        <div class="essay-full" id="full-1-33959" style="display:none;">
+            <p>There’s a particular quality to the light on a July afternoon — golden, thick, drowsy — that seems to dissolve the rigid hierarchies we impose on culture. In that light, all reading is equal. The novelists in this forum, confessing their eclectic loves, understand this. A book, in summertime, is not primarily a text to be analyzed but an object held against the skin of the day: the weight of it in a beach bag, the way the page warms under the sun, the rhythm of a sentence blending with the rhythm of the waves. I’ve been thinking about how summer reading shapes memory. Years later, I can still feel the scratchy motel bedspread under my elbows as I raced through a gothic novel at age fourteen, or the hammock rope digging into my back while I wept over a poet’s letters. These are not guilty pleasures; they are the sensory anchors of my life. So this weekend, I’ll pick up something I’ve been meaning to read — perhaps a memoir of a 1980s television show, perhaps the Odyssey — and let the afternoon slowly, word by word, become part of my permanent archive of summers.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The unique atmosphere of summer dissolves the rigid distinctions between high and low culture, making all types of reading equally valid.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">In the summer, a book functions more as a physical object and a sensory experience than as a text for intellectual analysis.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The act of reading during the summer serves as a powerful sensory anchor that shapes and preserves long-term personal memories.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Choosing a book based on personal interest rather than prestige allows the reading experience to become a permanent part of one&#x27;s life history.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"The concept of the &quot;beach read&quot; is a marketing construct that fails to capture the authentic, eclectic, and personal nature of individual reading habits."</p>
+        <button class="essay-view-full" data-target="full-1-18147">View full essay</button>
+        <div class="essay-full" id="full-1-18147" style="display:none;">
+            <p>It’s no accident that this forum appears in July, right as the publishing industry rolls out its seasonal advertising machine. “Beach reads” are a marketing invention, designed to turn a deeply personal, often solitary act into a commodity with a tight expiration date. The novelists here, with their wonderfully motley lists of guilty pleasures, blow up that tidy narrative. They remind us that real reading habits don’t fit into a Barnes &amp; Noble endcap. A person can be moved by Thucydides and a trashy tell-all in the same month, even on the same afternoon. The very phrase “guilty pleasure” is the crack in the facade, the admission that our tastes are unruly and immune to seasonal branding. So I applaud this conversation for making the case, however inadvertently, for disobedient reading. I won’t be buying the official hot read of summer. I’ll be in a hammock, working my way through a pile that makes sense only to me.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The publishing industry uses seasonal branding to commodify the act of reading into a product with a specific expiration date.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The diverse and unpredictable book choices of actual writers demonstrate that real reading habits do not conform to narrow retail categories.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The term &quot;guilty pleasure&quot; reveals that human taste is naturally unruly and resistant to corporate attempts at curation.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">True intellectual engagement involves &quot;disobedient reading,&quot; which prioritizes personal interest over commercially driven trends.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Readers should prioritize genuine personal engagement with books over the performative curation of summer reading lists."</p>
+        <button class="essay-view-full" data-target="full-1-60120">View full essay</button>
+        <div class="essay-full" id="full-1-60120" style="display:none;">
+            <p>Here&#x27;s an unpopular opinion: the enthusiasm for summer reading lists and beach book recommendations has become its own form of cultural performance. We signal our good taste by discussing what we&#x27;ll read, not actually reading it.</p>
+            <p>I suspect many people purchase these books rather than finish them. The stack on the nightstand becomes a status object, evidence of literary ambition, while the actual reading happens in fitful bursts between cocktails and emails.</p>
+            <p>What I&#x27;ve learned about my own summer reading habits is humbling: I&#x27;m most likely to finish books I don&#x27;t announce beforehand. The ones I tell friends about, the ones with cultural prestige, tend to sit abandoned by the pool. Meanwhile, I&#x27;m quietly powering through detective novels and romance that I&#x27;d never post about on social media.</p>
+            <p>This suggests that the pleasure in &quot;guilty pleasures&quot; comes partly from their unannounced status. We&#x27;re reading for ourselves, not for display. There&#x27;s integrity in that.</p>
+            <p>Summer should be about discovering what you actually want to read when no one&#x27;s watching. That might be Dostoevsky, or it might be a biography of a rock band. The category shouldn&#x27;t matter. Only the engagement does.</p>
+            <p>Stop curating. Start reading. Whatever that means for you.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Publicly announcing reading lists often turns books into status symbols rather than objects of actual study.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The pressure to maintain cultural prestige frequently leads to the abandonment of ambitious books in favor of unannounced, private interests.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">True reading pleasure and integrity are found when one reads for themselves rather than for social display.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The value of summer reading lies in the quality of engagement with the text regardless of its literary category or perceived difficulty.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"The concept of &#x27;summer reading&#x27; as a category for guilty pleasures should be rejected in favor of a flexible approach that respects individual reading needs and preferences."</p>
+        <button class="essay-view-full" data-target="full-1-59874">View full essay</button>
+        <div class="essay-full" id="full-1-59874" style="display:none;">
+            <p>I&#x27;m skeptical of the entire framework surrounding &quot;summer reading.&quot; The season creates artificial categories: winter is for serious work, summer for guilty pleasures. But this division ignores how individual reading needs vary.</p>
+            <p>For some, summer creates anxiety. There&#x27;s pressure to use vacation for self-improvement, to emerge from August having read everything on the &quot;serious&quot; list. The relaxation becomes another form of productivity, and the guilt around pleasure reading intensifies rather than diminishes.</p>
+            <p>I know readers who feel genuine shame about their summer choices. They read genre fiction secretly, apologizing for their preferences even as they consume books hungrily. This is absurd. Pleasure requires no justification.</p>
+            <p>Meanwhile, some readers use summer precisely to tackle ambitious projects: reading through a particular author&#x27;s complete works, finally studying that philosophy they&#x27;d avoided, working through dense historical research. For them, the slower pace enables concentration rather than escape.</p>
+            <p>The diversity of reading experiences is the point. Summer offers time, and readers will fill that time with whatever satisfies their needs. Some need rest; others need challenge. Neither is wrong.</p>
+            <p>What matters is that people read at all, in whatever form brings them back to the page.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The seasonal division between serious winter reading and summer pleasure reading creates an artificial and unnecessary hierarchy.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The pressure to use summer vacation for self-improvement can turn relaxation into a source of anxiety and performative productivity.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Readers should not feel the need to apologize or feel shame for choosing genre fiction or pleasure-oriented books.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">For many readers, the slower pace of summer provides the necessary focus to tackle ambitious or dense intellectual projects rather than light entertainment.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The ultimate value of summer reading lies in the act of reading itself, regardless of whether the content is challenging or escapist.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The phrase &quot;guilty pleasure&quot; should be retired because readers should feel no shame or need to apologize for enjoying books that prioritize entertainment over high-brow literary status."</p>
+        <button class="essay-view-full" data-target="full-1-42829">View full essay</button>
+        <div class="essay-full" id="full-1-42829" style="display:none;">
+            <p>It is time to permanently retire the phrase &quot;guilty pleasure&quot; when it comes to reading. The implication that we should feel a sense of shame for enjoying a romance novel, a fast-paced thriller, or a celebrity memoir is rooted in a lingering, elitist view of what constitutes &quot;real&quot; literature.</p>
+            <p>When we label a book a guilty pleasure, we are subtly apologizing for our own tastes. But why should we apologize for being entertained? The primary purpose of fiction, after all, has always been to transport the reader. If a mass-market paperback by Stephen King or Nora Roberts succeeds in keeping you glued to the page while the ice melts in your lemonade, it has achieved precisely what literature was invented to do.</p>
+            <p>The literary establishment often creates an artificial hierarchy where dense, emotionally taxing novels are placed at the top, while anything featuring a gripping plot or a happy ending is relegated to the bottom. But reading should not be a chore, and it certainly shouldn&#x27;t be an exercise in public posturing. If you want to spend your July afternoons tearing through *Gone Girl* or the latest James Patterson novel, you should do so with zero guilt. Reading is one of the few entirely solitary, selfish acts we have left in our hyper-connected world. It belongs to you, not to the critics. Let’s reclaim the joy of reading purely for the sake of enjoyment.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The concept of guilty pleasures is rooted in an elitist and artificial hierarchy that unfairly devalues popular genres like romance and thrillers.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The primary purpose of fiction is to transport and engage the reader, a goal that mass-market paperbacks achieve just as effectively as dense classics.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Reading is a personal and solitary act that should be driven by individual enjoyment rather than the expectations of critics or the literary establishment.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The concept of the &quot;summer read&quot; is an artificial marketing construct created by the publishing industry rather than a genuine shift in reader psychology or taste."</p>
+        <button class="essay-view-full" data-target="full-1-11799">View full essay</button>
+        <div class="essay-full" id="full-1-11799" style="display:none;">
+            <p>The entire debate over &quot;summer reads&quot; and &quot;guilty pleasures&quot; is nothing more than a triumph of publishing industry marketing. There is no biological or environmental reason why a warm July breeze should suddenly make us crave badly written thrillers and formulaic romances.</p>
+            <p>The &quot;beach read&quot; is an artificial category, constructed by publishers to drive sales during what used to be a sluggish quarter. By branding mass-market commercial fiction as essential summer accessories—right alongside sunscreen and flip-flops—the industry successfully created a seasonal mandate to buy disposable books. We don’t experience a change in our literary tastes; we are simply responding to seasonal end-caps in bookstores and targeted summer marketing campaigns. Let&#x27;s stop pretending that &quot;summer reading&quot; is a distinct psychological phenomenon and recognize it for the highly effective retail strategy it is.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Publishers invented the &quot;beach read&quot; category to boost book sales during a historically slow retail quarter.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The industry markets mass-market commercial fiction as a seasonal necessity comparable to summer accessories like sunscreen.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">There is no biological or environmental basis for the idea that warmer weather changes a person&#x27;s literary preferences.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

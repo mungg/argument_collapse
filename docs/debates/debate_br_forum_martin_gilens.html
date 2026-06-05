@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Under the Influence · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">Boston Review · Politics · Lead-essay</div>
+  <h1 class="debate-title">Under the Influence</h1>
+  <div class="lead-box">
+    <div class="lead-head">Lead essay · Matthew Yglesias</div>
+    <div class="lead-title">Under the Influence</div>
+    <a class="lead-link" href="https://www.google.com/search?q=%22Matthew%20Yglesias%22%20%22Under%20the%20Influence%22%20site%3Abostonreview.net" target="_blank" rel="noopener">Read original on Boston Review ↗</a>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=3</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_1.html">
+      <td class="arg-text">The health of a democracy should be measured by the accountability of its leaders for policy outcomes rather than the degree to which policy outcomes mirror public opinion surveys.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_2.html">
+      <td class="arg-text">While Gilens correctly identifies that American policy is systematically biased toward the affluent, achieving political equality requires more than just electoral competition; it requires rebuilding countervailing institutions like labor unions to offset the structural advantages of organized economic power.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_3.html">
+      <td class="arg-text">While Martin Gilens correctly identifies that policy responsiveness favors the affluent, his analysis underestimates the structural depth of political inequality and the limitations of purely procedural reforms.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_4.html">
+      <td class="arg-text">While Martin Gilens’s findings on representational inequality are significant, relying solely on public opinion polls to measure democratic influence is flawed because preferences expressed in surveys often fail to account for policy complexity, public ignorance, and the objective interests of the less affluent.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_5.html">
+      <td class="arg-text">While Martin Gilens correctly identifies representational inequality, the best solution is not to rely on fleeting moments of partisan competition but to build strong, stable progressive majorities through the cultivation of dedicated partisans.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_6.html">
+      <td class="arg-text">While Gilens’s data on representational inequality is compelling, his conclusions regarding the causes of and solutions to this inequality are complicated by measurement gaps, the difficulty of proving causation, and the nature of representative government.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_7.html">
+      <td class="arg-text">While Gilens correctly identifies the failure of American democracy to represent the poor, his proposed incremental reforms are insufficient because they fail to address the underlying structural economic inequality and ideological barriers that empower the affluent.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_8.html">
+      <td class="arg-text">While Martin Gilens correctly identifies that the affluent exert disproportionate influence over public policy, his focus on campaign finance overlooks the deeper structural, social, and institutional advantages that sustain this inequality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_9.html">
+      <td class="arg-text">While Gilens correctly identifies that the affluent possess disproportionate political influence, the root of the problem lies deeper in the erosion of collective institutions and the ability of elites to shape public preferences before they are even measured.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_10.html">
+      <td class="arg-text">While Gilens’s data shows a correlation between affluent preferences and policy outcomes, it fails to prove that the affluent exert dominant causal influence over American democracy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_11.html">
+      <td class="arg-text">Martin Gilens’s evidence of extreme representational inequality constitutes a crisis of democratic legitimacy that necessitates structural reforms to break the link between concentrated wealth and political power.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_12.html">
+      <td class="arg-text">The most effective way to address representational inequality is to dramatically expand and intensify democratic participation through structural reforms that mobilize the non-affluent electorate.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_13.html">
+      <td class="arg-text">The responding essay argues that disproportionate influence by the wealthy does not necessarily threaten democracy, as the current system&#x27;s filters and corrective mechanisms often produce outcomes that serve the public interest better than a direct reflection of popular will would.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_14.html">
+      <td class="arg-text">Martin Gilens’s data reveals that the United States has devolved into an electoral oligarchy rather than a democracy, necessitating radical structural overhauls rather than the modest reforms Gilens suggests.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_15.html">
+      <td class="arg-text">Martin Gilens’s conclusion that the affluent dominate American policymaking is flawed because it mistakes the constitutional status quo bias and the intensity of pluralistic interests for a simple capture of the system by the wealthy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_16.html">
+      <td class="arg-text">Gilens’s critique of representational inequality is flawed because it relies on a majoritarian framework that ignores the deliberate design of American institutions to prioritize expert deliberation and minority rights over direct responsiveness to public opinion polls.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_17.html">
+      <td class="arg-text">Martin Gilens’s conclusion that the affluent exert disproportionate influence over policy is based on a correlation that fails to account for alternative explanations such as the role of expert consensus and the quality of public information.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_18.html">
+      <td class="arg-text">While Martin Gilens correctly identifies that the affluent have disproportionate political influence, his analysis understates the current crisis because it fails to account for the catastrophic concentration of power within the top 1 percent following the Citizens United decision.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_19.html">
+      <td class="arg-text">The political inequality Gilens identifies is driven less by the direct influence of money and more by a disparity in civic infrastructure and political knowledge that prevents lower-income citizens from translating their survey preferences into effective political action.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_martin_gilens_arg_20.html">
+      <td class="arg-text">The disproportionate influence of the affluent on public policy is not a threat to democracy but rather a beneficial feature of a representative system that filters out the economically biased or uninformed preferences of the general public.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Matthew Yglesias</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/holding-politicians-accountable-matthew-yglesias/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Nancy L. Rosenblum</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/praise-partisans-nancy-rosenblum/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Barbara Sinclair</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/preferences-are-overrated-barbara-sinclair/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Gilens has assembled an empirical case that is hard to dismiss: across decades and thousands of survey items, the preferences of low- and middle-income Americans bear little independent relationship to what government actually does. The finding deserves to unsettle anyone who takes the small-d democratic premise seriously. But I want to press on three points where the evidence, as Gilens presents it, may be doing less work than the conclusions suggest.</p>
+      <p>First, there is a measurement problem lurking in the gap between the 90th percentile and the truly rich. Gilens admits this himself: when affluent and middle-class preferences diverge, we cannot tell whether the operative actor is the dentist earning $150,000 or the hedge-fund manager earning $50 million. This matters enormously for diagnosis. If the merely affluent are setting policy, then expanded turnout and small-donor campaigns might genuinely move the needle. If the top 0.1 percent is doing the work — through campaign finance, lobbying outlays, and the revolving door — then the reforms Gilens gestures toward (nonpartisan districting, GOTV drives) are unlikely to be adequate. Page and Bartels&#x27;s forthcoming work on top-1-percent preferences should be treated as a precondition for prescription, not a footnote to it.</p>
+      <p>Second, congruence between affluent preferences and policy outcomes does not by itself establish causation. The affluent are, on average, better informed about policy detail and more attentive to elite discourse. If both policymakers and affluent citizens are responding to a shared informational environment — economists&#x27; near-consensus on trade liberalization through the 1990s, for instance — then we might be observing parallel updating rather than disproportionate influence. Gilens&#x27;s protectionism example illustrates the difficulty: poor and middle-class opposition to NAFTA may reflect rational economic interest, but it may also reflect less exposure to the arguments that persuaded experts. I don&#x27;t think this fully rescues the system from the charge of plutocracy, but it does complicate the inferential leap from correlation to influence.</p>
+      <p>Third, Gilens&#x27;s own data contain a result worth dwelling on: under unified Democratic control in the Johnson years, policy tracked no one&#x27;s preferences — not the poor&#x27;s, not the affluent&#x27;s. This suggests that the binding constraint on responsiveness is sometimes simply that elected officials pursue their own programmatic visions when given the chance. That is not necessarily a failure of democracy; it is what representative government, as distinct from plebiscitary government, is partly designed to do. The normative weight of &quot;responsiveness&quot; depends on whether we think representation should mirror current opinion or shape it.</p>
+      <p>None of this dissolves Gilens&#x27;s central worry. But the path from his findings to reform proposals runs through questions his data cannot yet answer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>Martin Gilens offers a sobering empirical portrait of American democracy. By tracking the match between policy outcomes and the preferences of different income groups, he shows that the affluent have substantial influence while the poor and middle class have virtually none when their views diverge from the rich. The finding that electoral competition modestly reduces this inequality is a glimmer of hope, but the overall diagnosis is damning. Yet for all the power of this evidence, we should hesitate before concluding that money directly purchases policy. Gilens’s measure—correlation between survey responses and subsequent policy change—may confound elite influence with elite alignment with technocratic consensus. Free trade, for example, was embraced by economic experts across the ideological spectrum for decades; its adoption despite broad public opposition might reflect deference to perceived expertise rather than a simple triumph of wealth. This alternative does not exonerate the system—policy should be democratically responsive—but it complicates the causal story.</p>
+      <p>More troubling is Gilens’s reliance on political competition as the primary remedy. His historical analysis shows that closely divided government forces parties to court the median voter, boosting responsiveness. But the logic assumes that parties are still capable of such pivots. In our current era of deep partisan polarization, divided government often yields gridlock that punishes the most vulnerable. The debt-ceiling standoff of 2011, for instance, imposed austerity that a majority of Americans, and especially lower-income groups, opposed. When competition becomes synonymous with obstruction, the filtering effect Gilens describes—blocking unpopular policies—can also prevent urgently needed action, from extending unemployment benefits to investing in infrastructure. Competition may not save us if it is weaponized by an anti-government faction.</p>
+      <p>Gilens’s pragmatic suggestion—to prioritize policies with cross-class support—carries its own dangers. He notes that majorities of all income levels favor minimum-wage hikes, education spending, and Social Security. While such consensus-building is politically shrewd, it implicitly accepts the veto power of the affluent over any policy they do oppose. Genuinely equal representation would mean that a majority-supported increase in top marginal tax rates or a robust financial transactions tax could become law even if the rich objected. By ceding the agenda to those issues the wealthy already accept, we risk confining the ambitions of the non-rich to a narrow, affluent-approved strip of possibilities. Structural economic reforms—the kind that might genuinely reduce inequality—often require confronting elite interests head-on, not just finding common ground.</p>
+      <p>Finally, the reform levers Gilens identifies—campaign finance changes, nonpartisan districting—are themselves subject to the very dynamics he describes. Citizens United and the subsequent explosion of super PAC spending show how concentrated wealth shapes the legal rules of the game. Meaningful campaign finance reform would require overcoming that same elite influence. The protests in Wisconsin in 2011, where mass mobilization temporarily countered corporate-backed austerity, hint at a different path: political power may also respond to large-scale collective action that disrupts business as usual. If the affluent dominate through donations, then expanding the organizational capacity of ordinary people—through unions, community groups, and social movements—might offer a counterweight that procedural tweaks alone cannot. Gilens rightly insists that our political destiny is not predetermined. But the road to a more equal democracy probably runs not through elite accommodation but through a revival of contentious, broad-based counter-power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Martin Gilens provides a sobering, empirical confirmation of a long-held democratic anxiety: when the policy preferences of the affluent diverge from those of the poor and middle class, the affluent win. His data convincingly maps the scope of this representational inequality. However, by pointing to campaign donations as the primary mechanism for this disparity, Gilens relies on a diagnosis that underestimates the deeper structural and institutional advantages enjoyed by the top ten percent.</p>
+      <p>Campaign contributions undoubtedly matter, but they are only the most visible currency of influence. The affluent dominate not just because they fund campaigns, but because they possess disproportionate social and cultural capital. Lawmakers, their staffs, and the affluent live in overlapping networks; they share educational backgrounds, professional assumptions, and an ideological vocabulary. Even if the Supreme Court were to reverse *Citizens United* tomorrow and campaign spending were magically equalized, the affluent would still maintain privileged access to the daily, unseen machinery of government.</p>
+      <p>This structural advantage extends to Gilens’s dismissal of interest groups. He notes that organizations like the AARP and AFL-CIO frequently align with middle- or low-income preferences. But influence in Washington is rarely decided by broad policy alignments alone; it is won in the technical minutiae of legislation and regulation. During the recent debates over the Affordable Care Act and the Dodd-Frank financial reforms, corporate and affluent-aligned interest groups did not merely lobby—they provided the highly technical expertise required to draft the rules. This intellectual capture ensures that even when a popular reform is passed, its implementation is routinely tailored to elite interests. The poor do not have think tanks or corporate lawyers translating their broad polling preferences into statutory language.</p>
+      <p>Furthermore, Gilens’s suggestion that political gridlock serves as a filter that protects the middle class by thwarting unpopular policies is deeply troubling. In our current era of intense polarization and divided government, gridlock fundamentally preserves the status quo. When the status quo already features widening income disparities, a weakened labor movement, and systemic economic vulnerabilities, legislative paralysis inherently benefits the privileged. The affluent can afford a government that does nothing; the poor and middle class rely on government action for economic mobility and protection. Treating gridlock as a democratic safeguard ignores the fact that inaction is often a policy choice that favors the powerful.</p>
+      <p>Gilens has delivered an invaluable, data-driven indictment of American democracy. Yet, if we are to take his findings seriously, we must recognize that campaign finance reform and competitive elections are insufficient cures. Rebalancing influence requires rebuilding the civic institutions—particularly organized labor—that can systematically translate middle-class preferences into persistent legislative pressure, ensuring the public is heard not just on Election Day, but every day.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Martin Gilens’s evidence should unsettle anyone who takes political equality seriously. If the preferences of citizens at the bottom and middle of the income distribution predict federal policy only when they coincide with the preferences of the affluent, then the formal equality of one person, one vote is doing far less democratic work than we like to imagine. The finding is especially important because it cuts through the comforting thought that the problem is simply Republican government, or conservative ideology, or a few bad Supreme Court decisions. The pattern is broader: money, attention, access, and organization tilt the whole system.</p>
+      <p>Still, I would put somewhat more weight than Gilens does on the institutions that translate preferences into power. The poor are not merely “ignored” as isolated individuals; they are weakly organized as a class. Mid-twentieth-century American politics gave working- and lower-middle-class citizens influence not only because they voted, but because unions, urban machines, civil-rights organizations, churches, and mass-membership associations could bargain, threaten, educate, and mobilize. The decline of private-sector unionism, the weakening of local parties, and the professionalization of advocacy have left many citizens represented, if at all, by organizations speaking for them rather than organizations composed of them.</p>
+      <p>This matters because public opinion is not a fixed input that government either obeys or disobeys. Citizens often hold broad values rather than detailed policy views, and elites help define which policies seem connected to those values. The 2001 and 2003 tax cuts, for example, may have had majority support across income groups, but that support depended on how the issue was framed: as tax relief, as stimulus, as fairness, or as a distributional choice favoring high earners. Likewise, hostility to “welfare” can coexist with support for Social Security, Medicare, unemployment insurance, and aid to education. Unequal influence operates not only after preferences are measured; it operates before then, in agenda-setting, framing, and the production of political common sense.</p>
+      <p>That qualification does not weaken Gilens’s case. It strengthens it. If affluent Americans and business interests have disproportionate capacity to shape the agenda, fund campaigns, subsidize think tanks, lobby continuously, and define what counts as “serious” policy, then unequal responsiveness measured at the end of the process understates the democratic problem. By the time a proposal appears in a survey, many alternatives have already been excluded.</p>
+      <p>Nor should we be too reassured by political competition. Close elections can make politicians more attentive to public opinion, but they can also make them more dependent on donors, consultants, and negative advertising. Competition in a low-turnout, high-money system may sharpen responsiveness to swing voters while leaving nonvoters and safe-district residents invisible. Gridlock may block unpopular overreach, but it also protects the status quo—a status quo already shaped by prior inequalities.</p>
+      <p>The most promising remedy is therefore not simply cleaner campaign finance, though public financing and disclosure are essential. It is rebuilding countervailing power. Easier voter registration, protection against voter suppression, competitive districts, small-donor matching systems, and stronger labor rights all belong together. So do institutions that help ordinary citizens deliberate and act collectively rather than merely answer poll questions.</p>
+      <p>Gilens is right that American democracy has been worse and has improved. But improvement has rarely come from benign competition alone. It has come when excluded citizens organized enough power that politicians could no longer afford to ignore them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Martin Gilens presents a sobering portrait of American democracy, but I think his analysis, while compelling, understates both the depth of the problem and the complexity of its solutions. His core finding—that policy responsiveness tracks income rather than population—is well-supported and significant. Yet the normative weight he assigns to &quot;representational equality&quot; deserves more scrutiny than his essay provides.</p>
+      <p>Gilens is careful to note that perfect responsiveness might not be desirable; majorities can be shortsighted, and minority rights matter. But he doesn&#x27;t fully grapple with what this concession implies. If we accept that policymakers should sometimes resist public preferences, we immediately face the question of who should exercise that resisting judgment. Gilens assumes that deviations from majority will should reflect something like expert wisdom or protecting minority interests. But his own data suggests that deviations instead reflect the preferences of the affluent—which may be no more legitimate a guide than majoritarian caprice.</p>
+      <p>The implication is troubling: Gilens documents a system where the wealthy effectively veto popular preferences, yet his proposed remedies—campaign finance reform, enhanced competition—don&#x27;t address the deeper problem. Even if we achieved more competitive elections, why would politicians court low-income voters whose turnout remains low and whose donations remain negligible? The competitive pressure Gilens identifies operates primarily by making politicians more attentive to the median voter or the swing voter, not by empowering those with the lowest rates of political participation.</p>
+      <p>This points to a deeper issue Gilens mentions only in passing: the cultural and civic dimensions of political inequality. Voting rates among the poor have declined substantially since the 1960s, a trend Gilens doesn&#x27;t examine in detail. Bridging representational inequality requires not just structural reforms but addressing the alienation and disengagement that leave low-income citizens on the sidelines of political life.</p>
+      <p>Finally, Gilens acknowledges that the affluent don&#x27;t always push policy in a conservative direction—on moral issues, wealthier Americans tend to be more liberal. This point deserves more emphasis. It suggests that income-based inequality in influence doesn&#x27;t map neatly onto ideological conflict, and that the stakes of representational inequality are more complex than a simple story of rich versus poor.</p>
+      <p>Gilens is right that American democracy falls short of its ideals. But diagnosing the problem is easier than prescribing lasting remedies, and the structural sources of representational inequality are more deeply embedded than his analysis acknowledges.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (15 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**The Measurement Problem at the Heart of Gilens&#x27;s Argument**</p>
+      <p>Martin Gilens has assembled an impressive dataset and his core finding—that policy outcomes correlate more tightly with affluent preferences than with the preferences of the poor—deserves serious engagement. But before we accept the dramatic conclusion that American democracy is failing the non-affluent, we should think harder about what his correlations can and cannot tell us.</p>
+      <p>Consider what Gilens&#x27;s methodology actually measures. He takes survey questions about proposed policy changes, sorts respondents by income, and asks whether policy ended up matching the preferences of each group. When the affluent want X and the poor want Y, and X happens, the affluent are &quot;influential.&quot; But correlation is not causation, and there&#x27;s a troubling alternative explanation for many of his findings: on issues where preferences diverge, the affluent tend to be better informed about the technical content and likely consequences of the policies in question.</p>
+      <p>Take trade policy, one of Gilens&#x27;s signature examples. Yes, lower-income Americans have consistently opposed NAFTA-style agreements while affluent Americans have supported them. But virtually every academic economist—across the ideological spectrum—agrees that liberalized trade produces aggregate welfare gains. If policymakers follow expert consensus rather than diffuse public opinion on technical matters, the resulting policy will correlate with affluent preferences simply because the affluent are more likely to hold views consistent with that expert consensus. The same pattern likely applies to immigration reform (which Gilens notes was opposed by 90 percent of the poor in 1965) and to deregulation in particular industries where the case for reform rested on technical economic arguments.</p>
+      <p>This is not to dismiss the inequality concern. It is to say that Gilens&#x27;s correlations are consistent with at least three stories: (1) the affluent buy disproportionate influence through donations and access; (2) the affluent happen to have better-informed views that policymakers reasonably weight more heavily; (3) the affluent&#x27;s views proxy for the views of expert and elite communities (journalists, economists, civil servants) that genuinely do shape policy. These mechanisms have very different normative implications, and Gilens&#x27;s data cannot distinguish among them.</p>
+      <p>Gilens himself acknowledges some of this when he notes that interest groups don&#x27;t cleanly track the affluent-poor divide—the AARP and AFL-CIO are powerful, and industry groups often align with the poor on spending issues. This is a major concession. If organized interests, which actually do the lobbying and the campaign contributing, don&#x27;t map onto the income gradient, then the &quot;money buys influence&quot; story he gestures toward in his conclusion becomes harder to sustain. He also concedes that wealthy members of Congress don&#x27;t vote differently from less wealthy ones, knocking out another obvious mechanism.</p>
+      <p>What&#x27;s left? Gilens points to campaign contributions as the most plausible channel. But the empirical literature on campaign finance effects is famously inconclusive. Ansolabehere, de Figueiredo, and Snyder&#x27;s much-cited piece &quot;Why Is There So Little Money in U.S. Politics?&quot; found that contributions are better understood as consumption than investment, and that the actual policy returns to contributions are surprisingly hard to detect. If money were as decisive as the Gilens narrative implies, we&#x27;d expect much more of it sloshing through the system than we actually observe.</p>
+      <p>There&#x27;s also a selection problem in the policy questions themselves. Survey researchers don&#x27;t ask about every conceivable policy; they ask about salient ones, often ones that elites are already debating. This means the universe of &quot;proposed policy changes&quot; Gilens studies is filtered through an elite agenda-setting process. The policies poor Americans might most want—say, a federal jobs guarantee, or aggressive industrial policy—may never get asked about because they&#x27;re not on the table.</p>
+      <p>None of this means we should be complacent about inequalities of political voice. Voter turnout differences by income are real and troubling; the disproportionate role of large donors is troubling; the post–Citizens United landscape is troubling. But the leap from &quot;policy correlates better with affluent preferences&quot; to &quot;the affluent dominate American democracy&quot; requires causal claims that Gilens&#x27;s data cannot quite bear. A more modest framing would be: on contested issues where preferences diverge by income, the policy outcomes we observe are more consistent with affluent than with poor preferences, for reasons that include—but are not limited to—differential political influence. That&#x27;s still worth worrying about. But it&#x27;s a more honest summary of what the evidence shows.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**Gilens Understates His Own Case**</p>
+      <p>Reading Martin Gilens&#x27;s careful, measured essay, one is struck by how restrained his conclusions are given the data he has assembled. He documents that across four decades of policymaking, the preferences of poor and middle-class Americans have had essentially zero independent effect on what their government does. None. Zero. And yet he concludes with hopeful gestures toward campaign finance reform, nonpartisan redistricting, and identifying issues where cross-class coalitions might work. This is like discovering the foundations of your house are rotted through and recommending fresh paint.</p>
+      <p>If Gilens&#x27;s findings are correct—and I think his methodology is sound—then the implications are far more radical than he is willing to state. The United States does not have a democracy in any meaningful sense of that word. It has an electoral oligarchy in which competing factions of the affluent contest for control while the rest of the population is offered ritualized participation that does not translate into representation. The procedural trappings—elections, parties, free press—are real, but their substantive output bears no relationship to majority preference except where majority preference happens to coincide with elite preference.</p>
+      <p>Consider what Gilens shows about the Democratic Party. The party traditionally understood as the vehicle for working-class interests has, over the past several decades, &quot;shifted strongly in a free-market, anti-regulation, free-trade direction—a shift more consistent with the preferences of the affluent than of the less well off.&quot; Under Clinton, the Democrats delivered NAFTA, welfare reform, financial deregulation, and the repeal of Glass-Steagall. Under Obama, after running on a platform of pushing back against Wall Street excess, the administration delivered TARP without serious conditions, prosecuted no major banking executives for the conduct that produced the 2008 crisis, and passed a health care reform built around private insurers rather than the public option majorities of voters supported. The pattern is consistent: when the affluent and the rest disagree, the affluent win, regardless of which party holds power.</p>
+      <p>Gilens&#x27;s &quot;bright spot&quot;—that political competition increases responsiveness—deserves harder scrutiny. He acknowledges that even under maximally favorable conditions, &quot;competition is rarely strong enough to create anything remotely resembling equal representation.&quot; So the best the system can offer is somewhat-less-extreme inequality of voice. This is grading on a curve so steep it&#x27;s nearly vertical.</p>
+      <p>I want to push particularly hard on his treatment of campaign finance. Gilens treats Citizens United as an unfortunate setback that future courts might reverse. But Citizens United is not an aberration; it is the logical culmination of a constitutional framework that has, since Buckley v. Valeo in 1976, treated political spending as protected speech. Within that framework, modest reforms—matching funds, contribution limits, disclosure requirements—are perpetually vulnerable to being eroded by the next inventive workaround. Super PACs have made nominal contribution limits nearly meaningless within two years of being authorized. The plutocratization of American politics is not a problem that can be solved by tweaking the existing system; it requires structural change of a kind that the existing system makes nearly impossible to enact, because those who would lose power under reform are precisely those whose support reform requires.</p>
+      <p>Gilens also underplays the international comparison. Other wealthy democracies have not seen the same explosion of inequality the United States has, and they have not seen the same hollowing out of policy responsiveness. The contrast suggests that the American pattern reflects specific institutional choices—weak parties, candidate-centered elections, privately financed campaigns, a constitutional structure that requires extraordinary supermajorities for change—rather than some universal logic of capitalism or globalization. Gilens treats American institutions as the given background; they are in fact the foreground problem.</p>
+      <p>What would a serious response to Gilens&#x27;s findings look like? It would include public financing of elections that genuinely crowds out private money, not as a supplement to it. It would include rebuilding the institutional infrastructure—unions, mass-membership organizations, local party structures—that historically gave non-affluent citizens organized voice. It would include constitutional remedies to Buckley and Citizens United. It would include automatic voter registration and mandatory voting on the Australian model, since Gilens identifies turnout differentials as one channel of influence inequality.</p>
+      <p>Gilens has produced what should be a five-alarm fire of a finding. He himself rings the bell too softly. The data say American democracy has failed; the question is whether we can build something that deserves the name.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**What Gilens Misses About Majoritarianism**</p>
+      <p>Martin Gilens&#x27;s research is valuable, and his evidence that policy tracks affluent preferences more closely than poor preferences is hard to dismiss. But Gilens frames his findings within a particular theory of democracy—a roughly majoritarian one in which the legitimacy of policy turns on its correspondence to citizen preferences—and that framing obscures as much as it reveals. Before we lament representational inequality, we should ask whether equal representation of preferences is actually what democratic theory recommends or what American institutions are designed to produce.</p>
+      <p>Start with what Gilens&#x27;s own data show but he passes over quickly. Many of the policy reversals that occurred during the period he studies were not popular at the time but are now broadly accepted: civil rights legislation, immigration reform, the loosening of restrictions on stem cell research, expanded protections against discrimination. Gilens notes that the 1965 immigration reform was opposed by 90 percent of poor Americans and three-quarters of middle-class and affluent ones. By his criterion, this was a profound failure of democratic responsiveness. By almost any other criterion, it was one of the great achievements of postwar American governance. The same is true of a great deal of civil rights policy, which moved ahead of public opinion and helped pull opinion forward.</p>
+      <p>This is the classic Madisonian observation: pure responsiveness to popular preference is not a virtue but a danger. The American constitutional order was deliberately designed to filter, slow, and sometimes frustrate majority will, particularly when that will threatens minority rights or reflects passion rather than considered judgment. Gilens nods to this concern in a paragraph near the end (&quot;minority rights are important too, and majorities are sometimes shortsighted or misguided&quot;) but does not let it disturb his framework. It should disturb it more.</p>
+      <p>There is also a problem with treating survey responses as the gold standard of &quot;what the public wants.&quot; Survey questions present policy proposals stripped of context, tradeoffs, and budgetary implications. Respondents often hold contradictory preferences—they want lower taxes and more spending, more services and smaller government. Their views shift dramatically based on question wording and the salience of different considerations. When Gilens finds that policy fails to match poll responses, the failure may sometimes lie not with policymakers but with the polls&#x27; ability to capture preferences that could plausibly guide actual governance.</p>
+      <p>Consider Gilens&#x27;s example of trade policy. He treats the move toward freer trade as evidence of policymakers ignoring the poor and middle class in favor of the affluent. But the public&#x27;s apparent protectionism in polls coexists with persistent consumer behavior that has rewarded cheaper imported goods, and with the broad bipartisan judgment among economists, foreign policy professionals, and labor economists alike that the overall welfare effects of liberalized trade are positive even when distributional effects are uneven. A policymaker who decides that aggregate welfare considerations and expert judgment should outweigh diffuse poll opposition is not necessarily failing democracy; she may be exercising the kind of considered judgment that representative (as opposed to direct) democracy is designed to enable.</p>
+      <p>Now, none of this is a blanket defense of how American politics actually works. Gilens is right that the influence of large donors raises serious concerns, that voter turnout disparities are troubling, and that organized economic power can distort policy in ways that go well beyond legitimate expert judgment. The growing concentration of wealth at the top is a real political-economic problem, and the explosion of money in elections post–Citizens United deserves the worry Gilens directs at it.</p>
+      <p>But the diagnostic frame matters. If we believe the problem is that policy fails to match poll majorities, we will be drawn toward more populist, plebiscitary reforms—national referenda, term limits, weakening of &quot;elite&quot; institutions. If we believe the problem is more specifically the disproportionate role of concentrated wealth in shaping elite deliberation, we will be drawn toward campaign finance reform, anti-corruption measures, and strengthening countervailing institutions like unions. These are different reform agendas, and Gilens&#x27;s framing pushes us toward the first when the second is probably what his evidence actually supports.</p>
+      <p>American democracy has serious problems. But the problem is not that the public doesn&#x27;t get its way often enough. It is that some channels of influence have grown too powerful relative to others, distorting the deliberation through which representative government is supposed to operate. That is a narrower diagnosis than Gilens offers, but a more accurate one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Martin Gilens has assembled a devastating empirical case for what many Americans have long suspected: our democracy is not just imperfect, but is, for large stretches and on crucial issues, a sham. His painstaking analysis of decades of survey data and policy outcomes shows that when the preferences of the rich diverge from those of everyone else, the rich almost always win. The poor and the middle class are, in effect, disenfranchised between elections. That this pattern holds even when Democrats control Washington shatters the comforting illusion that the party of the New Deal still serves as the voice of the working class. The implications are nothing short of a crisis for democratic legitimacy.</p>
+      <p>Gilens’s finding that the influence of the affluent has steadily increased over the past four decades should alarm anyone who believes that government must rest on the consent of the governed. The data track the same decades that saw a massive upward redistribution of wealth, the decline of labor unions, and the transformation of political campaigns into money-guzzling machines. The coincidence is not accidental. As Gilens notes, the one form of civic participation that matches the pattern of unequal influence is the writing of large checks. When candidates must raise millions to compete, they inevitably become attentive to the donor class. Even the mitigating effect of partisan competition is fleeting; once one party consolidates control, as the Republicans did after 2004, the public’s voice vanishes entirely.</p>
+      <p>The danger is not simply that the rich get the policies they want while others do not. It is that the very legitimacy of the state erodes when people perceive—correctly—that their views carry no weight. The Occupy movement, whatever its organizational shortcomings, gave voice to a widespread sense that the game is rigged. If the public comes to believe that elections cannot discipline the powerful, disillusionment will deepen and could eventually turn into civil unrest or support for authoritarian alternatives. Gilens’s essay should be read as a fire alarm.</p>
+      <p>What can be done? The reforms Gilens mentions—campaign finance regulation, nonpartisan districting—are necessary but insufficient. The Supreme Court’s decision in *Citizens United* was a body blow, but even before that ruling, private money dominated politics. A constitutional amendment to overturn that decision and to enable effective limits on campaign spending is the only structural solution that can break the link between concentrated wealth and political power. Coupled with robust public financing of elections, which frees candidates from dependence on the donor class, such an amendment could begin to restore the equal representation that democracy demands. In addition, aggressive antitrust enforcement, a higher minimum wage, and measures to strengthen unions would not only reduce economic inequality but also build countervailing organizational power. Gilens notes that unions sometimes align with the poor and middle class; their near-collapse is part of the reason the affluent face so little organized opposition.</p>
+      <p>Some will argue that the rich have a right to participate, and that restricting money is an infringement of speech. But when the speech of a few drowns out the speech of the many, the First Amendment is being perverted to destroy the very political equality it was meant to protect. The Framers, for all their flaws, feared concentrated power and designed a system of checks and balances. They did not anticipate a world in which corporations and billionaires could purchase the government wholesale. It falls to this generation to complete their work by ensuring that democracy is not a plaything of the wealthy but a genuine instrument of the people. Gilens has given us the evidence; now we must find the will.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Martin Gilens’s study is a masterful exercise in data-gathering, but its central interpretation—that the rich enjoy a distinct, disproportionate influence over policy—rests on an inferential leap that correlation alone cannot justify. The finding that policy outcomes more closely track the preferences of the affluent when opinions diverge is robust, but it does not establish that the affluent *cause* those outcomes. Before we embrace the narrative of oligarchy and rush to impose new restrictions on political speech, we should consider alternative explanations that are less damning yet equally consistent with the evidence.</p>
+      <p>First, the affluent tend to be better educated and more attentive to politics. Their policy preferences are more likely to align with what economic and social research suggests is effective. For instance, the shift toward free trade, which Gilens cites as a victory for the rich over the poor, is also the near-unanimous recommendation of economists across the ideological spectrum. The opposition of many lower-income Americans to free trade often reflects a misunderstanding of its benefits—it is protectionism that disproportionately harms the poor by raising the price of consumer goods and insulating uncompetitive industries. Similarly, financial deregulation, though it can be taken too far, was driven in part by a consensus among experts that outdated New Deal restrictions stifled innovation and consumer choice. If policymakers follow the views of the more informed, that will sometimes coincide with the preferences of the affluent without implying a corrupt bargain.</p>
+      <p>Second, Gilens’s measure of influence—the congruence between survey responses and subsequent policy—ignores the messy reality of how policy is made. Public opinion is but one input among many: legislative coalitions, interest-group lobbying, administrative capacity, and judicial mandates all shape outcomes. The fact that the affluent tend to win on divisive issues may simply reflect that their preferences align with the organized interests that dominate particular policy domains. But those interests are not monolithic. The AARP and the AFL-CIO, as Gilens acknowledges, are powerful and often side with the less well-off. The pharmaceutical and insurance industries, for instance, supported the Medicare drug benefit, a policy that was both popular across income groups and highly beneficial to low-income seniors. The complex interplay of stakeholders muddies any claim that the rich, as a class, control the levers of government.</p>
+      <p>Finally, the very nature of survey responses should give us pause. Citizens often formulate their opinions on the spot, without deep information, and their stated preferences can vacillate wildly depending on question wording. The “preferences” of the poor may be more a reflection of ambient slogans than of settled convictions. To treat these fleeting answers as the baseline for democratic accountability risks enshrining ignorance rather than wisdom. A responsible representative should sometimes resist the ill-considered whims of any income group, not just the poor.</p>
+      <p>None of this is to deny that money in politics is a problem, or that economic inequality can translate into unequal voice. But Gilens’s data do not license a radical overhaul of campaign finance laws or a jeremiad against the rich. If the goal is a more responsive government, the answer lies less in restricting the political activity of the wealthy—which often backfires by driving money into even less transparent channels—and more in improving the civic knowledge and engagement of all citizens. A well-informed electorate would naturally bring policy closer to the public interest, regardless of who writes the checks.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Martin Gilens’s portrait of unequal influence is sobering but not entirely hopeless. Buried in his evidence is a powerful insight: when electoral competition heats up, the gap in responsiveness between the rich and the rest shrinks. During presidential election years, even the poor get a hearing; when partisan control of government is divided, policymakers become more attentive to the broad public. These findings suggest that the problem is not an immutable oligarchy but a political system that fails to mobilize and engage the very people it is supposed to represent. The cure, then, is not to despair over the power of money, but to dramatically expand and intensify democratic participation.</p>
+      <p>Gilens shows that the affluent influence policy largely because they participate—not just by giving money, but by voting and volunteering at rates that far exceed those of the poor and middle class. Yet when he disentangles the effects, he finds that voting and volunteering do not replicate the unique advantage of the rich; only campaign donations do. This would seem to indict money directly, but a closer look at his own evidence on political competition tells a different story. When elections are tight, parties work furiously to court the median voter, who is far less affluent than the average donor. The result is that even without campaign finance reform, the preferences of the poor and middle class gain traction. In short, it is *voting*, not just money, that disciplines politicians—but only when turnout is high and elections are competitive.</p>
+      <p>The implication is clear: the most effective way to reduce representational inequality is to make voting universal and elections genuinely contested. Gilens mentions nonpartisan districting and get-out-the-vote drives, but we should go much further. Automatic voter registration, extended early voting, and declaring Election Day a national holiday would lower the barriers that keep low-income citizens from the polls. Better still, Australia-style compulsory voting, with a modest fine for noncompliance, would instantly transform the electorate into an accurate mirror of the population. Politicians would then ignore the poor at their peril. Such reforms are far from utopian; they have been successfully implemented in dozens of democracies.</p>
+      <p>A second, complementary reform is to strengthen political parties as vehicles of popular mobilization. Weak parties, forced to rely on wealthy patrons to fund their activities, inevitably drift toward the donor class. Strong mass-membership parties, with dense local organizations and transparent funding, can channel the energy and small donations of millions of citizens. If Democrats and Republicans were rebuilt from the ground up, they would have a direct stake in turning out their less-affluent bases and pushing policies that respond to those voters’ needs. The experience of several European countries shows that such party structures can effectively counterbalance concentrated wealth.</p>
+      <p>Gilens is right that campaign finance matters, but his own data suggest it is not the whole story. The early George W. Bush years, with no campaign finance overhaul, saw a government highly responsive to the full income spectrum because partisan competition was intense. Focusing exclusively on the supply of money risks neglecting the demand side: a public that does not vote is a public that will be ignored. By transforming the electorate and the party system, we can harness the very competitive dynamics Gilens identifies and turn them into a permanent force for equal representation. Democracy is not a spectator sport, and the best answer to the influence of the rich is the roar of a fully engaged multitude.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>Martin Gilens presents a chilling portrait of American democracy, one in which the voices of the poor and the middle class are systematically drowned out by the preferences of the affluent. His meticulous research confirming that our government is vastly more responsive to those at the top of the income distribution is a vital contribution to political science. However, by relying on data that ends in 2006, Gilens’s analysis, as grim as it is, actually understates the magnitude of the crisis we face today in July 2012. We are no longer living in the political ecosystem of the 1980s or 1990s. We are living in the post-*Citizens United* era, and the implications for representational equality are catastrophic.</p>
+      <p>Gilens uses the 90th income percentile to represent the &quot;affluent.&quot; In 2012, a household at the 90th percentile makes roughly $140,000 a year. These are successful professionals—doctors, lawyers, small business owners. They may have more disposable income to donate to a preferred candidate than a working-class family, but they are not the ones buying our elections. The Occupy Wall Street movement over the past year correctly identified the real fault line in American economic and political power: the 99 percent versus the 1 percent, and more accurately, the top 0.1 percent.</p>
+      <p>Since the Supreme Court’s disastrous *Citizens United* decision in 2010, the campaign finance landscape has been fundamentally rewired. We are currently witnessing the first presidential election dominated by Super PACs, organizations that can raise and spend unlimited sums of corporate and private wealth. A handful of billionaires—figures like Sheldon Adelson on the right and George Soros on the left—are now capable of single-handedly keeping presidential campaigns afloat and dictating the legislative agendas of entire political parties. Gilens notes that campaign donations are the most likely mechanism for the representational inequality he observes. If that was true when campaign contributions were strictly capped and soft money was regulated, what happens when billionaires can drop ten million dollars into a Super PAC with total anonymity?</p>
+      <p>Because he underestimates the concentration of power at the very apex of the wealth distribution, Gilens is overly optimistic about his proposed solution: partisan competition. He suggests that when elections are closely contested and control of government is up for grabs, policymakers broaden their appeal and become more responsive to the middle class and the poor.</p>
+      <p>But this theory assumes that politicians competing in tight races will turn to the broad electorate for support. In the current arms race of campaign spending, a highly competitive election actually makes politicians *more* dependent on the ultra-wealthy. When a candidate needs to raise $50 million to survive a bruising Senate race, they do not spend their time courting the median voter; they spend their time in the living rooms of hedge fund managers and fossil fuel executives. Partisan gridlock and close elections no longer force politicians to the center; they force politicians to dial for dollars.</p>
+      <p>We can see this dynamic playing out in the halls of Congress right now. The public overwhelmingly supports allowing the Bush tax cuts for the wealthiest Americans to expire, yet the Democratic Party is deeply fractured on the issue, terrified of alienating elite donors. The public wants stricter regulations on Wall Street to prevent another 2008 financial collapse, yet the Dodd-Frank reforms are being systematically watered down by lobbyists funded by the very banks that were bailed out. In these instances, partisan competition has done nothing to save the middle class.</p>
+      <p>Gilens is right to say that democracy requires all citizens to have influence over the policies their government adopts. But his hope that nonpartisan districting or a slight uptick in partisan rivalry will correct the ship is a dangerous illusion. Until we confront the structural rot of a privately financed electoral system—until we overturn *Citizens United* and move toward publicly funded elections—the government will continue to be a subsidiary of the highest bidder, and the voices of the poor and middle class will remain nothing more than a statistical rounding error in the eyes of Washington.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Martin Gilens’s essay operates on a foundational, unquestioned premise: that the ideal democracy is one in which government policy perfectly mirrors the public opinion polls of the day, regardless of the income, education, or expertise of the respondents. By demonstrating that policy outcomes correlate more closely with the preferences of the affluent than with those of the poor, Gilens concludes that &quot;democracy itself is threatened.&quot; But before we despair over the state of the American republic, we ought to critically examine whether perfectly equal responsiveness to public opinion is actually a desirable goal.</p>
+      <p>The Founders of the American republic certainly did not think so. They deliberately designed a representative system—complete with a bicameral legislature, an independent judiciary, and an Electoral College—specifically to filter and refine the public will, preventing the immediate passions of the majority from dictating national policy. They feared populism as much as they feared monarchy.</p>
+      <p>When we look at the specific issues where the preferences of the affluent diverge from those of the poor, the &quot;representational inequality&quot; Gilens decries often looks less like a subversion of democracy and more like a necessary buffer against economic illiteracy. Gilens points out that over the past few decades, American trade policy has become less protectionist, aligning with the views of the affluent but opposing those of the poor, who broadly opposed free trade agreements like NAFTA.</p>
+      <p>Should we mourn the fact that the poor did not get the protectionism they wanted? As economists across the political spectrum will attest, free trade creates aggregate economic growth, lowers prices for consumer goods (which disproportionately benefits the poor), and opens global markets to American exports. Protectionism, while intuitively appealing to workers anxious about manufacturing competition, inevitably leads to trade wars, higher inflation, and economic stagnation.</p>
+      <p>In his 2007 book *The Myth of the Rational Voter*, economist Bryan Caplan demonstrated that the general public holds systematically biased views on economics, largely because they lack formal economic education. The public consistently underestimates the benefits of markets, overestimates the dangers of foreign trade, and fundamentally misunderstands how job creation works. However, Caplan’s data also shows that as voters become more educated—and education is inextricably linked with income—their views begin to align much more closely with the consensus of economic experts.</p>
+      <p>The affluent in Gilens’s study are not merely a class of wealthy plutocrats acting entirely out of greedy self-interest. They are, by and large, the most highly educated segment of the American populace. When they support looser corporate regulations or free trade, they are often supporting policies that mainstream economic science indicates will grow the national economy. If Congress were to become perfectly responsive to the poorest Americans, as Gilens seems to wish, we would likely see a resurgence of disastrous economic policies: strict price controls, punishing tariffs, and regulatory strangulation.</p>
+      <p>Furthermore, Gilens admits that on moral and religious issues, the affluent are actually more socially liberal than the poor, favoring abortion access and opposing school prayer. If we implemented Gilens&#x27;s &quot;greater representational equality,&quot; the result would be a more socially conservative, economically protectionist America. It is highly doubtful that the progressive advocates who champion Gilens’s work would actually prefer the policy outcomes generated by the median American voter.</p>
+      <p>Representative government requires lawmakers to exercise their own judgment, weighing evidence and long-term consequences, rather than acting as unthinking seismographs for public polling. The fact that policy more often aligns with the demographic that possesses higher levels of education and civic engagement is not a sign that our system is fundamentally broken. It is a sign that the Madisonian filter is working exactly as intended.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>In &quot;Under the Influence,&quot; Martin Gilens argues that the American policymaking apparatus is captured by the affluent. His data shows that when the preferences of the rich diverge from those of the poor and middle class, the rich get what they want, and the rest get nothing. It is a compelling narrative, but it suffers from a significant methodological blind spot. By focusing strictly on the correlation between survey responses and legislative outcomes, Gilens misinterprets the fundamental mechanics of the American political system. What he diagnoses as the overpowering influence of the wealthy is, in reality, the inherent status quo bias of our constitutional design.</p>
+      <p>Consider Gilens’s most striking statistic: &quot;Policies favored by 20 percent of affluent Americans... have about a one-in-five chance of being adopted, while policies favored by 80 percent of affluent Americans are adopted about half the time.&quot; Gilens presents this as evidence of oligarchy. But look at those numbers again. When an overwhelming, super-majority of 80 percent of the most powerful, wealthy, and politically connected citizens in the country want a policy change, *they fail to get it 50 percent of the time*.</p>
+      <p>If the affluent truly hold a stranglehold over Washington, why are they losing half of their most popular battles?</p>
+      <p>The answer lies in the institutional structure of the United States government. The American system is characterized by multiple veto points: the House, the filibuster-prone Senate, the presidential veto, and the courts. It is incredibly difficult to pass new legislation. Consequently, the easiest thing to achieve in Washington is nothing at all. This status quo bias protects existing programs (which explains why Medicare and Social Security, wildly popular with the middle class, are untouched) but makes enacting *new* policies a Herculean task.</p>
+      <p>When Gilens measures &quot;responsiveness,&quot; he is largely measuring the success rate of proposed policy changes. Because the affluent are more politically engaged and often drive the introduction of new economic legislation (like tax cuts or deregulation), their preferences are more frequently tested against these veto points. The fact that some of these policies occasionally survive the legislative gauntlet does not mean the poor are being actively ignored; it means that passing any law requires an alignment of political capital, timing, and institutional momentum that is rarely achieved.</p>
+      <p>Furthermore, Gilens treats all public opinion data equally, ignoring the crucial dimension of issue salience. Surveys force respondents to express a preference on issues they may know nothing about and care even less about. A pollster might call a middle-class voter and ask if they support a specific change to capital gains tax rates or corporate regulations. The voter might say &quot;no,&quot; registering as opposition in Gilens’s dataset. But that voter will not base their vote in the next election on capital gains taxes. They will vote based on the state of the economy, healthcare, or cultural issues.</p>
+      <p>Interest groups and the affluent, however, often have intense, concentrated preferences on specific economic policies. In a democratic system, an intense minority will often overcome an apathetic majority. This is not necessarily a corruption of democracy; it is a feature of pluralism. A small group of farmers will successfully lobby for agricultural subsidies because their livelihoods depend on it, even if a poll shows the general public weakly opposes the subsidies. Gilens conflates weak survey opposition with genuine political demand.</p>
+      <p>We can see the limits of Gilens’s framework in his assessment of the George W. Bush years. He claims the early Bush administration was highly responsive to the public due to partisan competition, citing the 2001 and 2003 tax cuts as examples of policies supported across all income levels. Yet, many political scientists have shown that the public’s support for these tax cuts was largely based on a misunderstanding of their own tax burden and the policies&#x27; regressive nature. If the public can be persuaded to support policies that disproportionately benefit the rich, then &quot;responsiveness&quot; to the public is a poor metric for democratic health.</p>
+      <p>Gilens’s research is undeniably valuable in highlighting the disparities in political participation and campaign finance. However, we must be careful not to mistake the slow, grinding gears of a Madisonian system—designed to kill most legislation and favor intense preferences over passive ones—for a simple dictatorship of the rich. The middle class has profound power in American politics, but it is primarily the power to defend the welfare state they already possess, not necessarily the power to micromanage the regulatory state through public opinion polls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Martin Gilens’s findings are disturbing not because they tell us something wholly unexpected, but because they give empirical shape to what many Americans have come to suspect: public policy is not simply “out of touch” in some vague sense. It is systematically more attentive to those with money. That matters even when the affluent are public-spirited, even when their preferences coincide with those of everyone else, and even when they are right on the merits. Democracy cannot rest on the hope that the rich will often be benevolent.</p>
+      <p>The most important contribution of Gilens’s essay is to separate agreement from influence. Many defenders of the status quo point out that the United States has programs—Social Security, Medicare, public education, the mortgage interest deduction, veterans’ benefits—that enjoy broad cross-class support. True enough. But that tells us little about what happens when interests diverge. The test of political equality is not whether poor people sometimes get policies they like because rich people like them too. The test is whether they have independent weight when they disagree. Gilens’s answer is: usually not.</p>
+      <p>That answer helps explain several otherwise puzzling features of American politics. Why has the minimum wage been allowed to erode for long periods despite strong public support for raising it? Why has trade policy moved steadily toward liberalization even though working-class voters have often been skeptical? Why did financial deregulation proceed for decades with little effective popular scrutiny, only to be followed by a crisis whose costs were borne broadly while rescue efforts appeared to favor Wall Street? Why is “shared sacrifice” invoked so frequently when budget cuts are discussed, but so rarely when tax preferences for the affluent are on the table?</p>
+      <p>Gilens is right that campaign money is a plausible mechanism. In modern campaigns, politicians do not merely need votes; they need donors early, constantly, and in large quantities. A voter can punish you in November. A donor can determine whether you are viable in March. Before ordinary citizens have even begun paying attention, candidates have already passed through a money primary. Those who survive are rarely crude puppets of the wealthy. The process is subtler: viable candidates learn which ideas are “serious,” which reforms are “unrealistic,” and which constituencies must be reassured before any campaign can begin.</p>
+      <p>Still, I think Gilens may understate the role of organized economic power. He notes that not all interest groups represent the affluent and that some groups, such as the AARP or labor unions, often align with lower- and middle-income Americans. That is true, but it does not follow that interest-group politics balances out. Business interests possess advantages that are not reducible to campaign contributions: permanent Washington offices, technical expertise, revolving-door relationships, control over investment decisions, and the capacity to frame regulation as a threat to jobs. A union or citizens’ group must mobilize episodically. A regulated industry is always mobilized.</p>
+      <p>This asymmetry is especially important because so much policymaking is invisible. Survey questions usually concern salient policy choices: whether to raise taxes, increase spending, approve a trade agreement, regulate an industry. But the actual work of government often occurs in the details: rule-writing, enforcement budgets, definitions, exemptions, deadlines, administrative waivers, and committee negotiations. Affluent citizens and business interests do not need to win every public argument if they can shape the agenda before most people know an argument is occurring.</p>
+      <p>The decline of labor is therefore central. For much of the twentieth century, unions did more than bargain over wages. They translated diffuse economic discontent into political demands, supplied volunteers, educated voters, and gave politicians a reason to listen to working-class people between elections. Their weakening has not simply reduced one Democratic constituency. It has removed one of the few institutions capable of matching concentrated wealth with organized numbers. If we want representational equality, rebuilding countervailing institutions matters as much as regulating campaign spending.</p>
+      <p>Gilens’s discussion of competition is valuable but incomplete. Competitive elections can force politicians toward popular positions. Yet competition in a money-soaked system can also deepen dependence on donors. A vulnerable incumbent may spend more time fundraising, not less. A challenger in a competitive district may avoid offending affluent contributors, consultants, and media gatekeepers. Competition helps only if the electorate is actually activated and if candidates can run viable campaigns without first satisfying a narrow donor class.</p>
+      <p>That is why reforms should be judged by whether they change who participates, who pays, and who organizes. Public financing, especially systems that amplify small donations, can reduce dependence on large contributors. Disclosure rules can at least make influence visible. Nonpartisan redistricting may help where gerrymandering protects incumbents, though it is no cure for the Senate, the filibuster, or unequal turnout. Automatic voter registration, same-day registration, and nonpartisan get-out-the-vote efforts would make the electorate more representative. Labor-law reform and protection for worker organizing would strengthen a form of political participation rooted outside the donor class.</p>
+      <p>The point is not to make government a mechanical servant of opinion polls. Gilens rightly acknowledges that majorities can be wrong and that minority rights matter. But there is a difference between principled independence and class-skewed deafness. When politicians defy public opinion to protect civil rights, they may redeem democracy. When they defy it to protect carried interest, weaken workplace protections, or preserve tax advantages for those already thriving, they corrode it.</p>
+      <p>American democracy has always contained exclusions and inequalities. The hopeful fact is that these have been contested, and sometimes reduced, by organized movements: abolitionists, suffragists, labor organizers, civil-rights activists. Gilens’s research should be read in that tradition. It is not a counsel of despair. It is a map of where power has gone—and a reminder that political equality will not be restored by wishing elected officials would listen. It will require building institutions that make them listen.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Martin Gilens has produced an important warning against complacency. No serious democrat should be indifferent to the possibility that public officials listen far more closely to the affluent than to everyone else. But his essay also illustrates the danger of treating “responsiveness” as the master measure of democratic health. A republic is not merely a device for converting survey responses into statutes. If it were, some of the examples Gilens offers would be arguments against democracy’s wisdom rather than against its corruption.</p>
+      <p>Consider his discussion of the Johnson administration. Gilens notes that many Great Society initiatives, the 1965 immigration reform, and the Vietnam tax surcharge lacked majority support. This shows, in his framework, a period of low responsiveness. But what should we conclude from that? Civil rights legislation became more popular by the time of passage, but much of the moral leadership of the era consisted precisely in refusing to let entrenched opinion dictate the rights of black Americans. Immigration reform may have been opposed by large majorities, including poor Americans, but many today regard the old national-origins quota system as indefensible. Even some antipoverty programs that were unpopular rested on a plausible judgment that government had obligations not exhausted by majority sentiment.</p>
+      <p>Gilens acknowledges this problem, but I am not sure he gives it sufficient weight. Public opinion is often unstable, poorly informed, and internally inconsistent. Citizens favor balanced budgets but resist tax increases and spending cuts. They want cheaper health care, broader access, and unlimited choice. They dislike “welfare” but support help for deserving families. They oppose foreign aid while vastly overestimating how much the government spends on it. None of this means citizens are foolish. It means they are busy people with limited incentives to master policy details. The political system should heed them, but it should not simply obey them.</p>
+      <p>This point matters especially when comparing income groups. Affluent Americans are not only richer; they are, on average, more educated, more likely to vote, more likely to follow politics, and more likely to hold stable ideological views. Some of their disproportionate “influence” may reflect not only money but information and engagement. That is not a complete defense of inequality. Unequal civic capacity is itself a democratic concern. But the cure is not necessarily to reduce the influence of those who pay attention. It may be to increase the capacity and participation of those who do not.</p>
+      <p>Gilens’s evidence also raises a question about causation. If affluent opinion predicts policy outcomes better than middle- or low-income opinion, is that because politicians are catering to the rich, or because affluent opinion more closely tracks the views of policy elites, experts, organized groups, and institutions that shape feasible policy? On trade, for example, the affluent have tended to favor liberalization. So have most economists, many editorial boards, and leaders in both parties. One can argue that they were wrong or insufficiently attentive to distributional costs. But it is too simple to say that trade agreements passed because the affluent wanted them. They passed because a broad elite consensus formed around them, including many people who believed—rightly or wrongly—that freer trade would benefit the country as a whole.</p>
+      <p>Campaign finance reform is therefore an uncertain remedy. Money matters, and Citizens United has understandably intensified concern about wealthy influence. But the relationship between money and policy is not mechanical. Wealthy donors disagree with each other. Some fund conservative tax-cutting groups; others support environmental causes, abortion rights, or same-sex marriage. Labor unions, trial lawyers, ideological organizations, and single-issue groups also spend money to influence elections. A system that restricts political spending in the name of equality may end up protecting incumbents, empowering media institutions, or driving influence into less transparent channels.</p>
+      <p>The better democratic agenda would emphasize participation, transparency, and competence. Make voting easier through better registration systems and more convenient polling. Improve civic education so that citizens have a stronger grasp of what government does and what tradeoffs policy requires. Require prompt disclosure of campaign spending and lobbying activity. Enforce corruption laws strictly. Reduce barriers to entry for challengers where districting or ballot-access rules entrench officeholders. But we should hesitate before assuming that equal influence can or should mean equal correspondence between each income group’s survey preferences and federal policy.</p>
+      <p>Gilens is on firmer ground when he praises political competition. Competitive elections are a republican safeguard because they force politicians to justify themselves. Yet even here, one should be careful. Gridlock may block unpopular initiatives, but it also blocks necessary ones. The federal government faces long-term fiscal pressures from health costs and retirement programs. It must maintain infrastructure, regulate financial markets intelligently, and make decisions about war and security under uncertainty. A political system that responds mainly when competition produces fear may become risk-averse, pandering, and incapable of long-range judgment.</p>
+      <p>The deepest problem may not be that officials sometimes ignore the public. It is that they ignore the public selectively while pretending not to. They invoke “the American people” when convenient and dismiss them when donors, activists, or party coalitions demand something else. That hypocrisy breeds cynicism. But restoring trust requires more than making policy match majority preferences. It requires institutions capable of deliberation, explanation, and accountability.</p>
+      <p>Democracy is not identical to populism. It includes elections, rights, representation, expertise, constitutional limits, and leadership. Gilens is right to warn that concentrated wealth can distort all of these. But if we define democracy chiefly as income-neutral policy responsiveness, we risk condemning some of the noblest acts of statesmanship while embracing a politics of instant polling. The goal should be a government that listens more broadly, explains itself more honestly, and remains open to correction—not one that mistakes every survey result for the voice of justice.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Martin Gilens’s essay should unsettle anyone who believes elections alone guarantee political equality. Yet one of his proposed sources of hope—more partisan competition—deserves a closer look. Competition can make politicians attentive, but it can also make them shallow, poll-driven, and dependent on money. The missing variable in Gilens’s account is not simply competition. It is organization.</p>
+      <p>The people who lose in Gilens’s story are not merely poorer individuals. They are people who lack durable institutions capable of turning preferences into power. Affluent Americans do not have to march in the streets or attend precinct meetings to be heard. They are embedded in networks of donors, professionals, trade associations, foundations, lobbyists, lawyers, and policy shops. Their preferences travel easily through the political system. Low-income Americans, by contrast, are often asked to express themselves only as isolated voters, and often only after candidates, agendas, and legislative options have already been shaped.</p>
+      <p>That is why the decline of mass-membership organizations is so damaging. Unions, churches, urban political machines, civil-rights organizations, veterans’ groups, and local party clubs once performed many functions we now expect campaigns to perform in a few frantic months. They recruited leaders, developed loyalties, educated members, negotiated with officeholders, and punished betrayal. Some were corrupt or exclusionary; none should be romanticized. But they gave ordinary citizens a way to act collectively. Without them, politics becomes a contest among professionals speaking through television advertisements financed by people with large checkbooks.</p>
+      <p>Gilens’s findings about Democrats are especially important here. Many liberals comfort themselves with the belief that the Democratic Party represents the working class. In some domains, particularly Social Security, Medicare, Medicaid, the minimum wage, and labor regulation, that remains partly true. But the national party has also grown comfortable with Wall Street money, free-trade assumptions, deregulation, and deficit politics that often narrow the range of economic debate. This is not simply a matter of bad faith. It is a matter of coalition structure. A party that relies on affluent social liberals, professional-class donors, and business-friendly policy experts will hear some voices more clearly than others, even while speaking in the name of “working families.”</p>
+      <p>Republicans have a parallel problem. They often mobilize middle- and lower-income voters around religion, guns, patriotism, and hostility to liberal elites, while pursuing tax and regulatory agendas most intensely desired by business and high-income constituencies. The Tea Party movement has shown genuine grassroots anger at bailouts, debt, and Washington insiderism. But its energy has often been channeled into policies—upper-end tax cuts, attacks on public-sector unions, resistance to financial regulation—that do little to increase the independent power of ordinary citizens.</p>
+      <p>For this reason, I am skeptical that nonpartisan redistricting and generic competitiveness will solve much. Competitive districts can improve accountability, and grotesquely gerrymandered seats are hard to defend. But a competitive campaign in an expensive media market may intensify the candidate’s dependence on donors. It may also encourage cautious centrism, which sounds democratic until one asks whose concerns define the “center.” If the choices placed before voters have already been filtered by donor acceptability, then a close election can legitimate a narrow agenda rather than broaden it.</p>
+      <p>Nor is gridlock a reliable democratic filter. Gilens argues that gridlock blocks unpopular policies more effectively than popular ones. Sometimes. But it can also preserve unpopular arrangements by making change impossible. If most Americans want higher taxes on millionaires, stronger financial regulation, or action on jobs, gridlock may frustrate them. The Senate filibuster, holds, committee chokepoints, and the malapportionment that gives small states disproportionate influence do not simply restrain reckless majorities. They create abundant opportunities for organized minorities to veto reform.</p>
+      <p>The better lesson to draw from Gilens’s evidence is that parties must become more programmatic and more socially rooted. By “programmatic,” I mean parties that present clear governing commitments rather than consultant-tested moods. By “socially rooted,” I mean parties connected to organizations that represent people outside election season. A party that depends on unions, tenant groups, small-donor networks, neighborhood associations, and churches will behave differently from one that depends primarily on bundlers and television buys. It will still compromise; democracy requires compromise. But it will compromise under different pressures.</p>
+      <p>This also means reformers should not focus only on campaign finance, though campaign finance matters. Public matching funds for small donations would help candidates build campaigns around many modest contributors rather than a few large ones. Disclosure is essential, especially after Citizens United opened new routes for corporate and union spending through outside groups. But the deeper reform is to make political participation less episodic. Same-day registration, early voting, weekend voting, and serious enforcement of voting rights can expand the electorate. Labor-law reform can make it less risky for workers to organize. Public support for civic associations, debates, and local journalism can strengthen the connective tissue of democracy.</p>
+      <p>We should also rethink the role of opinion itself. Gilens treats preferences as things citizens possess and government either follows or ignores. But preferences are shaped by conflict, leadership, and available alternatives. If no major party seriously argues for industrial policy, a financial transactions tax, sectoral bargaining, or large-scale public employment, then many citizens may never form stable views about those possibilities. Representation is not only responsiveness to existing opinion; it is the creation of meaningful choices.</p>
+      <p>This is why social movements matter. The civil-rights movement did not merely reveal majority preferences; it transformed them. The labor movement did not wait for benevolent elites to discover working-class opinion; it forced new issues onto the agenda. Occupy Wall Street, whatever its limitations, has already changed political language by making inequality and the “1 percent” central to national debate. Whether that language becomes policy depends on whether protest can become organization.</p>
+      <p>Gilens ends with guarded hope, and he is right to do so. American democracy has repeatedly been widened by people who were told that the system was too fixed to change. But the route to equal influence does not run only through closer elections. It runs through stronger collective institutions for those who currently enter politics alone. The affluent are powerful not just because they are rich, but because their wealth is organized. The democratic answer must be to organize everyone else.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Gilens has assembled an impressive body of evidence, but I worry that the survey-based methodology conflates two distinct phenomena: stated preferences and effective political influence. When a low-income American tells a pollster she supports raising the minimum wage, that&#x27;s one datum. But whether she would vote against a congressman who opposed such a raise, donate to a campaign supporting it, or join a picket line in its defense—these are questions the surveys cannot answer. The very act of expressing a preference in a survey context, divorced from any real political agency, may inflate apparent support for policies that most people don&#x27;t care enough about to act on.</p>
+      <p>This matters because the gap between expressed preferences and actual political behavior is precisely where class inequality manifests most sharply. The affluent don&#x27;t just have different policy preferences—they mobilize differently, they communicate differently with representatives, and they withdraw their participation when ignored. A middle-class voter who tells a surveyor she supports environmental regulation but never attends a town hall meeting, never writes a letter to her congressman, and never joins an environmental group exercises almost no political influence regardless of what she tells a pollster.</p>
+      <p>Gilens acknowledges that voting and volunteering patterns track income, but he underemphasizes the informational dimension. The wealthy are more likely to understand how policy actually works, to track legislative developments, and to identify which votes and which issues truly matter. A waitress who supports &quot;health care reform&quot; has expressed a preference that is almost meaningless in the policy space—she may oppose the specific form that reform eventually takes, but she lacks the knowledge and resources to fight for her preferred version or to punish legislators who betrayed her.</p>
+      <p>The solution, then, is not primarily campaign finance reform, though that matters. It&#x27;s something more fundamental: rebuilding the political knowledge and civic infrastructure that once made American democracy more participatory. Unions once bridged the knowledge gap; their decline has been catastrophic for working-class political efficacy. Community organizations, civic education, and local news all contribute to citizens who can translate preferences into influence. Gilens is right to be concerned about the wealthy Few shaping policy, but the solution runs deeper than regulating their campaign contributions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>I confess to finding Gilens&#x27;s normative framework confused. He treats equal influence over policy as a precondition for democracy, but this has never been what democracy meant. Democracy is rule by the people, and &quot;the people&quot; have always included the wealthy, the educated, the organized, and the numerous. The Founders were explicit that they were creating a republic, not a direct democracy, precisely because they distrusted mob rule and wanted institutions that would filter public opinion through deliberation and compromise.</p>
+      <p>More importantly, Gilens conflates two different questions: whether the wealthy have disproportionate influence, and whether democracy is thereby threatened. The wealthy have always had disproportionate influence—they fund campaigns, they hire lobbyists, they organize effectively. This is not a bug in democracy; it&#x27;s how interest aggregation works. The question is whether the resulting policies serve the broad public interest, and here Gilens&#x27;s evidence is actually more ambiguous than his alarmist tone suggests.</p>
+      <p>Consider what actually changes when influence becomes more equal. Gilens acknowledges that we would see &quot;greater restrictions on abortion,&quot; &quot;tighter limits on stem cell research,&quot; and &quot;more support for school prayer.&quot; Is this really a better democracy? The affluent tend to be more secular and more supportive of individual freedom on social issues, while working-class Americans—whose preferences would gain weight under Gilens&#x27;s reforms—tend toward social conservatism. If we care about representing the actual values of ordinary Americans, not just their pocketbook interests, then the current system may be getting some things right.</p>
+      <p>Moreover, Gilens&#x27;s own evidence contains seeds of hope. Competitive elections, divided government, and political gridlock all increase responsiveness to public preferences. This suggests that American democracy has built-in corrective mechanisms—that when politicians go too far astray, voters punish them. The Bush years offer a case study: Republican overreach on Social Security privatization and the Iraq War helped produce the 2006 and 2008 electoral corrections. This is not a system in crisis; it&#x27;s a system that, imperfectly and messily, still responds to popular pressures.</p>
+      <p>Rather than worrying about whether the wealthy have too much influence, we should focus on strengthening the mechanisms—competitive elections, an independent press, robust civil liberties—that keep democracy functional even amid inequality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>Gilens&#x27;s findings are damning but his proposed remedies are timid. He suggests campaign finance reform, nonpartisan districting, and get-out-the-vote drives. These are reasonable incremental improvements, but they leave the fundamental structure untouched. We are asked to believe that tweaking the rules of political participation can offset the effects of a economy that increasingly rewards capital over labor and concentrates wealth in ways that make 1910 look like an egalitarian paradise.</p>
+      <p>The real problem is structural. American democracy was designed for an era of relative economic equality, when even modest citizen participation could counterbalance elite influence. We no longer live in that era, and reforms that don&#x27;t address economic concentration will at best produce cosmetic improvements. The 2008 financial crisis demonstrated this: despite massive public anger at Wall Street, the subsequent regulatory response was modest at best, precisely because the financial industry retained its political influence even as its reputation suffered.</p>
+      <p>What would genuine reform look like? Mandatory voting, as they have in Australia, would dramatically increase the political voice of low-income citizens who currently sit out elections. Proportional representation in state legislatures would make third parties viable and break the duopoly that currently channels all political competition through donor-dependent parties. A wealth tax would both reduce economic inequality and generate resources for civic engagement programs.</p>
+      <p>Gilens is correct that political competition provides &quot;room for optimism.&quot; But he underestimates how much structural reform would be required to achieve anything like equal representation. The obstacles are not merely political, though they are that too; they are ideological. Americans have been taught to believe that any inequality in outcomes must reflect corresponding inequalities in merit, effort, or talent. Until we challenge this ideology—which serves the affluent as well as any campaign contribution—we will not build the political will for reforms that matter.</p>
+      <p>The data are clear: American democracy is failing its poorest citizens. The only question is whether we have the courage to make the changes necessary to save it.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

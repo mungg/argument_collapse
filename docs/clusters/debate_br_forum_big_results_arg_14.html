@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While randomized evaluations provide credible evidence for s... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_big_results.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_big_results.html">Small Changes, Big Results</a> · Cluster 14 of 33</div>
+  <h1 class="arg-title">"While randomized evaluations provide credible evidence for specific interventions, they are insufficient on their own to guide development policy because they often fail to account for institutional complexity, scalability, and long-term systemic effects."</h1>
+  <div class="arg-meta">0 human · 1 LLM · 1 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While randomized evaluations provide credible evidence for specific interventions, they are insufficient on their own to guide development policy because they often fail to account for institutional complexity, scalability, and long-term systemic effects."</p>
+        <button class="essay-view-full" data-target="full-14-43604">View full essay</button>
+        <div class="essay-full" id="full-14-43604" style="display:none;">
+            <p>The most important sentence in Glennerster and Kremer’s essay is not one of its more quotable lines about lentils, chlorine, or school uniforms. It is their acknowledgment that whether findings generalize across contexts is “an empirical question.” That is exactly right. But it is also where the case for randomized evaluations becomes both strongest and most vulnerable. Randomized trials can tell us with unusual credibility what happened in a particular program at a particular time. They are much less able, by themselves, to tell us what will happen when a different government, with different administrative capacity and political incentives, attempts to scale a similar program elsewhere.</p>
+            <p>This distinction is not pedantic. Development policy is full of failed replications. A program succeeds under the supervision of a motivated NGO, with researchers carefully monitoring implementation, only to disappoint when adopted by a ministry with weak logistics, patronage pressures, and overburdened staff. A subsidy that works when temporary may produce different behavior when it is expected indefinitely. A conditional transfer that increases attendance where schools have room may have different effects where classrooms are already bursting. To say these are empirical questions is correct; to answer them requires more than accumulating small trials.</p>
+            <p>The randomized evaluation movement has been salutary in one respect: it has raised the burden of proof. Before the recent wave of experiments, many development programs were justified by plausible stories and weak correlations. If children with textbooks learn more, provide textbooks. If healthier children attend school more, teach hygiene. If people say they value health, sell them health products. Experiments have shown that plausibility is not enough. Some interventions work; many do not; some work for reasons different from those imagined. That is progress.</p>
+            <p>Yet the rhetoric surrounding randomized evaluations sometimes implies a hierarchy of knowledge in which experimental estimates are “hard” and everything else is soft. This is misleading. A randomized trial gains internal validity by controlling the assignment of treatment, but it often purchases that clarity by narrowing the question. We learn whether a particular package changed a measured outcome over a given period. We may not learn why, for whom, under what institutional conditions, at what political cost, or with what long-term consequences. Those questions require theory, qualitative observation, administrative data, historical comparison, and sometimes plain institutional judgment.</p>
+            <p>Take the example of conditional cash transfers. The evidence that they increase enrollment is strong, and the randomized evaluation of Mexico’s PROGRESA was rightly influential. But the policy question is not simply, “Do transfers raise attendance?” It is also: Should transfers be conditional or unconditional? How large should they be? Should they be targeted or universal? Do they reinforce mothers’ unpaid caregiving burdens? Do they improve learning or merely attendance? Are the fiscal costs sustainable? What happens when politicians control beneficiary lists? The experimental answer to one component cannot settle the policy architecture.</p>
+            <p>Similarly, the evidence on user fees for preventive health is powerful, but the policy problem has multiple margins. Glennerster and Kremer are right that small prices sharply reduce demand and that the “paying makes people value it” argument is weak. However, prices also interact with supply chains, staff incentives, leakage, and public budgets. If abolishing fees leads to stockouts or informal charges, the intended behavioral effect may be blunted. A trial of demand at different prices cannot substitute for an analysis of public finance and governance.</p>
+            <p>One methodological concern is the difference between efficacy and effectiveness. Medical trials distinguish between whether a drug works under controlled conditions and whether it improves health in ordinary practice. Development experiments should be equally cautious. A chlorine dispenser placed at a communal water source, maintained by a diligent implementing organization, may be highly cost-effective. But the effectiveness of a national dispenser program depends on maintenance, refilling, local responsibility, vandalism, procurement, and the political salience of rural water. These are not nuisances to be added after the “real” result; they are central to the intervention.</p>
+            <p>Another concern is equilibrium effects. Small experiments often estimate partial-equilibrium impacts. Provide scholarships to high-performing girls in some schools, and effort rises among girls, boys, and teachers. That is encouraging. But what if many schools adopt similar scholarships? Does competition motivate, or does it discourage those unlikely to win? Do teachers shift attention toward exam performance at the expense of broader learning? Do local labor markets absorb the additional educated youth? In the short run, attendance is a meaningful outcome. In the long run, the returns to schooling depend on economic structures beyond the school.</p>
+            <p>A third issue is ethics. Random assignment is often ethically defensible, especially when resources are scarce and no one knows whether a program works. But the growth of experimentation should not dull our sensitivity. If there is already strong evidence that user fees deter life-saving prevention, how many more trials of charging poor households are justified? If a control group lacks access to an intervention likely to save children’s lives, what obligations do researchers have after the study? Ethical review boards can handle some questions, but development experiments occur in settings of vast inequality between researchers, implementers, and subjects. Consent and accountability deserve more than procedural treatment.</p>
+            <p>None of these criticisms means randomized evaluations should be abandoned. On the contrary, they are indispensable when the question is well suited to them. We should want to know whether small incentives raise immunization rates, whether information about HIV risk changes sexual behavior, whether free nets are used, and whether timing transfers around school fees matters. These are precisely the sorts of claims that governments and NGOs often get wrong. Experiments can save money, improve programs, and overturn damaging conventional wisdom.</p>
+            <p>The issue is not experiments versus theory; it is experiments within theory. Behavioral economics provides one useful theory: present bias, attention, hassle costs, social norms. But institutional economics, political economy, sociology, and anthropology provide others. A household’s failure to adopt a health technology may reflect procrastination; it may also reflect distrust of outsiders, gendered control over cash, prior experience with failed programs, or rational skepticism about product quality. Experiments can distinguish among mechanisms only if designed with these possibilities in mind.</p>
+            <p>The authors’ iterative vision—try, learn, adapt, test again—is the best defense of the experimental approach. It is more modest than claiming universal laws from scattered trials. But iteration must occur not only across products and prices; it must also move up levels of complexity. We need experiments and quasi-experiments on provider incentives, bureaucratic monitoring, decentralization, public finance, and political accountability. We need to know not only how to get households to use services, but how to get states to provide them reliably.</p>
+            <p>“Small Changes, Big Results” is therefore both convincing and incomplete. It is convincing about the importance of behavioral frictions and the folly of small user fees for high-return preventive goods. It is incomplete if read as a manifesto for a new experimental technocracy. The right conclusion is epistemological humility. Randomized evaluations are powerful flashlights, not floodlights. They illuminate sharply whatever they are pointed at. Development, however, is a landscape. We should use the flashlight often, but we should not mistake its beam for the whole terrain.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The success of a small-scale pilot supervised by an NGO does not guarantee the same results when implemented by a government ministry with different administrative capacities and political incentives.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Experimental results often possess high internal validity but lack external validity, as they may not explain why a program worked or how it would function under different institutional conditions.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A narrow focus on behavioral demand-side trials, such as user fees, ignores critical supply-side factors like public finance, governance, and staff incentives.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Small-scale experiments often fail to capture &#x27;equilibrium effects,&#x27; such as how a program might change social dynamics or labor markets when implemented at a national scale.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The &#x27;iterative&#x27; experimental approach must move beyond testing small behavioral tweaks to address higher-level complexities like bureaucratic monitoring and political accountability.</span></li>
+              <li class="src-d"><span class="num">06</span><span class="sub-text">Randomized evaluations should be viewed as one tool among many—including theory, qualitative observation, and historical comparison—rather than a hierarchy of knowledge that displaces institutional judgment.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

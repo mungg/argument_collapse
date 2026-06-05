@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To effectively combat fake news, Facebook must move beyond m... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_how-to-stop-the-spread-of-fake-news.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_how-to-stop-the-spread-of-fake-news.html">How to Stop the Spread of Fake News</a> · Cluster 1 of 10</div>
+  <h1 class="arg-title">"To effectively combat fake news, Facebook must move beyond minor algorithmic tweaks and fundamentally reform its business model and organizational objectives to prioritize journalistic ethics over engagement metrics."</h1>
+  <div class="arg-meta">2 human · 13 LLM · 15 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Robyn Caplan</span>
+        </div>
+        <p class="essay-quote">"To effectively combat fake news, Facebook must move beyond minor algorithmic tweaks and fundamentally reform its business model and organizational objectives to prioritize journalistic ethics over engagement metrics."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/11/22/how-to-stop-the-spread-of-fake-news/robyn-caplan" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Facebook must formally acknowledge its role as a major news distributor and accept the civic responsibilities that come with that status.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">The company should establish institutionalized partnerships with legacy media organizations and domain experts to integrate journalistic ethics into its platform operations.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Facebook needs to increase transparency regarding the business incentives that drive its algorithmic changes and allow for public comment from civil society.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">The platform should create an internal media ethics team with a mission statement focused on accuracy and impartiality rather than maximizing clicks and views.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">While international regulatory pressure may play a role, the primary solution lies in Facebook voluntarily shifting away from a personalization logic that privileges viral sharing over truthful coverage.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">[&#x27;Cathy O&#x27;Neil&#x27;]</span>
+        </div>
+        <p class="essay-quote">"To effectively combat the spread of fake news, Facebook must move beyond flawed algorithms and embrace its role as a news arbiter by incorporating human editorial judgment."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/11/22/how-to-stop-the-spread-of-fake-news/cathy-oneil" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Current algorithms incorrectly equate high engagement with content quality, leading to the viral spread of sensationalist &#x27;junk food&#x27; media and misinformation.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">The lack of distinction between credible journalism and fake news on neutral platforms gives manipulative content the same weight as legitimate reporting.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Facebook should implement a &#x27;white list&#x27; of authentic news sources that is actively maintained and updated by human editors.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">While user crowdsourcing can help identify misinformation, it is insufficient on its own because bad actors can easily manipulate voting systems.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Facebook possesses the financial resources necessary to hire professional journalists to serve as the final arbiters of truth on the platform.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Social media companies must accept their role as editors of public attention and take proactive responsibility for the harms caused by the misinformation they monetize and distribute."</p>
+        <button class="essay-view-full" data-target="full-1-41762">View full essay</button>
+        <div class="essay-full" id="full-1-41762" style="display:none;">
+            <p>Social media companies should begin by admitting what their products already are: not neutral pipes, but powerful editors of public attention. Facebook’s News Feed and Twitter’s trending topics decide what millions see first, what gets amplified, and what is rewarded. That does not mean Mark Zuckerberg should become an arbiter of political truth. It does mean these companies cannot plausibly profit from distribution while disclaiming responsibility for predictable harms of that distribution.</p>
+            <p>The first obligation is to change incentives. Cutting off ad networks to sites that impersonate news organizations or fabricate stories is a necessary start, because much fake news is not ideology but arbitrage: lies engineered for clicks. Platforms should also demote repeat offenders in ranking algorithms, suspend pages that systematically deceive users about their identity, and make it harder for newly created domains to go viral before they have any record of reliability.</p>
+            <p>Second, platforms should add context rather than simply delete. When a story is disputed by established fact-checkers, users should see a clear warning before sharing it, links to rebuttals, and information about the source’s history. A small amount of friction—“Are you sure you want to share this?”—can matter in an environment built for reflexive forwarding. Trending lists should be curated with human review, especially during elections and breaking-news events.</p>
+            <p>Third, transparency is essential. Companies should publish meaningful data about political advertising, coordinated bot activity, takedowns, and the reach of demonstrably false stories. Independent researchers and journalists need access sufficient to study manipulation without compromising users’ privacy.</p>
+            <p>None of this requires suppressing unpopular opinions. Falsehood, satire, propaganda, error and partisan spin are not the same thing, and rules must be narrow, appealable and publicly explained. But private platforms have built the central infrastructure of civic conversation. With that power comes a duty to reduce deception they help monetize and spread.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Platforms should change the financial and algorithmic incentives that reward fabricated stories by demoting repeat offenders and restricting ad revenue for deceptive sites.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Companies should implement friction and provide context, such as fact-checking warnings and human curation, rather than relying solely on content deletion.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Social media firms must provide transparency by sharing data on political advertising and bot activity with independent researchers and the public.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Platforms should establish narrow, appealable, and publicly explained rules to distinguish between deliberate falsehoods and protected forms of speech like satire or opinion.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Social media companies must take responsibility for their role in democratic discourse by redesigning their platforms to prioritize information accuracy over the viral engagement that currently fuels the spread of fake news."</p>
+        <button class="essay-view-full" data-target="full-1-01695">View full essay</button>
+        <div class="essay-full" id="full-1-01695" style="display:none;">
+            <p>The debate over how to combat fake news raises fundamental questions about the relationship between private platforms and the public sphere. Social media companies have become, almost inadvertently, the primary infrastructure through which information flows in democratic societies. This position carries with it responsibilities that go beyond simply maximizing user engagement and advertising revenue.</p>
+            <p>The core problem is that platforms like Facebook and Google designed their systems to optimize for sharing and virality, not for accuracy. Their algorithms reward emotionally resonant content because such content keeps users engaged longer, generating more advertising revenue. Fake news — particularly the sensational and incendiary variety that circulated widely during the recent election — thrives in this environment precisely because it provokes strong emotional reactions. Addressing this requires these companies to acknowledge that their revenue model creates a structural incentive to amplify misinformation, and to develop technical and policy interventions that counteract this tendency.</p>
+            <p>However, we must be cautious about calls for editorial intervention. Private companies have the right to set their own content policies, and no one is entitled to a platform. But the question of responsibility is more nuanced than a simple market choice. When a company becomes as central to public discourse as Facebook has — with over a billion users — its decisions about what content to amplify or remove have democratic consequences that transcend ordinary commercial considerations. This is not an argument for government regulation, which would create its own serious problems. It is an argument that these companies should take seriously the civic implications of their design choices.</p>
+            <p>Some concrete steps seem both feasible and appropriate. Improving the transparency of sponsored content and political advertising would help users evaluate what they see. Developing better tools for users to report and flag clearly false content could reduce its reach without requiring editorial judgment about borderline cases. Working with independent fact-checkers — as some platforms have begun to do — offers a technical rather than ideological solution.</p>
+            <p>The response of pulling advertising from fake news sites is a meaningful step, since it attacks the economic incentive that drives much of this content. But this addresses symptom rather than cause. The larger challenge is redesigning systems that currently reward the creation and spread of misleading information.</p>
+            <p>Ultimately, no technical solution will fully solve a problem rooted in human psychology and political polarization. But platforms bear significant responsibility for the environment they create, and they should be held to account for making good-faith efforts to reduce the spread of demonstrably false information that damages civic discourse.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The current algorithmic focus on maximizing user engagement and advertising revenue creates a structural incentive to amplify sensationalist misinformation.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Because these platforms have become the primary infrastructure for public discourse, their design choices have democratic consequences that transcend ordinary commercial interests.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Companies should implement technical and policy interventions, such as increased transparency for sponsored content and improved user-reporting tools, to counteract the spread of false information.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Collaborating with independent fact-checkers provides a neutral, non-ideological method for identifying and limiting the reach of demonstrably false content.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">While cutting off advertising revenue to fake news sites is a positive step, it only addresses the economic symptoms rather than the underlying systemic causes of misinformation.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Social media companies must move beyond cutting off ad revenue and take active responsibility for their role as the primary infrastructure of public discourse by redesigning their platforms to prioritize factual integrity over engagement."</p>
+        <button class="essay-view-full" data-target="full-1-46604">View full essay</button>
+        <div class="essay-full" id="full-1-46604" style="display:none;">
+            <p>The extraordinary volume of deliberately false information that flooded social media during the 2016 election has made it impossible to ignore a central tension: platforms like Facebook and Google are private companies, yet they have become the primary infrastructure of public discourse. Their initial steps—cutting off advertising revenue to known fake news sites—are welcome but address only the profit motive, not the underlying dynamics that allow falsehoods to spread faster and further than corrections. The deeper question is what responsibility these companies bear to civic society, and how they can act on it without becoming unelected ministries of truth.</p>
+            <p>At the core of the problem is the design of the platforms themselves. Facebook’s News Feed and Google’s search algorithms are optimized for engagement, and emotionally charged, sensational content—regardless of its veracity—consistently outperforms sober fact. The result is a system that awards the viral spread of incendiary lies, such as the “Pizzagate” conspiracy or fabricated reports of the Pope endorsing a candidate. These are not harmless parodies; they have real-world consequences, from armed vigilantes showing up at a pizzeria to the erosion of a shared factual basis for democratic decision-making.</p>
+            <p>As private companies, Facebook and Google are under no First Amendment obligation to carry every piece of content, just as a newspaper has no obligation to print every letter to the editor. They already curate constantly, removing pornography, terrorist propaganda, and spam. The distinction between banning speech outright and deciding what to amplify is critical. A platform need not delete false content to stop actively promoting it. It can adjust its algorithms to downrank material that has been flagged by a broad coalition of independent fact-checkers, or to label dubious stories with warnings and links to verified information. Such measures do not silence anyone; they simply make it less likely that a user will encounter a lie as the first and most prominent version of events.</p>
+            <p>Calls for a more aggressive stance rightly raise concerns about who gets to define truth. The history of power misusing the label “false” to suppress dissent is long and cautionary. Yet the current laissez-faire approach has already produced a distinct set of harms. The Anti-Defamation League and other civil rights groups have pointed out that fake news often targets minorities, spreading dangerous stereotypes under the guise of information. The platforms’ responsibility to prevent their tools from being weaponized for harassment or incitement aligns with their own terms of service and existing content moderation practices.</p>
+            <p>A pragmatic path forward need not involve Facebook and Google becoming ultimate arbiters. They can invest heavily in user education, making media literacy as central to the platform experience as knowing how to tag a friend. They can increase transparency by allowing researchers to audit how false stories propagate, which would inform better countermeasures. And they can diversify the human editors and fact-checking organizations they partner with, ensuring that no single ideological perspective dominates the process.</p>
+            <p>The gravity of the moment demands that these companies recognize their role as publishers of the public conversation, not merely neutral conduits. They have built the digital town square, and with that comes a duty to make it something other than a carnival of lies. The alternative is a civic environment in which facts are reduced to tribal accessories, and democracy becomes unworkable.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Current algorithms are fundamentally flawed because they are optimized for engagement, which inherently rewards sensational falsehoods over sober facts.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Platforms should exercise their right as private entities to downrank or label misinformation rather than banning it outright, distinguishing between the right to speak and the right to be amplified.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Tech companies have a civic duty to prevent their tools from being weaponized for harassment and the incitement of violence against minority groups.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">To avoid becoming biased arbiters of truth, companies should rely on independent fact-checkers, increase algorithmic transparency for researchers, and invest in user media literacy.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The transition from neutral conduits to active publishers is necessary to prevent the erosion of a shared factual basis required for a functional democracy.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"Social media companies must embrace their civic responsibility as news distributors by implementing structural changes to their platforms that prioritize factual accuracy over engagement-driven sensationalism."</p>
+        <button class="essay-view-full" data-target="full-1-20097">View full essay</button>
+        <div class="essay-full" id="full-1-20097" style="display:none;">
+            <p>Social media companies have long hidden behind the defense that they are merely neutral technology platforms, not publishers. However, the fallout from the 2016 election has definitively proven that algorithms are not neutral. They are explicitly designed to maximize user engagement, a metric that naturally favors sensationalism, confirmation bias, and outrage over nuanced, factual reporting. Because these private companies now function as the primary news distributors for a majority of Americans, they can no longer avoid the civic responsibilities inherent to media companies.</p>
+            <p>Stopping the spread of fake news does not require Facebook or Google to become authoritarian arbiters of absolute truth, a move that would raise legitimate free speech and bias concerns. Instead, they should focus on introducing friction and providing context. By partnering with established, independent fact-checking organizations, social media platforms can implement a robust, user-facing warning system. If a viral article is widely disputed or debunked, it should be visibly flagged as such directly in the news feed, prompting users to reconsider before they click or share.</p>
+            <p>Furthermore, tech giants must aggressively recalibrate their algorithms to deprioritize demonstrably false content. Pulling advertising networks from fake news sites was a necessary first step to choke off the financial incentives of click-farmers and opportunistic hoaxers. But platforms must go further by penalizing the organic reach of domains that consistently publish fabricated stories. A healthy civic society relies on a shared set of basic facts. When private tech monopolies dominate the digital public square, they cannot simply wash their hands of the toxic pollution being pumped into it.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Algorithms are not neutral and currently favor inflammatory content because they are designed to maximize user engagement.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Platforms should introduce friction and context by partnering with independent fact-checkers to flag disputed or debunked content for users.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Tech companies must recalibrate their algorithms to actively deprioritize and penalize the organic reach of domains that consistently publish fabricated stories.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Removing advertising services is insufficient; companies must also eliminate the non-financial incentives that allow fake news to dominate the digital public square.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Social media companies must accept their role as influential civic intermediaries and implement proactive, transparent measures to curb the spread of misinformation."</p>
+        <button class="essay-view-full" data-target="full-1-68849">View full essay</button>
+        <div class="essay-full" id="full-1-68849" style="display:none;">
+            <p>Facebook and Google should begin by admitting what everyone else already knows: they are not merely neutral pipes. They are the front page, the classified section, the town square and, increasingly, the rumor mill. Their decisions about ranking, recommendation, advertising and sharing shape what millions of citizens see before they vote, donate, protest or argue with relatives. That power creates civic obligations.</p>
+            <p>The first responsibility is to cut off the business model. Fake news is not only an ideological problem; it is an advertising problem. A teenager in Macedonia or a political entrepreneur in California can manufacture a hoax because clicks convert into dollars. Google and Facebook’s decision to bar fake-news sites from their ad networks is therefore the right first move. But it must be enforced aggressively, not announced as public relations. Repeat offenders should lose monetization across the major ad exchanges, and shell domains should not be allowed to reappear the next morning under a slightly different name.</p>
+            <p>Second, platforms should identify and label demonstrably false stories, not silently erase them in all but the clearest cases. A system combining user reports, algorithmic detection and review by independent fact-checking organizations would not be perfect, but perfection is the wrong standard. We already tolerate imperfect judgments in spam filtering, copyright enforcement and search ranking. A warning label — “independent fact-checkers dispute this claim” — placed before sharing would slow the viral spread without making Facebook the Ministry of Truth.</p>
+            <p>Third, social media companies should redesign sharing to introduce friction where it matters. Lies travel fastest when outrage meets a one-click “share” button. If a story is from a newly created domain, has been flagged by many users, or contains claims already debunked by reputable fact-checkers, the platform can ask users whether they want to read the article before reposting it. That small pause respects free expression while reducing reflexive amplification.</p>
+            <p>Fourth, transparency is essential. Platforms should publish data on how false stories spread, how often disputed content is labeled, how appeals work, and whether enforcement is politically skewed. Researchers need access to anonymized data to study the problem. The public should not have to take Silicon Valley’s word for it.</p>
+            <p>None of this means suppressing unpopular opinions. The distinction between opinion and fabrication is real: “Trump will be a great president” is opinion; “the pope endorsed Trump” is false. Platforms will make mistakes, and those mistakes must be appealable. But refusing to act is also a decision — one that rewards the most manipulative actors in the information system.</p>
+            <p>Private companies do not have the same duties as governments, but when they build infrastructure for public life, they inherit responsibilities to the public. Facebook and Google profited from becoming indispensable civic intermediaries. They should now accept the burden that comes with that power.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Platforms must aggressively enforce the demonetization of fake news sites to eliminate the financial incentive for manufacturing hoaxes.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Companies should implement a labeling system for demonstrably false stories to warn users without resorting to outright censorship.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Social media interfaces should be redesigned to introduce friction into the sharing process for flagged or unverified content.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Platforms must provide transparency and data access to researchers to ensure accountability and study the spread of misinformation.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Tech companies should establish clear appeal processes to distinguish between the suppression of unpopular opinions and the correction of factual fabrications.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Facebook must accept its role as a media company and take active, human-led responsibility for the information it disseminates to protect the public sphere."</p>
+        <button class="essay-view-full" data-target="full-1-65174">View full essay</button>
+        <div class="essay-full" id="full-1-65174" style="display:none;">
+            <p>Facebook Is a Media Company. It Should Start Acting Like One.</p>
+            <p>Mark Zuckerberg&#x27;s insistence that Facebook is merely a &quot;technology company&quot; rather than a media company has always been convenient fiction, but in the wake of this election it has curdled into something closer to negligence. When nearly half of American adults get news from a single platform, and when that platform&#x27;s algorithm amplified fabricated stories — that the Pope endorsed Donald Trump, that Hillary Clinton sold weapons to ISIS, that an FBI agent investigating her emails was murdered — to audiences in the millions, the company is not a neutral pipe. It is the largest editor in human history, whether it admits it or not.</p>
+            <p>The legal cover for this evasion is Section 230 of the Communications Decency Act, which immunizes platforms from liability for user-generated content. Fine. That immunity was never meant to absolve companies of moral and civic responsibility, only legal liability. Newspapers operate under far stricter rules and still manage to be profitable; they employ editors, fact-checkers, and standards departments. Facebook can afford to do the same. The company posted nearly $7 billion in profit last year. The claim that hiring human editors would be impossibly expensive, or that algorithms can do the job alone, is the excuse of a company that does not want to spend money on a problem it created.</p>
+            <p>What should be done concretely? First, fake news sites — those that fabricate stories wholesale, not merely partisan outlets — should be demonetized and downranked, the way spam and malware already are. Google and Facebook have begun this with their ad networks; that is welcome but insufficient. The same domains should not be permitted to trend or appear in news feed promotions. Second, disputed stories should be labeled. A simple flag — &quot;this story has been disputed by independent fact-checkers&quot; — preserves users&#x27; ability to read what they want while giving them information about credibility. Snopes and PolitiFact already do the underlying work; Facebook just has to surface it. Third, the algorithm should weigh source reputation, not just engagement. Engagement is exactly what fabricated stories optimize for: outrage spreads faster than nuance.</p>
+            <p>The objection that this turns Facebook into an arbiter of truth is real but overstated. Every editorial decision the platform already makes — what trends, what appears in your feed, what gets pushed via notifications — is an arbitration. The choice is not between neutrality and judgment; it&#x27;s between unaccountable judgment by an engagement-maximizing algorithm and accountable judgment by humans operating under transparent standards.</p>
+            <p>Private companies are not obliged to maximize civic virtue. But when a single firm sits astride the public sphere, its definition of responsibility cannot stop at quarterly earnings. The Macedonian teenagers running fake-news content farms understood Facebook&#x27;s incentives better than Facebook seems to. It is past time for the company to understand them too — and change them.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Facebook functions as the world&#x27;s largest editor because its algorithms actively amplify specific content to millions of people rather than serving as a neutral pipe.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The company has the financial resources and moral obligation to employ human editors and fact-checkers to oversee content, regardless of legal immunity from liability.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Social media platforms should actively demonetize, downrank, and label fabricated news stories to prevent them from trending or appearing in news feeds.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Algorithms should be redesigned to prioritize source reputation and credibility over mere user engagement and outrage.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The platform is already an arbiter of truth through its algorithmic choices, so it should shift toward accountable judgment based on transparent standards.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Social media companies should stop prioritizing raw engagement and instead redesign their platforms to favor credibility, transparency, and authentic human interaction."</p>
+        <button class="essay-view-full" data-target="full-1-22842">View full essay</button>
+        <div class="essay-full" id="full-1-22842" style="display:none;">
+            <p>Fake news is not a mysterious disease that suddenly infected the body politic in 2016. It is the predictable result of a media economy that rewards speed, emotion and tribal identity over verification. If social media companies want to help stop it, they should stop optimizing their products as if all “engagement” were equally valuable.</p>
+            <p>The key problem is the feed. Facebook’s News Feed and similar systems are designed to surface material that users are likely to click, like, share or comment on. But the most engaging information is not necessarily the most accurate. A false headline accusing a candidate of treason can outperform a careful investigation because it offers anger, certainty and belonging. The algorithm does not need to hate democracy to damage it; it only needs to be indifferent.</p>
+            <p>So the first reform should be to change the signals that determine distribution. A story’s ranking should not depend only on engagement. It should include credibility signals: the history of the publisher, the presence of named authors, links to original documents, corrections practices, and whether the same claim has been reported by established outlets. New sites should not be banned, but neither should an unknown domain created last month be treated exactly like The Associated Press when it makes explosive factual claims.</p>
+            <p>Second, companies should reduce the velocity of suspicious stories. Viral spread is the danger. Once millions of people have seen a lie, later corrections rarely catch up. Platforms can create circuit breakers for content that is spreading unusually fast and has characteristics of misinformation: sensational headlines, recycled images, copycat domains, or mass sharing from automated accounts. During that review window, the content need not disappear; it can simply stop receiving algorithmic amplification.</p>
+            <p>Third, platforms must clean up fake identity. A great deal of misinformation travels through networks of pages, bots and accounts pretending to be ordinary citizens or local news sources. Facebook and Twitter should invest more heavily in detecting coordinated inauthentic behavior. People have a right to speak anonymously in many circumstances, but they do not have a right to operate armies of fake personas to manipulate public debate.</p>
+            <p>Fourth, the companies should open themselves to outside scrutiny. The public currently sees the results of the algorithm but not the logic. Independent auditors and academic researchers should be able to examine, under privacy-protecting rules, how misinformation spreads and whether changes are working. Without transparency, every intervention will be suspected of partisan bias.</p>
+            <p>This is not just a matter of consumer protection. The information environment is civic infrastructure. Social media companies created systems that now influence elections, public health, racial tensions and trust in institutions. Their responsibility is not to decide every disputed question. It is to stop building machines that make the cheapest lie more powerful than the slow truth.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Algorithmic ranking systems should incorporate credibility signals, such as publisher history and verification practices, rather than relying solely on user engagement.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Platforms should implement &#x27;circuit breakers&#x27; to slow the velocity of suspicious, fast-spreading content until its accuracy can be assessed.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Companies must aggressively detect and remove coordinated inauthentic behavior and fake accounts used to manipulate public discourse.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Social media platforms should provide independent researchers and auditors access to their data and algorithmic logic to ensure transparency and accountability.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Tech companies have a civic responsibility to ensure their infrastructure does not give an unfair structural advantage to sensationalist falsehoods over verified truth.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Social media companies should combat fake news by redesigning their recommendation algorithms to prioritize information quality and friction over raw engagement."</p>
+        <button class="essay-view-full" data-target="full-1-59769">View full essay</button>
+        <div class="essay-full" id="full-1-59769" style="display:none;">
+            <p>The Algorithm Is the Problem. Fix the Algorithm.</p>
+            <p>Most of the debate about fake news has been framed as a question of editorial responsibility: should Facebook hire editors, should Google blacklist sites, should Twitter ban accounts. These are legitimate questions, but they obscure the deeper issue. The reason fabricated stories went viral is not that Facebook failed to delete them. It is that Facebook&#x27;s recommendation system actively rewarded them. The architecture, not the content, is what needs fixing.</p>
+            <p>Consider how a typical fake story propagates. A site like &quot;Denver Guardian&quot; — a domain that did not exist a month before the election — publishes a fabricated article claiming an FBI agent was found dead. The headline is engineered for emotional response. Users click, share, and comment. Facebook&#x27;s News Feed algorithm interprets that engagement as signal: this content is interesting, show it to more people. The story compounds. Within forty-eight hours it has been viewed by hundreds of thousands. The same dynamic governs YouTube&#x27;s &quot;Up Next&quot; recommendations and Twitter&#x27;s trending topics. Outrage is engagement; engagement is distribution.</p>
+            <p>The fix is not to assign humans to chase down each lie. That&#x27;s a losing race against an adversary that can spin up new domains overnight. The fix is to change what the algorithm optimizes for. A few concrete proposals:</p>
+            <p>First, weight domain age and provenance. A site registered three weeks ago, with no editorial masthead and traffic patterns consistent with link farms, should not be treated as equivalent to The Wall Street Journal. This is a technical signal, not an editorial judgment, and platforms already use similar features to fight spam and phishing.</p>
+            <p>Second, dampen rather than delete. Rather than removing suspect stories — which invites censorship fights — reduce their algorithmic reach. A piece flagged by users or by automated systems can simply stop being recommended. It remains accessible to anyone who seeks it. This is how email providers handle borderline spam, and it works.</p>
+            <p>Third, surface friction. When a user goes to share a story, a brief interstitial — &quot;this article has not been corroborated by other sources; share anyway?&quot; — measurably reduces resharing in user studies. Friction is the algorithm&#x27;s natural antidote to virality.</p>
+            <p>Fourth, open the black box, at least partially. Independent researchers should be able to audit how content gets ranked, especially for political material. Right now we are debating policy with almost no public data on how the algorithms actually behave.</p>
+            <p>None of this requires Facebook to play Solomon among competing truths. It requires the company to acknowledge that &quot;neutral&quot; algorithmic amplification is itself a choice, and that maximizing time-on-site is not the same as serving users or society. The engineering culture that built these systems can rebuild them. The question is whether the business model — which depends on the very engagement that fake news exploits — will let them.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Platforms should incorporate technical signals like domain age and provenance to distinguish established news organizations from newly created fake news sites.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Algorithms should dampen the reach of suspicious content rather than deleting it to avoid censorship while limiting viral spread.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Introducing friction into the user interface, such as warning prompts before sharing uncorroborated stories, can effectively reduce the speed of misinformation.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Companies should allow independent researchers to audit their ranking algorithms to provide transparency on how political content is amplified.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The current focus on maximizing time-on-site and user engagement must be replaced with a system that does not inherently reward inflammatory or fabricated content.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Social media companies have a civic responsibility to combat fake news through active content curation and the implementation of transparent, fact-based quality controls."</p>
+        <button class="essay-view-full" data-target="full-1-24579">View full essay</button>
+        <div class="essay-full" id="full-1-24579" style="display:none;">
+            <p>There is no escaping a hard truth: Facebook and Google are no longer mere platforms. When the vast majority of Americans get their news from a handful of social media feeds, and when that news includes outright fabrications that can influence the outcome of a presidential election, the pretense of neutral passivity becomes untenable. These companies have a civic responsibility to stop the spread of fake news, and that responsibility requires active, transparent content curation.</p>
+            <p>The argument that technology companies cannot be arbiters of truth is a dodge. They already arbitrate what we see every second through opaque algorithms. Refusing to apply those same systems to curtail demonstrably false information is a choice, not a neutral default. Both Google and Facebook were quick to demonetize fake news sites, but cutting off ad revenue, while welcome, does not stop the viral spread of lies. The real step is to partner with independent, nonpartisan fact-checking organizations—like Snopes, PolitiFact, and the Poynter Institute—to flag content that has been debunked. When a story is rated false, it should appear with a prominent warning label and be algorithmically down-ranked so it doesn’t race across the network.</p>
+            <p>Critics will immediately cry censorship. But labeling falsehoods is not the same as suppressing dissent. No one is suggesting that Facebook remove opinion pieces or controversial political ads. The target is the fabricated news item: “Pope Francis Endorses Trump,” “FBI Agent Suspected in Clinton Email Leaks Found Dead.” These are not viewpoints; they are hoaxes designed to deceive, often traced back to Macedonian teenagers running for-profit schemes. There is no coherent free-speech case for enabling hoaxes to swamp the information ecosystem. The First Amendment protects citizens from the government, not from private companies exercising editorial judgment.</p>
+            <p>Moreover, the “marketplace of ideas” logic fails when the marketplace is rigged. Lies spread faster and further than corrections because they are optimized for emotion and outrage. The architecture of social media filters human judgment out of the dissemination process. Restoring a measure of that judgment, through human and algorithmic curation, is not elitist gatekeeping; it is basic quality control, no different from what reputable newsrooms have done for decades. If social media companies want to enjoy the immense profits and privileges that come with being the world’s primary information infrastructure, they must accept the burden of maintaining its integrity. Anything less is an abdication of civic duty.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The claim that tech companies cannot be arbiters of truth is invalid because their algorithms already dictate what information users see.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Platforms should partner with independent fact-checking organizations to flag debunked content and algorithmically down-rank false stories.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Labeling and down-ranking fabricated hoaxes is a matter of editorial judgment and quality control rather than a violation of free speech or censorship of dissent.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The viral nature of misinformation necessitates human and algorithmic intervention to correct a marketplace of ideas that is currently rigged toward outrage and deception.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">As the world&#x27;s primary information infrastructure, social media companies must accept the burden of maintaining information integrity as a condition of their influence and profit.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"To effectively stop the spread of fake news, social media companies must move beyond content moderation and fundamentally redesign their algorithms to prioritize information quality and reliability over sheer user engagement."</p>
+        <button class="essay-view-full" data-target="full-1-70362">View full essay</button>
+        <div class="essay-full" id="full-1-70362" style="display:none;">
+            <p>The battle against fake news is being fought in the wrong place. The outrage is focused on content—on the hoaxers and the headlines—but the real culprit is the algorithm. The reason a fabricated story about a child sex ring in a pizza parlor can travel from a fringe message board to the screens of millions in a matter of hours is not that people are suddenly more gullible, but that the architecture of social media is rigged to reward one thing above all: engagement. Until we fix that incentive, every other fix will be like bailing water from a boat with a gaping hole.</p>
+            <p>Facebook’s News Feed, YouTube’s recommendation engine, and Twitter’s trending topics are all designed to maximize the time users spend on the platform. Research has repeatedly shown that falsehoods are more novel, more emotionally arousing, and thus more likely to be shared than accurate information. The algorithms, in their single-minded pursuit of clicks, comments, and shares, inadvertently become the most powerful distribution network for misinformation ever invented. They do not just fail to distinguish truth from falsehood; they actively favor the false because it makes for a stickier product. This is not a bug; it is a feature of the advertising business model that relies on attention.</p>
+            <p>What would a responsible algorithmic design look like? It would no longer treat all engagement as equal. Instead of optimizing for sheer virality, platforms could weigh signals of trust and reliability. They could prioritize content from sources with a track record of accuracy, transparent funding, and adherence to journalistic standards. They could slow down the spread of unverified stories by introducing intentional friction, such as requiring users to click through a prompt asking if they have read the article before sharing it. They could elevate content that provides context, such as corrective articles and fact-check reports, giving them the same algorithmic boost that salacious fabrications currently enjoy.</p>
+            <p>This is not about censorship or picking winners; it is about redesigning a system whose current structure guarantees that garbage will drown out substance. Social media companies are in the business of curating attention, and that power carries an obligation to ensure their curation does not systematically elevate false and harmful material. A change to the algorithm would be less intrusive and more effective than an endless game of whack-a-mole with individual posts. It would shift the entire gravity of the information ecosystem away from the sensational and toward the substantive—without anyone having to be the final decider of truth.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Current social media algorithms are inherently biased toward misinformation because falsehoods are more emotionally arousing and effective at maximizing platform engagement.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The spread of fake news is a structural feature of an advertising business model that treats all clicks and shares as equal regardless of their accuracy.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Platforms should implement algorithmic friction and trust signals to slow the virality of unverified stories while elevating content from reputable sources.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Redesigning algorithms is a more effective and less intrusive solution than manual censorship because it addresses the systemic incentives that allow misinformation to flourish.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Social media companies must move beyond simple advertising bans and take active responsibility for their platforms&#x27; impact on civic society by redesigning their technical architecture to prioritize information quality over engagement."</p>
+        <button class="essay-view-full" data-target="full-1-98231">View full essay</button>
+        <div class="essay-full" id="full-1-98231" style="display:none;">
+            <p>The viral spread of fake news during the election cycle has exposed a fundamental problem with how social media platforms currently operate: they optimize for engagement without taking responsibility for the quality of information their systems amplify. Google and Facebook&#x27;s decision to pull advertising from fake news sites is a step in the right direction, but it doesn&#x27;t address the core issue. These companies have become the primary information infrastructure for hundreds of millions of people, and with that comes an obligation to civic society that goes beyond merely maximizing clicks.</p>
+            <p>Social media companies should implement robust fact-checking mechanisms integrated directly into their platforms. This doesn&#x27;t mean becoming Orwellian editors of truth, but it does mean creating systems that flag disputed content, limit the spread of clearly false information during sensitive periods like elections, and give users context about what they&#x27;re reading. Twitter&#x27;s recent experiments with warning labels offer a model worth expanding.</p>
+            <p>Beyond reactive measures, these companies need to fundamentally redesign their recommendation algorithms. The current systems reward outrage and sensationalism because those qualities drive engagement, and engagement drives advertising revenue. Until the incentive structure changes, fake news will continue to flourish because it works. Platforms should deprioritize content from sites known to publish fabricated stories and adjust algorithms to value accuracy signals alongside engagement metrics.</p>
+            <p>Critics will argue this amounts to corporate censorship, but that&#x27;s a false equivalence. We&#x27;re not talking about banning speech; we&#x27;re talking about how a private company&#x27;s technical architecture amplifies or suppresses content. These companies already make countless editorial decisions about what appears in feeds, what gets trending status, and how content is displayed. Acknowledging that power and wielding it responsibly isn&#x27;t censorship—it&#x27;s accountability.</p>
+            <p>The legal shield provided by Section 230 of the Communications Decency Act was designed to encourage platform development, not to give companies a pass on the societal consequences of their design choices. As these platforms have grown from startups into essential public infrastructure, the terms of that social contract need to evolve.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Platforms should integrate robust fact-checking mechanisms and warning labels directly into the user interface to provide context for disputed content.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Recommendation algorithms must be fundamentally redesigned to deprioritize sensationalism and reward accuracy signals instead of just maximizing user engagement.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Adjusting how content is amplified is a matter of corporate accountability and responsible design rather than an act of censorship.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The legal and social protections afforded to tech companies must evolve to reflect their current status as essential public infrastructure.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"Social media companies must accept their role as media entities and take active responsibility for curbing fake news by modifying their platforms&#x27; operations and editorial oversight."</p>
+        <button class="essay-view-full" data-target="full-1-56236">View full essay</button>
+        <div class="essay-full" id="full-1-56236" style="display:none;">
+            <p>For years, Facebook and Google have hidden behind a convenient fiction: they are merely technology companies, neutral pipes delivering information to users. The 2016 election has shattered that illusion forever. When a platform becomes the primary news source for a majority of Americans, it is no longer just a tech company. It is a media company, and it must begin to shoulder the civic responsibilities that come with that immense power.</p>
+            <p>The recent vows by Facebook and Google to restrict advertising revenue for fake news sites are a step in the right direction, but they are severely inadequate. Cutting off AdSense might deter some clickbait profiteers, but it does nothing to stop the organic, viral spread of malicious hoaxes—like the entirely fabricated story that the Pope endorsed Donald Trump—which are shared millions of times because they confirm users&#x27; pre-existing biases.</p>
+            <p>To actually stop the spread of fake news, social media giants must fundamentally change how their platforms operate. First, they must abandon the pretense that algorithms are objective. Algorithms are written by humans and optimized for human behavior. Right now, they are optimized for &quot;engagement,&quot; which inherently favors sensationalism and outrage over nuanced truth. These companies must tweak their algorithms to penalize domains with a history of publishing demonstrably false information, downgrading their visibility in the News Feed and search results.</p>
+            <p>Second, Facebook in particular needs to hire human editors. Mark Zuckerberg recently stated it is a &quot;crazy idea&quot; that fake news influenced the election, reflecting a shocking blindness to his own platform’s influence. If Facebook can engineer complex algorithms to recognize faces in photos, it can certainly partner with established, independent fact-checking organizations—like PolitiFact, Snopes, or FactCheck.org—to flag disputed stories. When a user attempts to share a known hoax, the platform should introduce friction: a pop-up warning that the story has been disputed by fact-checkers.</p>
+            <p>We do not need Facebook to delete the content, but we do need it to stop acting as a super-spreader. Traditional media companies have long understood that with the power to publish comes the duty to verify. It is time for Silicon Valley to accept that in a democratic society, possessing a megaphone of this size requires a baseline commitment to the truth.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Restricting advertising revenue is insufficient because it fails to address the organic, viral spread of hoaxes driven by user bias.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Algorithms should be redesigned to prioritize factual accuracy over engagement by penalizing domains that frequently publish false information.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Platforms should hire human editors and partner with independent fact-checking organizations to flag disputed content.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Social media companies should introduce &#x27;friction&#x27; by providing warnings to users before they share stories that have been debunked.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Tech companies must adopt the same ethical standards and duty to verify information that traditional media companies have long upheld.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"To effectively combat fake news, social media companies must move beyond cosmetic fixes and fundamentally redesign their platforms to prioritize information quality and thoughtful consumption over the monetization of human attention and engagement."</p>
+        <button class="essay-view-full" data-target="full-1-67857">View full essay</button>
+        <div class="essay-full" id="full-1-67857" style="display:none;">
+            <p>Blaming &quot;fake news&quot; for the fractures in our civic society is a convenient way to ignore a much deeper, structural problem: the architecture of social media itself. The proliferation of hoaxes is not an anomaly; it is the logical endpoint of an ecosystem designed entirely around capturing and monetizing human attention.</p>
+            <p>To understand why incorrect information spreads so rapidly on social media, we have to look at the News Feed algorithm. Facebook and Twitter are built on the metric of &quot;engagement.&quot; Every time a user likes, shares, or comments on a post, the platform registers that interaction as a success, serving up more of that content and keeping the user on the site longer to view more ads.</p>
+            <p>The problem is human psychology. We are neurologically wired to react to novelty, fear, and outrage. A sober, carefully reported analysis of tax policy will never generate the same level of engagement as a sensational, fabricated headline tailored to confirm our deepest political anxieties. Fake news is highly optimized clickbait. The algorithm doesn&#x27;t know it&#x27;s fake; it only knows that it is generating massive user interaction. In this environment, the truth is actually at a competitive disadvantage because the truth is often complicated and boring.</p>
+            <p>Pulling advertising services from these sites is merely a cosmetic fix. If social media companies are serious about their responsibility to civic society, they must be willing to sacrifice short-term engagement metrics for long-term platform health. They need to redesign their interfaces to slow down the viral transmission of information.</p>
+            <p>Why is it so easy to share an article without actually clicking on the link to read it? Platforms could implement &quot;speed bumps&quot;—requiring users to actually open an article, or prompting them with a simple &quot;Are you sure you want to share this?&quot; if the source is newly registered or highly contested. Furthermore, the platforms must actively burst the &quot;filter bubbles&quot; they have created. Instead of only showing users content that aligns with their past likes, the algorithm should be tuned to inject diverse perspectives and high-quality, long-form journalism into the feed.</p>
+            <p>Ultimately, we cannot solve the fake news crisis without confronting the attention economy. As long as platforms reward mindless engagement over thoughtful consumption, fake news will continue to thrive, mutating to evade whatever superficial roadblocks the tech companies put in its way.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The current social media ecosystem is structurally designed to reward sensationalism and outrage because these traits generate the high engagement metrics necessary for ad revenue.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Truthful information is at a competitive disadvantage in an attention economy because it is often more complex and less emotionally stimulating than fabricated clickbait.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Platforms should implement &#x27;speed bumps&#x27; and interface friction to slow down the viral transmission of unverified information.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Algorithms must be recalibrated to burst filter bubbles by intentionally exposing users to diverse perspectives and high-quality journalism rather than just content that confirms their existing biases.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Removing advertising services from fake news sites is an insufficient solution that fails to address the underlying algorithmic drivers of misinformation.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

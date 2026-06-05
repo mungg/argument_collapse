@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Too Few Fish in the Sea · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Environment · Open-ended</div>
+  <h1 class="debate-title">Too Few Fish in the Sea</h1>
+  <div class="question-body"><p>Fish plays a starring role in the Mediterranean diet that’s supposed to keep us healthy. And yet it’s a disappearing commodity.</p><p>Meanwhile, there is growing concern about what is sustainable, or even identifiable.</p><p>Is there a way to meet consumer demand for quality seafood and protect threatened marine life at the same time?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=9</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_1.html">
+      <td class="arg-text">Protecting marine life requires a fundamental reduction in consumer demand and a shift in dietary expectations rather than trying to satisfy current industrial consumption levels.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_2.html">
+      <td class="arg-text">To meet consumer demand while protecting marine life, we must shift our consumption habits away from overfished prestige species toward sustainable, lower-trophic level seafood and freshwater fish.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_3.html">
+      <td class="arg-text">Meeting consumer demand while protecting marine life is possible only if we redefine seafood consumption to prioritize transparency, science-based management, and ecological efficiency.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_4.html">
+      <td class="arg-text">To meet consumer demand while protecting marine life, governments must prioritize sustainable fishing policies by empowering local small-scale fishermen and ending the destructive practices of foreign industrial fleets.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_5.html">
+      <td class="arg-text">To protect marine life and meet consumer demand, the seafood industry must implement mandatory traceability and transparency to eliminate fraud and ensure the integrity of the supply chain.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_6.html">
+      <td class="arg-text">Sustainable aquaculture can meet global seafood demand while protecting marine life if we prioritize the right species and improve farming technologies.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_7.html">
+      <td class="arg-text">Meeting consumer demand for seafood while protecting marine life requires shifting consumption toward lower-trophic species, implementing science-based regulations, and ensuring supply chain transparency.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_8.html">
+      <td class="arg-text">The implementation of rights-based management and catch shares is the most effective way to meet consumer demand for seafood while ensuring the long-term conservation of marine life.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_9.html">
+      <td class="arg-text">The future of sustainable seafood depends on a combination of science-based fishery management, habitat preservation, and a better-educated consumer base that values quality over quantity.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_10.html">
+      <td class="arg-text">The United States has established a legal and regulatory framework that ensures all seafood harvested from its territorial waters is sourced from sustainable fisheries.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_11.html">
+      <td class="arg-text">Establishing marine reserves that cover approximately one-third of the ocean is the most effective way to restore depleted fish populations while maintaining a viable fishing industry.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_12.html">
+      <td class="arg-text">To ensure the long-term sustainability of the lobster fishery, management practices must be reformed to restore a healthy population size structure by protecting larger lobsters.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_13.html">
+      <td class="arg-text">Meeting the demand for seafood while protecting marine life requires a combination of common-sense conservation strategies, scientific management, and creative technological innovations.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_14.html">
+      <td class="arg-text">To meet global demand and protect marine life, we must adopt a collaborative approach that engages fishers directly in developing sustainable fishing practices and scientific assessments.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_15.html">
+      <td class="arg-text">To meet global demand while protecting marine life, we must transition to a system that integrates sustainable aquaculture with strictly regulated wild fisheries.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_16.html">
+      <td class="arg-text">To protect threatened marine life while maintaining health, we must shift away from high-volume seafood consumption and instead embrace a diet centered on moderation, plant-based nutrients, and lower-impact species.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_17.html">
+      <td class="arg-text">To protect marine life while meeting consumer demand, we must shift from consumer-driven conservation to a system of rigorous, science-based legal governance and international policy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_18.html">
+      <td class="arg-text">Meeting consumer demand while protecting marine life is only possible if we move beyond simplistic sustainability labels and adopt a humble, ecosystem-based approach that prioritizes ecological resilience over constant supply.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_19.html">
+      <td class="arg-text">To meet consumer demand while protecting marine life, we must apply the same sustainable principles used in terrestrial food activism—such as transparency, direct sourcing, and fair pricing—to the seafood industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_20.html">
+      <td class="arg-text">Sustainable seafood demand can be met while protecting marine life through the implementation of science-based management, strict catch limits, and rigorous enforcement within well-governed jurisdictions.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_21.html">
+      <td class="arg-text">We can meet seafood demand while protecting marine life by eliminating the wasteful practice of discarding bycatch and encouraging consumers to eat a wider variety of fish species.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_22.html">
+      <td class="arg-text">To meet consumer demand while protecting marine life, governments must eliminate the harmful subsidies that drive overfishing and implement enforceable international regulations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_23.html">
+      <td class="arg-text">The most effective way to protect marine life while meeting consumer demand is to leverage selective consumer pressure to drive sustainability and transparency in the seafood industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_24.html">
+      <td class="arg-text">To ensure seafood quality and protect marine life, we must replace the opaque globalized supply chain with a transparent, localized system that prioritizes traceability and seasonal diversity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_25.html">
+      <td class="arg-text">The only way to meet global seafood demand while protecting marine life is to transition from ocean-based fishing and farming to land-based, closed-containment aquaculture systems.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_26.html">
+      <td class="arg-text">Consumer labeling and certification schemes, when integrated with regulatory frameworks and supply chain transparency, are the most effective tools for balancing seafood demand with marine conservation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_27.html">
+      <td class="arg-text">We can meet consumer demand for seafood while protecting marine life by prioritizing technological innovation and market-driven sustainability rather than reducing consumption.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_28.html">
+      <td class="arg-text">Current market-based seafood certification systems are insufficient to protect marine life and should be replaced or supplemented by robust government regulation and catch-share programs.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_29.html">
+      <td class="arg-text">To balance consumer demand with marine conservation, the global community must prioritize responsible aquaculture development and address the inequitable distribution of responsibility between wealthy nations and food-insecure coastal communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_30.html">
+      <td class="arg-text">To protect marine life while meeting consumer demand, we must move away from rigid sustainability targets and instead adopt a diversified, adaptive management strategy that can respond to the dynamic impacts of climate change.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_31.html">
+      <td class="arg-text">To protect marine life and ensure a sustainable seafood supply, we must transition from complex quota-based management to the implementation of large-scale, strictly enforced Marine Protected Areas.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_32.html">
+      <td class="arg-text">To protect marine life and ensure high-quality seafood, we must de-industrialize the fishing fleet and transition to a localized, boat-to-fork supply chain model.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_33.html">
+      <td class="arg-text">The most effective way to protect marine life and ensure a sustainable seafood supply is to eliminate government subsidies that fund destructive industrial fishing fleets.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_34.html">
+      <td class="arg-text">To successfully align consumer demand with marine protection, we must urgently reform seafood certification bodies to ensure they are rigorous, independent, and truly sustainable.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_35.html">
+      <td class="arg-text">Meeting consumer demand while protecting marine life requires a localized approach that empowers fishing communities and encourages flexible consumer habits.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_36.html">
+      <td class="arg-text">Meeting consumer demand while protecting marine life is only possible if society shifts toward more modest consumption levels and implements robust marine protected areas.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_37.html">
+      <td class="arg-text">Meeting the demand for quality seafood while protecting marine life requires shifting the burden of sustainability from individual consumers to institutional buyers and systemic industry standards.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_38.html">
+      <td class="arg-text">To meet consumer demand while protecting marine life, we must replace the competitive race to fish with rights-based management systems that align economic incentives with long-term ecological health.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_39.html">
+      <td class="arg-text">Meeting the demand for quality seafood while protecting marine life requires a global approach that prioritizes equity, traceability, and reduced consumption by wealthy nations to protect the food security of poorer coastal communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_too-few-fish-in-the-sea_arg_40.html">
+      <td class="arg-text">To meet rising global demand while protecting marine life, we must expand low-impact aquaculture and implement strict policies to ensure farming practices are ecologically sustainable.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ahmed Diamé</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/ahmed-diamé" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Callum Roberts</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/callum-roberts" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Corey Arnold</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/corey-arnold" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Diane Cowan</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/diane-cowan" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jon Hoekstra</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/jon-hoekstra" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Mike Tetreault</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/mike-tetreault" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Paul Greenberg</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/paul-greenberg" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Taras Grescoe</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/taras-grescoe" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Vito Giacalone</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/03/03/too-few-fish-in-the-sea/vito-giacalone" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The honest answer is: yes, but only if we stop pretending that &quot;wild-caught&quot; and &quot;sustainable&quot; are synonyms, and only if aquaculture grows up fast.</p>
+      <p>Consider the arithmetic. Global wild capture has been flat at roughly 90 million tons since the late 1980s, while demand keeps climbing. The FAO&#x27;s most recent assessments suggest nearly 30 percent of stocks are overfished and another 57 percent are fished at their biological limit. There is no remaining slack in the ocean. Every additional pound of seafood the world eats over the coming decade will have to come from farms, not boats.</p>
+      <p>That makes aquaculture the central question, not a side issue. Done badly — as with open-net Atlantic salmon pens that concentrate waste, spread sea lice, and consume three pounds of forage fish for every pound produced — it simply offloads the overfishing problem onto anchovies and menhaden. Done well — closed recirculating systems, shellfish and seaweed farming, omnivorous species like tilapia, barramundi, and carp — it can produce protein with a smaller footprint than beef or pork.</p>
+      <p>On the wild side, the tools exist and we know they work: hard catch limits tied to scientific stock assessments, individual transferable quotas where appropriate, marine protected areas covering meaningful fractions of spawning habitat, and bycatch-reducing gear. The American experience under the reauthorized Magnuson-Stevens Act, and New Zealand and Iceland&#x27;s quota systems, show that depleted fisheries can rebound within a decade.</p>
+      <p>What&#x27;s missing is the consumer-facing connection. Mislabeling studies by Oceana have found a third of fish sold in the US is not what the menu claims. Without traceability — boat to plate — sustainability certifications are theater. Fix labeling, and demand can finally pull in the right direction.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The tension between the Mediterranean diet’s prescriptions and the reality of collapsing fish stocks is not a paradox we must simply endure. It is a solvable problem of management, technology, and informed demand. Yes, we can meet consumer appetite for seafood and protect marine life simultaneously, but it requires moving beyond the romantic notion that wild fish are an endlessly self-renewing gift. The tools already exist; what is missing is the political will and consumer follow-through to scale them.</p>
+      <p>By 2013, the evidence for successful fishery recovery is not hypothetical. The United States, under the 2006 reauthorization of the Magnuson-Stevens Act, has rebuilt over a dozen depleted stocks, including mid-Atlantic scallops and Pacific canary rockfish, by strictly enforcing science-based catch limits. In many Gulf of Alaska fisheries, catch-share systems—where a fixed portion of the total allowable catch is allocated to fishermen—have eliminated the perilous race for fish, reducing bycatch and habitat damage while increasing economic stability. These models work because they treat the ocean as a finite resource requiring clear property rights and rigorous monitoring, not as a common hunting ground.</p>
+      <p>The Mediterranean itself, paradoxically, demonstrates the problem. Decades of unregulated trawling, poor enforcement, and high consumer demand for prized species like bluefin tuna have left the sea’s biomass a shadow of its former self. But the demand side can also be a lever for change. The rapid growth of certification programs like the Marine Stewardship Council, and pocket guides such as Seafood Watch, shows that millions of consumers are ready to vote with their wallets. When retailers like Whole Foods or chains in Northern Europe commit to selling only certified sustainable seafood, they send a powerful signal back through the supply chain.</p>
+      <p>Aquaculture is the other indispensable piece. By 2013, it already supplies nearly half of all seafood eaten, and it holds the key to taking pressure off wild stocks—provided we address its risks. Open-net cage salmon farming in Scotland and Chile has contaminated waters and relied heavily on fishmeal from forage fish, merely shifting the ecological burden. But closed-loop systems, recirculating tanks, and integrated multi-trophic farms that raise shellfish and seaweed alongside finfish show a better path. Consumers must learn to accept responsibly farmed species like barramundi or Arctic char with the same enthusiasm they reserve for wild-caught icons. A genuinely sustainable seafood future requires managing fisheries like the valuable, limited public resource they are, while pursuing aquaculture that creates new protein without subtracting from ocean health.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The tension between human dietary needs and the ecological limits of our oceans is one of the great environmental challenges of our time. As the health benefits of the Mediterranean diet and omega-3 fatty acids become universally recognized, global demand for seafood is skyrocketing. Yet, with populations of apex predators like Atlantic bluefin tuna and cod severely depleted, the math simply does not add up. We cannot continue to treat the ocean as an inexhaustible larder.</p>
+      <p>Meeting consumer demand while protecting threatened marine life is possible, but it requires a radical transformation in three areas: how we farm, how we track, and how we eat.</p>
+      <p>First, aquaculture must evolve. Fish farming already provides roughly half of the seafood consumed globally, but many current practices remain ecologically destructive. Farming carnivorous species like salmon often requires catching massive amounts of wild forage fish—such as anchovies and sardines—just to produce feed. To truly relieve pressure on wild stocks, the aquaculture industry must invest heavily in closed-loop, land-based systems and develop alternative feeds that decouple farmed fish from wild marine food webs.</p>
+      <p>Second, we must establish rigorous traceability. Consumers cannot support sustainable fisheries if they do not know what they are buying. Recent investigations have revealed staggering levels of seafood fraud in the United States, demonstrating that up to a third of seafood is mislabeled. Heavily depleted species are routinely passed off as sustainable alternatives, and cheap farmed fish are sold as wild-caught. Implementing strict &quot;bait-to-plate&quot; tracking and holding suppliers accountable is essential. Market-driven conservation completely fails if the market itself is built on deception.</p>
+      <p>Finally, consumers must shift their palates. The western appetite is disproportionately fixated on top-tier predators like tuna, salmon, and halibut. A sustainable seafood culture means eating lower on the marine food chain. Bivalves, such as oysters, clams, and mussels, are nutritional powerhouses that require no feed and actually purify the water they grow in. Similarly, abundant smaller fish like mackerel and sardines must move from the bait bucket to the center of the dinner plate.</p>
+      <p>We can have healthy diets and healthy oceans, but only if we abandon the illusion that we can eat whatever we want, whenever we want it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Yes, but only if “demand for quality seafood” is redefined. The old bargain—cheap tuna, shrimp and cod in any season, from anywhere, with little curiosity about how they were caught—cannot coexist with healthy oceans. By 2013 the evidence is plain: many major stocks are fully exploited or overfished, and wasteful bycatch still kills turtles, seabirds and juvenile fish. The problem is not that humans eat fish; it is that markets reward volume and disguise scarcity.</p>
+      <p>The first requirement is honest information. Seafood fraud and vague labels make responsible choice nearly impossible. A diner should be able to know the species, where it was caught or farmed, and by what method. Traceability from boat to plate, stronger inspections, and penalties for mislabeling would help consumers distinguish a well-managed Alaskan salmon fishery from an endangered or illegally caught substitute.</p>
+      <p>Second, governments must set and enforce science-based catch limits. The United States has shown, through the Magnuson-Stevens framework, that rebuilding plans can work when politics does not override biology. Europe’s Common Fisheries Policy has too often tolerated excess capacity and discarded catch; reform should end that habit. Marine protected areas, gear restrictions and bycatch limits are not anti-fishermen measures; they are insurance for fishing communities.</p>
+      <p>Third, consumers and chefs should broaden their idea of seafood. Mussels, clams, oysters, sardines, anchovies and some farmed species can provide excellent nutrition with far less ecological cost than top predators or poorly managed shrimp. Aquaculture can help, but only when it avoids pollution, disease transfer and heavy reliance on wild fish for feed.</p>
+      <p>Sustainable seafood is possible, but not as a marketing slogan. It requires less anonymity, less waste, and a willingness to eat lower on the marine food chain.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The disappearance of fish from our oceans represents one of the most pressing environmental challenges of our time, and the Mediterranean diet&#x27;s emphasis on seafood only sharpens the paradox we face. A thoughtful approach must recognize that this isn&#x27;t simply a matter of consumer choice—it requires systemic changes in how we manage marine resources and how рыночные forces interact with ecological reality.</p>
+      <p>By 2013, the evidence that many wild fish populations have been depleted beyond recovery was overwhelming. Scientists had documented collapsing fisheries across the globe, and Mediterranean waters were no exception. Bluefin tuna stocks, for instance, had declined dramatically due to overfishing and poor enforcement of catch limits. Yet the demand for fish continues to grow, driven partly by health advocates recommending seafood as a protein source and partly by cultural preferences deeply embedded in coastal communities.</p>
+      <p>The question of whether we can simultaneously meet consumer demand and protect marine life deserves a nuanced answer. рыночные solutions like the Marine Stewardship Council certification have made some headway, creating incentives for fishermen who adopt sustainable practices. However, certification alone cannot solve a problem rooted in overexploitation and inadequate international coordination.</p>
+      <p>Aquaculture offers part of the solution, but it is not a panacea. Farmed fish can reduce pressure on wild stocks, yet industrial aquaculture raises its own environmental concerns—pollution, disease transmission, and dependency on wild-caught fish for feed. The most promising path involves combining reduced wild fishing pressure with genuinely sustainable aquaculture, supported by transparent labeling that helps consumers make informed choices.</p>
+      <p>Ultimately, meeting demand while protecting marine ecosystems requires accepting that some fish populations need time to recover, which means短期内 consumer access to certain species will be limited. This is not a sacrifice but a realistic recognition that indefinite exploitation is simply not possible. The alternative—business as usual—guarantees scarcity we cannot reverse.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (54 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The honest answer is that we cannot meet current consumer demand for wild seafood and protect marine life at the same time. The math simply doesn&#x27;t work. The FAO has been telling us for years that roughly 85 percent of the world&#x27;s fisheries are fully exploited, overexploited, or depleted. Global per-capita fish consumption keeps rising. Something has to give.</p>
+      <p>What needs to give is the idea that &quot;quality seafood&quot; must mean wild-caught fish from the top of the food web. The Mediterranean diet didn&#x27;t originate as a tuna-and-swordfish diet; it was built on sardines, anchovies, mackerel, mussels, octopus, and whatever the day&#x27;s small boats brought ashore. The romance with bluefin tuna belly and Chilean sea bass is a relatively recent, globalized phenomenon, and it is precisely the romance that is emptying the sea.</p>
+      <p>If American and European consumers shifted even half their seafood spending toward small pelagics and farmed bivalves, the pressure on threatened stocks would ease dramatically. Sardines and anchovies are nutritionally superior to most of the fish we obsess over — high in omega-3s, low in mercury, cheap, abundant, and harvested with relatively low ecological cost. Mussels and oysters actually improve the water they grow in.</p>
+      <p>So yes, there&#x27;s a path, but it requires honesty about trade-offs. Marine Stewardship Council labels help, but they won&#x27;t solve a structural problem of demand pointed at the wrong species. Strong catch limits, enforced no-take zones, an end to the most destructive subsidies on industrial fleets, and a cultural rehabilitation of &quot;humble&quot; fish — that&#x27;s the package.</p>
+      <p>Chefs and food writers carry surprising weight here. When Mario Batali stops putting branzino on every menu and starts championing porgies and bluefish, palates follow. The Mediterranean diet&#x27;s health benefits don&#x27;t depend on any particular species; they depend on a pattern. We can keep the pattern and lose the trophy fish. We just have to want to.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Aquaculture is the only realistic answer to the question posed, and it&#x27;s strange how reluctant we remain to say so plainly. Wild capture fisheries have been essentially flat at around 90 million tons per year since the late 1980s. Every additional pound of seafood eaten on the planet for the past quarter-century has come from a farm. That trend is not going to reverse.</p>
+      <p>The legitimate worries about farmed fish are well-known: escapes that pollute wild gene pools, sea lice infesting salmon migrations, antibiotic overuse, mangrove destruction for shrimp ponds, and the perverse fact that carnivorous farmed species like salmon eat several pounds of wild forage fish for every pound they produce. These are real problems. They are also solvable engineering and regulatory problems, not laws of nature.</p>
+      <p>Closed-containment systems on land eliminate escapes and disease transfer. Feed companies have already cut the fish-in-fish-out ratio for salmon dramatically over the past decade by substituting plant proteins and are working on algae- and yeast-based alternatives. Integrated multi-trophic aquaculture — growing mussels and seaweed alongside finfish — uses waste as input. Norway, despite its missteps, produces enormous quantities of salmon with steadily declining environmental footprint per kilo.</p>
+      <p>And then there are the unambiguous wins. Farmed bivalves and seaweed require no feed at all and provide ecosystem services. Tilapia and carp, herbivorous and efficient, feed hundreds of millions of people cheaply. Most of the world&#x27;s aquaculture output is already these low-impact species; the salmon-and-shrimp story that dominates Western coverage is the exception.</p>
+      <p>Protecting wild marine life means relieving pressure on it. The most powerful way to do that is to give consumers an alternative source of protein that doesn&#x27;t depend on hunting down the last bluefin. Properly regulated aquaculture is that alternative. The question is not whether to embrace it but how to make it as clean as it can be, as fast as we can.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The framing of this debate keeps treating &quot;consumer demand&quot; as a fixed input. It isn&#x27;t. Demand is constructed — by chefs, by supermarket buyers, by advertisers, by health columnists telling everyone to eat more fish for their hearts. If we built the demand, we can rebuild it.</p>
+      <p>Consider how quickly Chilean sea bass, formerly the unloved Patagonian toothfish, became a fine-dining staple in the 1990s after a deliberate rebranding. Consider how monkfish went from being thrown overboard to commanding $20 a pound. These shifts happened in years, not generations. Fashion in fish is real, and it moves fast.</p>
+      <p>The question, then, is whether we can engineer the reverse: a deliberate shift away from threatened species toward abundant ones. The evidence from the past decade is mixed but encouraging. Seafood Watch cards from the Monterey Bay Aquarium have changed purchasing at major chains. Whole Foods refuses to sell red-listed species. Some celebrity chefs have publicly dropped bluefin. The &quot;trash fish&quot; movement has rehabilitated species like sheepshead and triggerfish on serious menus.</p>
+      <p>What&#x27;s still missing is scale and policy backing. Voluntary certification can&#x27;t fix a global commons problem on its own. We need binding international quotas with teeth, especially for highly migratory species like tuna whose management is a diplomatic joke. We need an end to the subsidies — estimated at over $20 billion annually worldwide — that keep otherwise unprofitable industrial fleets dragging the seabed. We need traceability requirements so the rampant mislabeling documented by Oceana (a third of fish sold in the U.S. is something other than what the label says) gets stamped out.</p>
+      <p>So yes, there&#x27;s a way to reconcile demand and conservation, but it isn&#x27;t a technological fix. It&#x27;s cultural and political. Eat lower on the food chain, eat local and seasonal, accept higher prices for true wild fish, and stop pretending markets will solve a problem that markets created.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>I&#x27;m skeptical that the cheerful &quot;win-win&quot; answer the question invites actually exists. Let&#x27;s be blunt: the Mediterranean is one of the most overfished bodies of water on earth. Bluefin tuna stocks have collapsed to single-digit percentages of historic biomass. European hake, swordfish, and many sharks are in serious trouble. The traditional Mediterranean diet that nutritionists romanticize was sustained by a population a fraction of today&#x27;s, fishing with technology a fraction as efficient. That world is not coming back.</p>
+      <p>When people ask whether we can have abundant quality seafood AND healthy oceans, the honest answer for many iconic species is no. We are going to have to eat less of them, pay much more for them, or stop eating them entirely for a generation while stocks recover. Pretending otherwise — through ever-more-elaborate certification schemes, traceability apps, and chef pledges — risks giving consumers permission to keep doing roughly what they&#x27;re doing while feeling virtuous.</p>
+      <p>Look at cod. Twenty years after the Canadian moratorium, the Grand Banks stocks have barely budged. Marine ecosystems don&#x27;t necessarily bounce back when you stop fishing; they reorganize into new states that may not support the species we want. The cost of overfishing isn&#x27;t just a temporary dip in supply — it can be permanent ecological regime change.</p>
+      <p>What&#x27;s the realistic path? Drastically reduced quotas, accepting short-term pain in coastal communities (with public support to cushion it), large no-take marine reserves covering perhaps 20-30 percent of ocean area, and a shift in diet toward farmed bivalves, seaweed, and the smaller pelagic fish that can sustain harvest.</p>
+      <p>This isn&#x27;t a feel-good answer, and it won&#x27;t get applause at a food festival. But the alternative — squaring the circle with clever marketing and incremental tweaks — is what we&#x27;ve been trying for thirty years while the fish kept disappearing. At some point honesty has to enter the conversation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>There&#x27;s a quieter answer to this question that gets lost between the doom-mongers and the aquaculture boosters: well-managed wild fisheries actually work, and we have proof.</p>
+      <p>Look at the United States. Under the reauthorized Magnuson-Stevens Act, regional councils have been forced to set science-based annual catch limits and end overfishing. The result, documented in NOAA&#x27;s status-of-the-stocks reports, is genuinely encouraging: dozens of stocks have been rebuilt over the past fifteen years. New England scallops, mid-Atlantic summer flounder, Pacific lingcod, and Gulf red grouper are all examples of populations that came back when we stopped hammering them. Iceland and New Zealand, despite imperfect systems, have maintained productive fisheries for decades through individual transferable quotas and serious enforcement.</p>
+      <p>The lesson is that the ocean is not uniformly doomed. Where there is rule of law, scientific stock assessment, and political will to enforce catch limits, fisheries can be sustainable and profitable. The collapses we read about — bluefin, sharks, much of the Mediterranean — are concentrated where management is weak: international waters, the high seas, places where many flag states share access with no one in charge.</p>
+      <p>So the answer to &quot;can we meet demand and protect marine life&quot; is: in well-governed jurisdictions, yes, largely; in poorly governed ones, no, and we should be honest with consumers about that. The Marine Stewardship Council label, for all its flaws, is a reasonable proxy. American consumers who buy domestic wild seafood are mostly buying from rebuilt or rebuilding stocks. The bigger problem is the 90 percent of U.S. seafood that is imported, much of it from places with little oversight.</p>
+      <p>The policy implication is simple. Push hard on import standards — require equivalent management for seafood entering the U.S. and EU markets. That would do more to save global fisheries than any number of consumer guides, because it would force exporters to clean up or lose their biggest customers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>We keep talking about fish as if they were a separate problem from the rest of food. They&#x27;re not. The same forces that have industrialized chicken, beef, and pork — concentration, opacity, externalized environmental costs, distance between eater and producer — have industrialized seafood, and with similar results. The solutions, accordingly, will look similar.</p>
+      <p>What&#x27;s worked in terrestrial food activism over the past two decades? Direct relationships between consumers and producers (farmers&#x27; markets, CSAs), transparency about origin, willingness to pay real prices for real food, and a rediscovery of variety. Apply each to seafood and you get a coherent program.</p>
+      <p>Community-supported fisheries, modeled on CSAs, have sprung up from Maine to Alaska. Members get a weekly share of whatever the local boats bring in. The consumer doesn&#x27;t get to specify &quot;salmon, please&quot; — she gets pollock one week, dogfish the next, whatever the season and the ecosystem provide. This is exactly the kind of demand pattern that fits sustainable fishing, and it&#x27;s the opposite of the supermarket model that pretends every species is available every day of the year.</p>
+      <p>Transparency means knowing the boat, ideally the captain, and the gear used. Hook-and-line caught is different from bottom-trawled. A small day-boat operation is different from a factory ship. Right now most consumers have no way to make these distinctions; their salmon fillet is anonymous. Mandatory country-of-origin and gear labeling, already partially in place, should be expanded and enforced.</p>
+      <p>Real prices matter too. Cheap seafood is almost always subsidized seafood, either by taxpayers (fuel subsidies, port infrastructure) or by the ocean itself (uncompensated depletion). A $6 tuna sandwich is a lie. If we want fisheries to survive, we need to be willing to eat fish less often and pay more when we do — exactly the advice good food writers give about meat.</p>
+      <p>The path forward isn&#x27;t mysterious. It&#x27;s the slow-food playbook, applied at sea.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The most underappreciated piece of this puzzle is the role of bycatch and discards. Before we ask how to satisfy demand for popular species, we should ask why we&#x27;re throwing so much of the catch overboard. Global estimates suggest something on the order of 20 million tons of fish are discarded each year, dead or dying, because they&#x27;re the wrong species, the wrong size, or caught with the wrong quota attached. Shrimp trawls are particularly egregious, discarding several pounds for every pound landed.</p>
+      <p>That&#x27;s a moral and ecological scandal independent of total catch levels. It also represents a huge opportunity. If we landed and ate what we already kill, we would need to fish substantially less to feed the same number of people.</p>
+      <p>The EU&#x27;s recent reforms to its Common Fisheries Policy, finally banning discards after years of debate, are a major step. Norway has had a landing-obligation policy for years and it works. Pairing landing obligations with selective gear development — escape panels, circle hooks, modified nets — can dramatically reduce the catching of unwanted species in the first place. Some of this is high-tech; some is as simple as changing the shape of a hook.</p>
+      <p>The harder cultural project is teaching consumers to eat the so-called underutilized species that already come up in nets. The British &quot;Hugh&#x27;s Fish Fight&quot; campaign got remarkable traction by showing viewers the bizarre and tasty species being dumped at sea. Skate, gurnard, pouting, dab — most diners have never heard of them, but they&#x27;re perfectly good food.</p>
+      <p>So can we meet demand and protect marine life? Partly, by being less wasteful and less picky. Reduce discards, broaden what counts as &quot;quality seafood,&quot; and we squeeze far more food out of less fishing pressure. It&#x27;s not a complete answer, but it&#x27;s a piece of the answer that doesn&#x27;t require new technology or international treaties — just better rules and more curious cooks.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Let me speak as a fishmonger, which is what I&#x27;ve been for nineteen years. The debate over sustainable seafood reads very differently from behind a counter than it does in a newspaper op-ed.</p>
+      <p>What I see is customers who want salmon, tuna, shrimp, and cod, in that order, year-round, at predictable prices, in fillet form, with no skin, no bones, and no eyes looking back at them. When I try to interest them in beautiful local bluefish, mackerel, or porgies, most decline. When I tell them the wild salmon season hasn&#x27;t started yet, they buy the farmed Atlantic. The educated coastal customer who reads the Times food section is a minority of my business; she&#x27;ll try the squid or the dogfish, but the broader market doesn&#x27;t.</p>
+      <p>This matters because every essay urging consumers to &quot;eat lower on the food chain&quot; or &quot;embrace underutilized species&quot; is essentially asking my counter to convert thousands of customers per week. We try. It&#x27;s slow.</p>
+      <p>What would actually help us? First, better, simpler labeling. The current system is a mess of overlapping certifications and country-of-origin rules that confuse rather than clarify. Second, real enforcement against mislabeled fish — Oceana&#x27;s studies on what&#x27;s actually in your &quot;red snapper&quot; are damning, and the cheaters undercut those of us trying to do right by our customers. Third, school programs that teach kids that fish have heads and that more than four species exist. Taste is built young.</p>
+      <p>Can we meet demand and protect the oceans? In time, yes, but only if we&#x27;re patient about cultural change and aggressive about policy. Every responsible fishmonger is a small node in a much larger system that includes regulators, scientists, fishermen, and eaters. None of us can fix this alone. But standing at the counter, I can promise that more people are asking the right questions than five years ago. That&#x27;s something.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The question assumes &quot;consumer demand for quality seafood&quot; and &quot;protecting threatened marine life&quot; are the two relevant variables. They aren&#x27;t. The variable nobody wants to talk about is population — both human and piscine — and the underlying fact is that the ocean is finite while demand is not.</p>
+      <p>Global seafood consumption per capita has roughly doubled since 1960, to nearly 20 kilograms per person per year. Multiply that by a growing global middle class, particularly in China and India, and the demand curve goes vertical even if Western consumers behave heroically. Meanwhile, the productive capacity of marine ecosystems is bounded by sunlight, nutrients, and the structure of food webs. There&#x27;s a ceiling, and we&#x27;re banging into it.</p>
+      <p>This means three things must happen simultaneously, and none of them are sufficient alone.</p>
+      <p>First, aggressive rebuilding of wild stocks through enforced catch limits and large marine protected areas. The science here is clear; the politics is the obstacle. Twenty to thirty percent of the ocean in no-take reserves would be a reasonable target.</p>
+      <p>Second, dramatic expansion of low-impact aquaculture — bivalves, seaweed, herbivorous finfish — to absorb growing demand without further pressure on wild stocks. This means accepting that an oyster farm is not a pristine bay, and choosing it anyway as the lesser harm.</p>
+      <p>Third, and this is the uncomfortable one, demand restraint in wealthy countries. We probably need to eat less seafood, not more, even as nutrition guidelines push us the other way. The omega-3s we crave can come from algae directly, without the laundering through a salmon&#x27;s body.</p>
+      <p>Can we meet demand and protect marine life? If &quot;demand&quot; means the trajectory we&#x27;re currently on, no. If &quot;demand&quot; means a recalibrated, smarter, lower per-capita consumption combined with smart sourcing, maybe. The honest answer to the question is: only if we change what we mean by the question.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>We can absolutely have our fish and eat it too. The key lies not in telling consumers to abandon a healthy Mediterranean diet or in relying on well-meaning consumer guides, but in a proven, hard-nosed policy tool: rights-based management. When fishermen have a secure, long-term stake in the health of a fishery—through catch shares or dedicated access privileges—they become conservationists. It turns the race to fish into a stewardship incentive.</p>
+      <p>The turnaround in U.S. fisheries is the clearest proof. After decades of decline, the 2006 reauthorization of the Magnuson-Stevens Act mandated strict catch limits. Coupled with catch share programs, it has led to the rebuilding of over 30 once-depleted stocks, from Bering Sea pollock to New England scallops. These are not exceptions; they are the rule when economic incentives and conservation align. Fishermen support science, accept lower immediate harvests, and actively guard against illegal fishing because their future income depends on it. The Alaskan halibut fishery, once a derby lasting mere days, now delivers fresh fish for months, with higher dockside prices and healthier fish populations.</p>
+      <p>Skeptics worry that catch shares lead to consolidation, but that is a design problem, not an argument against the approach. Carefully crafted programs can protect small-scale operators and coastal communities. The real alternative—open-access chaos—consolidates nothing but poverty and extinction. The Mediterranean’s own bluefin tuna crisis, fueled by a gold-rush mentality that defied all scientific advice, shows what happens when no one owns the future.</p>
+      <p>This model works for wild stocks. Meanwhile, we can relieve pressure by improving aquaculture, but only with strict siting and feed standards. A combination of well-managed fisheries for high-quality table fish and sustainable aquaculture for bulk supply can absolutely meet global demand while restoring ocean abundance. The primary obstacle is not biology; it is political courage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The question poses a false choice, implying that scaling back fish consumption is the only way to protect marine life. In reality, consumer demand is the most potent weapon we have for ocean conservation—if we learn to wield it with precision. The key is not to eat less fish, but to eat the right fish.</p>
+      <p>Seafood guides like the Monterey Bay Aquarium’s Seafood Watch have moved from pocket cards to the mainstream, and major retailers like Whole Foods and Walmart have committed to sourcing only certified sustainable seafood. When consumers consistently choose Marine Stewardship Council–labeled Alaskan salmon over the mysteriously cheap rockfish fillet, they send a shockwave through the supply chain. Restaurants respond, distributors adjust, and eventually the fishing industry finds it unprofitable to destroy its own resource base. That is already happening: in 2012, the U.S. imported more sustainable wild salmon than at any point in a decade, thanks in part to buyer insistence.</p>
+      <p>Of course, labels are imperfect. The MSC itself has been criticized for certifying some contested fisheries, and 2013 revelations of widespread seafood fraud showed that what’s on the label often isn’t what’s on the plate. That is why consumer pressure must also target transparency. We should demand full-chain traceability, from boat to table, as a basic right. Technology, like DNA barcoding, makes this feasible and increasingly affordable. When restaurants can be publicly shamed for selling mislabeled escolar as white tuna, the culture changes.</p>
+      <p>Some argue that this shifts the burden onto individuals. But collective consumer action is precisely what drives corporate behavior at scale. No one regrets the near-extinction of Atlantic swordfish that began to reverse after the “Give Swordfish a Break” boycott in the late 1990s. We can enjoy quality seafood and thriving oceans—but only by becoming relentlessly discerning, and by forcing the market to reveal the true story behind every fillet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>No. The fantasy that we can simultaneously satisfy growing global demand for premium seafood and safeguard marine biodiversity ignores some brutal arithmetic. The core problem is the trophic pyramid: the fish we most love to eat—tuna, salmon, cod, grouper—are predators high on the food chain. Every pound of farmed Atlantic salmon requires about three pounds of wild fish ground into meal. Every pound of bluefin tuna consumed in Tokyo’s sushi bars represents tens of thousands of pounds of herring, mackerel, and squid that never fed a seabird or a marine mammal.</p>
+      <p>Aquaculture, often hailed as the solution, is rapidly becoming the central pressure. The United Nations FAO reported in 2012 that fish farming now supplies nearly half of all seafood eaten by humans. Yet finfish and shrimp aquaculture remain overwhelmingly dependent on fishmeal from wild forage fish like Peruvian anchoveta. Those stocks are being pushed to their limits, with catastrophic consequences for everything that depends on them, from penguins to the very tuna we are trying to spare. Recirculating land-based tanks and vegetarian fish diets are promising ideas, but they remain niche, expensive, and decades from meaningful scale.</p>
+      <p>Meanwhile, the Mediterranean Sea itself is a ghost of its former abundance. Over 60 percent of its assessed fish stocks are overexploited, according to the European Commission’s own scientists. The traditional Mediterranean diet featuring fresh local hake or swordfish is already ecologically unaffordable for billions of people. Clinging to the idea that we can meet this demand through smarter management alone is an evasion. Some local success stories, like U.S. catch shares, are irrelevant to the vast, poorly governed waters of Southeast Asia and West Africa, where the majority of global overfishing occurs.</p>
+      <p>The only honest answer is that we must deliberately shift our diet downwards, embracing anchovies, sardines, and mackerel—fish that can be eaten directly without the inefficiency of feeding them to salmon or tuna first. That means quality seafood will have to mean something different. Abundance and luxury cannot coexist on a crowded planet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>If we want to eat fish without destroying the seas, we must stop looking to the sea as our primary source of protein and start looking inland. Aquaculture can fully decouple seafood demand from ocean depletion, but only if we invest in technologies that leave the wild oceans alone. The era of offshore net-pen farming, with its pollution, disease transfer, and reliance on wild fishmeal, is a dead end. The future is in closed-containment systems on land.</p>
+      <p>Recirculating aquaculture systems (RAS) now allow us to raise species from barramundi to Atlantic salmon in gigantic indoor tanks, miles from the nearest coastline. These systems filter and reuse over 99 percent of their water, capture all waste for fertilizer, and eliminate escapes and parasite interactions with wild stocks. Crucially, they also allow for much tighter control over feed. Researchers at the University of Maryland and elsewhere have already demonstrated salmon thriving on diets that replace the vast majority of fishmeal with algae-based oils and soy. When the price of wild forage fish inevitably rises, these plant- and microbe-based feeds will become the economic norm.</p>
+      <p>Skeptics say it’s too expensive. But we pay massive hidden subsidies for wild fish in the form of depleted common resources and degraded ecosystems. A level playing field—where we actually account for the environmental cost of trawling and open-net farming—would make RAS instantly competitive. Already, companies like Australis Aquaculture are marketing their sustainably raised barramundi to Whole Foods at a price premium. As energy costs for climate control drop and scales increase, that premium will shrink.</p>
+      <p>This doesn’t mean we should abandon wild fisheries. Wild salmon and tuna can become the equivalent of grass-fed beef: a high-value, occasional luxury harvested under strict quotas. But the daily fish that anchors the Mediterranean diet—the fillets, the fish sticks, the sushi rolls—will come from factories, not the ocean. That is the only plausible path to giving the sea a break while still feeding a fish-hungry world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The oceans can produce protein for a healthy global diet, but they are being bankrupted by a catastrophic policy failure: the systematic subsidization of overfishing. The global fishing fleet is roughly twice the size it needs to be to catch the ocean’s sustainable yield. Governments, particularly in the European Union, Japan, and China, pour billions of dollars annually into fuel subsidies, vessel construction, and access agreements with poorer nations. The result is an economic and ecological fool’s game: too many boats chasing ever-fewer fish, all propped up by taxpayers.</p>
+      <p>Consider the ongoing reform of the European Union’s Common Fisheries Policy, debated fiercely as we speak in early 2013. For decades, CFP quotas have been set far above scientific advice, leading to the official overexploitation of 68 percent of European stocks. The glimmer of hope is that the European Parliament is finally pushing for binding commitments to fishing at maximum sustainable yield and an end to discarding the practice of throwing dead bycatch overboard. If these reforms pass and are actually enforced, they will represent the single largest step toward ocean recovery in the developed world.</p>
+      <p>But subsidies are only half the battle. The other half is international regulation on the high seas, where pirate fishing flourishes. Regional fisheries management organizations have been notoriously ineffective. Closing the loopholes on flag-of-convenience vessels and establishing a global register of fishing ships are essential steps that have been discussed for years but never implemented with teeth.</p>
+      <p>The consumer demand question is almost a distraction. When the policy framework is right, you don’t need every household to own a Seafood Watch card; the market will simply supply sustainable products because that’s what’s legal and profitable. We can absolutely meet demand for quality seafood, but first we must stop paying people to destroy the very resource they depend on. It’s a choice politicians have been too cowardly to make.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The global debate about fish sustainability too often overlooks a simple reality: the most effective guardians of marine life are the very people who depend on it for their daily survival. The solution to the overfishing crisis lies not in top-down regulations designed in Brussels or Washington, but in empowering small-scale, artisanal fishing communities with secure tenure rights over their local waters.</p>
+      <p>Wherever this has been tried, from the community-managed loco fisheries of Chile to the cooperative structures in Japan’s coastal villages, the results are striking. When a community knows that the reef or the bay is theirs to use exclusively over the long term, they have every incentive to police it, resist industrial incursion, and invest in conservation. They become the eyes and ears of enforcement, with a granular knowledge of the ecosystem that no satellite surveillance can match. In Belize, recent moves to grant managed-access areas to traditional lobster fishermen have led to voluntary no-take zones and a stabilization of catches that biologists had not thought possible.</p>
+      <p>Compare this to the industrial model that dominates the Mediterranean and beyond. Bottom trawlers, often heavily subsidized, scrape entire habitats clear, discarding up to half their catch. Profits flow to distant shareholders, while local coastal economies are left with broken nets and empty waters. The selective gear used by small-scale fishers—handlines, pots, gillnets set in specific depths—has far lower bycatch and habitat impact.</p>
+      <p>The Mediterranean diet was built on this kind of diverse, small-boat fishing: the day-boat catch of red mullet, octopus, and bream that never saw an ice factory. To meet consumer demand sustainably, we must fundamentally restructure access rights, deliberately favoring the small operators who live by a conservation ethic because they have no choice. They already know we cannot take everything from the sea. It is time to listen to them, not the industrial fleet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The recently documented epidemic of seafood fraud—with up to one-third of seafood samples mislabeled in U.S. cities, according to a major 2013 Oceana study—reveals the fatal flaw in our globalized seafood supply. We cannot have both quality and sustainability when the fish on our plate is a mystery, laundered through a murky, unregulated international market. The path to protecting marine life starts with radical transparency and a re-localization of supply chains.</p>
+      <p>Today, a fish caught off Senegal might be shipped to China for processing, then re-imported to Europe as a frozen block, its species name and catch method obscured. In this opaque system, illegal, unregulated, and unreported (IUU) fish easily mingles with legitimate catch. Consumers cannot trust labels, and honest fishermen are undercut by pirates. A Mediterranean diet based on truly sustainable seafood is impossible under these conditions.</p>
+      <p>The solution is not merely better labeling laws, though full-chain traceability from boat to plate is essential. We need to rebuild shorter supply chains that link consumers directly to domestic, accountable fisheries. The burgeoning community-supported fishery (CSF) movement in the United States and Europe offers a model. Consumers buy shares in a season’s catch, picking up fresh, whole fish at a local pier, knowing the captain’s name and the method used. This model eliminates the middlemen who obscure origin and creates a constituency for local marine stewardship.</p>
+      <p>Similarly, chefs can play a leading role. The popularity of box crab in San Francisco or porgy in New York shows that we can shift demand toward abundant, lower-profile local species rather than chasing overfished global icons like Chilean sea bass. The Mediterranean diet has never been a monolith of tuna and salmon; it was a diverse array of whatever the local sea provided that day. Embracing that seasonal, transparent model is not a sacrifice—it is the very soul of a genuine food culture. Globalized commodity seafood, on the other hand, is a recipe for extinction.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Yes, there is a way: we must start eating the fish that the sea actually offers in abundance. Our obsession with large predatory fish—tuna, cod, salmon—is both ecologically disastrous and nutritionally short-sighted. The real engine of the ocean, and the true stars of a sustainable Mediterranean diet, are the small, oily forage fish: sardines, anchovies, herring, and mackerel.</p>
+      <p>These fish are ecological wonders. They reproduce rapidly, feed low on the food chain, and their populations, while vulnerable to overfishing, can support much higher harvest rates than long-lived apex predators. Yet in 2013, a staggering proportion of the global anchovy and menhaden catch is not destined for human mouths but is ground into fishmeal and oil to feed farmed salmon and pigs. We are effectively turning tons of perfectly delicious, omega-3-rich fish into a tiny amount of luxury protein, an act of inefficiency that borders on madness.</p>
+      <p>A shift in consumer taste could realign this system overnight. The health benefits are undeniable: sardines pack more heart-healthy fats per serving than any salmon steak, with a fraction of the mercury risk. Culturally, these fish are not unknown. They are the iconic grilled sardines of Portugal, the marinated anchovies of Spain, the humble herring of Scandinavia. We simply need to elevate them from a working-class staple or a pizza topping to a central, celebrated protein.</p>
+      <p>The culinary argument is strong. Chefs like Dan Barber have already shown that you can build a high-end tasting menu around the unsung flavors of the sea. If influential food media and upscale restaurants began championing the umami depth of fresh grilled mackerel with as much fervor as they do toro tuna, demand would shift. The market would follow. We can meet consumer demand for quality seafood and protect marine life, but only if we redefine “quality” to mean tasty, nutritious, and abundant, rather than rare and expensively destructive.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The grim, honest answer is no. Despite a handful of celebrated recoveries in the tightly managed fisheries of the rich world, the global trajectory of marine life is catastrophic. We are not going to meet rising consumer demand for quality seafood and protect threatened marine life simultaneously because the biological systems cannot withstand the numbers. A 2009 projection by the global earth-system model, widely discussed, suggested that if current trends continue, most commercial fisheries could collapse by 2048. Whether that specific date is alarmist or not, the trend is undeniable.</p>
+      <p>The Mediterranean diet’s promise of health is paradoxical: a planet of 7 billion people, rising to 9, cannot all consume fish as Mediterranean villagers did in the 1950s. The sea’s bounty is finite, and we have already captured its easy protein. Aquaculture, as currently practiced, intensifies the problem by devouring forage fish. Even the best-managed wild stocks face additive pressures from warming, acidifying oceans that we have barely begun to account for.</p>
+      <p>Consider the Atlantic bluefin tuna, an icon of quality seafood. Despite a 2012 international scientific assessment showing a glimmer of recovery in the Eastern stock, the species is still officially depleted, and poaching remains rampant. That faint hope is already being used as a justification to raise quotas again, a pattern of wishful thinking repeated in fishery after fishery. Our institutional response to decline is almost always too little, too late.</p>
+      <p>We must prepare for a future in which wild seafood is a rare delicacy for the wealthy, and the majority of people either eat a much-reduced amount of farmed tilapia or shift to plant-based sources of omega-3s. That future is already here for billions. The sooner we stop pretending that clever policy tweaks or consumer-choice campaigns can square the circle of infinite demand and a collapsing ocean, the sooner we can have a serious conversation about managing scarcity and grief. The Mediterranean diet, as we romanticize it, is already an artifact of a more empty world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>To meet the rising global demand for seafood without stripping our oceans bare, we must embrace the reality that the future of fish is on a farm, not on a boat. We crossed a historic threshold recently: humanity now consumes more farmed fish than wild-caught fish. Aquaculture is not just an alternative to wild fisheries; it is the only mathematically viable way to provide healthy marine protein to seven billion people.</p>
+      <p>Historically, aquaculture has a troubled environmental reputation. The shrimp and salmon farming booms of the 1980s and 90s were marred by mangrove destruction, massive antibiotic use, and the spread of sea lice to wild populations. But the industry has evolved significantly. Today, the most promising path forward lies in closed-containment aquaculture systems and inland recirculating facilities.</p>
+      <p>By moving fish farms onto land and into biologically secure tanks, we eliminate the risk of disease transfer to wild stocks, prevent farm escapes, and capture waste to be used as agricultural fertilizer. Furthermore, advancements in feed are rapidly reducing our reliance on wild forage fish. We are learning to replace fishmeal with plant-based proteins, algae, and insect meal, drastically improving the feed-conversion ratio.</p>
+      <p>Critics who demand a return strictly to wild-caught fish are ignoring the scale of the global protein demand. Relying solely on wild oceans for our food is as primitive as relying on hunting and gathering to feed the world. Just as agriculture saved humanity from starvation millennia ago, sustainable aquaculture is the necessary evolution of our relationship with the sea. We must invest heavily in green aquaculture technologies and establish rigorous environmental standards for imported farmed seafood. Only by farming smart can we leave the wild oceans to heal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The crisis in our oceans is not just about how much fish we eat, but *what* kind of fish we eat. The Western palate is stubbornly fixated on the apex predators of the sea: tuna, swordfish, and salmon. Eating these species is the ecological equivalent of a terrestrial diet consisting entirely of lions, wolves, and eagles. If we want to enjoy seafood sustainably, we need to fundamentally restructure our culinary habits and eat lower on the marine food web.</p>
+      <p>First, we must shift our consumption toward small, fast-reproducing forage fish like sardines, anchovies, and herring. Currently, massive quantities of these nutrient-dense fish are scooped out of the ocean, ground into fishmeal, and fed to farmed salmon or livestock. This is a tragically inefficient use of protein. By eating these smaller fish directly, we bypass the immense caloric loss of the food chain, improving our own cardiovascular health with high omega-3 yields while relieving the pressure on larger, endangered species.</p>
+      <p>Second, we should actively expand our appetite for farmed bivalves—oysters, mussels, and clams. Unlike finfish aquaculture, which often requires chemical inputs and wild fish feed, bivalve aquaculture is actually a net-positive for the marine environment. Oysters and mussels are filter feeders; they require no external feed and actively clean the water column, removing excess nitrogen and improving ecosystem health.</p>
+      <p>Protecting threatened marine life does not require us to abandon seafood altogether. It requires us to abandon our luxury predator diet. Chefs, food writers, and retailers need to stop glorifying bluefin tuna and start championing the humble sardine and the farmed mussel. When consumer demand aligns with biological reality, the ocean can provide for us indefinitely.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The primary driver of overfishing is not insatiable consumer demand, but rather a catastrophic failure of economic policy. Wild fisheries suffer from the classic &quot;tragedy of the commons.&quot; When nobody owns the fish, every boat has an incentive to catch as much as possible, as fast as possible, before someone else does. This &quot;race to fish&quot; inevitably leads to depleted stocks, dangerous working conditions, and massive amounts of bycatch.</p>
+      <p>The solution lies in property rights, specifically a management system known as &quot;catch shares.&quot; Under a catch share program, regulators determine a scientifically sound Total Allowable Catch (TAC) for a fishery each year. This total is then divided into shares, which are allocated to individual fishermen or fishing communities.</p>
+      <p>Once fishermen have a guaranteed percentage of the catch, the race is over. They no longer have to risk going out in dangerous weather, and they can take the time to use more selective gear, drastically reducing bycatch. More importantly, catch shares align economic incentives with conservation. Because a fisherman&#x27;s share is a percentage of the total pool, the value of their asset increases as the fish population grows. For the first time, fishermen have a direct, financial stake in the long-term biological health of the ecosystem.</p>
+      <p>We have already seen this work. In the United States, fisheries managed by catch shares—such as Alaskan halibut and Gulf of Mexico red snapper—have seen dramatic rebounds in stock levels and improved profit margins for fishermen. To protect marine life while meeting market demand, we must expand catch share programs globally. When fishermen are treated as stakeholders rather than competitors in a free-for-all, the market becomes a tool for conservation rather than an engine for depletion.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>We cannot micromanage the ocean fish by fish, quota by quota. Our current approach to fishery management relies on complex mathematical models that consistently overestimate the resilience of fish populations and underestimate the damage done by industrial gear. To truly protect threatened marine life and ensure a long-term seafood supply, we must implement large-scale, strictly enforced Marine Protected Areas (MPAs).</p>
+      <p>Currently, only a tiny fraction of the world’s oceans—barely one percent—is fully protected from fishing and extractive industries. This is woefully inadequate. Marine reserves act as vital nurseries and safe havens where ecosystems can function naturally without human interference. When areas are closed to fishing, the marine life within them grows larger, lives longer, and reproduces exponentially more than in heavily fished waters.</p>
+      <p>The genius of MPAs is the &quot;spillover effect.&quot; As fish populations explode inside the protected zones, they inevitably migrate outward into surrounding waters where they can be legally caught. By cordoning off 20 to 30 percent of the oceans as strict no-take zones, we would actually increase the overall yield of global fisheries over the long term.</p>
+      <p>Fishermen often fiercely oppose the creation of these reserves, viewing them as a loss of fishing grounds. However, evidence from marine reserves in places like the Great Barrier Reef and the coast of California demonstrates that fishermen working the edges of these reserves end up catching more fish, with less effort, than they did before the reserves were established.</p>
+      <p>Meeting consumer demand in the future requires us to possess the discipline to leave vast swaths of the ocean completely alone today. Conservation and consumption are not mutually exclusive, but consumption must rely on the overflow of a healthy, protected ecosystem.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>Before we can even begin to have a meaningful debate about sustainable seafood, we have to address a much more fundamental problem: we don&#x27;t actually know what we&#x27;re eating. The recent report published in February 2013 by the ocean conservation group Oceana revealed a staggering level of seafood fraud in the United States. Through widespread DNA testing, they found that a full one-third of the seafood sold in restaurants and grocery stores was mislabeled.</p>
+      <p>Consumers who are trying to make ethical choices are being actively deceived. You might pay a premium for what is labeled as &quot;sustainable Pacific red snapper,&quot; only to be served farmed tilapia. You might order wild-caught salmon and receive farmed Atlantic salmon. This rampant fraud completely undermines any market-based attempt to protect threatened marine life. If eco-conscious consumers cannot trust the labels on their food, they cannot use their purchasing power to reward sustainable fisheries.</p>
+      <p>The solution is mandatory, comprehensive traceability from boat to plate. We need federal regulations requiring that all seafood sold in the US be tracked with information detailing exactly what species it is, where it was caught, and what gear was used. The technology to do this—using barcodes, QR codes, and digital supply chain tracking—already exists and is being utilized by progressive distributors.</p>
+      <p>Until we clean up the opaque, convoluted seafood supply chain, consumer-driven sustainability is a mirage. Protecting the oceans requires transparency. Once we eradicate seafood fraud, honest fishermen will finally get the premium prices they deserve for catching sustainable fish, and consumers will finally get the quality seafood they are paying for.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The premise of the question is fundamentally flawed. We ask, &quot;Is there a way to meet consumer demand for quality seafood and protect threatened marine life?&quot; The painful but necessary answer is no. We cannot meet current, let alone future, global consumer demand for wild-caught fish while saving the oceans.</p>
+      <p>For decades, we have been fed the illusion that through minor adjustments—buying a different species, looking for an eco-label, tweaking fishing gear—we can continue to consume fish at our current rate. The popularity of the Mediterranean diet, which prescribes eating fish multiple times a week, has only exacerbated this crisis. Applying a regional, historically context-specific diet to a globalized population of seven billion people is an ecological impossibility.</p>
+      <p>The oceans are bound by strict biological limits, and we have breached them. We are currently strip-mining the seas, using sonar, spotter planes, and nets the size of football fields. We must stop viewing wild seafood as a cheap, everyday staple and begin treating it as a rare luxury.</p>
+      <p>Reducing consumer demand is the only true solution. This requires a cultural shift akin to the one we are beginning to see with red meat, but it must happen much faster. We need to transition our primary protein sources to sustainable plant-based options. When we do eat wild fish, it should be an occasional indulgence, priced to reflect its true ecological cost. As long as our starting point is &quot;how do we maintain current consumption levels,&quot; we will continue to oversee the managed collapse of marine ecosystems. The healthiest thing we can do for ourselves and the sea is to simply eat much less fish.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The crisis of overfishing is a symptom of a highly consolidated, industrialized global food system. We are emptying the oceans because fishing has been taken over by massive factory trawlers that spend months at sea, indiscriminately sweeping up everything in their path and freezing it for global export. The way to protect marine life and provide high-quality seafood is to de-industrialize the fleet and relocalize our supply chains.</p>
+      <p>We need to foster a &quot;boat-to-fork&quot; movement, applying the principles of the farm-to-table movement to our oceans. This is already happening through Community Supported Fisheries (CSFs). Modeled after agricultural CSAs, CSFs allow consumers to purchase a share of a local fisherman&#x27;s catch in advance.</p>
+      <p>This model completely flips the incentives of the seafood market. In a traditional market, fishermen are pressured to target specific, high-demand species (like cod or tuna), which leads to immense bycatch of perfectly edible but &quot;unmarketable&quot; fish being thrown back dead. In a CSF, consumers receive whatever the ocean provides that week—be it dogfish, skate, or porgy. This utilizes the whole catch, relieves pressure on overfished target species, and educates consumers about the true diversity of marine life.</p>
+      <p>Furthermore, small-scale, artisanal fishermen inherently use more sustainable, low-impact gear. By buying directly from them, we cut out the global middlemen, ensuring that fishermen receive a fair living wage while providing consumers with fresher, higher-quality seafood. We can save the oceans, but only if we stop feeding the global commodity market and start supporting the local fleets anchored in our own communities.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The most effective lever we have to protect marine life and meet global food needs has nothing to do with consumer choices at the supermarket; it requires ending the massive government subsidies that keep destructive industrial fleets afloat.</p>
+      <p>Globally, governments hand out an estimated $30 billion in fishing subsidies every year. The vast majority of these are &quot;capacity-enhancing&quot; subsidies—money for fuel, vessel construction, and gear. This creates a perverse economic reality: it makes it profitable to fish even when there are practically no fish left. Without taxpayer money paying for the fuel, the massive distant-water fleets from Europe, China, and elsewhere could not afford to travel thousands of miles to scour the coasts of developing nations.</p>
+      <p>These subsidies are not only an ecological disaster; they are a profound injustice. Highly subsidized, high-tech fleets vacuum up marine protein off the coasts of West Africa and the Pacific Islands, outcompeting local artisanal fishers and threatening the food security of some of the world&#x27;s most vulnerable populations.</p>
+      <p>If we eliminate harmful fishing subsidies through the World Trade Organization, the global fishing fleet will naturally shrink to a scale that aligns with the ocean&#x27;s biological limits. The most destructive, fuel-intensive methods—like deep-sea bottom trawling—would immediately become economically unviable. If we want a sustainable seafood market, we have to let the market actually function. Stop subsidizing the destruction of the oceans, and the recovery of threatened marine life will follow, ensuring a sustainable, equitable supply of seafood for the future.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>In theory, the market can drive ocean conservation. If consumers are willing to pay a premium for sustainably caught fish, fishing fleets will adopt better practices to capture that premium. However, this entirely depends on the integrity of eco-labels, and right now, the system is failing us. To align consumer demand with marine protection, we must demand urgent reform of seafood certification bodies.</p>
+      <p>The Marine Stewardship Council (MSC), recognized by its blue checkmark, is the world&#x27;s most prominent seafood certifier. While it started with noble intentions, it has increasingly faced criticism from marine biologists and conservationists for lowering its standards to rapidly expand its market share. Fisheries with high rates of bycatch, and those using destructive bottom-trawling gear, have been granted MSC certification.</p>
+      <p>This watering down of standards is deeply dangerous. It provides a false sense of security to well-meaning consumers, who purchase a product thinking they are saving the oceans when they are actually funding its degradation. The conflict of interest is structural: certification bodies are often paid by the very fisheries seeking the label, creating an inherent pressure to approve them.</p>
+      <p>We can meet the demand for sustainable seafood, but it requires a much more rigorous, uncompromising, and truly independent certification process. Eco-labels must be strictly tied to absolute metrics of ecosystem health, zero-tolerance for habitat destruction, and stringent bycatch limits. Retailers like Walmart and Whole Foods, which have pledged to source sustainable seafood, must hold these certifiers to the fire. Once an eco-label actually guarantees true sustainability, consumer demand can become the ocean’s greatest ally rather than its worst enemy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Yes, but only if we stop pretending that “seafood” is a single category. Some fish are biological savings accounts that take years to mature and collapse under heavy pressure; others reproduce quickly and can be harvested with far less damage. The first step toward reconciling appetite and conservation is to shift demand away from the most vulnerable species and toward the lower end of the food chain.</p>
+      <p>The Mediterranean diet became famous not because it put bluefin tuna or Chilean sea bass at the center of every plate, but because it emphasized modest portions, vegetables, grains, legumes, olive oil and occasional fish. A sardine grilled whole is closer to that tradition than a luxury slab of overfished predator. Anchovies, mussels, clams and mackerel can provide protein and omega-3 fatty acids with a much smaller ecological footprint than large carnivorous fish.</p>
+      <p>Government has to do more than exhort diners, though. Science-based catch limits, protected nursery areas and enforcement against illegal fishing are essential. The European Union’s Common Fisheries Policy has too often tolerated overcapacity and political bargaining over quotas. The United States has had more success in rebuilding some stocks where strict catch shares and accountability rules have been applied, but even there results vary by region and species. The lesson is not that regulation is futile; it is that regulation must be tied to biology rather than short-term lobbying.</p>
+      <p>Consumers also need honest information. Mislabeling seafood is not a minor fraud; it defeats both health and conservation choices. A diner cannot choose sustainably if “red snapper” may be something else entirely. Traceability from boat or farm to plate should become routine, not boutique.</p>
+      <p>There is no magic way to satisfy unlimited demand for fashionable fish. But there is a practical way to satisfy demand for good seafood: eat smaller portions, choose abundant species, enforce quotas and make the supply chain transparent. The sea can feed us, but not if we treat it like an inexhaustible supermarket aisle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The uncomfortable answer is that consumer demand cannot be met as presently defined. “Quality seafood” has come to mean year-round access to whatever species is fashionable, transported across oceans, often served in portions much larger than people historically ate. Protecting marine life while preserving that expectation is like promising both cheap gasoline and an untouched Arctic.</p>
+      <p>Many fisheries are classic commons problems. Each boat has an incentive to catch as much as possible before another boat does. Better sonar, larger vessels and global trade have turned that incentive into an industrial system capable of emptying waters faster than ecosystems can recover. Certification labels and pocket seafood guides are useful, but they place too much responsibility on the shopper standing at the fish counter after work. Most consumers cannot audit bycatch, habitat damage, illegal landings or stock assessments.</p>
+      <p>The more honest policy is demand reduction. That does not mean no fish. It means making fish a smaller and more deliberate part of the diet. The Mediterranean pattern often cited in health debates was never a license for affluent consumers to eat tuna steaks, swordfish and shrimp several times a week. Beans, greens, nuts, olive oil and whole grains carry much of the health benefit. If omega-3s are the concern, smaller oily fish can help, but even they should not become the next industrial craze.</p>
+      <p>Prices should also reflect scarcity. If a fish stock is under pressure, the answer should not be clever marketing; it should be less fishing. Subsidies that keep too many boats chasing too few fish should be eliminated. Restaurants should stop treating endangered species as prestige items. Public institutions should buy only from well-managed sources and serve more plant-based meals.</p>
+      <p>Aquaculture may help in some cases, especially shellfish and herbivorous species, but it cannot be a universal escape hatch. Farming carnivorous fish can require feed made from wild fish, and poorly managed farms can pollute coastal waters or spread disease.</p>
+      <p>So yes, we can protect marine life and still eat seafood. But we cannot do so while pretending that all demand is legitimate simply because it exists. The first sustainable fish is the one we choose not to catch.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Aquaculture is the indispensable part of the answer, though not the whole answer. Wild fisheries cannot bear the weight of global demand indefinitely. Many of the world’s most desired species are already fully exploited or overexploited. If people are going to continue eating seafood for nutrition, culture and pleasure, more of it will have to be farmed.</p>
+      <p>The case for fish farming is strongest when we look beyond salmon and shrimp, the two examples that often dominate public debate. Mussels, oysters and clams can improve water quality rather than degrade it, require no feed inputs and provide high-quality protein. Farmed seaweed can absorb nutrients and carbon while creating useful products for food and industry. Tilapia and some carp can be raised on relatively low trophic feed. These are not romantic images of a fisherman hauling a net at dawn, but they may be far more compatible with a crowded planet.</p>
+      <p>Still, aquaculture needs rules. Bad fish farms can concentrate waste, destroy mangroves, rely on antibiotics, spread parasites to wild populations and use fishmeal that merely transfers pressure from one ecosystem to another. The industry should be judged by feed conversion, pollution control, disease management, location and escapes. Certification can help, but only if standards are rigorous and transparent.</p>
+      <p>Wild fisheries also need rebuilding. Marine reserves, seasonal closures, gear restrictions and catch limits should protect spawning stocks and habitat. The point of aquaculture is not to excuse reckless fishing; it is to relieve pressure while better governance takes hold. In some cases, well-managed wild fisheries will remain preferable to poorly managed farms.</p>
+      <p>The consumer has a role, but the burden cannot rest on conscience alone. Retailers and restaurants should be required to identify species accurately and disclose origin and production method. Public procurement can create stable markets for better farmed seafood and sustainably caught wild fish.</p>
+      <p>There is no single solution because “seafood” ranges from oysters to bluefin tuna. But a future with more shellfish farms, fewer destructive trawls, honest labels and science-based catch limits is entirely possible. The real choice is not between farming and fishing; it is between planning and depletion.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The debate should begin with fishermen, not just with consumers and environmental organizations. Too often sustainability is discussed as if coastal communities are the problem to be managed. In fact, the people who depend on the sea for their livelihoods have the strongest reason to want fish tomorrow as well as today. Policies that ignore them invite evasion, resentment and failure.</p>
+      <p>That does not mean every fisherman is automatically a conservationist. Overfishing is real, and modern fleets can do enormous damage. But durable solutions usually come when fishing communities have a secure stake in the resource. Territorial use rights, cooperative management and carefully designed catch shares can align incentives better than open-access competition. If a boat owner knows that rebuilding a stock will increase the value of his future quota or community allocation, conservation becomes practical rather than merely moral.</p>
+      <p>The design matters. Catch shares can concentrate ownership and push small boats out if regulators are careless. They should include safeguards for crew, new entrants and local ports. Small-scale fishing is not always sustainable, but it often uses less fuel, creates more jobs per pound landed and can be monitored through local institutions. A policy that replaces diverse fishing towns with a handful of quota-owning corporations may save a stock on paper while gutting a coast.</p>
+      <p>Consumers can help by eating local, seasonal seafood and being willing to try lesser-known species. The demand for a few familiar names—cod, tuna, salmon, shrimp—puts pressure on both fish stocks and supply chains. A fishmonger who can sell dogfish, porgy or sardines reduces waste and gives fishermen value for what ecosystems actually produce.</p>
+      <p>Enforcement against illegal fishing and mislabeling is necessary, but trust also matters. A short supply chain, where restaurants know their boats and customers know their fish, is easier to police than a global maze of frozen fillets and vague labels.</p>
+      <p>Protecting marine life and meeting demand is possible if demand becomes more flexible and governance becomes more local. The sea is not just a source of commodities. It is the foundation of communities whose knowledge should be part of the cure.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>The central problem is not that consumers are too ignorant to choose the right fish. It is that the market often gives them false information. A person who orders grouper and receives a cheaper, threatened or entirely different species has not made a bad environmental choice; he has been denied the ability to make any choice at all.</p>
+      <p>Seafood fraud has become a serious public issue. Because fillets are hard to identify once skin, head and bones are removed, substitution is easy. Global supply chains make it easier still. A fish may be caught in one country, processed in another and sold in a third. Along the way, names change, paperwork becomes murky and illegal catch can be laundered into legitimate markets. This harms consumers, honest fishermen and conservation.</p>
+      <p>Traceability should be the baseline reform. Every fish should be accompanied by reliable information: species, where and how it was caught or farmed, and whether it passed through import channels. Modern logistics already track far less consequential products. Seafood is no exception. DNA testing, electronic catch documentation and stronger port controls can make fraud riskier and more expensive.</p>
+      <p>Labeling alone, however, must not become a substitute for fishery management. A label can tell us whether a product came from a better source, but it cannot rebuild a stock without quotas, habitat protection and enforcement. Nor should labels be so confusing that only affluent shoppers with smartphone apps can participate. The goal should be simple, mandatory transparency, not a forest of competing eco-claims.</p>
+      <p>Restaurants deserve special attention. Many Americans eat seafood outside the home, where menu descriptions are often vague. If a chef sells “white tuna,” “snapper” or “Mediterranean sea bass,” diners should have confidence that the words mean something. Truth in menus is both a consumer protection issue and a conservation tool.</p>
+      <p>Sustainable seafood is not only about choosing noble species and avoiding guilty ones. It is about making the legal, honest supply chain stronger than the fraudulent one. If we cannot identify what is on the plate, we have no chance of protecting what is in the ocean.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The question assumes that fish must remain the star of the healthy diet. That assumption deserves challenge. The Mediterranean diet is often reduced in popular culture to olive oil, red wine and fish, but the evidence for its benefits rests on an entire pattern of eating: vegetables, fruits, legumes, nuts, whole grains, modest portions and relatively little processed food. Fish is part of that pattern, not its magic ingredient.</p>
+      <p>This matters because affluent demand for seafood has global consequences. When consumers in rich countries are told to eat more fish for their hearts, the advice can translate into pressure on ecosystems and on poorer communities that rely on fish as a basic food. A salmon fillet in a supermarket and a small dried fish in a coastal village are not morally or nutritionally equivalent claims on the sea. Public health messaging should not ignore scarcity.</p>
+      <p>Doctors and nutritionists should be more careful. Advising people to replace some red meat with fish may make sense for an individual patient. But as population-wide guidance, “eat more fish” is incomplete. It should be accompanied by “choose small, abundant species,” “avoid overfished predators,” and, importantly, “you can get a healthy diet without large amounts of seafood.” Walnuts, flaxseed and other plant foods provide some omega-3 fats, even if not identical to marine sources. Beans and lentils can replace animal protein altogether.</p>
+      <p>This is not an argument for abandoning fishing. Well-managed fisheries and responsible aquaculture have a place. Seafood is culturally important and can be ecologically reasonable when harvested at the right scale. But we should stop treating consumption growth as inevitable. The sustainable portion may simply be smaller than the portion now imagined by food magazines and restaurant menus.</p>
+      <p>There is a way to protect threatened marine life: lower expectations. Eat fish occasionally, choose humble species, waste none of it, and let vegetables and legumes carry more of the meal. The Mediterranean lesson is not that the sea can furnish endless health food. It is that moderation is part of health.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>We should be wary of making the individual diner the hero of ocean conservation. The seafood card in the wallet, the eco-label in the store and the virtuous menu choice all have value, but they are weak tools against a globalized extraction system. The ocean needs law.</p>
+      <p>The most important policies are not mysterious. Set catch limits based on independent science. Close areas where fish spawn and juveniles grow. Restrict gear that destroys seafloor habitat or kills excessive bycatch. End subsidies that encourage fleets to chase fish that would be uneconomic to catch otherwise. Require observers, vessel monitoring and real penalties for illegal landings. Coordinate internationally for migratory species like tuna, where one nation’s restraint can be undermined by another’s fleet.</p>
+      <p>There are examples showing that fish stocks can recover when managers act decisively. In U.S. waters, the shift toward rebuilding plans under federal fisheries law has produced some successes, even if controversy remains over costs and timelines. The lesson is that depleted fish populations are not doomed by nature. They are often depleted by governance, and governance can improve.</p>
+      <p>But the political economy is brutal. A quota cut imposes pain today, while recovery comes later. Fishermen may be asked to sacrifice after years of being encouraged to invest in bigger boats. Consumers may face higher prices. Politicians often prefer optimistic stock assessments and delayed restrictions. That is why conservation rules need transparency and legal force rather than annual bargaining.</p>
+      <p>Markets can reward better practices, but they cannot define the public interest. If a species is threatened, it should not be available simply because someone is willing to pay. If a fishing method destroys habitat, it should be limited even if consumers like the product. The sea is a common inheritance, not just a supply chain.</p>
+      <p>Demand for quality seafood can be met only within ecological limits. First determine what the ocean can safely provide; then build markets around that amount. Reversing that order—starting with appetite and asking nature to accommodate it—is how we got into trouble.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>The best answer is culinary as much as regulatory: broaden the American palate. A tremendous amount of pressure on the oceans comes from our habit of demanding the same few species in the same boneless, skinless forms. We want shrimp cocktail, tuna sushi, salmon fillets and mild white fish that never challenge us. The sea is more varied than that, and eating as if it were not creates waste.</p>
+      <p>Chefs can change this faster than government pamphlets. When respected restaurants serve sardines, mackerel, squid, farmed mussels, skate or underused local species with confidence, diners follow. Once upon a time, many fashionable foods were humble or regional. There is no reason a small oily fish should be considered inferior to a bland imported fillet. In fact, the stronger flavors of sardines and anchovies are central to many Mediterranean cuisines.</p>
+      <p>This approach has ecological advantages. Smaller forage fish tend to grow quickly, although they too require management because they feed larger fish, birds and marine mammals. Shellfish can be especially attractive, since oysters, mussels and clams do not need fishmeal and can be farmed with relatively low impact. Eating the whole fish, making stock from bones and using trimmings also honors the animal and reduces the amount that must be caught.</p>
+      <p>Of course, culinary fashion is not enough. Bluefin tuna will not be saved because a few Brooklyn restaurants put mackerel on toast. Governments still need catch limits and enforcement. But culture shapes demand, and demand shapes politics. If consumers insist that “quality” means only large predators and pristine fillets, managers will face constant pressure to keep those products flowing. If quality means freshness, seasonality, skillful cooking and respect for abundance, sustainability becomes easier.</p>
+      <p>The Mediterranean diet we admire was born from place and thrift, not from unlimited choice. People ate what their waters and fields could provide. Recovering that spirit may be more important than any single seafood guide. We can protect marine life by learning to enjoy the fish that make ecological sense, not just the ones that signal luxury.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>I am skeptical that the phrase “sustainable seafood” can carry as much weight as we place on it. It suggests a clean distinction between good and bad choices, but marine ecosystems are dynamic, poorly monitored in many regions and affected by more than fishing. Climate change, ocean acidification, coastal pollution and habitat loss all complicate the picture. A fishery certified today may be stressed tomorrow by warming waters or shifting food webs.</p>
+      <p>That does not mean we should give up. It means humility should guide policy. Maximum sustainable yield, the traditional management concept, can be dangerously narrow if it treats a fish stock as an isolated machine for producing harvest. Fish are predators, prey, habitat engineers and competitors. Removing too many forage fish may harm seabirds or larger fish. Protecting one popular species while ignoring its ecosystem may produce surprises. Ecosystem-based management is harder, but the ocean demands it.</p>
+      <p>Marine protected areas should therefore play a larger role. No-take reserves are not a complete solution, especially for highly migratory species, but they provide insurance against scientific error and political pressure. They protect habitat and allow age structures to recover, including large, fecund females that are often disproportionately important to reproduction. Fishermen sometimes oppose closures, understandably, but reserves can also spill over benefits into surrounding waters when well designed.</p>
+      <p>Demand must be treated cautiously. The more we promise consumers that they can keep eating as before if they choose the right label, the more we postpone a necessary reckoning. Some seafood can be produced responsibly. Some cannot be produced at current levels. For some species, the right answer is a moratorium until recovery is real.</p>
+      <p>Quality seafood should mean seafood compatible with ecological resilience. That standard will sometimes allow wild catch, sometimes favor shellfish farming, and sometimes require abstention. The ocean is not a factory with a green certification department. It is a living system under multiple stresses. Protecting it while eating from it is possible, but only if we accept uncertainty, leave wider margins of safety and resist the comforting fiction that every appetite can be sustainably satisfied.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-36">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-36" style="display:none;">
+      <p>There is a way to have seafood on the table and fish in the ocean, but it begins with admitting that the ocean is not a grocery store. Fish are renewable only if we stop treating them as inexhaustible. The practical answer is not a better wallet card alone, but enforceable fisheries management: science-based catch limits, protection of spawning areas, restrictions on destructive gear, and real penalties for cheating.</p>
+      <p>We already have evidence that this can work. In the United States, the strengthened Magnuson-Stevens Act has forced managers to set annual catch limits and rebuild depleted stocks. The process is contentious and painful for fishing communities, but some stocks have recovered when managers held firm. Alaska’s salmon and pollock fisheries, whatever their imperfections, show that large-scale commercial fishing can be managed with observers, quotas and conservative rules. Conversely, the collapse of Atlantic cod shows what happens when politics overrides biology.</p>
+      <p>Consumers also need honesty. If a diner orders “red snapper” and receives a cheaper substitute, or if a “local” fish has actually been shipped halfway around the world, sustainability is impossible to judge. Traceability from vessel to wholesaler to restaurant should be a basic condition of sale, not a boutique feature. The technology exists; what is missing is the political will and the budget for inspection.</p>
+      <p>But there is a catch: sustainable seafood will not always mean the same species, in the same quantities, at the same prices. Bluefin tuna cannot be treated like chicken. Swordfish, grouper and other slow-growing predators cannot be the default luxury protein for everyone. Quality will have to mean freshness, seasonality and responsible harvest, not unlimited availability.</p>
+      <p>So yes, consumer demand and conservation can be reconciled, but only if demand becomes more disciplined. We can eat fish, but we cannot eat every fish. The Mediterranean diet worth emulating is not one of extravagance; it is one of restraint, locality and respect for natural limits.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-37">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-37" style="display:none;">
+      <p>The problem is not that there are too few fish in the sea. It is that too many affluent consumers want the same small list of glamorous fish: tuna, salmon, cod, halibut, sea bass, swordfish. We have turned the seafood counter into a hierarchy, with predators at the top and everything else treated as bait.</p>
+      <p>A more sustainable seafood culture would look much closer to the older Mediterranean table than to the modern sushi bar or steakhouse. Sardines, anchovies, mackerel and herring are nutritious, flavorful and generally more abundant than long-lived top predators. Mussels, clams and oysters can be excellent choices because they do not require feed made from other fish and can even improve water quality. Squid and some small pelagic fish deserve more attention than they get. The point is not deprivation; it is culinary imagination.</p>
+      <p>This also means changing what chefs praise. “Quality seafood” should not mean a thick tuna steak flown across an ocean. It can mean a plate of grilled sardines, pasta with clams, smoked mussels, fish soup made from underused species, or a whole small fish eaten in season. The Mediterranean diet is healthy not because it is built on luxury fish, but because it is varied, modest in portions, rich in vegetables and legumes, and relatively light on red meat.</p>
+      <p>There are ecological reasons for this shift. Eating lower on the marine food chain usually requires less pressure on the ecosystem. It also reduces some health concerns associated with large predatory fish, such as mercury accumulation. And it makes better use of what is caught, instead of discarding edible species because they lack prestige.</p>
+      <p>We should stop asking how to provide everyone with endless premium seafood. That demand is not sustainable. The better question is how to make sustainable species desirable. Markets can change quickly when cooks, grocers and consumers decide that delicious does not have to mean rare.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-38">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-38" style="display:none;">
+      <p>Wild fisheries alone cannot satisfy rising global demand for seafood. The total marine catch has been roughly flat for years, while population and incomes continue to grow. If the answer is simply to chase the remaining wild fish harder, the result will be depleted stocks, more bycatch and more fraud. That is why aquaculture must be part of the answer.</p>
+      <p>But “farm fish” is not automatically sustainable. Bad aquaculture can be disastrous: shrimp ponds have destroyed mangroves, poorly managed salmon farms can spread parasites and disease, and carnivorous farmed fish may be fed with meal and oil made from wild fish. Escapes, antibiotics and waste are real concerns. Replacing overfishing with polluted coastal feedlots is not progress.</p>
+      <p>The promising side of aquaculture lies elsewhere. Shellfish farming—mussels, oysters, clams—requires no fishmeal and can provide habitat and filtration benefits when properly sited. Herbivorous or omnivorous fish such as carp and tilapia can be raised with a much smaller ecological footprint than tuna or salmon. Integrated systems, in which seaweed or shellfish absorb nutrients from fish farms, deserve more investment. Recirculating tanks on land are expensive, but they reduce escapes and can control pollution. Feed technology is improving, too, with more use of trimmings and plant ingredients, though those substitutions have limits.</p>
+      <p>Policy should push aquaculture toward these better models. That means strict siting rules, transparent reporting of chemicals and escapes, independent certification, and standards for feed. It also means not pretending that every farmed fillet is equal. A mussel is not a farmed salmon; a mangrove-clearing shrimp pond is not a closed tank.</p>
+      <p>If consumers want seafood several times a week, some of it will have to be farmed. The ocean cannot supply limitless wild protein. The goal should be to reserve wild harvests for well-managed fisheries while expanding low-impact aquaculture. The future of sustainable seafood may depend less on finding more fish in the sea than on learning which fish—and shellfish—we can responsibly grow.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-39">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-39" style="display:none;">
+      <p>Before consumers can choose sustainable seafood, they have to know what they are eating. At the moment, that is often uncertain. Recent DNA testing by journalists and advocacy groups has found widespread seafood mislabeling in restaurants and markets. “Red snapper” may not be red snapper. “White tuna” may be escolar. Farmed fish may be sold as wild. Imported fish may be disguised as local. This is not a minor nuisance; it is a direct obstacle to conservation.</p>
+      <p>Mislabeling rewards the worst actors. A fisherman who follows quotas and uses cleaner gear faces higher costs than someone landing illegal catch or passing off a cheaper species under a famous name. If both products reach the plate under the same label, the honest operator is punished. Consumers who think they are avoiding threatened species may be doing the opposite.</p>
+      <p>The fix is traceability. Every fish sold commercially should carry basic information through the supply chain: species, where it was caught or farmed, the gear used, and whether it was wild or farmed. Retail country-of-origin labels are not enough, especially when so much seafood is eaten in restaurants. Catch documentation should be electronic and auditable. Port inspections should be strengthened. Common market names should be standardized, and deliberate substitution should bring meaningful penalties.</p>
+      <p>This may sound bureaucratic, but seafood is already a global, complex business. A fillet can pass through several countries before reaching a dinner plate. If companies can track inventory for profit, they can track origin for legality and safety. DNA testing can be used as a backstop, not for every fish, but often enough to make fraud risky.</p>
+      <p>Traceability will not by itself rebuild tuna or cod. We still need catch limits, protected habitat and better aquaculture. But without identity, “sustainable seafood” is more slogan than standard. The first step in protecting threatened marine life is making sure the name on the menu means something.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-40">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-40" style="display:none;">
+      <p>The debate about sustainable seafood too often treats fishermen as the problem and consumers as the solution. That is backwards, or at least incomplete. The people who live by the sea often have the strongest interest in keeping fish populations healthy. What has undermined many fisheries is not small-scale fishing as such, but industrial overcapacity, weak enforcement, destructive gear and markets that reward volume over stewardship.</p>
+      <p>A sustainable seafood system should be built with fishing communities, not imposed on them from distant offices. In many coastal regions, including around the Mediterranean, small boats using selective gear can supply fresh, seasonal seafood with far less habitat damage than large trawlers. Local knowledge can help identify spawning seasons, nursery grounds and changes in abundance. Co-management—where fishermen, scientists and regulators share responsibility—can produce rules that are both ecologically sound and socially legitimate.</p>
+      <p>This does not mean romanticizing every local fishery. Some small boats overfish too, especially when markets are strong and enforcement is weak. But rules are more likely to work when fishermen have a stake in them. Territorial rights, community quotas, seasonal closures and gear restrictions can give local fleets a reason to conserve rather than race each other to the last fish. If a fisherman knows that leaving juveniles in the water will benefit his community next year, conservation becomes practical rather than abstract.</p>
+      <p>Consumers also have a role, but it is not just choosing the “right” species from a list. They should buy from markets and restaurants that can name the boat, the port and the season. They should be willing to accept variability: one week there may be hake, another week sardines, another week mussels. They should pay enough for fish caught responsibly so that stewardship is economically possible.</p>
+      <p>Protecting threatened marine life and meeting demand are compatible only if demand supports the right kind of fishing. A cheap anonymous fillet is often cheap because someone else bears the cost—fish, habitat, crew or coastal community. Sustainable seafood must be ecological, but it must also be fair.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-41">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-41" style="display:none;">
+      <p>There is no honest way to answer this question without saying: not at current levels, and not for every species people want. The oceans have limits. Many fish grow slowly, mature late and gather in predictable places to spawn, making them vulnerable to efficient modern fleets. When demand rises and technology improves, “finding fish” can become indistinguishable from mining the ocean.</p>
+      <p>Marine protected areas should be central to the answer. No-take reserves are not a luxury; they are insurance. They give fish places to grow larger, reproduce and rebuild age structures that heavy fishing removes. In some cases, reserves can improve catches nearby through spillover. Even when they do not immediately increase landings, they protect biodiversity and ecosystem function—goals that matter in their own right.</p>
+      <p>The Mediterranean especially needs this kind of thinking. It is a crowded sea, bordered by many countries, with intense fishing pressure, pollution and habitat loss. Managing species one by one is necessary, but insufficient. Ecosystems need refuges from extraction. Spawning grounds, seagrass beds and nursery areas should be off-limits to destructive activity.</p>
+      <p>Of course, protected areas create conflict. Fishermen may lose access to grounds their families have used for generations. That is why reserves must be designed with local input and paired with transition assistance, enforcement and monitoring. Paper parks do not save fish. Nor do parks alone solve overfishing outside their borders.</p>
+      <p>The deeper adjustment is cultural. Seafood has been treated as both health food and luxury good, but the ocean cannot provide unlimited guilt-free consumption. A truly sustainable diet may include less fish overall, more shellfish, more small oily fish, and more meals based on beans, grains and vegetables.</p>
+      <p>So the answer is yes only if “meet demand” means meet a more modest, better-informed demand. If it means keeping every sushi counter, cruise ship buffet and supermarket case fully stocked with threatened species at bargain prices, the answer is no.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-42">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-42" style="display:none;">
+      <p>Overfishing is often described as a moral failure, but it is also an economic design failure. When no one owns a share of the future catch, everyone has an incentive to fish quickly before someone else does. The result is too many boats, too much gear, dangerous seasons, low prices and depleted stocks. To protect fish, we have to change incentives.</p>
+      <p>Rights-based management, including catch shares, can help if it is done carefully. First, scientists set a total allowable catch that is safely within biological limits. Then fishermen receive secure shares of that catch. Because they are no longer racing, they can fish more selectively, avoid bad weather, reduce waste and land fish when quality and prices are better. A fisherman with a long-term stake in the stock has reason to support rebuilding, because the value of his share rises when the fishery becomes healthier.</p>
+      <p>This approach is not a cure-all. If the catch limit is too high, dividing it into shares merely privatizes overfishing. If shares are allowed to consolidate without safeguards, small operators and crew can be squeezed out. Fishing communities can lose access to a public resource. Any catch-share program must include owner-on-board rules where appropriate, limits on consolidation, bycatch accounting, transparency and protection for new entrants.</p>
+      <p>We should also stop subsidizing overcapacity. Fuel subsidies and vessel-building programs keep too many boats chasing too few fish. Public money should instead support monitoring, science, habitat restoration, selective gear and transition assistance for communities affected by necessary reductions.</p>
+      <p>Markets can serve conservation only after ecological boundaries are set. The order matters: biology first, economics second. But once hard catch limits are in place, economic tools can reduce the wasteful race that has damaged so many fisheries.</p>
+      <p>Consumers want high-quality seafood. Fishermen want stable livelihoods. Fish populations need time to reproduce. These goals are not mutually exclusive, but they require institutions that reward patience rather than speed. A fishery managed as a long-term asset can feed people indefinitely; a fishery managed as a free-for-all becomes a liquidation sale.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-43">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-43" style="display:none;">
+      <p>The seafood debate in wealthy countries is often framed as a consumer puzzle: which fish can I eat without guilt? That is too narrow. Seafood is a global food system, and the choices of affluent consumers affect people who depend on fish for daily protein and income. Europe, the United States and Japan import enormous quantities of seafood. As demand grows in China and elsewhere, pressure shifts to waters off poorer countries that may have limited capacity to police illegal fleets.</p>
+      <p>A sustainable answer must include equity. It is not enough for a supermarket in New York or Paris to stock certified fillets if the same global market encourages overfishing off West Africa or Southeast Asia. Fish taken from local waters can end up feeding distant consumers, while coastal communities lose both food and livelihoods. Illegal, unreported and unregulated fishing thrives where monitoring is weak and profits are high.</p>
+      <p>Rich consumers should eat less of the most vulnerable seafood, especially large predatory fish and species with uncertain origins. Health advice does not require endless tuna steaks. The benefits associated with the Mediterranean diet can come from small portions of fish, especially oily small fish, along with vegetables, legumes, nuts and olive oil. There is no nutritional mandate for depleting distant oceans.</p>
+      <p>Governments should strengthen port controls so illegally caught fish cannot easily enter major markets. Trade rules should require catch documentation. Wealthy nations should support monitoring and enforcement in developing countries, not merely negotiate access for their fleets. Access agreements must be transparent and fair, with local food security treated as a priority.</p>
+      <p>The question asks whether demand for quality seafood can be met while protecting marine life. For the wealthy, the answer depends on redefining quality: legal, traceable, modest, and not taken at the expense of poorer communities. Sustainability cannot be only about species; it must also be about who gets to eat and who bears the cost. If the global seafood market remains anonymous and extractive, both fish and people will lose.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-44">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-44" style="display:none;">
+      <p>Consumer guides and eco-labels have done real good. They have taught many shoppers that a fish is not just a fish; species, location and gear matter. Supermarkets and restaurants now ask suppliers questions they ignored a generation ago. The Marine Stewardship Council, Seafood Watch and similar efforts have helped create a language of better and worse choices.</p>
+      <p>But the label approach has limits. Fisheries are complicated and change over time. One stock of a species may be healthy while another is depleted. A trawl fishery may have serious bycatch problems; a hook-and-line fishery for the same species may not. Consumers cannot be expected to study marine biology before ordering dinner. Worse, labels can become marketing shields if the standards are weak or the supply chain is opaque.</p>
+      <p>The next step is institutional responsibility. Large buyers—supermarket chains, restaurant groups, hotels, universities, hospitals and government cafeterias—should commit to purchasing only legal, traceable seafood from well-managed sources. A single diner has little leverage; a national retailer can change supplier behavior. Chefs can normalize lesser-known species and smaller portions. Public procurement can support domestic fisheries that follow strong rules and avoid products linked to illegal fishing.</p>
+      <p>A realistic sustainable seafood plate will have three parts. First, wild fish from stocks managed with science-based catch limits and low bycatch. Second, farmed seafood from low-impact systems, especially shellfish and responsibly raised herbivorous fish. Third, a broader acceptance of underused species and seasonal variation, rather than pretending that salmon, shrimp and tuna can satisfy every appetite forever.</p>
+      <p>Government still matters. Certification cannot replace enforcement, stock assessments, habitat protection and international cooperation. Nor can it solve fraud without traceability. But market pressure can reward the good rules and expose the bad actors.</p>
+      <p>Yes, we can meet demand for quality seafood if quality means more than taste and appearance. It must mean legal origin, ecological restraint and transparency. The public should not have to choose between health and the oceans. But the burden should not fall only on the individual shopper with a confusing list in hand. Sustainability has to be built into the system before the fish reaches the counter.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-45">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-45" style="display:none;">
+      <p>The solution to our seafood crisis lies not in guilt or abstention, but in innovation. When we hear that fish populations are collapsing, the instinctual response is to suggest eating less fish—a counsel of despair that ignores human ingenuity.</p>
+      <p>Aquaculture has already begun transforming how we think about seafood production. Norwegian salmon farms, once criticized for environmental damage, now produce fish with a fraction of the carbon footprint of cattle farming. Closed-loop systems that recirculate water and eliminate escape risks are being refined as we speak. Genetically optimized feed formulations reduce the wild-caught fish needed to raise farmed predators. The industry is moving, if slowly, toward genuine sustainability.</p>
+      <p>What we need is not consumers retreating from fish, but rather a doubling down on research and development. Shellfish farming—oysters, mussels, clams—actually improves water quality by filtering excess nutrients. Seaweed cultivation sequesters carbon and provides habitat without any feed inputs whatsoever. These low-impact alternatives can scale.</p>
+      <p>Consumer demand, paradoxically, drives both problems and solutions. When people demand sustainable options, prices for certified seafood rise, creating market incentives for better practices. The Marine Stewardship Council&#x27;s blue label, despite imperfections, has pushed hundreds of fisheries toward better management. This isn&#x27;t greenwashing; it&#x27;s market mechanics working as intended.</p>
+      <p>The Mediterranean diet didn&#x27;t emerge from scarcity thinking. It developed because people understood that the sea, properly tended, could provide abundantly. We need that same confidence now—not fatalism about what&#x27;s lost, but ambition about what&#x27;s possible.</p>
+      <p>Technology and smart policy together can rebuild stocks while keeping fish on our plates. The question isn&#x27;t whether we can have both, but whether we have the will to invest in getting there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-46">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-46" style="display:none;">
+      <p>Let me offer an uncomfortable truth: no, there probably isn&#x27;t a way to meet current consumer demand for &quot;quality seafood&quot; while also protecting threatened marine life. Not if we mean by &quot;quality&quot; the Atlantic salmon, the bluefin tuna, the shrimp cocktail, the cod fillet that millions of consumers expect at reasonable prices.</p>
+      <p>Fish populations don&#x27;t collapse from natural causes. They collapse because we fish too hard, too long, and too greedily. The mathematics are simple. Fish reproduce slowly. Remove too many adults and there&#x27;s nothing left to regenerate. We&#x27;ve already pushed many species below their recovery thresholds.</p>
+      <p>Every piece of &quot;sustainable&quot; seafood on the market represents a compromise—sometimes a genuine improvement, sometimes marketing fiction. MSC-certified fisheries still kill seabirds, turtles, and non-target species. Aquaculture still generates pollution and escapees that threaten wild populations. &quot;Farmed&quot; salmon is often raised on wild-caught fish meal, simply shifting the pressure elsewhere.</p>
+      <p>The honest answer requires us to confront what we&#x27;re actually willing to sacrifice. Either we accept that seafood will become a luxury—rare, expensive, reserved for special occasions—or we watch populations continue their decline until there&#x27;s nothing left worth eating.</p>
+      <p>Some cultures are already adapting. In Japan, whale meat was once commonplace; young people today find it unfamiliar. Diets change. They can change again.</p>
+      <p>Perhaps the question we should be asking isn&#x27;t how to have our fish and eat it too, but whether our desire for &quot;quality seafood&quot; at every meal reflects reasonable dietary needs or simply unexamined habit. Health studies consistently show that we don&#x27;t need fish daily to thrive. We want it daily. That&#x27;s a different thing entirely.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-47">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-47" style="display:none;">
+      <p>Consumer labeling and certification schemes represent our best available tool for reconciling seafood demand with ocean health. Before dismissing them as inadequate, we should consider how far we&#x27;ve come and what these systems can accomplish when properly implemented.</p>
+      <p>The Marine Stewardship Council, founded in 1997, now covers roughly 10% of global wild-caught fish production. That&#x27;s not nothing—that&#x27;s millions of tons of seafood produced under independent audit against science-based standards. Acre for acre, MSC-certified fisheries outperform uncertified ones in stock health indicators. The data supports this claim straightforwardly.</p>
+      <p>But certification alone can&#x27;t solve everything. It works best when embedded within broader regulatory frameworks—traceability requirements, catch limits enforced by national authorities, port state controls that prevent laundering of illegal catch. Certification provides market-based incentives for compliance, but legal infrastructure makes fraud costly.</p>
+      <p>Aquaculture presents similar opportunities. The Global Aquaculture Alliance&#x27;s Best Aquaculture Practices standards address environmental impacts, social responsibility, and food safety through third-party audits. These aren&#x27;t perfect, but they create tiers of performance where none existed before.</p>
+      <p>What we need is stronger integration. Restaurants and retailers should face real consequences for selling mislabeled or illegally caught seafood. Importing countries should require certifications matching their own standards. Supply chain transparency lets consumers make informed choices—and information, channeled through purchasing decisions, creates market pressure that regulation alone sometimes can&#x27;t replicate.</p>
+      <p>The consumer isn&#x27;t helpless. Collective demand for verified sustainable seafood drives change throughout the supply chain. This isn&#x27;t naïve optimism; it&#x27;s how markets have worked before, and how they can work again if we maintain pressure and refuse to accept less than genuine transparency.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-48">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-48" style="display:none;">
+      <p>The framing of this question reveals a troubling assumption—that human appetite is fixed and nature must somehow accommodate it. Flip the perspective and a different picture emerges.</p>
+      <p>Marine ecosystems have been producing abundant food for millions of years without human intervention. What changed? Industrial fishing. The collapse of fish populations isn&#x27;t a supply chain management problem awaiting a clever market solution. It&#x27;s the result of treating the ocean as an unlimited warehouse instead of a living system with limits.</p>
+      <p>The Mediterranean diet that nutritionists praise developed over centuries in a context of relatively modest fishing pressure. People ate fish because fish were plentiful and local, not because they were shipped frozen from thousands of miles away. Our current expectations bear no relation to that reality.</p>
+      <p>Genuine solutions require us to think differently about abundance. Small-scale, low-impact fisheries that fish selectively, seasonally, and locally can be sustainable indefinitely. But they cannot supply the volume of cheap fish that supermarket expectations demand. Either we accept seasonal variation, regional specialties, and higher prices—or we pretend sustainability is compatible with mass-market availability of the same species year-round.</p>
+      <p>This isn&#x27;t about technology failing us. It&#x27;s about our collective willingness to reshape demand rather than engineering supply. Vegetarian and plant-based eating are growing trends for environmental reasons, not just ethical ones. Why not similar shifts in how we think about seafood—not abstinence, but transformation?</p>
+      <p>The oceans can feed humanity. They cannot feed a projected nine billion people consuming fish at current per-capita rates, processed and packaged and shipped at industrial scale. That arithmetic doesn&#x27;t work, regardless of what certifications we slap on the packaging.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-49">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-49" style="display:none;">
+      <p>When we discuss sustainable seafood, we must include the fishermen themselves in the analysis. Too often, the debate treats commercial fishing as simply a problem to be solved, ignoring the communities and livelihoods that depend on healthy oceans.</p>
+      <p>Artisan fishermen around the Mediterranean and elsewhere have practiced low-impact fishing for generations. Their nets are selective, their catches modest, their knowledge of local waters profound. These aren&#x27;t the villains of overfishing—they&#x27;re the victims of a regulatory system that often favors large industrial operations over smallholders.</p>
+      <p>Consider the dynamics: industrial fleets, backed by subsidies and operating at scale, can absorb losses and wait out regulatory changes. Small fishermen cannot. When stocks decline, the response is often &quot;close the fishery&quot;—which means industrial vessels go elsewhere while small local fishermen lose their livelihoods with no alternatives.</p>
+      <p>Sustainable fisheries management needs to center community participation. Co-management arrangements, where fishermen themselves monitor and enforce rules, have succeeded where top-down regulation failed. The people with boots on the deck see what scientists miss. Treat them as partners, not problems.</p>
+      <p>International trade arrangements matter too. Artisanal catch from sustainable small fisheries often gets mixed with industrial product, losing any identity or premium. Traceability systems that separate and label small-scale catch would let consumers who want sustainable options actually find them—and reward the fishermen who fish responsibly.</p>
+      <p>The human dimension isn&#x27;t separate from the ecological one. Oceans with thriving small fishing communities have better maintained ecosystems than those abandoned to decline or taken over by industrial fleets. The two healths are linked. Any solution that ignores fishermen&#x27; welfare will fail.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-50">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-50" style="display:none;">
+      <p>The seafood mislabeling crisis deserves far more attention than it typically receives. Studies have found that up to 30% of seafood products sold in the United States are mislabeled—what you think is red snapper might be tilefish, or worse, a species from an unsustainable fishery you&#x27;d never voluntarily support.</p>
+      <p>This isn&#x27;t mere consumer fraud. It undermines every certification scheme and every attempt at sustainable consumption. If the fish on your plate isn&#x27;t what the label says it is, your purchasing choices transmit no coherent signal to the market. You&#x27;re not rewarding sustainable practices because you don&#x27;t know what you&#x27;re actually buying.</p>
+      <p>The problem is traceability. Wild-caught fish get landed at ports, sometimes processed at sea, sold to intermediaries, processed again, and distributed through multiple channels before reaching consumers. At each step, identity can be obscured. A fish&#x27;s species is often indistinguishable once filleted and packed. &quot;Farmed&quot; labels get applied to product that spent some time in the wild. &quot;Local&quot; might mean landed locally while the vessel operated elsewhere.</p>
+      <p>Solving this requires serious investment in chain-of-custody documentation and verification. DNA testing technology exists and is becoming more affordable. Blockchain and other tracking systems could theoretically create transparent supply chains. But technology is the easy part. The harder work is regulatory will and industry cooperation.</p>
+      <p>Current enforcement is fragmented and underfunded. The FDA inspects a tiny fraction of seafood imports. Penalties for mislabeling are minimal. Until there are real consequences, the incentive to cut corners persists.</p>
+      <p>Consumers who care about sustainable seafood are right to be suspicious. Without verifiable chain-of-custody, the sustainable label is essentially meaningless. This isn&#x27;t cynicism—it&#x27;s realism about the limits of information currently available to shoppers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-51">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-51" style="display:none;">
+      <p>Japan&#x27;s whale hunts returned to the headlines recently, but the underlying issue predates contemporary debates about marine conservation. For island nations and coastal communities with limited agricultural options, seafood isn&#x27;t culinary preference—it&#x27;s survival.</p>
+      <p>When affluent Western commentators urge developing nations to reduce fish consumption for sustainability reasons, there&#x27;s an implicit colonialism worth examining. The same countries that industrialized their fisheries, depleted ocean stocks, and built agricultural surpluses now lecture others about restraint. This isn&#x27;t to say sustainability doesn&#x27;t matter—it does—but solutions must account for food security needs alongside environmental goals.</p>
+      <p>The bluefin tuna collapse, for instance, wasn&#x27;t driven primarily by Mediterranean or Asian small-boat fishermen. It was driven by industrial fleets supplying global sushi markets. The pressure came from demand in wealthy countries, not from subsistence need.</p>
+      <p>Aquaculture offers genuine hope here. Properly managed, fish farming can reduce pressure on wild stocks while providing affordable protein. Tilapia and catfish farming operations in developing countries have created livelihoods and improved nutrition without devastating marine ecosystems. Feed conversion ratios for farmed fish beat cattle and even pork on efficiency.</p>
+      <p>But aquaculture expansion must be done responsibly. Mangrove destruction for shrimp ponds has devastated coastal ecosystems and communities. Salmon farming has spread parasites to wild populations. The lesson isn&#x27;t that aquaculture is bad—it&#x27;s that bad aquaculture is bad. Standards matter.</p>
+      <p>Rich countries should invest in sustainable aquaculture development in food-insecure regions, not just impose restrictions on imports. This is both ethical and practical. Climate change will likely increase seafood&#x27;s importance as agricultural zones shift and droughts reduce crop yields. We&#x27;re building the future food system now.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-52">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-52" style="display:none;">
+      <p>I&#x27;ll confess skepticism about whether &quot;sustainable seafood&quot; as currently marketed actually protects marine ecosystems. The Marine Stewardship Council was a genuine innovation—bringing independent assessment to fisheries management—but recent controversies suggest its standards have become too permissive.</p>
+      <p>The MSC certified the Antarctic krill fishery despite growing evidence that krill populations are declining and that their role as baleen whale food is critical to recovery of those damaged stocks. It certified fisheries with known bycatch problems, provided the target species met some threshold. It allowed &quot;conditional&quot; certifications that persist for years despite deteriorating conditions.</p>
+      <p>This isn&#x27;t surprising. MSC is partly funded by the fishing industry it certifies. Its auditors compete for clients. Conflicts of interest pervade the system.</p>
+      <p>Alternative certification bodies have emerged, and some retailers maintain proprietary standards. But consumers can&#x27;t reasonably be expected to track the governance structures of every eco-label. The complexity defeats the purpose—people want to buy responsibly and need simple signals. Current systems provide confusing ones.</p>
+      <p>The honest sustainability advocate should acknowledge that &quot;certified sustainable&quot; often means &quot;better than the worst practices&quot; rather than &quot;genuinely sustainable.&quot; That&#x27;s not worthless—it&#x27;s progress—but we should stop pretending it&#x27;s sufficient.</p>
+      <p>What would actually work? Catch shares programs that give fishermen ownership of their quotas and thus incentive to maintain stocks have demonstrated success in rebuilding depleted fisheries. New Zealand, Iceland, and parts of the United States have implemented such systems with measurable results. This approach deserves far more attention than it receives compared to consumer labeling schemes.</p>
+      <p>Regulatory limits enforced by governments with real enforcement capacity beat market-based certification every time. Certification can complement regulation; it cannot substitute for it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-53">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-53" style="display:none;">
+      <p>Here&#x27;s what I find missing from most sustainable seafood discussions: the temporal dimension. We talk as though sustainability is a destination—when we achieve it, we&#x27;ll have solved the problem. But marine ecosystems are dynamic, constantly changing, responding to conditions we don&#x27;t fully understand.</p>
+      <p>Ocean acidification from climate change is already affecting shellfish and will increasingly impact fish populations. Warming waters are shifting species ranges, disrupting food webs, and creating conditions for new parasites and diseases. The targets we set for sustainable fishing based on current conditions may become irrelevant as the underlying system changes.</p>
+      <p>This suggests we need adaptive management approaches that can respond to new information and changing conditions—not fixed quotas determined once and applied rigidly. Fisheries science should be treated as provisional, with regular reassessment and willingness to reverse course.</p>
+      <p>It also suggests we should be cautious about betting everything on aquaculture. Farmed fish depend on feed, much of which comes from wild-caught sources. They depend on water temperature and quality. Climate change affects aquaculture systems too. monoculture operations that are efficient under current conditions may become vulnerable.</p>
+      <p>Perhaps the most resilient approach is diversified portfolios of both wild and farmed production, spread across many species and many locations, with active management and genuine transparency. Not a silver bullet but a diversified strategy that can absorb shocks.</p>
+      <p>The Mediterranean diet that launched this discussion was never monolithic—it varied by region, season, and household. That flexibility and diversity was itself adaptive, a feature that served it well over time. A sustainable seafood future probably needs similar characteristics: variety, local adaptation, and humility about our ability to engineer permanent solutions to constantly changing problems.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

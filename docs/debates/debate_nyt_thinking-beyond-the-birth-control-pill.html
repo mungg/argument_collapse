@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thinking Beyond the Birth Control Pill · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Health · Open-ended</div>
+  <h1 class="debate-title">Thinking Beyond the Birth Control Pill</h1>
+  <div class="question-body"><p>A recent Vanity Fair article exposed the risks of using NuvaRing, a relatively new form of contraception for women. More than 50 years after its introduction, the birth control pill — and altering hormonal levels in general — still seems to be the best contraceptive available. Has progress on developing new birth control methods stalled? What can be done to promote innovation?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_1.html">
+      <td class="arg-text">While innovation in contraception is necessary, the primary challenge is the underutilization of existing long-acting reversible contraceptive methods that are more effective than the pill or condoms.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_2.html">
+      <td class="arg-text">To advance contraceptive innovation and improve family planning, we must prioritize the development and funding of long-acting, reversible birth control methods for men.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_3.html">
+      <td class="arg-text">While contraceptive progress has improved convenience through long-acting methods, true innovation has been stifled by economic and regulatory hurdles, necessitating a shift toward treating birth control as essential public health infrastructure to diversify options.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_4.html">
+      <td class="arg-text">True innovation in birth control has stalled due to economic and regulatory barriers, requiring a shift toward public and philanthropic funding to develop non-hormonal methods and male contraceptives.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_5.html">
+      <td class="arg-text">To advance contraceptive innovation, the field must move beyond a narrow focus on hormonal methods toward a pluralistic approach that prioritizes diverse user experiences, quality of life, and transparent safety data.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_6.html">
+      <td class="arg-text">To overcome the stagnation in contraceptive innovation, research and funding must shift away from hormonal manipulation and toward non-hormonal methods for both men and women.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_7.html">
+      <td class="arg-text">Hormonal contraception remains a safe, effective, and evolving public health success that should be refined rather than disparaged through alarmist narratives.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_8.html">
+      <td class="arg-text">Oral pericoital contraceptives should be added to the current range of birth control options to better serve women who struggle with the daily regimen of traditional pills.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_9.html">
+      <td class="arg-text">While innovation in birth control has stalled in the first world due to pharmaceutical disinterest, progress can be revitalized by focusing on the diverse needs and growing demand of populations in developing countries.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_10.html">
+      <td class="arg-text">To move beyond hormonal birth control, we must prioritize education on the female menstrual cycle and the development of modern, non-chemical methods that leverage biological facts.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_11.html">
+      <td class="arg-text">Progress in contraceptive innovation has stalled due to misaligned market incentives and a narrow focus on hormonal delivery systems, requiring a shift toward public health investment and regulatory reform to develop safer, non-hormonal alternatives.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_12.html">
+      <td class="arg-text">Progress in contraceptive innovation has stalled primarily due to extreme liability risks, and reviving it requires systemic reforms that mitigate legal exposure and increase public investment.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_13.html">
+      <td class="arg-text">To overcome the stagnation in contraceptive innovation, we must move beyond a pill-centric landscape toward a diverse ecosystem of personalized options supported by public investment and informed risk assessment.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_14.html">
+      <td class="arg-text">Innovation in contraceptive research has stalled because the field is uniquely hindered by political hostility, religious objections, and legal instability that discourage investment.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_15.html">
+      <td class="arg-text">To achieve genuine innovation in contraception and move beyond risky hormonal methods, the government must intervene to fix a pharmaceutical market that prioritizes profitable minor tweaks over fundamental scientific breakthroughs.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_16.html">
+      <td class="arg-text">To stimulate innovation in birth control, the government must reform the legal and regulatory environment to mitigate the existential litigation risks that currently discourage pharmaceutical companies from investing in reproductive R&amp;D.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_17.html">
+      <td class="arg-text">The slow pace of contraceptive innovation is primarily due to the immense biological complexity of human reproduction rather than a lack of effort, necessitating a reinvestment in basic molecular research to find safe alternatives to hormonal methods.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_18.html">
+      <td class="arg-text">Progress in contraceptive development has stalled because the current system incentivizes the repackaging of existing hormonal methods rather than the pursuit of genuine scientific innovation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_thinking-beyond-the-birth-control-pill_arg_19.html">
+      <td class="arg-text">To overcome the stagnation in contraceptive innovation caused by high legal and medical risks, the regulatory system must be reformed to incentivize genuine scientific breakthroughs while improving safety surveillance.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Amy Ong Tsui</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/01/thinking-beyond-the-birth-control-pill/amy-ong-tsui" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Elaine Lissner</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/01/thinking-beyond-the-birth-control-pill/elaine-lissner" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Evette Dionne</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/01/thinking-beyond-the-birth-control-pill/evette-dionne" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Lawrence Finer</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/01/thinking-beyond-the-birth-control-pill/lawrence-finer" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Natalie Rechberg</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/01/thinking-beyond-the-birth-control-pill/natalie-rechberg" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The framing of the question deserves some pushback before we ask why innovation has &quot;stalled.&quot; The pill itself has been refined considerably since 1960: today&#x27;s low-dose combined pills contain a fraction of the hormones Enovid did, and progestin-only formulations exist for women who can&#x27;t tolerate estrogen. We also have hormonal and copper IUDs, the implant (Nexplanon), the patch, the ring, the shot, emergency contraception available over the counter, and a growing evidence base showing that long-acting reversible contraceptives (LARCs) are dramatically more effective in typical use than the pill. The Contraceptive CHOICE Project in St. Louis has demonstrated that when cost and access barriers fall, women overwhelmingly choose LARCs and unintended pregnancy rates plummet. That is meaningful progress, even if it hasn&#x27;t produced a fundamentally new mechanism of action.</p>
+      <p>Still, the underlying complaint is fair: nearly every method on the market manipulates the same hormonal pathway or physically blocks sperm, and the serious adverse events associated with newer entrants like NuvaRing and Yaz — venous thromboembolism linked to drospirenone and etonogestrel — suggest we are tinkering at the margins of a 1950s paradigm rather than displacing it. Non-hormonal options for women remain limited to the copper IUD, barrier methods, and sterilization. A male pill, despite decades of promising leads involving testosterone analogs and compounds targeting sperm motility, keeps failing in late-stage trials or losing its sponsor.</p>
+      <p>The reasons are structural, not scientific. Contraceptive R&amp;D is uniquely unattractive to pharmaceutical companies: the products are taken by healthy people, often for decades, which makes the liability tail enormous and the safety bar punishingly high. The Dalkon Shield litigation effectively ended IUD development in the U.S. for a generation, and class-action suits over NuvaRing and Yaz reinforce the lesson. Generic competition erodes margins quickly, and regulatory pathways for reproductive products carry political risk that, say, an oncology drug does not.</p>
+      <p>Promoting innovation therefore requires public investment — expanded NIH and USAID funding, partnerships with nonprofits like the Population Council and CONRAD, and prizes or advance market commitments to derisk private development. Reforming product-liability exposure for contraceptives that meet rigorous safety standards would help too. Without changing the incentive structure, we should expect more reformulated rings, not revolutions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The Vanity Fair article on NuvaRing rightly reminds us that even newer hormonal contraceptives carry risks, and the Pill’s legacy after fifty years is a mix of liberation and persistent side effects. But to say progress has stalled overlooks the significant strides made in delivery systems—from patches to implants to hormone-releasing IUDs—that have expanded choice and improved compliance. What has truly lagged is the development of entirely new mechanisms of action, especially non-hormonal methods and male contraceptives. The reasons are multifaceted and reveal a systemic innovation gap.</p>
+      <p>First, biology presents a formidable barrier. The female reproductive cycle involves a complex interplay of hormones and feedback loops; designing a drug that interrupts this process without broad off-target effects is daunting. The high safety bar for products used by healthy women over long periods means that even minor adverse signals can derail a promising compound. This leads to the second obstacle: a regulatory and legal environment so cautious—especially in the U.S.—that pharmaceutical companies have largely retreated from contraceptive R&amp;D. Lawsuits over the Dalkon Shield and Norplant, while justified in some cases, created a lasting chill. Contraceptives offer lower profit margins than drugs for chronic diseases, and the fear of class-action litigation makes the business case weak.</p>
+      <p>Funding is another root cause. The National Institutes of Health dedicates a tiny fraction of its budget to reproductive biology, and philanthropic investment is scarce. Meanwhile, the political minefield around birth control—exemplified by ongoing battles over insurance coverage—can make it difficult to sustain public research initiatives.</p>
+      <p>So what can be done? First, governments and large donors should ramp up funding for basic research into spermatogenesis, ovulation, and immunocontraception. Public-private partnerships could share risk and incentivize development of non-hormonal methods that avoid the side effects of steroids. The FDA could also explore using accelerated approval pathways or priority review vouchers for truly novel contraceptives, similar to incentives for neglected diseases. Second, we need to shift cultural expectations. The burden of contraception remains overwhelmingly on women, and efforts to develop a male pill or a long-acting reversible method for men have stalled due to a lower tolerance for side effects in men. Reframing contraception as a shared responsibility would increase demand for—and investment in—male options. Finally, we must improve access to existing highly effective methods like IUDs and implants, which remain underutilized in the U.S. due to upfront costs and provider training gaps, despite their safety and efficacy.</p>
+      <p>Innovation hasn&#x27;t stopped, but it has been incremental. A concerted push to diversify beyond hormonal manipulation, powered by public investment and a cultural shift, is the best prescription for the next half-century of contraception.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The recent scrutiny of NuvaRing highlights a frustrating reality in reproductive health: while the packaging and delivery of birth control have evolved, the underlying science has barely shifted in over half a century. We have transitioned from daily pills to weekly patches, hormonal IUDs, and monthly rings, but the fundamental mechanism—suppressing ovulation through synthetic hormones—remains the industry standard. Progress has not necessarily stalled, but it has certainly become trapped in a loop of incremental refinement rather than true innovation.</p>
+      <p>The reasons for this stagnation are primarily economic and regulatory. Developing a new contraceptive is an enormously expensive and risky proposition for pharmaceutical companies. Because these drugs are prescribed to millions of healthy women for decades of their lives, the Food and Drug Administration rightly demands massive, rigorous clinical trials to prove safety. However, this high regulatory bar, combined with the immense liability risks demonstrated by recent class-action lawsuits over blood clots associated with products like NuvaRing and Yaz, has driven many major pharmaceutical companies out of contraceptive research and development altogether.</p>
+      <p>Furthermore, the current market dynamics disincentivize paradigm-shifting breakthroughs. Why spend billions searching for a novel, non-hormonal method when variations of estrogen and progestin already generate reliable profits?</p>
+      <p>This lack of innovation is most glaring in the realm of male contraception. Aside from condoms and vasectomies, men have no reliable, reversible options. Promising research into male hormonal contraceptives and non-hormonal blockers is perpetually underfunded and entirely reliant on academic or non-profit backing. The discrepancy in acceptable side effects—where women are expected to tolerate systemic hormonal alterations while the threshold for male discomfort remains virtually zero—further stifles the development of a truly equitable contraceptive market.</p>
+      <p>To jumpstart innovation, we must recognize that market forces alone will not solve this problem. Promoting new methods requires increased public funding through institutions like the National Institutes of Health, paired with robust philanthropic investment. By shifting the financial burden away from risk-averse pharmaceutical giants, researchers can pursue entirely new, non-hormonal targets and finally bring male contraceptives to market. Only by treating reproductive health research as a vital public good, rather than just a commercial enterprise, can we truly move beyond the 1960s paradigm of the pill.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Progress has not exactly stalled; it has narrowed. Since the pill, contraception has improved in convenience and reversibility: hormonal IUDs, copper IUDs, implants, injectables, patches, rings and emergency contraception all matter. The most important advance may be long-acting reversible contraception, because IUDs and implants remove the daily burden of adherence and have failure rates far below pills in typical use. Yet the underlying menu remains disappointingly familiar: suppress ovulation with hormones, place a device in the uterus, block sperm mechanically, or sterilize.</p>
+      <p>That matters because many women cannot tolerate existing methods, or reasonably worry about side effects. The NuvaRing controversy should be taken seriously, especially because newer hormonal methods can carry different clotting risks depending on the progestin and delivery system. But it should not lead to the conclusion that all hormonal contraception is unusually dangerous. Pregnancy itself carries substantial health risks, and the absolute risk of blood clots for most contraceptive users remains low. The real problem is not that hormonal methods are uniquely reckless; it is that women are too often asked to choose among imperfect options while bearing nearly all the medical responsibility for fertility control.</p>
+      <p>Innovation has been slowed by economics as much as science. Contraceptives are used by healthy people for long periods, so tolerance for risk is appropriately low. Litigation risk is high, regulatory trials are expensive, and the market rewards small reformulations more predictably than genuinely new mechanisms. Public research money has also been modest compared with the social value of reliable contraception. Meanwhile, male contraception remains stuck between cultural skepticism, commercial timidity and the biological difficulty of controlling millions of sperm rather than one monthly egg.</p>
+      <p>Promoting innovation requires treating contraception as public health infrastructure, not merely a lifestyle product. The National Institutes of Health and foundations should invest more in basic reproductive biology, nonhormonal targets, on-demand methods, better cervical barriers, improved spermicides and male methods, including reversible approaches under study abroad. Regulators should demand rigorous safety data but also create clearer pathways for novel contraceptives, so companies know what evidence is required. Insurers should cover the full range of methods without cost-sharing, because access drives both use and market development. Comparative effectiveness research should help women understand real risks, not just marketing claims.</p>
+      <p>The goal should not be to replace the pill with one miraculous invention. It should be a wider, safer, more equitable contraceptive ecosystem—one that recognizes that different bodies, relationships and stages of life require different tools.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The fifty-year reign of hormonal contraception represents one of medicine&#x27;s most profound paradoxes: we have refined a technology rather than transcended it. When Vanity Fair raised alarms about NuvaRing in 2013, the story felt familiar—the same debates that surrounded Ortho-Novum in the 1970s and Lo Ovral in the 1980s resurfaced with new products wearing new labels. Yet underneath these recurring controversies lies a more troubling reality: genuine innovation in contraception has stalled, and the reasons are systemic rather than scientific.</p>
+      <p>The pharmaceutical industry faces compounding disincentives. Liability exposure from hormonal contraceptives remains substantial—jurors have awarded substantial damages in cases involving blood clots and stroke—and regulatory approval requires years of expensive clinical trials. Meanwhile, the market segmentation offers limited profit potential. A drug that prevents pregnancy in healthy young women must demonstrate extraordinary safety to satisfy both regulators and the legal environment. This explains why companies have focused on incremental modifications—lower doses, alternative delivery mechanisms, refined progestins—rather than fundamentally different approaches.</p>
+      <p>The scientific challenges are genuine. Non-hormonal contraception has proven elusive; the menstrual cycle&#x27;s complexity means that interrupting ovulation or implantation without affecting other systems requires fine calibration we have not achieved. Male contraceptives face their own obstacles, including societal skepticism about men accepting pharmaceutical intervention and the biological fact that suppressing sperm production is physiologically more challenging than preventing ovulation.</p>
+      <p>What would catalyze change? First, dedicated funding streams specifically for contraceptive research—similar to the model that accelerated AIDS research—could de-risk investment. Second, regulatory reform could accelerate Phase II and III trials while preserving safety standards. Third, greater public engagement could expand the market for male contraceptives, which currently lack any pharmaceutical options beyond vasectomy.</p>
+      <p>The absence of alternatives does not mean they are impossible. It means we have not organized the will, resources, and scientific ambition to pursue them with appropriate urgency. The pill served a generation that had no choice. We can do better.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The Liability Trap Is Killing Contraceptive Innovation</p>
+      <p>The Vanity Fair exposé on NuvaRing is disturbing, but it also illustrates exactly why pharmaceutical companies have largely abandoned contraceptive R&amp;D. Merck is reportedly paying out $100 million to settle thousands of lawsuits. Bayer has paid well over a billion dollars in Yasmin and Yaz settlements. For a category of drug taken by healthy women — not sick patients weighing risks against death — even small adverse-event rates generate enormous legal exposure. The rational corporate response is to retreat.</p>
+      <p>This wasn&#x27;t always the case. In the 1970s, roughly a dozen major firms had active contraceptive research programs. Today, by most counts, fewer than half a dozen do serious work, and almost none are American. The Dalkon Shield disaster of the 1970s scared the IUD market into near-extinction for two decades. Norplant, an effective implant, was withdrawn after a wave of litigation despite the underlying device working well. The pattern repeats: a method gets to market, lawyers find plaintiffs, the product becomes uninsurable, the company exits, and the lesson learned by competitors is &quot;don&#x27;t bother.&quot;</p>
+      <p>If we want innovation — male contraceptives, non-hormonal options, longer-acting methods with fewer side effects — we need to fix the incentives. Three things would help. First, a federal no-fault compensation fund for contraceptive injuries, modeled on the vaccine injury program. Vaccines faced the same liability spiral in the 1980s, and the compensation fund revived the industry. Second, more public funding through NIH and partnerships like the Contraceptive Research and Development Program (CONRAD); basic science is the bottleneck for novel mechanisms like reversible vas occlusion or sperm-specific ion channel blockers. Third, FDA should consider faster pathways for methods that demonstrably reduce systemic hormonal exposure, since lower-risk profiles are precisely the goal.</p>
+      <p>Critics will say liability exists for good reason — NuvaRing&#x27;s clot risk may have been understated, and women deserve recourse. Fair enough. But the current regime is the worst of both worlds: it punishes companies enough to discourage research, yet doesn&#x27;t actually produce safer products, because the next generation of methods never gets developed. Women keep using the same hormonal compounds invented in the Eisenhower era because nothing better has been allowed to emerge.</p>
+      <p>The Pill was a triumph of a particular policy moment — Planned Parenthood funding, Searle&#x27;s willingness to take risks, regulators eager for a breakthrough. Recreating that environment requires acknowledging that some risk is the price of progress, and building institutions that share that risk rather than concentrating it on whichever firm dares to try.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Don&#x27;t Panic About the Pill</p>
+      <p>The framing of this debate — that hormonal contraception is dangerously stagnant and women are stuck with risky 1960s technology — gets the epidemiology wrong. The Pill is one of the most studied drugs in history, and on net it is remarkably safe. The combined oral contraceptive raises the risk of venous thromboembolism from roughly 2 per 10,000 woman-years to perhaps 6 or 8. Pregnancy itself raises that risk to about 20, and the postpartum period to nearly 40. A young woman not on the Pill is not in some zero-risk baseline state; she is at risk of pregnancy, which is medically more dangerous than the contraceptive.</p>
+      <p>NuvaRing&#x27;s risk profile, as best we can tell from the FDA-commissioned Kaiser/FDA study and the Danish cohort data, sits at the high end of combined hormonal methods but is still well below pregnancy&#x27;s. The Vanity Fair piece is powerful journalism about individual tragedies, but a handful of devastating cases doesn&#x27;t establish that the method is unreasonable for the millions who use it without incident. Every effective drug has a tail of bad outcomes.</p>
+      <p>The &quot;innovation has stalled&quot; complaint also understates what has actually changed. We have third- and fourth-generation progestins, ultra-low-dose formulations, extended-cycle regimens that eliminate most withdrawal bleeds, the patch, the ring, hormonal IUDs with localized rather than systemic delivery, subdermal implants effective for years, and emergency contraception now available over the counter. The mechanism — hormonal manipulation of the reproductive cycle — is consistent, but the delivery, dosing, and side-effect profiles have improved meaningfully.</p>
+      <p>It&#x27;s also worth asking what &quot;beyond the Pill&quot; would even mean biologically. Female fertility is a continuous, hormonally orchestrated process; interrupting it without hormones is genuinely hard. Non-hormonal options exist — copper IUDs, barrier methods, fertility awareness — and they are reasonable choices for women who prefer them. But the reason hormonal methods dominate is that they work extremely well, not because of a conspiracy of pharmaceutical inertia.</p>
+      <p>By all means, fund research into male contraception and novel mechanisms. But let&#x27;s not feed a moral panic that drives women off effective contraception toward less reliable alternatives, with the predictable result of more unintended pregnancies. The cost of overreacting to rare adverse events is paid in abortions and unwanted births. The Pill, the ring, the implant, and the IUD are, by any honest accounting, among the great public health successes of the last century. Refining them is the right goal. Disparaging them is not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>Why Is the Burden Still Entirely on Women?</p>
+      <p>The most striking thing about the NuvaRing story isn&#x27;t that a contraceptive has side effects. It&#x27;s that, more than five decades after Enovid, the conversation about contraceptive risk is still a conversation about what women&#x27;s bodies are willing to absorb. Men have exactly two options: condoms or a vasectomy. Women have a pharmacopeia of pills, patches, rings, shots, implants, and IUDs — and a corresponding catalogue of clots, strokes, mood changes, weight gain, and irregular bleeding to negotiate. This is not a coincidence. It&#x27;s a choice the research enterprise has made, year after year, by deciding whose fertility is worth intervening in.</p>
+      <p>The science is not the obstacle. Researchers have shown that testosterone-progestin combinations can suppress sperm production reliably. Hormonal male contraceptive trials have demonstrated efficacy comparable to female methods. Non-hormonal approaches — RISUG/Vasalgel-style reversible vas occlusion, inhibitors of sperm motility — have moved through animal models and into early human studies. The obstacles are funding, recruitment, and a peculiar tolerance for side effects in men that does not apply to women. A 2011 WHO trial of a male injectable was stopped early because of mood changes and acne, side effects that women have endured on the Pill for decades without anyone suggesting we pull it from the market.</p>
+      <p>The asymmetry has consequences beyond fairness. As long as contraception is coded as a &quot;women&#x27;s issue,&quot; it remains underfunded, politically vulnerable, and culturally suspect. It gets attacked in religious liberty cases, excluded from insurance mandates, debated by legislators who have no medical stake in the outcome. A robust male contraceptive market would change those politics. It would also distribute pregnancy-prevention responsibility within heterosexual relationships in a way that decades of feminist argument haven&#x27;t managed to achieve.</p>
+      <p>Promoting innovation, then, isn&#x27;t just about throwing money at chemistry. It&#x27;s about reframing the question. Funders — NIH, the Gates Foundation, the Population Council — should explicitly prioritize male methods. Regulators should apply consistent risk-benefit standards across sexes rather than treating men as fragile and women as resilient. Pharma should be pushed, by purchasers and advocates, to see the male contraceptive market as the multi-billion-dollar opportunity it obviously is.</p>
+      <p>The Pill was revolutionary because it gave women control over their fertility for the first time in history. The next revolution will be the one that lets them share that control with their partners. That this hasn&#x27;t happened yet is a failure of imagination and politics, not of science.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The Innovation Already Happened — It&#x27;s Called the IUD</p>
+      <p>The premise of this debate is half wrong. Contraceptive innovation hasn&#x27;t stalled; it has moved past the daily Pill toward long-acting reversible contraceptives, or LARCs. The hormonal IUD (Mirena, Skyla) and the copper IUD (ParaGard) and the subdermal implant (Nexplanon) are spectacularly more effective than the Pill, with failure rates under 1% versus the Pill&#x27;s typical-use rate of around 9%. They last three to twelve years. The hormonal IUD delivers a tiny fraction of the systemic hormone load of an oral contraceptive. The copper IUD has no hormones at all. The CHOICE Project in St. Louis showed that when cost and access barriers are removed, the majority of women choose LARCs, and unintended pregnancy and abortion rates drop dramatically. ACOG now recommends IUDs and implants as first-line contraception, including for teenagers.</p>
+      <p>So why does the public conversation still revolve around the Pill and its newer cousins like NuvaRing? Three reasons. First, marketing inertia: oral contraceptives have brand recognition and direct-to-consumer advertising budgets that LARCs lack. Second, provider training gaps: many primary-care doctors aren&#x27;t comfortable inserting IUDs, so they default to writing prescriptions. Third, lingering ghosts of the Dalkon Shield, which gave IUDs a fearful reputation among American women that European women, who never abandoned the method, find baffling.</p>
+      <p>If we want to promote &quot;innovation,&quot; the most cost-effective step isn&#x27;t a new molecule. It&#x27;s getting existing LARCs to the women who would use them. That means insurance coverage without cost-sharing — the ACA contraceptive mandate is a huge step, though its implementation is uneven. It means training family physicians and pediatricians, not just OB-GYNs, in insertion. It means same-day insertion protocols so women don&#x27;t have to schedule two appointments. It means stocking devices at federally qualified health centers and Title X clinics. And it means correcting the public record so that women understand that today&#x27;s IUDs are not their mother&#x27;s Dalkon Shield.</p>
+      <p>This isn&#x27;t an argument against further research. Of course we should pursue male methods, non-hormonal female methods, and better understanding of long-term effects. But &quot;thinking beyond the Pill&quot; should start with the recognition that, for most women, the alternative to the Pill already exists, sits in a sterile package in a drawer at the clinic, and works better than anything else we&#x27;ve ever had. The bottleneck is delivery, not discovery. Solve that, and the contraceptive revolution begun in 1960 actually gets finished.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Contraception Is Political, and That&#x27;s Why Research Lags</p>
+      <p>Drug development follows incentives, and the incentive structure around contraception in the United States is uniquely poisoned. No other category of medicine is subject to the same combination of political hostility, religious objection, cultural moralism, and litigious blowback. The result is predictable: fewer companies, fewer molecules in the pipeline, fewer breakthroughs. Pretending this is a purely scientific or commercial problem misses the point.</p>
+      <p>Consider the recent history. The contraceptive coverage requirement in the Affordable Care Act has been challenged repeatedly by employers claiming religious objection, with Hobby Lobby&#x27;s case now headed to the Supreme Court. Emergency contraception spent more than a decade fighting for over-the-counter status against political interference at the FDA — interference a federal judge eventually called bad-faith. State legislatures introduce &quot;personhood&quot; bills that would redefine many hormonal contraceptives as abortifacients. Pharmacists in some states can legally refuse to fill prescriptions. Title X funding is perennially threatened. Crisis pregnancy centers tell women that the Pill causes cancer and infertility, claims that are false but politically protected speech.</p>
+      <p>In this environment, who exactly is going to sink a billion dollars into a novel contraceptive? The company that does will face boycotts, lawsuits, congressional hearings, and the eternal risk that a future administration will simply refuse to enforce coverage requirements that make the product affordable. The market for an aspirational new drug shrinks every time a state legislature passes another restriction. Investors notice.</p>
+      <p>Contrast contraception with, say, erectile dysfunction. Viagra sailed through development and onto formularies with bipartisan enthusiasm. Male sexual function is uncontroversial. Female fertility control is, somehow, still contested terrain — fifty-four years after Griswold, forty-one years after Roe, and a full century after Margaret Sanger went to jail.</p>
+      <p>If we want innovation, the policy agenda is broader than NIH grants and FDA pathways, important as those are. It includes defending the ACA&#x27;s contraceptive mandate. It includes ending the abstinence-only education regime that leaves Americans poorly informed about their options. It includes pushing back, hard, on the legal fiction that contraception is morally distinct from other medicine. And it includes acknowledging that international research — much of it done in Europe, China, and India, where the politics are saner — will likely deliver the next generation of methods before American firms do.</p>
+      <p>The Pill changed the world in part because midcentury elites decided that population control and women&#x27;s autonomy were urgent. The current generation of elites cannot agree that contraception is even legitimate. Until that changes, expect the pipeline to stay thin.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The NuvaRing article is just the latest warning that the revolution in contraception has stalled. While we commemorate more than fifty years since the Pill’s debut, the underlying technology of hormonal birth control has barely changed: we are still manipulating the same estrogen and progestin pathways, just through different delivery systems—pills, rings, patches. The fundamental breakthrough that many hoped for, particularly a reliable, reversible method for men or a non-hormonal contraceptive free of systemic side effects, remains elusive. The problem is not a lack of scientific potential, but a profound failure of will and investment.</p>
+      <p>Pharmaceutical companies, facing a litigious environment and enormous regulatory costs, have largely retreated from contraception research. The blockbuster model that drove early Pill development has curdled into risk-aversion. Why invest in a novel male pill that might fail in Phase III trials, when you can tweak an existing progestin and market it as a “new” formulation with fewer androgenic side effects? Profit is safest by extending branded patents on incremental improvements. True innovation—like the targeted spermicidal agents or immunocontraceptives that showed promise in animal models years ago—languishes for lack of funding.</p>
+      <p>This vacuum can only be filled by robust public investment. The National Institutes of Health and analogous bodies abroad should treat contraceptive research as a public health priority on par with vaccine development. Furthermore, we need to ease some of the regulatory hurdles that make running a contraceptive trial so dauntingly expensive, without sacrificing safety. For male methods, where the risk-benefit calculus is different because men do not face the health risks of pregnancy, a rethinking of trial endpoints is essential. Otherwise, the next thirty years will look exactly like the last fifty: a few new plastic gadgets, but no real advance beyond the hormonal paradigm that still leaves millions of women coping with mood swings, blood clots, and diminished libido. The tool that promised to liberate women from their biology remains, philosophically, stuck in 1960.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The premise that progress on new birth control methods has stalled is a convenient narrative, but it misses a seismic shift in reproductive health over the past two decades. While we lament the risks of NuvaRing and the unchanged hormonal pill, the most important contraceptive innovations—long-acting reversible contraceptives, or LARCs—have quietly revolutionized what is possible. The intrauterine devices (both copper and hormonal) and the etonogestrel implant are not minor tweaks; they are paradigm-changing methods that are more effective than sterilization and require no daily user action. In typical use, they reduce the failure rate to less than one pregnancy per hundred women per year, compared with nine per hundred for the pill. By any clinical measure, the best contraceptive available in 2014 is not the pill; it is a LARC.</p>
+      <p>Why, then, does the pill still dominate the cultural imagination and prescription pads? The answer is inertia, misinformation, and cost. Generations of women grew up hearing terrifying, outdated tales about the Dalkon Shield, and many clinicians are still not trained to insert the modern, safe devices. Upfront costs that can exceed $500, even though they are cost-effective over time, place LARCs out of reach for the uninsured precisely when they are most needed. The innovation is already here; the task now is to remove the barriers that prevent it from becoming the default choice.</p>
+      <p>So the question “what can be done to promote innovation?” should be recast as “what can be done to promote the innovation we’ve already made?” The answer is a multipronged campaign: mandates that insurance cover all FDA-approved contraceptives without copays, which the Affordable Care Act has begun to address; dedicated training programs for primary care providers to counsel and insert implants and IUDs; and a public health messaging blitz that reframes LARCs not as a fringe option for women who have finished childbearing, but as the gold-standard first-line choice for women of all ages, including adolescents. Progress hasn’t stalled; it has arrived and is sitting on the shelf, waiting for policy to catch up.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>If the NuvaRing case teaches us anything, it is that our century-long fixation on hormonal manipulation to prevent pregnancy is reaching its natural limits. Altering a woman’s endocrine system with combinations of estrogen and progestin—whether by pill, ring, shot, or implant—inevitably produces a web of side effects: mood changes, diminished libido, and in rare but tragic cases, thromboembolism. To ask whether progress has stalled is to ask the wrong question. The real question is why we have not yet prioritized the non-hormonal frontier for both women and men. In that domain, progress has not merely stalled; it has been systematically starved.</p>
+      <p>For women, non-hormonal approaches beyond the century-old copper IUD remain experimental. Research into methods that could block sperm from reaching the egg without systemic hormones—like spermicidal gels that firm cervical mucus or pheromonal disruption—receives a tiny fraction of the funding that goes to tweaking existing hormone formulations. For men, the neglect is even more glaring. A safe, reversible vas-occlusion technique using a polymer gel, known as RISUG, has shown immense promise in Indian clinical trials for over a decade, yet has failed to attract the kind of multinational investment that would bring it to Western markets. Meanwhile, large-scale trials of a hormonal male injection regimen were halted in 2011 not because the method was ineffective—it worked remarkably well—but because the side effect rate was deemed unacceptable, a judgment many women might find bitterly ironic given the side effect burden they have silently carried for years.</p>
+      <p>Promoting innovation demands a deliberate reallocation of research dollars away from the menopausal-hormone-replacement-to-contraception pipeline and toward genuinely new mechanistic pathways. It requires philanthropic foundations and government agencies to fund early-stage, high-risk projects that pharmaceutical firms will avoid. And it demands that we finally take seriously the demand from both sexes for methods that work with the body’s own physiology, rather than overriding it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>We are having the wrong conversation. The Vanity Fair article on NuvaRing’s risks is important, and the question of scientific innovation is valid, but it misconstrues where the central failure lies. The most potent contraceptive technology in the world is useless if a woman cannot get it, cannot afford it, or is shamed out of using it. Before we wring our hands about stalled progress in the lab, we must acknowledge that the real blockade to effective birth control in America is a brick wall of political, economic, and cultural barriers that we have refused to dismantle.</p>
+      <p>Consider access. As of this writing, the nation is still locked in legal battles over whether employers can deny insurance coverage for contraception based on religious objections. In many states, politicians have gutted Title X family-planning funding, forcing clinics to close, while “conscience clauses” allow pharmacists to refuse to fill prescriptions. For the uninsured or underinsured woman working an hourly wage job, the latest innovation in a contraception lab is an abstraction; she needs a method she can obtain today without a three-hour bus ride and a $200 upfront cost. This is not a failure of innovation, but of basic health infrastructure.</p>
+      <p>The cultural blockade is equally damaging. We do not have a robust norm of talking about contraception in non-judgmental, medically accurate terms. School-based sex education remains a battleground between evidence and ideology, with entire states still pushing abstinence-only curricula that eschew any practical information about methods until it is too late. An eighteen-year-old who does not understand the difference between a hormonal IUD and a copper IUD, or who has been taught that contraception is morally suspect, will default to what she knows—often nothing, or a method used inconsistently—regardless of what scientists cook up.</p>
+      <p>Promoting innovation, therefore, means passing laws that codify full, no-cost insurance coverage for all contraceptive methods and counseling, with zero loopholes. It means fully funding the public health safety net. And it means fighting for sex education mandates that treat contraception not as a controversy, but as basic preventive medicine. The glass beaker is only half the picture; the other half is the waiting room.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The birth control pill’s continued cultural and medical dominance after half a century is not a sign of stalled innovation; it is a quirk of marketing, habit, and a broken delivery system. In reality, a quiet revolution has already produced methods that outperform the pill on every metric of efficacy, safety, and convenience. The problem we need to solve is not how to invent the next molecule, but how to change the contraceptive conversation in exam rooms and homes across the country so that innovation translates into real-world use.</p>
+      <p>The modern hormonal IUD, the copper IUD, and the subdermal implant represent a genuine leap forward. They eliminate user error, the chief reason the pill fails so often in practice. Their side effect profiles, while not negligible, avoid the daily peak-and-trough estrogen exposure linked to the NuvaRing and combined pills’ venous thromboembolism risks. And perhaps most critically, they allow a woman to separate the act of contraception from the act of intercourse, restoring a measure of spontaneity and mental freedom that the daily pill, with all its missed-timing anxiety, never did. If we compare the contraceptive landscape of 2014 to that of 1964, the claim that progress has stalled is simply false.</p>
+      <p>Why, then, does the pill retain its “best available” aura? Partly because so many clinicians still hand out pill prescriptions as a reflex, without adequate counseling about LARCs. A 20-year-old presenting for birth control is still far more likely to leave with a sample pack of pills than with a referral for an implant that could protect her through college. The training pipeline has not kept pace with the evidence. Furthermore, the pill’s status as a cultural icon—a symbol of female emancipation—creates an emotional attachment that newer, more clinical-seeming devices cannot easily match.</p>
+      <p>Promoting “innovation” going forward means capitalizing on what we already have. It requires a systematic effort to train every OB-GYN, family doctor, and nurse practitioner in LARC insertion and removal, and to routinize the offering of these methods as the top-tier recommendation rather than an alternative. It requires insurance coverage that eliminates the intimidating upfront cost, and, crucially, public relations campaigns that destigmatize IUDs and implants, presenting them as the smart, modern, set-it-and-forget-it choices they actually are. The pill may forever be a part of our history, but it need not be our default future.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>To declare that contraceptive progress has stalled because of the risks associated with the NuvaRing is to profoundly misread the current landscape of reproductive health. Progress has not stalled; rather, the media and many patients are simply looking in the wrong direction. The most significant innovation in recent decades is not the introduction of new delivery systems for estrogen and progestin, but the refinement and proliferation of Long-Acting Reversible Contraceptives (LARCs), primarily intrauterine devices (IUDs) and subdermal implants.</p>
+      <p>The tragedy is that the U.S. has been remarkably slow to adopt these methods. While the birth control pill requires daily compliance—leading to a typical-use failure rate of about 9 percent—LARCs are &quot;set it and forget it&quot; technologies. Their failure rates rival that of permanent sterilization, resting well under 1 percent. Furthermore, modern IUDs like the Mirena use a highly localized, ultra-low dose of progestin, which minimizes the systemic hormonal side effects and blood clot risks highlighted in the Vanity Fair exposé of the NuvaRing. For those wishing to avoid hormones entirely, the copper ParaGard IUD provides a highly effective, decade-long solution.</p>
+      <p>If we want to see better contraceptive outcomes, we do not necessarily need a miraculous new biological breakthrough. What we need is innovation in delivery, access, and education. For too long, high upfront costs and lingering, outdated fears stemming from the Dalkon Shield disaster of the 1970s have kept American women relying on the daily pill.</p>
+      <p>Fortunately, the Affordable Care Act’s contraceptive mandate is currently shifting this paradigm by removing the prohibitive out-of-pocket costs associated with LARC insertion. The American College of Obstetricians and Gynecologists has already updated its guidelines to recommend LARCs as first-line options for most women, including adolescents. To promote true progress, we must focus on training more healthcare providers to insert these devices and educating women about their safety and efficacy. Innovation isn&#x27;t always about inventing a new chemical compound; sometimes, it is about finally utilizing the superior technology we already possess.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The recent alarm over the NuvaRing highlights a glaring blind spot in our conversation about reproductive technology: the entire burden of chemical contraception, along with all its inherent health risks, rests squarely on women. When we ask why progress on birth control has stalled, the answer is deeply tied to a gendered approach to medical research. For over half a century, the pharmaceutical industry has treated pregnancy prevention primarily as a &quot;women’s issue,&quot; leaving male contraception stuck in the dark ages of condoms and vasectomies.</p>
+      <p>If we want to promote genuine innovation, we must fundamentally shift our focus toward developing a reversible male contraceptive. The science is entirely feasible, yet it languishes in a state of perpetual underfunding. Consider RISUG (Reversible Inhibition of Sperm Under Guidance), a promising non-hormonal male contraceptive currently undergoing trials in India, or its American equivalent, Vasalgel. These methods involve a simple polymer injection into the vas deferens to block sperm, which can be easily dissolved when a man wishes to restore his fertility. Unlike female hormonal methods, they do not disrupt the body&#x27;s endocrine system, practically eliminating the risk of thrombosis, mood swings, and systemic weight gain.</p>
+      <p>Yet, despite surveys showing that a majority of men would be willing to use a male pill or reversible injection, major pharmaceutical companies have shown virtually no interest in bringing these products to market. They claim the regulatory hurdles are too high or that women wouldn&#x27;t trust their partners to use them—excuses that conveniently protect the highly lucrative, recurring revenue stream of female hormonal contraceptives.</p>
+      <p>To break this stalemate, we need a concerted push from public health institutions and the federal government. The National Institutes of Health (NIH) should massively increase grants dedicated to male contraceptive research. Furthermore, philanthropic organizations focused on global health must recognize that empowering men to control their fertility is a vital step toward reducing unintended pregnancies globally. True innovation will only occur when we stop tweaking fifty-year-old female hormone therapies and start demanding that men have the tools to share the biological responsibility of family planning.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The lack of genuine breakthroughs in contraception over the past few decades is a classic failure of the pharmaceutical market. The industry’s profit model inherently disincentivizes the pursuit of bold, fundamentally new contraceptive technologies. Instead, it encourages &quot;evergreening&quot;—making minor, patentable tweaks to existing hormonal formulas to maintain monopolies and keep prices high.</p>
+      <p>Products like the NuvaRing, the Ortho Evra patch, and pills like Yaz are marketed to young women as cutting-edge lifestyle upgrades. In reality, they are merely repackaged versions of the same synthetic hormones that have been utilized since the 1960s. Worse, as the recent Vanity Fair article illustrates, these &quot;innovations&quot; often utilize third- or fourth-generation progestins that carry significantly higher risks of venous thromboembolism (blood clots) than older, cheaper generic pills. Pharmaceutical companies have spent billions on marketing these heavily patented, marginally different products while practically abandoning research into completely new, non-hormonal mechanisms of action.</p>
+      <p>Why? Because developing a fundamentally new drug—say, one that safely prevents sperm from binding to an egg without disrupting the user&#x27;s endocrine system—requires massive upfront investment in basic biology. It also carries a high risk of failure during clinical trials. For a publicly traded pharmaceutical company, it makes far more financial sense to simply invent a new delivery mechanism for an old hormone, patent it, and market it aggressively.</p>
+      <p>If we want to see real innovation that moves us beyond the birth control pill, we have to decouple contraceptive R&amp;D from the corporate profit motive. The federal government should step in to fund the &quot;valley of death&quot; in pharmaceutical research—the expensive clinical trial phase for fundamentally novel, non-hormonal barrier and systemic methods. Furthermore, the FDA could offer fast-track review processes or extended market exclusivity specifically for non-hormonal contraceptives that demonstrate a superior safety profile to current options. Until we change the economic incentives, pharmaceutical companies will continue to sell us the illusion of progress while women absorb the physical risks.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>To understand why contraceptive innovation has seemingly stalled, one must look past the laboratory and into the courtroom. The shadow of litigation and an incredibly risk-averse regulatory environment have created a chilling effect on reproductive R&amp;D. Until we address the unique legal vulnerabilities surrounding birth control, we are unlikely to see the pharmaceutical industry pursue revolutionary new methods.</p>
+      <p>Contraceptives occupy a unique space in medicine: they are prescription drugs given to completely healthy young people for decades at a time. Consequently, the public and the Food and Drug Administration (FDA) have a nearly zero-tolerance policy for side effects. While a drug treating a severe illness might be granted leeway for minor risks, a contraceptive must clear exceptionally high safety hurdles.</p>
+      <p>When risks do materialize—as they inevitably do with any systemic medical intervention—the resulting class-action lawsuits are catastrophic. The historical trauma of the Dalkon Shield in the 1970s bankrupted A.H. Robins and sent a clear message to medical device manufacturers. Today, we see companies facing thousands of lawsuits over products like Yaz and NuvaRing. Regardless of whether a new method’s overall risk profile is lower than the risk of pregnancy itself, the sheer cost of defending against failure-to-warn lawsuits makes birth control a uniquely toxic portfolio for pharmaceutical executives.</p>
+      <p>If we want to stimulate genuine innovation in this space, we have to reform how we handle liability and regulation for reproductive health products. One approach could be a specialized federal compensation fund for severe, rare contraceptive side effects, similar to the National Vaccine Injury Compensation Program. By shielding manufacturers from existential litigation risks while still ensuring patients are cared for if rare adverse events occur, we could coax companies back into the R&amp;D space. Additionally, the FDA must work to establish clearer, more predictable pathways for approving non-hormonal innovations. Without mitigating the profound legal risks, pharmaceutical companies will logically continue to avoid investing in the next generation of birth control.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The frustration over the slow pace of contraceptive development is understandable, especially in light of the risks associated with products like the NuvaRing. However, blaming a lack of effort or corporate greed ignores a fundamental scientific reality: human reproduction is an incredibly robust, complex, and redundant biological process. Safely turning it off, and reliably turning it back on again without causing permanent damage, is one of the most difficult challenges in modern medicine.</p>
+      <p>The reason altering hormonal levels remains the gold standard, more than fifty years after the Pill’s introduction, is because the endocrine system acts as a master switch. By mimicking pregnancy with synthetic estrogen and progestin, we trick the body into halting ovulation. It is a blunt instrument, but a highly effective one. Moving beyond this paradigm requires targeting reproduction at a microscopic, cellular level—a task fraught with biological hurdles.</p>
+      <p>Scientists have spent decades searching for alternatives. Research has explored targeting specific enzymes required for sperm motility, attempting to alter the biochemical makeup of cervical mucus, and developing immunocontraceptives that would prompt a woman’s immune system to temporarily attack sperm. Yet, repeatedly, these methods fail in clinical trials. They either do not achieve the near-perfect efficacy rate consumers demand (a 95% effective contraceptive is functionally a failure in the modern market), or they cause unacceptable off-target effects. When you interfere with fundamental cellular mechanisms, you risk disrupting other vital bodily functions.</p>
+      <p>To accelerate progress, we need patience and a massive reinvestment in basic reproductive science. We must understand the exact molecular mechanisms of human fertilization better than we do today. This requires robust, long-term funding from the National Science Foundation and the National Institutes of Health, prioritizing foundational reproductive biology rather than just applied pharmacology. True, non-hormonal innovation is not stalled for lack of desire; it is moving slowly because the biological lock we are trying to pick is extraordinarily intricate. We must fund the basic science necessary to finally forge the right key.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Yes, progress has stalled, but not because contraception is an impossible scientific problem. It has stalled because the incentives are misaligned. The modern contraceptive market asks women to tolerate chronic intervention in healthy bodies, often for decades, while companies face lawsuits, regulatory hurdles and relatively low prices for products that must be used by millions of healthy people. That combination makes drug companies risk-averse. A cancer drug can have severe side effects and still be considered a breakthrough; a contraceptive with rare but serious risks can become a litigation magnet.</p>
+      <p>NuvaRing illustrates the problem. The issue is not that hormones are uniquely dangerous or that the pill was a mistake. Pregnancy itself carries risks, and many hormonal methods are safe and highly effective for most users. But the fact that so many “new” contraceptives are essentially new delivery systems for old hormones — pills, patches, rings, injections — suggests a thin imagination. The question has too often been, “How else can we dose women with synthetic hormones?” rather than, “What reversible, convenient, low-risk ways can we prevent conception?”</p>
+      <p>Innovation should be treated as a public health priority, not merely a consumer-products niche. The federal government already invests heavily in vaccines, infectious disease and cancer. It should make a similar commitment to contraception research through the National Institutes of Health, public-private partnerships and grants aimed specifically at nonhormonal methods. Promising targets include drugs that interfere with ovulation more precisely, block sperm function, alter cervical mucus without systemic hormonal effects, or prevent fertilization without affecting implantation. Better materials science could improve IUDs, diaphragms and barrier methods. Contraceptive development should also include women with migraines, obesity, clotting risks and other conditions that make existing methods less suitable.</p>
+      <p>Regulation needs reform too, but not deregulation. Because contraceptives are used by healthy people, safety standards should remain high. The needed change is clearer pathways for approval, larger post-marketing surveillance systems and better comparative data. Women should not learn about relative clotting risks from lawsuits and magazine exposés. They should get transparent, comprehensible information from doctors, labels and independent public databases.</p>
+      <p>Finally, insurance coverage matters. The Affordable Care Act’s contraceptive coverage requirement is an important step because a method that costs hundreds of dollars up front, like an IUD or implant, is not truly available to many women. But coverage alone will not create the next generation of methods. If we want contraception beyond the pill, we have to pay for the science, not just the prescription.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The most obvious fact about contraception is also the one the debate most often avoids: almost all of the burden falls on women. Half a century after the pill, the standard menu still consists mainly of female hormonal methods, female devices and female sterilization. Men have condoms and vasectomy, one temporary and user-dependent, the other intended to be permanent. That is not a balanced system. It is a social arrangement disguised as a technological inevitability.</p>
+      <p>If progress has stalled, it is partly because researchers, companies and regulators have accepted the premise that contraception is women’s responsibility. The biological argument is familiar: women release one egg a month, men produce millions of sperm, so female contraception is easier. There is truth in that, but it is not the whole story. Male hormonal contraceptives have shown promise in suppressing sperm production. Nonhormonal approaches that target sperm maturation or motility are scientifically plausible. The problem has been less a lack of possibility than a lack of sustained investment and confidence that men would use such methods.</p>
+      <p>That skepticism can become self-fulfilling. If society assumes men will not take contraceptive responsibility, companies will not build products for them, physicians will not discuss them, and men will never be asked to develop the habits women have been expected to maintain since adolescence. Yet men already use condoms, seek vasectomies and participate in family planning when the available options are clear and acceptable. A reversible male contraceptive would not replace female methods, but it would change the moral and practical landscape. Couples could share risk. Women who cannot tolerate hormones would have more options. Men who do not want to cause a pregnancy would have more control than a condom alone provides.</p>
+      <p>Promoting innovation therefore requires more than another formulation of estrogen and progestin. It requires a deliberate male contraceptive agenda: federal research funding, clinical trial networks, liability protections for responsible development, and public campaigns that present contraception as a shared adult duty. Pharmaceutical companies may doubt the market, but markets can be created. Before the pill, the idea that millions of healthy women would take a daily drug for years was itself culturally radical.</p>
+      <p>Of course, safety standards for male methods must be rigorous. A drug taken by healthy men must have low risks. But the same is true for women, and women have long been asked to weigh side effects against the risks of pregnancy. Men should not be exempt from that calculus simply because the pregnancy happens in someone else’s body.</p>
+      <p>Thinking beyond the pill means thinking beyond the woman as the default patient. Until contraception becomes a responsibility of both sexes, innovation will remain narrower than it should be.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>It is tempting to tell a story of failure: the pill arrived in 1960, and since then we have mostly rearranged the same hormones into rings, patches, injections and implants. But that story is too simple. The pill remains central not because scientists are lazy, but because contraception is a very demanding technology. It must be highly effective, reversible, cheap, acceptable, private, easy to use and safe enough for healthy people to use for years. Few medical products face such a high bar.</p>
+      <p>In that light, the most urgent problem is not that we lack futuristic methods. It is that many women still cannot get the best methods we already have. Long-acting reversible contraceptives — especially IUDs and implants — are more effective in typical use than pills, condoms or rings because they do not depend on daily or per-act compliance. The copper IUD is nonhormonal and can last for years. Hormonal IUDs use low doses and act largely locally. Implants are extremely effective. Yet cost, lack of trained providers, outdated fears about IUDs, and uneven counseling keep these methods underused.</p>
+      <p>The NuvaRing controversy should prompt honest risk discussion, not panic. Different hormonal contraceptives may carry different risks of blood clots, and women deserve clear information. But the absolute risks for healthy young women are generally low, and pregnancy and childbirth carry their own medical risks. A rational contraceptive policy compares real alternatives, including unintended pregnancy, not an idealized world in which sex has no consequences and every method is harmless.</p>
+      <p>That does not mean innovation is unimportant. Better nonhormonal methods, improved male contraception and safer hormonal formulations would all be welcome. But the fastest gains in public health would come from improving access, counseling and continuity of care. The United States has a high unintended pregnancy rate compared with many other developed countries. That is not primarily because no scientist has invented a perfect contraceptive. It is because effective contraception is too often expensive, stigmatized, misunderstood or difficult to obtain.</p>
+      <p>What should be done? First, implement contraceptive coverage without co-pays so up-front cost does not determine choice. Second, train more clinicians to insert IUDs and implants and to counsel without coercion. Third, provide same-day access when possible. Fourth, invest in better comparative safety studies so women are not forced to navigate rumor, advertising and litigation.</p>
+      <p>The pill changed society because it worked and because women could control it. The next breakthrough may be a new molecule. But it may also be a health system that finally makes the full range of existing methods genuinely available.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The question assumes that the pill is “the best contraceptive available,” but that judgment depends on whose experience counts. For many women the pill is liberating, predictable and safe. For others it causes depression, loss of libido, migraines, nausea, weight changes or intolerable bleeding patterns. Some cannot use estrogen because of clotting risks or other medical conditions. If the standard for “best” is population-level effectiveness and convenience, hormonal contraception looks triumphant. If the standard includes the diversity of women’s bodies and preferences, the picture is less flattering.</p>
+      <p>Contraceptive innovation has been constrained by a narrow model of success: suppress or alter female reproductive hormones and ask women to adapt. When side effects occur, they are often minimized as the price of sexual freedom. But a technology that millions of healthy people use for decades should be designed around quality of life, not merely pregnancy prevention. The Vanity Fair article about NuvaRing gained attention because it tapped into a deeper frustration: women often feel they receive reassurance instead of full information.</p>
+      <p>The way forward is not to abandon hormonal methods. They are valuable, and many women want them. The way forward is pluralism. We need more nonhormonal approaches, better barrier methods, improved fertility-awareness tools, safer and easier-to-fit diaphragms or cervical caps, and IUDs that are more acceptable to a wider range of users. We need research that takes sexual satisfaction, mood, bleeding, discontinuation rates and partner dynamics seriously. A method that looks excellent in a trial but is abandoned by many users because they hate how it feels is not truly successful.</p>
+      <p>Innovation also requires changing who shapes the research agenda. Women’s health advocates, primary care clinicians, nurses, young women, women with disabilities, women with chronic illnesses and women from low-income communities should be involved early in product design. Too often, contraception is developed as if the user were an abstract uterus rather than a whole person with relationships, fears, preferences and constraints.</p>
+      <p>Post-marketing surveillance should be stronger as well. Rare adverse events will not always appear in pre-approval trials, especially if those trials are too small or too selective. A robust national system could track complications across methods and make data available in plain language. That would build trust more effectively than defensive messaging from manufacturers.</p>
+      <p>The pill was revolutionary, but revolutions can harden into orthodoxies. Thinking beyond it means asking not only how to prevent pregnancy, but how to do so in ways that respect women’s varied bodies and lives. The goal should not be one perfect method. It should be many good methods, honestly described.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The search for better contraception should begin with humility. Human reproduction is not a simple switch. Ovulation, sperm production, fertilization, implantation, menstrual cycling, libido and long-term health are connected in ways that make intervention difficult. The pill was not a crude accident; it was a profound pharmacological achievement. That it remains widely used after more than 50 years is not merely evidence of stagnation. It is evidence that it solved a hard problem reasonably well.</p>
+      <p>Still, there is a difference between respecting the pill and being satisfied with a contraceptive landscape built around it. In many areas of medicine, innovation has moved toward personalization: different drugs for different patients, devices tailored to different risks, monitoring that refines treatment over time. Contraception has not kept pace. Women often move through trial and error: one pill causes mood changes, another causes breakthrough bleeding, a ring is convenient but raises concerns, an IUD sounds appealing but insertion is intimidating or unavailable. This is not a modern enough system.</p>
+      <p>The most promising path is not a single moonshot but a portfolio. Fund basic science on gametes, cervical mucus and the endometrium. Support male contraception so responsibility is not biologically and culturally assigned to women alone. Improve existing technologies: IUD insertion could be less painful, condoms could be better designed, rings and patches could use lower or different hormone combinations, and emergency contraception could be more reliable and accessible. Digital tools may help some women track cycles, but they should be evaluated rigorously and not oversold as magic.</p>
+      <p>The market by itself will underprovide this innovation. Contraceptives must be inexpensive, have low side-effect profiles and compete with generics. That makes them less attractive than drugs for diseases with higher prices and less liability exposure. Public funding, foundation support and advance market commitments could help. So could patent and regulatory policies that reward genuine improvements in safety, tolerability and ease of use rather than minor reformulations.</p>
+      <p>At the same time, advocates should be careful not to frame every risk as scandal. If public debate treats any adverse event as proof that contraception is reckless, companies will retreat and women will be left with fewer choices. The right standard is informed choice: accurate data on absolute and comparative risks, clear counseling, and respect for a woman’s assessment of what trade-offs she is willing to accept.</p>
+      <p>Progress has not stopped, but it has been too slow and too narrow. The answer is neither nostalgia for “natural” methods nor blind faith in hormones. It is sustained investment in a wider contraceptive ecosystem, where safety, autonomy, effectiveness and shared responsibility all matter.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Yes—progress has stalled, not because contraception is scientifically impossible, but because the system rewards modest repackaging more than genuine invention. Much of the last half-century of “new” contraception has meant new ways of delivering the same basic hormonal command: suppress ovulation, thicken cervical mucus, or thin the uterine lining. The pill, patch, ring, injection and implant differ greatly in convenience, but they remain variations on an endocrine theme.</p>
+      <p>That does not make them bad. Hormonal contraception has given millions of women control over their lives, and the risks of pregnancy itself are often greater than the risks of contraception. The danger is treating “good enough” as the end of the story. A healthy woman may use contraception for 20 or 30 years. She should not have to choose among daily compliance, systemic hormones, condoms, sterilization, or an IUD that many clinicians still do not offer as readily as they should.</p>
+      <p>The reasons for stagnation are not mysterious. Contraceptives are used by healthy people, so tolerance for side effects is understandably low. Rare events, like blood clots, may not appear clearly in pre-approval trials. Litigation risk is high. Meanwhile, older generic pills are cheap, so a company has more incentive to create a new branded delivery device than to undertake risky research into an entirely new mechanism. The result is innovation at the margins.</p>
+      <p>A serious innovation agenda would treat contraception as a public-health technology, not merely a consumer product. The National Institutes of Health, foundations and public-private partnerships should invest in basic research on sperm function, egg maturation, implantation, cervical mucus and nonhormonal targets. Male contraception deserves far more funding than it receives. So do methods that are long-acting but easily discontinued by the user, and methods that can be used only when needed rather than every day.</p>
+      <p>Regulation also needs modernization. We should require stronger post-market surveillance, using large health databases to detect rare harms quickly, while giving manufacturers clearer rules and incentives for developing truly novel methods. Insurance coverage matters too: if new methods are expensive up front, they will not reach the women who most need options.</p>
+      <p>The NuvaRing controversy should not produce panic about all hormonal contraception. But it should remind us that convenience is not the same as progress. The next great advance will come when women and men are offered more than different packages for the same old biological bargain.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The premise is partly wrong: progress has not stalled so much as it has failed to reach enough people. If “best” means most familiar, the pill may still hold that title. But if “best” means most effective in ordinary use, the pill is not the champion. Intrauterine devices and contraceptive implants are far more effective because they do not depend on remembering a pill every day. The copper IUD is nonhormonal and can last for years. Hormonal IUDs use very low localized doses. Subdermal implants provide long-acting reversible protection. These are real advances.</p>
+      <p>There have been other gains as well: lower-dose pills, emergency contraception, improved sterilization techniques, and more options for women who cannot use estrogen. Plan B’s move toward over-the-counter access is an important public-health change. The problem is that many Americans still experience contraception as if the choice were only between condoms and the pill.</p>
+      <p>Why? Cost, training and misinformation. For years, the high upfront price of IUDs and implants kept them out of reach, even when they were cheaper over time. Many doctors were slow to recommend IUDs to young women or women who had not given birth, partly because of lingering memories of the Dalkon Shield disaster from the 1970s. Some clinics do not provide same-day insertion. Insurance rules and moral politics further complicate access.</p>
+      <p>The NuvaRing debate should be taken seriously, but it should also be kept in perspective. Combined hormonal contraceptives can increase the risk of blood clots, and women deserve plain information about that risk. But pregnancy and childbirth carry risks too. The answer is not to frighten women away from contraception; it is to make sure they can choose among methods with full knowledge.</p>
+      <p>What would promote innovation? First, use the innovations we already have. Train clinicians, cover the full range of FDA-approved methods without cost-sharing, support same-day access, and teach contraception accurately in schools. Second, continue research into safer hormonal formulations, better IUDs, and male methods. But the greatest immediate “breakthrough” may be organizational, not chemical: making the most effective existing methods available to anyone who wants them, without coercion and without financial barriers.</p>
+      <p>A technology sitting behind a price wall or a misinformed doctor is not a practical innovation. Before declaring contraception stagnant, we should finish delivering the progress already achieved.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The most revealing fact about modern contraception is not that the pill is still common. It is that, more than 50 years after the pill, the burden of fertility control still falls overwhelmingly on women. Women are expected to tolerate mood changes, bleeding changes, reduced libido, nausea, weight concerns and, in rare cases, dangerous clotting risks. Men are offered two main choices: condoms or vasectomy. That imbalance is not biology alone. It is culture, markets and political will.</p>
+      <p>A male contraceptive is scientifically difficult, but not fanciful. Researchers have long studied hormonal regimens that suppress sperm production, as well as nonhormonal approaches that interfere with sperm maturation or transport. Vasectomy proves that the male reproductive tract can be targeted effectively; the challenge is reversibility and acceptability. Yet funding has been thin, and companies have doubted whether men would use such methods or whether women would trust them to do so. Those assumptions become self-fulfilling.</p>
+      <p>The pill’s success may have unintentionally narrowed our imagination. Because women could control pregnancy without male cooperation, society came to see contraception as women’s medicine. That was liberating in one sense, but it also normalized the idea that healthy women should medicate themselves for decades while men remain largely spectators. The NuvaRing controversy is a reminder that this arrangement has costs.</p>
+      <p>Promoting innovation requires a deliberate effort to change the research agenda. Federal agencies and foundations should create a serious male-contraception program, with milestones, clinical trial support and partnerships with industry. Regulators should provide clear guidance for approving male methods, including how to weigh risks when the direct medical benefit accrues partly to a partner. Public education should frame contraception as a shared responsibility, not a private female chore.</p>
+      <p>At the same time, pursuing male methods must not become an excuse to neglect women’s options. Many women will continue to want methods they control, independent of a partner. We need safer hormonal methods, nonhormonal methods, better barrier methods and long-acting reversible methods that are easy to stop.</p>
+      <p>But a truly innovative contraceptive future cannot mean only a new ring, a new patch or a slightly different pill. It must mean expanding responsibility. If men could share more of the physical burden of preventing pregnancy, women would gain not only more choices, but also a fairer bargain. The next revolution in contraception may be less about chemistry than about equality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>Contraceptive innovation has slowed because the field sits at the most unforgiving intersection of medicine, law and politics. A contraceptive is taken by healthy people, often for years. Its benefit is prevention of an event that may or may not occur in any given month. Its harms, when they occur, are visible and sometimes catastrophic. That makes the acceptable risk threshold extremely low.</p>
+      <p>This is why the NuvaRing story matters, but also why it can mislead. No drug is risk-free. Combined hormonal contraception has long been associated with an increased risk of venous blood clots, and different formulations may carry different levels of risk. The right conclusion is not that companies should stop developing contraceptives. The conclusion is that we need a better way to discover, compare and communicate rare risks.</p>
+      <p>Pre-market trials cannot reliably detect every uncommon event. They are too small and too short. Instead, the Food and Drug Administration should require robust post-market surveillance using large health systems and insurance databases. Labels should present absolute risks in language ordinary users understand: not just “doubles the risk,” but “from how many cases to how many cases.” New products should be compared with existing standards, not evaluated in a vacuum.</p>
+      <p>In exchange for stronger surveillance and transparency, companies that comply should receive clearer regulatory pathways and some protection from unpredictable litigation. The current environment encourages defensive, incremental product development: alter a dosage, change a device, market convenience, and hope the liability profile is manageable. If we want new mechanisms—especially nonhormonal or male methods—we need incentives that justify the risk. Patent extensions, research tax credits, prize funds and public-private partnerships could all help, but they should be reserved for genuine advances, not cosmetic reformulations.</p>
+      <p>Insurance policy can also shape innovation. If public and private insurers cover only the cheapest old methods, companies will hesitate to invest. If they cover all effective methods while demanding good comparative evidence, the market will reward real improvements.</p>
+      <p>We should resist two temptations: demonizing hormonal contraception and pretending the status quo is good enough. The pill and its descendants have been enormously beneficial. But mature technologies improve when institutions reward safety, novelty and candor. Contraception needs a regulatory system that encourages invention without asking women to serve as unwitting test subjects after the fact.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The question should not be only whether scientists can invent a better contraceptive. It should be: better for whom, and under whose control? The history of birth control includes liberation, but also coercion—forced sterilization, population-control campaigns, pressure on poor women to use long-acting methods, and dismissive treatment of women who report side effects. Innovation that ignores that history will not deserve public trust.</p>
+      <p>Many women are satisfied with hormonal contraception. Many others are not. Some experience depression, headaches, sexual side effects or bleeding changes that are too easily minimized. Some cannot use estrogen safely. Some want a method they can stop without a medical appointment. Some need contraception they can hide from a violent partner; others want something that does not alter their cycle. There is no single “best” method because women’s lives are different.</p>
+      <p>That is why the next stage of contraceptive progress should emphasize choice and user control. Nonhormonal research deserves much more support: improved copper IUDs, better diaphragms and cervical caps, contraceptive gels or films, methods that work only around intercourse, and approaches that block fertilization without changing the whole endocrine system. Barrier methods should not be treated as relics simply because they are old; they also protect against sexually transmitted infections, something pills and rings do not do. Condoms could be made better, more pleasurable and more widely accepted if they were treated as a serious design challenge.</p>
+      <p>We should also invest in better information. Women need clear comparisons of effectiveness in typical use, side effects, reversibility, privacy and cost. Too often counseling becomes either overly casual—“try this, most women do fine”—or overly directive, especially toward low-income patients. Respectful counseling means helping a person choose, not steering her toward the method a clinic or insurer prefers.</p>
+      <p>Public funding is essential because the market will not automatically produce methods for those with the least purchasing power. A contraceptive that is ideal for a college student in Boston may not be ideal for a rural teenager, a woman without insurance, or someone in a country where refrigeration and follow-up visits are difficult.</p>
+      <p>The NuvaRing controversy should open a larger conversation. Safety matters, but so does autonomy. Progress should not be measured only by effectiveness rates or patent filings. It should be measured by whether more people can prevent pregnancy in ways that fit their bodies, values and circumstances.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The stalled progress in contraceptive innovation is fundamentally a market failure, not a scientific one. Pharmaceutical companies have systematically deprioritized birth control research because the profits are deemed insufficient and the regulatory liability is enormous. When NuvaRing hit the market, it promised a convenient alternative to daily pills, yet women now face questions about its safety profile — questions that might have been answered more thoroughly with larger, longer-term studies if the industry had invested more seriously in contraceptive safety research.</p>
+      <p>The economics are straightforward: a successful contraceptive is used by a woman for perhaps thirty years of her life, generating consistent but modest revenue. Meanwhile, drugs for chronic conditions like hypertension or diabetes are taken for decades with much higher price tags and less regulatory scrutiny. Why would any pharmaceutical company pour hundreds of millions into developing a truly novel contraceptive when they can extend patents on existing formulations or create略微改进 versions of current products?</p>
+      <p>Breaking this deadlock requires multiple interventions. First, public funding through organizations like the NIH should priority funding for contraceptive research that the private sector finds unprofitable. Second, the regulatory pathway needs streamlining to reduce the enormous costs associated with bringing new contraceptive technologies to market. Third, legal reforms limiting excessive liability could make the field more attractive to manufacturers worried about class-action lawsuits.</p>
+      <p>We should also consider prize-based incentive systems where governments offer substantial rewards for successfully developing novel contraceptives with improved safety profiles. Such approaches have worked in other areas where market incentives have failed to produce socially necessary products. The status quo serves no one well — women deserve better options than those developed半个多世纪前。</p>
+      <p>Innovation will not happen through market forces alone. It requires deliberate policy choices to align private incentives with public health needs.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The conversation around contraceptive innovation keeps circling back to women&#x27;s bodies, and it&#x27;s time we seriously addressed the most obvious gap: male contraception. Women have carried the entire burden of pregnancy prevention for decades, and the side effects of hormonal methods — from mood changes to blood clot risks — disproportionately affect female bodies. The science for male contraception has advanced considerably, yet we see no male birth control pill on pharmacy shelves.</p>
+      <p>The reasons are instructive. Research on male contraceptive options has stalled despite promising trials of hormone-based methods that effectively halt sperm production. Side effects in those trials — similar to what women experience daily — were deemed unacceptable by regulators, even though comparable or worse side effect profiles in female contraceptives have been approved and used for decades. This double standard reveals how contraceptive research has been shaped more by cultural assumptions than by scientific evidence.</p>
+      <p>Non-hormonal approaches for men are also promising. Research into compounds that temporarily block sperm motility or function has shown results in animal studies, yet funding remains minimal. If even a fraction of the resources devoted to improving female hormonal methods were redirected toward male options, we could dramatically expand contraceptive choices within a decade.</p>
+      <p>The pharmaceutical industry&#x27;s reluctance to invest makes sense from a profit perspective but represents a profound policy failure. When women&#x27;s groups, public health advocates, and researchers pushed for better emergency contraception, it took years of struggle against regulatory and cultural barriers. The same advocacy energy needs to be directed toward fundamentally restructuring how we think about contraceptive responsibility.</p>
+      <p>Innovation in this field requires challenging assumptions about whose bodies should bear the costs and risks of contraception. Until male options become as accessible and varied as female methods, we cannot claim genuine progress in reproductive health.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Reading about the NuvaRing controversy, I worry that we are falling into a trap of unnecessary alarmism that could ultimately harm women&#x27;s health. Hormonal contraceptives remain among the most thoroughly studied medications in history, and despite legitimate concerns about risks like blood clots, the overall safety record is remarkably strong. Women taking the pill have dramatically lower rates of ovarian cancer, and the benefits for menstrual regulation and pregnancy prevention are enormous.</p>
+      <p>Every medication carries risks. The question is whether those risks are reasonable relative to alternatives — and for most women, hormonal contraception remains the best option available. Natural family planning methods have failure rates several times higher than hormonal methods, and barrier methods require consistent use that many find impractical. The grass-is-not-greener problem applies here: there is no perfect contraceptive, and pursuing theoretical improvements could lead women away from methods that have served them well.</p>
+      <p>This is not to dismiss legitimate concerns about insufficient research or regulatory failures. The FDA approval process for contraceptives deserves scrutiny, and the industry should invest more in understanding rare adverse events. But we should be cautious about headlines that may cause women to abandon effective contraception out of fear, leading to unwanted pregnancies and their own health risks.</p>
+      <p>What would genuinely help: better informed consent so women understand risks and benefits clearly, more research into genetic factors that might predispose some women to complications, and continued refinement of existing methods to reduce hormone doses while maintaining efficacy. The goal should not be to replace hormonal contraception wholesale but to make it safer and more tailored to individual women.</p>
+      <p>Progress in medicine is incremental. Half a century of experience with hormonal methods gives us a foundation to build upon, not evidence of failure. The solution to rare adverse events is better science, not abandonment of a technology that has empowered millions of women to control their reproductive lives.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The real barrier to contraceptive innovation isn&#x27;t scientific possibility but access reality. We already have a range of contraceptive methods — pills, patches, rings, IUDs, implants, injections, barriers — yet millions of women worldwide lack meaningful access to them. In the United States, unintended pregnancy rates remain stubbornly high, particularly among low-income women and young people. The innovation we need most is not a new pharmaceutical compound but the political will to make existing methods universally available.</p>
+      <p>Consider the intrauterine device. Copper IUDs last over a decade with no user action required and costs that amortize to mere pennies per day. Hormonal IUDs offer even lighter periods and can be removed whenever pregnancy is desired. Yet IUD adoption remains limited by factors that have nothing to do with technology: lack of trained providers, high upfront costs, persistent myths about safety, and inadequate insurance coverage. If we directed energy toward provider training and insurance reform instead of waiting for pharmaceutical breakthroughs, we could prevent more unintended pregnancies than any new contraceptive product is likely to achieve.</p>
+      <p>The global picture is even starker. In developing countries, access to contraception means the difference between surviving childhood and not, between staying in school and dropping out, between economic stability and poverty. Organizations like the Gates Foundation have rightly focused on expanding access to existing methods rather than waiting for novel technologies perfectly tailored to resource-poor settings.</p>
+      <p>This is not an argument against research into new methods — we absolutely need alternatives for women who cannot use hormones or copper. But we should be honest about where our efforts will have the greatest impact. Innovation and access are not either-or propositions, yet when resources are limited, expanding access to proven methods should take priority over speculative research into products that may never reach those who need them most.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Something important gets lost in these discussions: the assumption that hormonal contraception represents the pinnacle of contraceptive achievement, when in fact we may be trying to perfect the wrong technology altogether. Fifty years of hormonal birth control have given women real autonomy, but they&#x27;ve also meant that women alone bear the physiological burden of preventing pregnancy, including all the side effects and risks.</p>
+      <p>Non-hormonal approaches deserve serious investment. The Femcap and other barrier devices have barely evolved. Fertility awareness methods have been dismissed as unreliable without adequate research into improving their effectiveness through better tracking technology. The copper IUD works without hormones but causes heavier periods for many women. Each of these limitations represents a solvable problem if we prioritized solutions.</p>
+      <p>What would accelerate real innovation? First, we need regulatory pathways that encourage development of contraceptives that address unmet needs rather than just competing with existing products. Second, foundations and governments should fund research into non-hormonal methods that Big Pharma considers unprofitable. Third, we should invest in delivery mechanisms that don&#x27;t require clinical visits — making contraception truly accessible outside healthcare systems.</p>
+      <p>The future likely involves technology we haven&#x27;t imagined yet. Microbicides that women can apply only when needed. Long-acting reversible methods that require no hormones. Perhaps even temporary chemical sterilization that can be easily reversed. These aren&#x27;t science fiction — elements of each exist in research labs today — but without deliberate investment, they&#x27;ll stay there.</p>
+      <p>Women in 2014 deserve more than variations on 1960s technology. Innovation requires taking risks on genuinely new approaches rather than endlessly refining the same platform. The history of medicine shows that transformative progress comes from paradigm shifts, not incremental improvements. The next breakthrough in contraception probably hasn&#x27;t been imagined yet, but it won&#x27;t emerge without the research investment and regulatory creativity to explore genuinely different paths.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

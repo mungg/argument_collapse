@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cost of Corporate-Funded Research · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Science Tech · Binary</div>
+  <h1 class="debate-title">The Cost of Corporate-Funded Research</h1>
+  <div class="question-body"><p>The  news that  the sugar industry secretly financed research on heart disease in the 1960s to make sure its product escaped blame was only one of the more egregious examples of business  funding science to help their interests.  Does  corporate funding of scientific research need to be reduced?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>Corporate funding of scientific research should not be reduced</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>Corporate funding of scientific research should be reduced</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 25%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 75%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 0%;"></div>
+      </div>
+      <span class="bar-num">n=4</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 80%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 20%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 38%;"></div>
+        <div class="seg wo" style="width: 4%;"></div>
+        <div class="seg n"  style="width: 8%;"></div>
+        <div class="seg ws" style="width: 12%;"></div>
+        <div class="seg ss" style="width: 38%;"></div>
+      </div>
+      <span class="bar-num">n=24</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_1.html">
+      <td class="arg-text">Corporate funding of scientific research must be strictly regulated through a universal framework of transparency and independence to prevent industries from manipulating science for commercial gain.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_2.html">
+      <td class="arg-text">Corporate funding of scientific research should be reduced because it creates structural biases that systematically favor industry interests over objective public knowledge.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_3.html">
+      <td class="arg-text">Corporate funding should not be viewed as a substitute for federal support, as robust public funding is essential to empower the basic, high-risk research that industry requires to develop transformative therapies.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_4.html">
+      <td class="arg-text">While corporate funding of research should not be banned entirely, it must be reduced in public-interest sectors and strictly regulated to prevent private interests from distorting scientific integrity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_5.html">
+      <td class="arg-text">Corporate funding of scientific research should not be reduced because public-private partnerships are essential for innovation and solving global challenges.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_6.html">
+      <td class="arg-text">Reducing corporate funding is an insufficient solution because science is inherently entangled with industrial interests and suffers from internal pathologies that require systemic cultural and institutional reforms rather than just financial purification.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_7.html">
+      <td class="arg-text">Corporate funding of scientific research should not be reduced in isolation because doing so would cripple scientific progress unless public funding is significantly increased and institutional safeguards are strengthened.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_8.html">
+      <td class="arg-text">The scientific community must move beyond merely reducing corporate funding by fundamentally restructuring its financial ecosystem to prioritize public funding and eliminate inherent conflicts of interest.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_the-cost-of-corporate-funded-research_arg_9.html">
+      <td class="arg-text">Direct corporate funding should be reduced in fields that impact public policy, and the remaining industry involvement must be governed by strict institutional firewalls to prevent financial interests from corrupting scientific truth.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Gretchen Goldman</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/09/20/the-cost-of-corporate-funded-research/gretchen-goldman" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jeffrey M. Drazen</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/09/20/the-cost-of-corporate-funded-research/jeffrey-m-drazen" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Richard D. McCullough</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/09/20/the-cost-of-corporate-funded-research/richard-d-mccullough" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Rush D. Holt</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/09/20/the-cost-of-corporate-funded-research/rush-d-holt" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The sugar industry&#x27;s manipulation of heart disease research, recently documented through internal documents from the 1960s, is genuinely shocking — but the lesson it teaches is not that corporate funding of science must be reduced. It&#x27;s that the relationships between funders and researchers must be made radically more transparent, and that certain methodological firewalls need to be built into the way industry-sponsored studies are designed, reviewed, and reported.</p>
+      <p>Cutting corporate funding sounds clean in principle, but it ignores how much of modern science depends on it. Pharmaceutical companies run the clinical trials that bring drugs to market. Agricultural firms underwrite crop research. Tech companies fund a huge share of computer science. Even when federal grants dominate basic research, industry money pays for the translational work that turns discoveries into useful products. Slashing that funding without replacement would not produce purer science; it would produce less science, and the science that remained would be skewed toward whatever academic and governmental priorities happened to win out — themselves not free of political bias.</p>
+      <p>The real problem the sugar story exposes is concealment. Harvard researchers took money from the Sugar Research Foundation, wrote a literature review that downplayed sucrose&#x27;s role in heart disease, and did not disclose the sponsorship. That kind of arrangement would be harder today thanks to disclosure requirements at major journals and conflict-of-interest rules at universities, but the rules are still uneven, often self-policed, and routinely flouted. Meta-analyses by Lisa Bero, Marion Nestle, and others have shown that industry-funded nutrition studies are several times more likely to reach conclusions favorable to the sponsor — a finding mirrored in pharmaceutical and tobacco research.</p>
+      <p>The right response is stronger structural safeguards: mandatory pre-registration of study designs, public release of raw data, independent statistical analysis, sponsor blinding where feasible, and serious penalties for nondisclosure. Pair that with robust public funding so industry isn&#x27;t the only game in town for applied questions. Reducing corporate research dollars is a blunt instrument; reducing corporate control over what those dollars produce is the sharper one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The recent revelation that the sugar industry in the 1960s secretly funded research to shift blame for heart disease onto fat rather than sugar is a stark reminder of how corporate money can distort the scientific record. But it is far from an isolated case. From tobacco companies suppressing evidence on smoking and lung cancer to pharmaceutical firms burying unfavorable trial results, the pattern is clear: when commercial interests commission science, the conclusions often serve the sponsor. That does not mean all privately funded research is tainted, but it does force us to ask whether the current volume of corporate funding needs to be curtailed. The answer is yes—not because industry should be banned from the lab, but because the present scale and opacity of such funding corrupts the integrity of science as a public good.</p>
+      <p>The core problem is structural. Corporate-funded studies are not neutral inquiries; they are embedded in a system that rewards positive results for the sponsor. A large body of evidence by 2016 shows that industry-funded research on drugs, nutrition, and chemical safety is significantly more likely to produce findings favorable to the funder than independent research. This “funding effect” often arises not from outright fraud, but from subtle biases in study design, selective publication of favorable outcomes, and the sheer volume of industry dollars that can overwhelm independent voices. When Coca-Cola funds research on obesity, the headline-grabbing message is often that exercise matters more than cutting calories from sugary drinks—a conclusion that suits the company’s bottom line, even if it downplays well-established science on sugar’s role in metabolic disease.</p>
+      <p>Defenders of corporate funding note that many advances—new medicines, cleaner technologies—emerge from industry labs. Public funding alone cannot carry the full cost of innovation. But this argument confuses the need for industry to conduct its own product testing with the independence of the broader scientific enterprise. A pharmaceutical company must test its own drugs for safety and efficacy; that is not the same as underwriting academic research that shapes clinical guidelines and public perception. The danger arises when industry money becomes so pervasive that it co-opts entire fields, creating a fog of doubt around inconvenient findings—exactly the playbook used by the sugar and tobacco industries.</p>
+      <p>Reducing corporate funding is not about ending public-private partnerships. It means drawing a bright line: companies should fund their own regulatory science, but public money must be the default for fundamental research, nutrition studies, and environmental assessments that inform policy. Tougher disclosure rules are essential—critics have demanded them for years, but transparency alone is insufficient when industry can still drown out independent work with repetitive, sponsored messaging. We also need firewalls: independent review of industry data, robust conflict-of-interest policies at journals and universities, and a much larger pool of public research funding to counterbalance private agendas.</p>
+      <p>The sugar scandal is not an anomaly; it is a lesson. When the health of the public is at stake, the science that guides us must be worthy of trust. Reducing the distorting influence of corporate money is a necessary step toward that goal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The recent revelation that the sugar industry secretly paid Harvard scientists in the 1960s to shift the blame for heart disease away from sugar and onto saturated fat is infuriating, but it is hardly surprising. It fits a long, established pattern of corporate actors manipulating the scientific literature to protect their bottom lines. However, asking whether corporate funding of scientific research needs to be broadly &quot;reduced&quot; misses the practical reality of how modern science is sustained. Instead of eradicating private funding, we must radically restructure how it is administered.</p>
+      <p>Federal funding for scientific research, particularly through agencies like the National Institutes of Health and the National Science Foundation, has faced years of stagnation and budget sequestration. In this austere fiscal environment, academic institutions rely heavily on private capital to keep laboratories running and to fund expensive, large-scale studies. A draconian reduction in corporate funding would inevitably slow the pace of innovation in fields ranging from renewable energy to pharmacology.</p>
+      <p>The crisis we face is not the presence of corporate money, but the lack of an institutional firewall between the funder and the methodology. When pharmaceutical companies are allowed to design clinical trials for their own drugs, suppress unfavorable data, and ghostwrite journal articles, the scientific method is compromised. We have seen the devastating public health consequences of this dynamic not just with sugar, but historically with the tobacco industry&#x27;s manufactured controversies and the fossil fuel industry&#x27;s decades-long campaign to muddy the waters on climate change.</p>
+      <p>To protect the integrity of public science, we do not need to banish corporate money; we need to sanitize it. This can be achieved by mandating blind funding pools. If an industry consortium wishes to fund nutritional or pharmacological research, that money should be deposited into an independent trust administered by a neutral third party, which then awards grants based purely on scientific merit. The corporate donors must have zero influence over the experimental design, the interpretation of the data, or the publication of the final results.</p>
+      <p>Furthermore, academic journals and universities must enforce absolute transparency regarding financial conflicts of interest, penalizing researchers who fail to disclose industry ties. Science is ultimately built on public trust. We can afford to accept corporate dollars to fund vital research, but we cannot afford to let those dollars purchase the scientific consensus.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Corporate funding of research should not be treated as automatically corrupt, but it should be treated as presumptively conflicted. The sugar industry episode is disturbing not simply because money changed hands, but because sponsorship was hidden and the research agenda was shaped to protect a product. That is the central danger: companies do not need to falsify data to distort science. They can choose the questions, fund sympathetic investigators, bury unfavorable findings, emphasize uncertainty and turn a partial truth into a public-health strategy.</p>
+      <p>A blanket ban on corporate funding would be unrealistic and, in some fields, harmful. Drug development, medical devices, agricultural technology and engineering often require resources and technical knowledge that universities and government agencies do not possess at sufficient scale. Industry-funded trials can produce valuable evidence, and collaboration between academic scientists and firms can bring discoveries into practical use. The problem is not that companies have interests. The problem is when those interests are allowed to masquerade as neutral science.</p>
+      <p>The pattern is familiar. Tobacco companies funded research to deflect attention from smoking. Pharmaceutical companies have been criticized for selective publication and ghostwriting. Food and beverage companies have supported studies that shift blame from calories or sugar to inactivity or other nutrients. These examples show that disclosure alone is not enough, although it is essential. A conflict listed in small print does not repair a study designed to reach a sponsor-friendly conclusion.</p>
+      <p>The better answer is to reduce dependence on corporate money and strengthen the rules around it. Public funding for nutrition, environmental health and comparative effectiveness research should be increased precisely because these are areas where private incentives often point away from the public interest. When corporate funding is used, contracts should guarantee investigator independence, full access to data, the right to publish negative results and preregistration of hypotheses and methods. Journals and universities should require plain-language disclosure of funding and sponsor involvement. Data underlying major safety or public-health claims should be available for independent review when privacy and trade-secret concerns can reasonably be protected.</p>
+      <p>We should also distinguish between funding research and funding doubt. Businesses have every right to test products, improve them and support legitimate inquiry. They should not be allowed to secretly manufacture scientific ambiguity while public policy, medical advice and consumer behavior hang in the balance. The aim should not be to drive all corporate money out of science, but to ensure that science is not quietly converted into marketing.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The revelation that the sugar industry funded research in the 1960s designed to deflect attention from sucrose&#x27;s role in heart disease is troubling, but it should prompt reform of transparency and disclosure rather than a blanket reduction of corporate research funding. The answer to conflicted science is not less science, but better institutional guardrails.</p>
+      <p>Corporate funding of research has become essential to scientific advancement. Universities depend on industry partnerships to fund graduate positions, laboratory equipment, and basic infrastructure that government grants alone cannot provide. The pharmaceutical, technology, and biotechnology sectors have generated discoveries that have benefited millions. Eliminating corporate research funding would not make research disappear—it would simply shift it entirely behind closed doors, where even fewer oversight mechanisms exist.</p>
+      <p>The real problem with the sugar industry case was not that industry funded research, but that the funding was concealed and the resulting science was used to mislead the public and policymakers. This represents a failure of disclosure, not a failure of industry-university partnerships per se. Modern journals, funding agencies, and universities have substantially strengthened conflict-of-interest requirements since the 1960s. Clinical trial registries, mandatory financial disclosure, and independent review boards represent meaningful progress, even if gaps remain.</p>
+      <p>The appropriate response is not to reduce corporate research funding, but to demand complete transparency about it. Every study should clearly disclose all sources of funding, and readers should be empowered to evaluate potential biases for themselves. Peer reviewers and editors bear responsibility for considering conflicts when interpreting results.</p>
+      <p>Furthermore, independent public funding for basic research must remain robust. A healthier research ecosystem depends on multiple funding streams, with government and non-profit sources providing counterbalances to industry priorities. Congress and funding agencies should view scientific independence as an investment, not an expense.</p>
+      <p>The sugar industry scandal is a reminder that science operates within human institutions susceptible to corruption. The solution is vigilance, transparency, and continued investment in research integrity—not retreat from productive industry partnerships that, when properly governed, serve both scientific and social progress.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The revelations about the sugar industry&#x27;s manipulation of heart disease research in the 1960s are appalling, but they shouldn&#x27;t lead us to the wrong conclusion. The problem isn&#x27;t that corporations fund science—it&#x27;s that they sometimes do so secretly, with hidden contractual strings, and without accountability for the resulting publications. Reduce the secrecy, not the funding.</p>
+      <p>Consider the alternative. Federal R&amp;D spending as a share of GDP has been declining for decades, and the NIH budget has lost roughly 22 percent of its purchasing power since 2003. Universities can&#x27;t make up that gap, and basic curiosity-driven science doesn&#x27;t translate to drugs, devices, materials, or software without substantial private investment. Most pharmaceutical development, virtually all applied engineering research, and a great deal of agricultural science happen because companies pay for it. If we cut that funding off, we don&#x27;t get purer science—we get less science.</p>
+      <p>What we should demand instead is radical transparency. Every study should disclose its funding source, its data, its pre-registered hypotheses, and any contractual provisions giving sponsors veto power over publication. Journals like JAMA and the BMJ have been moving in this direction; the policy should be universal. Sponsors who refuse should find their studies excluded from peer-reviewed venues and from regulatory consideration.</p>
+      <p>We should also distinguish between funding the work and shaping the conclusions. A sugar trade group paying Harvard nutritionists to write a literature review tilted toward fat is corruption. A pharmaceutical company funding a Phase III trial conducted by independent investigators with a pre-registered protocol and blinded analysis is something quite different—and the FDA&#x27;s willingness to accept such data, with appropriate safeguards, has produced many of the drugs we rely on.</p>
+      <p>The deeper issue exposed by the sugar story is the lag time. Those papers ran in the New England Journal of Medicine in 1967 and shaped dietary guidelines for fifty years before the funding came to light. That&#x27;s a transparency failure, not a funding failure. With mandatory disclosure, replication requirements, and independent re-analysis of industry-funded data, we can keep the money flowing into science while making manipulation much harder to pull off and easier to detect when it happens. Cutting corporate funding would protect us from one form of bias by exposing us to a much larger one: ignorance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Yes, corporate funding of scientific research needs to be sharply reduced—not because every company-sponsored study is fraudulent, but because the systemic incentives have hollowed out the credibility of entire fields.</p>
+      <p>The sugar industry case is not an outlier. We now have documented histories of the tobacco industry manufacturing doubt about smoking and cancer for forty years, the lead industry suppressing evidence of childhood neurotoxicity, ExxonMobil&#x27;s own scientists concluding in the 1970s that fossil fuels would warm the planet while the company funded denial campaigns for decades, and pharmaceutical companies hiding negative trial data on antidepressants, Vioxx, and Avandia. In each case, the harm wasn&#x27;t just one bad paper—it was a distorted scientific consensus that delayed regulation by a generation or more.</p>
+      <p>The standard response is that disclosure solves the problem. It doesn&#x27;t. Multiple meta-analyses, including work by Lisa Bero and colleagues, have shown that industry-funded studies are several times more likely to reach conclusions favorable to the sponsor than independent studies of the same questions. This effect persists even when methodology appears sound, because bias enters through study design, choice of comparator, endpoint selection, and selective publication—not through obvious data fabrication. A disclosure line at the end of an abstract does nothing to correct any of this.</p>
+      <p>Nor is the &quot;we need the money&quot; argument as strong as it sounds. The United States spends about $500 billion a year on R&amp;D. A meaningful shift—say, doubling NIH and NSF budgets and funding independent clinical trials through a public mechanism financed by a small levy on industry revenue—would be cheap compared to the costs of bad science. The Italian Medicines Agency already runs independent trials this way. The proposal isn&#x27;t utopian.</p>
+      <p>The harder question is institutional. Universities have grown addicted to industry partnerships, endowed chairs, and licensing revenue. Faculty careers depend on grants whose strings are increasingly visible. Reducing corporate funding means rebuilding public science infrastructure that has been deliberately starved.</p>
+      <p>But the cost of not doing so is measured in distorted dietary guidelines, delayed climate action, drugs that kill people, and a public that—rationally—no longer trusts scientific institutions to tell the truth. Trust in science is itself a public good, and corporate money is steadily depleting it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The framing of this debate is wrong. Asking whether corporate funding &quot;needs to be reduced&quot; treats funding as a single dial we can turn down. The real question is structural: who controls study design, who owns the data, who decides what gets published, and who reviews the results? Get those right and the source of the money matters much less. Get them wrong and even pure public funding produces junk.</p>
+      <p>Start with the sugar industry case itself. What made it scandalous wasn&#x27;t payment per se—it was that researchers at Harvard accepted money to produce a review whose conclusion was effectively negotiated in advance, and the funding wasn&#x27;t disclosed. Both failures are about governance, not about the existence of industry money. A pre-registered protocol, independent data analysis, and mandatory disclosure would have made the manipulation either impossible or immediately visible.</p>
+      <p>Now consider areas where corporate funding works reasonably well. Semiconductor research, materials science, much of computer science, and large swaths of engineering involve heavy industry sponsorship and produce results that are repeatedly tested against reality—chips either work or they don&#x27;t. Bias is constrained by the brutal feedback of physical implementation. The fields where corporate funding becomes dangerous are those where outcomes are probabilistic, long-delayed, or contested by definition: nutrition, toxicology, pharmacology, climate impacts. Here, results can be spun for decades before reality catches up.</p>
+      <p>This suggests a targeted approach rather than a blanket reduction. For clinical trials, require pre-registration, independent statistical analysis, and full data sharing—the FDA could mandate this tomorrow. For nutrition and toxicology, fund independent replication through a public pool to which industry contributes but does not control. For regulatory science specifically, prohibit sole-source industry studies; require parallel independent work. For academic research, cap the fraction of any lab&#x27;s funding that can come from a single corporate source, the way some universities already do.</p>
+      <p>These reforms are more politically tractable than &quot;reduce corporate funding,&quot; and they actually address the mechanism of harm. Cutting funding without changing governance would simply shift research offshore or into private corporate labs where there is no peer review at all. Cutting governance without cutting funding would discipline most of the bad behavior we&#x27;ve seen. The answer isn&#x27;t less money—it&#x27;s better rules.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>I want to push against both the easy reformist and easy abolitionist positions on this question, because I think they share a flawed premise: that science is a neutral institution being corrupted by external corporate interference. It isn&#x27;t, and never has been.</p>
+      <p>Modern science emerged alongside industrial capitalism and has always been shaped by it. Chemistry grew up with dye manufacturers, physics with weapons programs, genetics with agribusiness, computer science with the military-industrial complex. The image of the disinterested academic researcher, funded by a benevolent public, producing truth for its own sake, is largely a Cold War artifact—a brief period (roughly 1945 to 1975) when massive federal funding flowed without obvious strings because the strings were ideological rather than commercial. We are not falling from a pristine state; we are continuing a long entanglement.</p>
+      <p>This matters because it changes what reform should look like. If you imagine science as fundamentally pure, you reach for purification: ban industry money, restore the academy. But academic science has its own pathologies—careerism, p-hacking, the replication crisis in psychology and biomedicine, fraud cases at top universities—and many of these have nothing to do with corporate funding. The fields with the worst reproducibility problems are often the ones with the least industry involvement. Removing corporate money would not deliver us into a garden of truth.</p>
+      <p>What we actually need is a more sophisticated public understanding that science is a social process producing claims of varying reliability, and that institutional design matters enormously. Adversarial collaboration, pre-registration, mandatory data sharing, independent replication, and—crucially—a press corps and regulatory apparatus capable of reading studies critically rather than treating each one as gospel. The sugar story didn&#x27;t go unnoticed because Harvard researchers were too clever; it went unnoticed because epidemiologists, journalists, and regulators in 1967 weren&#x27;t asking the right questions about funding and methodology.</p>
+      <p>So yes, reduce corporate funding in specific high-risk domains and reform disclosure everywhere. But don&#x27;t expect that to solve the underlying problem. The deeper task is cultivating a scientific culture—and a citizenry—that treats every study, regardless of funder, as a provisional contribution to be tested rather than a verdict to be cited. Without that, no funding reform will save us.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The recent revelation that the sugar industry secretly bankrolled heart disease research to shift blame away from its product is a blunt reminder that corporate-funded science is not a partnership of equals—it is an investment in a predetermined outcome. When the pursuit of profit drives the questions scientists ask and the answers they publish, the public interest is inevitably subordinated. The only responsible course is to drastically curtail corporate funding of research that touches on public health, safety, and the environment.</p>
+      <p>The sugar case is no isolated historical artifact. The same playbook was deployed by the tobacco industry for decades, funding scientists to manufacture doubt about the link between smoking and cancer. Lead, asbestos, and fossil fuel interests have all followed suit, proving that industry money systematically distorts scientific consensus to delay regulation and protect markets. Even when researchers act in good faith, the subtle biases introduced by funding sources—the choice of study design, the framing of hypotheses, the selective publication of favorable results—are well documented. Peer-reviewed analyses consistently find that drug trials sponsored by pharmaceutical companies are substantially more likely to report positive outcomes than independent studies.</p>
+      <p>Moreover, corporate money reshapes entire research agendas. Scarce public funds and academic prestige push scientists toward projects that promise commercial applications rather than basic inquiry or neglected diseases. This shift is not neutral; it crowds out questions that have no immediate market value, such as the long-term effects of low-level chemical exposures or preventive community health interventions. The price is paid in lives lost to regulatory inaction and in a public that increasingly distrusts scientific authority when every study seems to carry a corporate imprimatur.</p>
+      <p>Reducing corporate funding does not mean severing all ties. But a bright line must be drawn: industries that stand to gain from a particular finding should not be permitted to finance the studies that govern their regulation. A publicly funded, wholly independent research infrastructure is the only way to restore science’s role as an honest broker, not a marketing department.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The demand to slash corporate funding for scientific research is a knee-jerk reaction to a real but surmountable problem. Gutting industry support would be a profound mistake, one that would starve innovation precisely when public funding is flat and global challenges demand accelerated discovery. The lesson of the 1960s sugar scandal is not that corporate money is inherently corrupting, but that secrecy corrupts—and that lesson can be addressed without throwing away a vital resource.</p>
+      <p>Industry-funded research has been indispensable. Many of the vaccines, medical devices, and clean energy technologies that save lives today emerged from university–industry collaborations funded by companies seeking both knowledge and competitive advantage. Governments alone cannot and should not be expected to foot the entire bill. In the United States, federal research spending as a share of GDP has declined, leaving a gap that corporate dollars fill. Calling for a reduction risks a zero-sum outcome: less total research, slower progress against diseases, and a brain drain away from critical applied problems.</p>
+      <p>The real remedy lies in transparency and structural safeguards, not a funding ban. We now require clinical trial registration, conflict-of-interest disclosures, and data-sharing mandates that did not exist in the 1960s. When a study’s funding source, raw data, and analytical plan are open to scrutiny, the capacity for hidden manipulation collapses. The sugar industry’s subterfuge worked because it was covert; today, a well-designed registry would make such selective reporting nearly impossible to conceal from vigilant peers.</p>
+      <p>Furthermore, we should strengthen the intermediary institutions that buffer influence. Independent review boards, public–private consortia with diverse funding streams, and replication initiatives all blunt the capacity of a single funder to tip the scales. Companies could be required to channel research funds through a pooled trust that then allocates grants via scientific merit, insulating individual scientists from direct commercial pressure. These measures preserve the financial heft of industry while neutralizing its bias.</p>
+      <p>The scandal calls for better rules of the game, not for kicking a major player off the field. If we let historical malfeasance dictate a retreat from corporate engagement, we will only ensure that important science is done more slowly, if at all.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The question misdiagnoses the disease. Corporate funding of research does not need merely to be reduced; it needs to be fundamentally restructured so that the money flows without the attached strings of self-interest. Slashing industry support outright would be both politically impractical and scientifically damaging—public budgets are tight, and many valuable investigations would simply cease. The deeper failure is the system that allows a single funder to own the entire research process from question to publication. That system, not the amount of money, must be broken apart.</p>
+      <p>We should build a model of arm’s-length funding. Industries whose products carry potential harms—sugar, chemicals, pharmaceuticals—would pay a mandatory levy into an independent, multi-stakeholder research trust. Scientists, not executives, would set priorities and award grants via peer review. The trust would guarantee full public access to data and results, eliminating the ability to bury inconvenient findings. This approach captures the benefits of industry’s financial heft while removing the conflict of interest from the source of the check. It resembles the successful model used in some public health research where tobacco taxes fund anti-smoking campaigns managed by health authorities, not tobacco companies.</p>
+      <p>At the same time, we must confront the perverse incentives in academia that make researchers so susceptible to corporate capture. As public grants grow ever more competitive, universities increasingly reward faculty for the size of their external funding rather than the integrity of their inquiry. When survival depends on securing the next contract, the temptation to tailor studies to a company’s preference becomes systemic. Addressing corporate influence therefore also requires a major reinvestment in basic, non-directed public science. Only when curiosity-driven research offers a viable career path can scientists afford to say no to tainted money.</p>
+      <p>Reduction alone offers no structural solution. Without alternative funding, it punishes researchers and stalls progress. The real reform is to design an ecosystem where money and science are institutionally separated—where industry contributes its resources but surrenders its power to spin the outcome. The sugar industry’s subterfuge was not a sign that all corporate money is poison, but that a system without firewalls will always serve the highest bidder.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>It is tempting to read the sugar industry’s secret campaign and declare that corporate funding of science must be reined in. But before we do, we should look at what created the vulnerability in the first place. The 1960s scandal did not flourish because corporations had too much money; it flourished because public scientific institutions were too weak, too starved for resources, and too deferential to private influence. Reducing corporate funding now, without a massive simultaneous expansion of government support, would not clean up science—it would cripple it.</p>
+      <p>The uncomfortable history is that the sugar manipulation was a product of a broader funding gap. In the middle of the twentieth century, nutrition research lacked robust public backing, leaving a vacuum that industry was all too happy to fill. Today, the situation is only somewhat improved. Federal research grants in many fields are so hypercompetitive that success rates hover around fifteen percent. Young scientists spend years writing proposals for a shot at a fraction of their costs. In this environment, corporate money doesn&#x27;t just nudge research; it becomes a lifeline. Cutting that lifeline without replacing it would drive talent out of the laboratory, not into a purer, better-funded public sector.</p>
+      <p>The real target should be the institutional safeguards that failed. The sugar case shows that secrecy and the absence of independent replication were the proximate causes of harm. We have already learned much: mandatory conflict-of-interest reporting, trial registries, and increasingly open data standards make a covert payoff-for-results scheme much harder to repeat. But these protections remain incomplete and must be enforced vigorously. If every study funded by a food or drug company had to publicly post its protocol and raw data before peer review, the space for buried evidence would shrink dramatically.</p>
+      <p>We should also address the incentive structure that makes researchers complicit. When academic promotion hinges on bringing in external grants, universities implicitly encourage scientists to court whichever funding is available, regardless of its source. Tying career progression to industrial partnerships makes the institution, not just the individual scientist, an actor with conflicted interests. Reform here—rewarding replication, open science, and public engagement—would reduce the gravitational pull of corporate agendas.</p>
+      <p>Reducing corporate funding in isolation mistakes a symptom for a cause. Without a parallel surge in well-designed public investment, the cure would be worse than the disease. Strengthen transparency and rebuild public science, and the market for manipulated results will wither on its own.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The recent revelation that the sugar industry paid Harvard scientists in the 1960s to shift the blame for heart disease away from sugar and onto saturated fat is certainly shocking. However, treating this as a historical anomaly or a few bad apples misses the systemic reality of corporate-funded research. We must actively reduce the influence of corporate money in scientific inquiry, as the inherent conflict of interest cannot simply be disclosed away.</p>
+      <p>When a corporation funds a study, the primary objective is rarely the pure advancement of human knowledge; it is the protection and maximization of profit. This structural mandate inevitably shapes how questions are asked, how data is interpreted, and whether unfavorable results ever see the light of day. We have seen this playbook repeatedly: the tobacco industry’s decades-long campaign to manufacture doubt about lung cancer, the fossil fuel industry’s suppression of early climate change data, and the pharmaceutical industry’s downplaying of adverse drug effects.</p>
+      <p>The scientific method relies on objectivity, yet corporate funding introduces an unavoidable bias. Studies have consistently shown that industry-sponsored research is significantly more likely to yield results favorable to the sponsor than independently funded research. This &quot;funding effect&quot; is not always a matter of outright fraud; it often manifests in subtle methodological choices or the framing of conclusions.</p>
+      <p>Reducing corporate funding requires a dual approach. First, universities and research institutions must implement stricter caps on the proportion of their research budgets that can be sourced from private industry, particularly in public health and environmental science. Second, and more importantly, we must revitalize public funding for science. Decades of stagnant federal budgets for agencies like the National Institutes of Health and the National Science Foundation have left researchers desperate for grants, driving them into the arms of corporate sponsors.</p>
+      <p>Science is the foundation of our public policy, our medical guidelines, and our environmental regulations. When that foundation is built on corporate dollars, public trust is eroded, and public health is compromised. Reducing corporate funding is not anti-science; it is the necessary defense of scientific integrity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The recent headlines about the sugar industry&#x27;s manipulation of heart disease research in the 1960s have rightfully sparked outrage. But before we rush to demand a wholesale reduction in corporate funding for science, we must confront a stark, pragmatic reality: without private sector money, modern scientific progress would grind to a halt.</p>
+      <p>Over the past decade, federal funding for research and development has faced severe headwinds. Agencies like the National Institutes of Health (NIH) and the National Science Foundation (NSF) have struggled with stagnant budgets and the devastating effects of sequestration. Inflation has further eroded the purchasing power of the grants that do exist. In this climate of artificial scarcity, academic researchers are increasingly forced to look to the private sector to keep their laboratories open, pay their graduate students, and continue their critical work.</p>
+      <p>To reduce corporate funding now would not purify science; it would simply starve it. The private sector currently funds the lion&#x27;s share of research and development in the United States. While much of this is internal R&amp;D, corporate grants to academic institutions drive vital innovations in biotechnology, renewable energy, materials science, and agriculture. The timeline from a theoretical discovery to a life-saving medical treatment is incredibly expensive, and public funding alone is insufficient to cross the &quot;valley of death&quot; between basic research and commercial application.</p>
+      <p>Furthermore, judging today&#x27;s scientific enterprise by the ethical standards of the 1960s is deeply flawed. The sugar industry scandal occurred in an era before mandatory conflict-of-interest disclosures, rigorous peer-review standardization, and clinical trial registries. Today, medical journals require exhaustive disclosures of funding sources and financial ties.</p>
+      <p>The solution to the threat of bias is not to banish corporate money, but to shine a relentless light on it. We need radical transparency, strict adherence to open-data mandates, and rigorous peer review. If the methodology is sound and the data is publicly available for reproduction, the source of the funding should be secondary. We cannot afford to let the sins of the past hamstring the scientific discoveries of the future.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The debate over corporate funding in science, reignited by the uncovering of the sugar industry&#x27;s 1960s meddling, too often devolves into a binary choice: banish private money or accept corrupt science. Both options are unacceptable. The real issue is not the presence of corporate funding, but the architecture of how that funding is deployed. We do not need to reduce the amount of corporate money in science; we need to radically restructure the mechanisms through which it is distributed.</p>
+      <p>The danger of industry-funded science lies in the control the sponsor retains over the research process. When a corporation can dictate the research question, design the methodology, own the resulting data, and ultimately veto publication if the results are unfavorable, the scientific method is compromised. This allows companies to treat academic research as an extension of their public relations and marketing departments.</p>
+      <p>However, we can neutralize this threat without losing the vital financial resources the private sector provides. The answer lies in establishing independent intermediaries—&quot;blind trusts&quot; for scientific funding. Under this model, industries would pool their research funds and route them through an independent, third-party governing board composed of scientists and ethicists. This board would be responsible for soliciting proposals, awarding grants based purely on scientific merit, and ensuring that all results are published regardless of the outcome.</p>
+      <p>By severing the direct financial relationship between the corporate sponsor and the individual researcher, we eliminate the conscious and unconscious biases that plague industry-funded studies. The researcher does not know exactly whose money is paying for their lab, and the corporation cannot threaten to pull funding from a researcher who discovers an inconvenient truth.</p>
+      <p>Coupled with mandatory pre-registration of all studies—which prevents researchers from changing their hypotheses mid-stream to find favorable data—and open-access data sharing, this structural reform would protect scientific integrity. We must move past the naive hope that disclosure alone will prevent bias, and instead build an impermeable wall between the people writing the checks and the people looking through the microscopes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The revelation that the sugar industry funded sympathetic research in the 1960s is being used by critics to paint all corporate-backed science with a broad, cynical brush. This narrative is not only fundamentally unfair, but it threatens to stifle the very collaborations necessary to solve our most pressing global challenges. Corporate funding of scientific research does not need to be reduced; in fact, public-private partnerships should be actively encouraged and expanded.</p>
+      <p>The assumption underlying the push to reduce corporate funding is that profit motives are inherently incompatible with scientific truth. This ignores the reality that in most technology and science-driven industries, long-term profitability relies entirely on scientific accuracy. A pharmaceutical company that funds research into a biologically flawed drug target will ultimately waste billions of dollars in failed clinical trials. An engineering firm that manipulates materials science research will see its products fail in the market. In the modern economy, bad science is bad business.</p>
+      <p>Moreover, corporate researchers bring invaluable resources to the academic table beyond just money. They bring massive datasets, proprietary technologies, and a focus on translational science—the difficult process of turning a laboratory curiosity into a scalable solution that actually helps people. The rapid advancements we are seeing today in artificial intelligence, genomics, and renewable energy storage are largely the result of symbiotic relationships between university researchers and corporate R&amp;D departments.</p>
+      <p>While the historical misdeeds of industries like sugar and tobacco are undeniable, they are also historical. Today&#x27;s regulatory and academic environments are vastly different. Institutional Review Boards (IRBs), stringent federal regulations, and the ubiquitous digital scrutiny of the broader scientific community make the kind of secret manipulation seen in the 1960s virtually impossible to replicate today without severe legal and reputational ruin.</p>
+      <p>If we stigmatize and reduce corporate funding, we relegate universities to the ivory tower, disconnected from the applied sciences that drive societal progress. We should celebrate the fact that private capital is willing to invest in human knowledge, rather than erecting artificial barriers that slow down the pace of innovation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Yes. Corporate funding of research should be reduced because the problem is not merely a few bad actors hiding a few embarrassing checks. The problem is structural: when a company pays for knowledge about its own product, it is buying a favorable wind at every stage of the scientific process.</p>
+      <p>The sugar industry episode is shocking because of its brazenness, but it is not surprising. Tobacco companies spent decades manufacturing uncertainty. Drug and device companies have repeatedly produced studies more favorable to their products than independently funded trials. Food companies sponsor nutrition research that tends to shift blame away from their own ingredients and toward personal responsibility, inactivity, or some other dietary villain. Often the bias is not crude fabrication. It is subtler: which question gets asked, which comparison group is chosen, which outcome is emphasized, whether negative results are published, how conclusions are framed in press releases and continuing education.</p>
+      <p>Disclosure is necessary, but it is not enough. A conflict of interest disclosed is still a conflict of interest. Readers rarely have the time or expertise to reanalyze methods, and a disclosed industry tie can even normalize what should trouble us. Nor can journals and universities pretend that peer review solves the problem. Peer review is important, but it is not an auditing system for the entire research agenda.</p>
+      <p>Reducing corporate funding does not mean abolishing all collaboration between industry and science. Companies have technical expertise, data, and practical questions that matter. But we should sharply limit direct corporate sponsorship of studies meant to guide public health policy, clinical practice, nutrition advice, environmental regulation or product safety. Those areas require trust, and trust is lost when the public reasonably suspects that the answer was shaped by the sponsor.</p>
+      <p>The obvious objection is money. Public research budgets are limited, and universities have become dependent on private funds. But that dependence is itself part of the cost. If we want credible science, we must pay for it through public agencies, independent foundations and pooled industry fees administered at arm’s length. Companies that profit from sugar, drugs, pesticides, fossil fuels or medical devices can contribute to research without controlling the questions, investigators, data or publication.</p>
+      <p>Science is not corrupted only when someone lies. It is corrupted when incentives systematically bend inquiry toward profitable conclusions. The sugar story should be treated not as an antique scandal, but as a warning about what happens when public knowledge is financed by private interest.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The right answer is not to reduce corporate funding of scientific research across the board. It is to govern it better. A blanket campaign against industry money would sound virtuous, but it would also be impractical and, in some fields, harmful.</p>
+      <p>Modern science is expensive. Clinical trials, agricultural research, engineering, materials science, software systems and medical-device development often require facilities, data and scale that companies possess and universities do not. If corporate funding disappeared tomorrow, public agencies would not instantly replace it. Many useful studies would simply not be done. That would not serve patients, consumers or the public.</p>
+      <p>Nor is public funding automatically pure. Government agencies have political pressures. Advocacy groups have ideological commitments. Academic scientists have career incentives: publish striking results, win grants, build reputations. Bias is a human and institutional problem, not a uniquely corporate one. Industry money is especially dangerous because the financial stakes are so direct, but the solution cannot be to imagine that only corporations distort evidence.</p>
+      <p>The sugar industry scandal is a case for transparency and independence, not for treating all private-sector research as poison. We should require full disclosure of funding and author relationships. Journals should demand that contracts guarantee investigators the right to publish results, favorable or unfavorable. Trial registries should be mandatory where human subjects are involved, so negative findings cannot be buried. Data and protocols should be available for independent scrutiny whenever possible. Universities should prohibit ghostwriting and undisclosed sponsor control. Regulators should give more weight to independently replicated findings than to a single sponsor-funded study.</p>
+      <p>There is also an important distinction between funding research and funding propaganda. If a company pays respected scientists secretly to write a review that protects its product, that is not normal research; it is covert marketing. It should be condemned and, where appropriate, punished. But if a company funds a rigorously designed trial, discloses its role, permits publication and submits data to outside review, the public may learn something valuable.</p>
+      <p>We should be especially cautious in fields like nutrition, where studies are often observational, effects are difficult to isolate, and media coverage turns modest findings into sweeping advice. But corporate money did not create those methodological problems. Better standards would help no matter who pays.</p>
+      <p>The goal should be trustworthy science, not symbolically clean science. Industry funding can coexist with integrity if secrecy, sponsor control and selective publication are treated as unacceptable. Reducing all corporate support would be a blunt instrument where sharper tools are available.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The debate should not begin with the question, “Is corporate-funded research bad?” It should begin with a more concrete question: Who controls the research? The sugar case was outrageous not only because industry paid scientists, but because it covertly shaped the scientific conversation about heart disease. It helped elevate fat as the central dietary culprit while deflecting attention from sugar. That kind of agenda-setting can influence decades of policy, journalism and consumer behavior.</p>
+      <p>Corporate funding does need to be reduced in areas where the sponsor’s commercial interest is inseparable from the public question. If a soda company funds research on childhood obesity, or a pesticide manufacturer funds studies on pesticide safety, the conflict is not incidental. It goes to the heart of the matter. Even honest researchers may unconsciously design studies in sponsor-friendly ways. They may ask whether exercise offsets sugary drinks rather than whether sugary drinks increase disease risk. They may compare a new drug with placebo when the real question is whether it is better than an existing treatment. The research can be technically accurate and still misleading.</p>
+      <p>But the deeper reform is to move from direct sponsorship to independent intermediation. Companies should help pay for research about the social and health consequences of their products, but through pooled funds controlled by public agencies, scientific panels or independent foundations. A sugar tax, tobacco settlement money, pharmaceutical user fees or chemical registration fees can support research without letting the payer choose the scientists or edit the conclusions. This approach recognizes that industries create questions society must answer, while preventing them from steering the answers.</p>
+      <p>Universities also need stronger norms. A disclosed conflict is not a magic cure. Contracts should be public. Investigators should retain data access. Sponsors should have no veto over publication. Meta-analyses and review articles, which often shape expert consensus, deserve special scrutiny because they can reframe an entire field without producing new data. The sugar episode involved a review, not a clinical trial, and that is precisely why it mattered.</p>
+      <p>We should also strengthen public funding. When Congress squeezes agencies like the National Institutes of Health, it effectively pushes researchers toward private patrons. Then we act surprised when private patrons expect private benefits.</p>
+      <p>Corporate-funded science should not be banned; some collaboration is legitimate and useful. But direct, interested funding should become the exception rather than the default in research that informs public health. The cost of getting this wrong is not just a few biased papers. It is public advice that may be tilted for a generation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>It is tempting to respond to the sugar industry revelations with a simple moral: corporations corrupt science, so corporate funding must be reduced. But the harder truth is that science has always depended on patrons, and patrons have always had interests. The task is to build institutions that make those interests visible and containable.</p>
+      <p>Corporate-funded research varies enormously. A company testing whether a bridge material resists stress is not in the same position as a company funding a study on whether its processed food contributes to diabetes. A pharmaceutical firm developing a new molecule is not identical to a trade association secretly sponsoring a literature review designed to protect an ingredient. We need distinctions, not slogans.</p>
+      <p>Still, the defenders of the status quo underestimate the cumulative damage. Industry influence does not have to falsify data to distort knowledge. It can produce an excess of favorable questions. It can fund “me too” studies while neglecting unprofitable public-health questions. It can turn uncertainty into a weapon, as tobacco companies famously did. It can create a chorus of credentialed experts whose disclosures appear in fine print while their conclusions travel through headlines, policy briefs and television interviews.</p>
+      <p>So corporate funding should be reduced where research serves as evidence for regulation, dietary guidelines, clinical recommendations or litigation. In these settings, the public is not merely buying information; it is relying on science as a referee. A referee paid by one team may call a fair game, but the arrangement is still corrosive.</p>
+      <p>However, reduction must be paired with replacement. If we simply shame universities for taking industry money while public funding stagnates, we will get fewer studies, not cleaner ones. Congress and state governments should invest more in independent research. Journals should elevate replication and negative results. Agencies should require preregistration for more kinds of studies. Universities should stop treating industry partnerships as harmless revenue streams and start asking whether the partnership advances public knowledge or merely rents academic credibility.</p>
+      <p>I would also impose a simple rule for high-conflict areas: no secret funding, no sponsor control over design or publication, and no ghostwritten articles. Violations should carry professional consequences, not just embarrassment after a historian uncovers the documents fifty years later.</p>
+      <p>The sugar story matters because it reminds us that the scientific record is not just a collection of facts; it is also a record of power. Reducing corporate funding will not make science perfect. But reducing corporate control over public-interest research is essential if scientific authority is to remain deserved.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Yes — especially in fields where the research is likely to shape public health advice, regulation or litigation. The sugar industry episode is not an isolated scandal; it is a case study in how sponsorship can redirect the questions scientists ask. In the 1960s, sugar interests did not need to falsify a laboratory result. They paid respected researchers to emphasize dietary fat as the villain in heart disease and to cast doubt on sugar. That is the more subtle danger: corporate funding often works by agenda-setting, selective interpretation and amplification, not by crude fabrication.</p>
+      <p>We have seen versions of this pattern with tobacco and lung cancer, lead, asbestos, climate change, pharmaceuticals and soda. Industry-funded drug trials are more likely to produce conclusions favorable to the sponsor. Nutrition studies funded by food and beverage companies too often end with oddly convenient messages: calories matter more than particular products, exercise is the real solution, moderation is enough. Each individual paper can look defensible; together they create a fog in which policy stalls.</p>
+      <p>Disclosure is necessary, but it is not sufficient. Readers rarely have time to audit the design, unpublished data, contract terms or abandoned analyses behind a published article. A conflict of interest warning at the end of a paper is like a small label on a machine already built to tilt. The problem is not that corporate scientists are bad people. It is that corporations have fiduciary duties and market incentives that are often at odds with disinterested inquiry.</p>
+      <p>Reducing corporate funding does not mean abolishing all private research. Companies should test their products for safety, improve manufacturing and develop innovations. But research meant to guide public policy should be insulated from firms with a direct stake in the answer. Congress and federal agencies should increase support for independent nutrition, environmental and biomedical science. Where industry money is unavoidable, it should go through blind public-interest pools administered by independent bodies, with preregistration, guaranteed publication and open data.</p>
+      <p>If society wants trustworthy science, it has to pay for it. Otherwise we should not be surprised when those with the most to gain from uncertainty buy some of the uncertainty they need. The cost of replacing tainted research with independent research is real; the cost of basing public health on sponsored ambiguity is far higher.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Corporate funding of research should not be reduced as a general rule. It should be made transparent, reviewable and much harder to manipulate. The distinction matters. If we respond to the sugar industry scandal by treating all industry science as inherently illegitimate, we risk throwing away a major source of innovation while leaving the real problem — secrecy and control — untouched.</p>
+      <p>Modern science is expensive. Drug development, crop improvement, materials engineering, energy technology and medical devices all require laboratories, long trials, specialized equipment and technical expertise. Companies often know practical problems before universities do, because they are building the products, running the factories and observing failures in the field. Much useful knowledge comes from that contact with reality. Bell Labs, industrial chemistry and pharmaceutical research all show that private money can produce discoveries of broad public value.</p>
+      <p>The sugar case is damning not simply because business funded research, but because the funding was hidden and the research was used to distort a public debate. That is unacceptable. But the remedy should be a better architecture for accountability. Journals should require full disclosure of funding, contracts and sponsor involvement. Researchers should be free to publish negative findings. Clinical trials and comparable nutrition studies should be registered in advance. Data and protocols should be available for independent review when public health claims are being made. Universities should refuse contracts that give sponsors veto power over publication.</p>
+      <p>We should also distinguish between evidence and advocacy. A soda company is entitled to study packaging, consumer behavior or even metabolism. But when its funded research is cited in dietary guidelines, school lunch rules or soda tax debates, policymakers should weigh the conflict heavily and demand independent corroboration. The answer is not a blanket reduction in corporate research; it is a hierarchy of credibility.</p>
+      <p>Public funding should rise, certainly. Federal support for basic science is indispensable, and independent replication is underfunded. But public budgets are limited, and government science has its own political pressures. A world with less corporate research may not be a world with more honest research; it may simply be a world with less research, more trade secrecy and fewer published results.</p>
+      <p>The right lesson from the sugar revelations is not “corporations must leave science.” It is “corporations must not be allowed to launder marketing through science.”</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The debate should not be framed only as more or less corporate funding. The central issue is whether interested money can be kept from becoming interested knowledge. Sometimes it can; often, under current rules, it cannot.</p>
+      <p>The sugar industry’s financing of heart disease research in the 1960s illustrates a particular kind of corruption. The researchers did not have to announce that candy was health food. They merely helped steer scientific attention away from sugar and toward saturated fat. This is why conflicts of interest are so powerful. They affect which hypotheses receive money, which comparisons are made, how results are described and which findings are promoted to journalists and policymakers.</p>
+      <p>At the same time, industry cannot be excluded from every corner of science. A pharmaceutical company must study its own drug. An auto company must test safety systems. A technology firm will inevitably fund computer science and engineering. In many applied fields, refusing all corporate involvement would be unrealistic and possibly harmful. The task is to separate product development from public truth-seeking.</p>
+      <p>That requires stronger firewalls than disclosure alone. First, any corporate-funded study making health, safety or environmental claims should be preregistered before data are collected. Second, contracts should guarantee publication regardless of outcome. Third, raw data should be deposited for independent analysis when privacy and trade secrets can be protected. Fourth, universities should publish the terms of large corporate gifts, including whether donors influence research agendas. Fifth, advisory committees writing dietary guidelines, drug recommendations or environmental standards should not rely on conflicted studies unless independent studies point in the same direction.</p>
+      <p>There is also a need for independent funding pools. Instead of letting a sugar association, soda company or drug manufacturer pick investigators and frame questions, industries could be required to pay fees into public or nonprofit research funds. Those funds would commission studies without sponsor control. This model would preserve resources while reducing the sponsor’s ability to shape the answer.</p>
+      <p>So yes, direct corporate funding should be reduced in the areas where it most clearly contaminates public decision-making: nutrition, environmental health, medicine and regulation. But the goal is not to purify science by pretending money never matters. The goal is to design institutions that recognize money matters so much that it must be kept at arm’s length from the scientific record.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The sugar story should embarrass not only the sugar industry, but also the public institutions that allowed private money to become so influential. Corporate-funded research expands when universities, medical schools and government agencies are starved for resources. A professor who cannot get public support for a study may turn to an industry foundation. A university that wants new buildings and endowed chairs may welcome corporate partnerships. Over time, dependence begins to look normal.</p>
+      <p>So the question should not be whether companies are uniquely wicked. They are doing what they are designed to do: protect markets, reduce liability, influence regulation and defend products. The mistake is asking them to serve as neutral sponsors of research that may threaten their profits. A sugar trade group, a tobacco company or a coal producer has no natural incentive to finance the most damaging investigation of its own business. Even when no one lies, the funding stream bends toward favorable questions.</p>
+      <p>Reducing corporate funding therefore requires more than scolding. It requires rebuilding the public capacity to ask inconvenient questions. Nutrition science is a good example. Americans have received decades of conflicting advice about fat, sugar, carbohydrates and calories. Some of that confusion reflects genuine scientific complexity. But some of it reflects a research ecosystem in which food companies can sponsor studies, conferences and expert networks that keep attention away from regulation and toward individual responsibility. Independent long-term diet research is difficult and expensive; if the public does not fund it, industry will fill the gap.</p>
+      <p>The same principle applies to environmental science and drug safety. We need public money not only for discovery, but for replication, surveillance and negative results — the unglamorous work that markets tend to underprovide. Universities should reward independence, not just grant volume. Journals should treat funding bias as a methodological concern, not a footnote. Regulators should have budgets large enough to commission their own studies rather than relying mainly on submissions from interested firms.</p>
+      <p>Corporate research will not and should not disappear. Private firms have an important role in developing products and technologies. But in matters that determine public health rules, dietary guidelines and environmental standards, society needs a stronger independent evidentiary base. The real cost of corporate-funded research is not only biased papers. It is the gradual privatization of the questions we are allowed to answer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The sugar industry&#x27;s concealed funding of heart disease research in the 1960s is not an anomaly — it is a symptom of a systemic corruption that has quietly reshaped what we call scientific knowledge. When corporate dollars fund research, the questions asked, the methods chosen, and the conclusions drawn are all subject to subtle, often unconscious influence. The remedy is straightforward: reduce corporate funding of scientific research.</p>
+      <p>The problem begins with incentive misalignment. A researcher whose salary or lab depends on industry support has every reason — even if only at the margins of design and interpretation — to produce findings favorable to the sponsor. This is not necessarily outright fraud; it is far more insidious. It operates through topic selection (studying nutrient absorption rather than metabolic harm), through study duration (short enough to miss long-term effects), and through the always-available option of simply not publishing unfavorable results. The historical record bears this out. Beyond sugar, tobacco companies funded research deflecting attention from lung cancer for decades. Pharmaceutical trials sponsored by manufacturers consistently show favorable outcomes compared to independent trials. The pattern is not coincidental.</p>
+      <p>Some defenders of corporate funding argue that private industry is simply filling a gap left by shrinking public research budgets, and that without industry money, valuable science would not happen at all. This argument has force, but it confuses the necessity of funding with the appropriateness of influence. Public funding can be expanded. Crowdfunding and nonprofit foundations offer alternative models. The existence of a funding gap does not excuse the contamination of scientific integrity.</p>
+      <p>What is needed is a cultural and institutional shift toward publicly funded, transparently conducted science. Universities and journals should impose stricter firewalls between corporate donors and research design. Disclosure alone is insufficient when the damage occurs before the study begins. The public&#x27;s trust in science — already strained by episodes like the sugar scandal — depends on research that serves no interest except truth. That standard cannot coexist with corporate financing shaping the questions science asks.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The discovery that the sugar industry funded research to deflect blame for heart disease is disturbing, but it should not become the basis for a blanket reduction of corporate scientific funding. That response, however emotionally satisfying, is too blunt and would harm scientific progress more than it would protect it.</p>
+      <p>Corporate funding is not inherently corrupt. Pharmaceutical companies fund clinical trials that produce the very data regulators use to approve life-saving drugs. Food companies sponsor nutritional research that, whatever its limitations, has contributed to our understanding of diet and health. The question is not whether industry money exists but how it is governed. What the sugar episode exposed was not the presence of corporate funding but the failure of disclosure norms, peer review, and institutional oversight that should have caught the conflict of interest.</p>
+      <p>A more effective approach than reducing corporate funding is strengthening the conditions under which it operates. Full, proactive transparency — where all funding sources are disclosed at the time of publication, not just when a journal editor requests it — would allow readers to contextualize results appropriately. Institutional review boards should be empowered to evaluate not just ethical treatment of subjects but potential conflicts in study design. And publication should require that raw data and protocols be made available for independent reanalysis.</p>
+      <p>There is also a practical reality that cannot be ignored: public research funding in many fields has not kept pace with scientific need. If corporate funding is reduced without replacement, the consequence is not cleaner science but less science. That outcome serves no one, least of all the public that depends on scientific advancement. The goal should be accountability and transparency, not the elimination of a funding source that, properly governed, contributes to knowledge. Corporate money in science is not the problem. Unchecked corporate influence is.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The recent revelations about sugar industry funding of heart disease research should prompt us to ask a harder question than whether corporate funding needs to be reduced: Why has science allowed itself to become so financially dependent on the industries it is supposed to scrutinize?</p>
+      <p>The answer lies in decades of deliberate strategy by corporate actors to position themselves as partners in scientific inquiry rather than subjects of it. This is not a new development, but its scale has grown enormously. University labs increasingly depend on industry contracts to survive. Scientific journals rely on reprints and advertising purchased by pharmaceutical firms. Medical societies accept sponsorship from device manufacturers. The entire ecosystem has been financialized in ways that compromise its independence.</p>
+      <p>Simply reducing corporate funding — as though the problem were one of quantity rather than structure — misses the deeper issue. The real problem is that science has adopted a market logic, treating corporations as customers rather than subjects. When a company funds research into its own products, the relationship is inherently adversarial to the truth-seeking function of science. No amount of disclosure, no firewall, no committee review fully resolves this tension because the fundamental incentive structure remains broken.</p>
+      <p>What is required is not merely to reduce corporate funding but to rebuild public funding of science as a genuine priority. The National Institutes of Health, the National Science Foundation, and their equivalents in other countries should be dramatically expanded, removing the financial pressure that drives researchers into corporate partnerships. Simultaneously, strict conflict-of-interest rules should prohibit industry funding of research directly related to their products. Scientists can consult for companies; they cannot conduct the primary research that determines regulatory outcomes for those same companies.</p>
+      <p>This is a political as much as a scientific challenge. But the alternative — continued dependence on corporate goodwill for scientific knowledge — is untenable. The sugar episode was not a scandal of a single industry&#x27;s dishonesty. It was a revelation of how easily the system can be gamed. The system needs fixing, not patching.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>Among the many reactions to the sugar industry&#x27;s historical manipulation of nutritional science, the call to simply reduce corporate funding is tempting but ultimately insufficient. It addresses a symptom while leaving the underlying condition untreated. The real issue is that our institutions for evaluating and responding to corporate-funded research have failed, and fixing those institutions is more important than cutting off funding altogether.</p>
+      <p>Consider what the sugar episode actually demonstrates. The research in question — financed in the 1960s — influenced scientific discussion and dietary guidelines for years. Why? Because the institutions that should have independently verified its conclusions did not do so. Peer reviewers accepted the findings. Journals published them without sufficient scrutiny. Public health authorities incorporated them into advice. No single actor was solely responsible; the failure was systemic. That means the solution must be systemic as well.</p>
+      <p>What would systemic reform look like? First, mandatory registration of all clinical trials before they begin, ensuring that negative results cannot be suppressed by selective publication. Second, independent replication requirements for findings that inform public policy or regulation. Third, structural separation between funders and research teams — not just disclosure, but actual independence in study design, data collection, and analysis. Fourth, public funding for a robust independent research infrastructure capable of replicating and challenging industry-sponsored findings.</p>
+      <p>These reforms are achievable. They do not require abandoning the considerable benefits that corporate-academic partnerships have sometimes delivered. They do require recognizing that the current arrangement grants corporations too much power to shape the knowledge base on which they are regulated. The sugar story is a warning about what happens when science becomes an instrument of the industries it should be studying. The appropriate response is not less science, but better science — science with stronger walls between the ask and the answer.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

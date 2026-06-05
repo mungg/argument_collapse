@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Tourists Can Do Less Harm Than Good · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Society · Open-ended</div>
+  <h1 class="debate-title">How Tourists Can Do Less Harm Than Good</h1>
+  <div class="question-body"><p>Tourism has become one of the world’s largest industries as the cost of travel has dropped, political barriers have fallen and the global middle class has grown. The variety of vacation spots has bloomed, with myriad destinations available to millions more people. But along with the pleasures of travel have come problems — cultural disruption and homogenization, overcrowding and pollution.</p><p>How can tourism flourish while causing as little harm as possible?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_1.html">
+      <td class="arg-text">To minimize the negative impacts of tourism, destinations should transition toward a high-value, low-impact model that prioritizes environmental sustainability and direct community involvement.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_2.html">
+      <td class="arg-text">Individual travelers can make tourism more sustainable and less destructive by adopting mindful planning habits and engaging more deeply with local cultures.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_3.html">
+      <td class="arg-text">To minimize the harm caused by tourism, the industry must shift power and ownership to local communities through a community-based tourism model.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_4.html">
+      <td class="arg-text">The current model of mass tourism is inherently unjustifiable and must be replaced by a model of significantly reduced travel and local alternatives.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_5.html">
+      <td class="arg-text">To maximize the economic benefits of tourism while minimizing its negative impacts, cities like New York must implement policies that protect local housing and preserve the authentic character that attracts visitors in the first place.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_6.html">
+      <td class="arg-text">To mitigate the environmental and social harm caused by the cruise industry, the government must close regulatory loopholes that allow ships to bypass labor, environmental, and tax laws, while consumers should choose eco-friendly travel options.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_7.html">
+      <td class="arg-text">The travel and tourism industry must adopt and strictly adhere to universal sustainability standards and increased regulation to mitigate environmental, social, and cultural harm.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_8.html">
+      <td class="arg-text">Tourism can be a force for good if it is treated as a regulated development strategy rather than an extractive industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_9.html">
+      <td class="arg-text">To minimize the harm caused by tourism, local destinations must exercise their sovereignty by setting hard limits and policies that prioritize the needs of residents over the demands of travelers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_10.html">
+      <td class="arg-text">Tourism should be embraced as a vital tool for economic development and global connection rather than being criticized for its perceived impact on cultural authenticity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_11.html">
+      <td class="arg-text">To minimize the harm of tourism, we must move beyond individual traveler choices and address the structural economic inequalities and environmental costs inherent in the global travel industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_12.html">
+      <td class="arg-text">Individual tourists can minimize their negative impact by choosing &#x27;slow travel&#x27; over fast-paced, checklist-driven tourism.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_13.html">
+      <td class="arg-text">To ensure tourism flourishes while minimizing harm, we must move beyond demonizing the industry and instead implement deliberate structural frameworks that prioritize sustainability, local economic retention, and regulated growth.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_14.html">
+      <td class="arg-text">To ensure tourism flourishes responsibly, the industry and travelers must prioritize and account for the physical environmental footprint of travel over mere cultural or aesthetic concerns.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_15.html">
+      <td class="arg-text">To minimize the environmental and cultural harm of global tourism, travelers should favor concentrated, high-volume tourist hubs over exploring remote or untouched locations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_16.html">
+      <td class="arg-text">To minimize the harm caused by tourism, the industry must prioritize regulating and reforming the mega-cruise ship model, which currently imposes maximum environmental and social costs for minimal local economic benefit.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_17.html">
+      <td class="arg-text">By thoughtfully utilizing digital tools and sharing economy platforms, tourists can transition to a decentralized travel model that reduces environmental impact and redistributes the social burden of global tourism.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_18.html">
+      <td class="arg-text">To ensure tourism flourishes without causing harm, governments and regulatory bodies must implement strict top-down controls rather than relying on individual tourist behavior.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_19.html">
+      <td class="arg-text">To prevent the destruction of the very qualities that attract visitors, tourism must be managed through the scientific assessment and strict enforcement of hard capacity limits.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_20.html">
+      <td class="arg-text">Tourism should be improved through local capacity-building and targeted regulation rather than reduced, as it serves as a vital and irreplaceable engine for economic survival in developing nations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_21.html">
+      <td class="arg-text">To ensure tourism is sustainable and less harmful, destinations must implement aggressive market-based pricing and tiered entry fees to reflect the true cost of preservation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_22.html">
+      <td class="arg-text">To make tourism truly sustainable and mitigate its contribution to climate change, the international community must move beyond individual consumer choices and implement aggressive, top-down systemic regulations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_23.html">
+      <td class="arg-text">To minimize harm, tourists should abandon the &#x27;savior complex&#x27; of voluntourism and instead adopt the role of a respectful, humble guest who values local norms and economies.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_24.html">
+      <td class="arg-text">Tourism should be managed as a public-systems and governance challenge that prioritizes competent infrastructure and local needs rather than a moral issue solved by restricting travel to the wealthy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-tourists-can-do-less-harm-than-good_arg_25.html">
+      <td class="arg-text">To minimize the harms of tourism, the industry must shift its focus from sheer visitor numbers to ensuring local communities own the economy and retain the wealth generated by travel.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Elizabeth Becker</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/12/29/how-tourists-can-do-less-harm-than-good/elizabeth-becker" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Judy Kepher-Gona</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/12/29/how-tourists-can-do-less-harm-than-good/judy-kepher-gona" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Nicole Gelinas</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/12/29/how-tourists-can-do-less-harm-than-good/nicole-gelinas" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Pegi Vail</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/12/29/how-tourists-can-do-less-harm-than-good/pegi-vail" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Randy Durband</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/12/29/how-tourists-can-do-less-harm-than-good/randy-durband" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The question assumes a trade-off, but the deeper issue is one of design. Mass tourism harms places when its costs are externalized—when cruise ships dump passengers without paying for the sewage they leave behind, when Airbnb conversions hollow out neighborhoods in Barcelona or Berlin, when Venetians flee a city of 55,000 residents that hosts 20 million visitors a year. The harms aren&#x27;t intrinsic to travel; they&#x27;re the predictable result of pricing that ignores congestion, ecology, and local consent.</p>
+      <p>The first step, then, is for destinations to charge what tourism actually costs. Bhutan&#x27;s &quot;high value, low impact&quot; policy—a daily fee that funds health care and conservation—is often dismissed as elitist, but it embodies a defensible principle: visitors should pay for the infrastructure and ecological burden they impose. Tourist taxes, congestion caps on fragile sites (Machu Picchu, the Galápagos, Angkor), and cruise-ship levies are blunter versions of the same idea. Without them, the most photogenic places get loved to death.</p>
+      <p>Second, the gains must stay local. Studies have long shown that all-inclusive resorts and foreign-owned chains leak the majority of revenue out of host economies, leaving locals with the menial jobs and the trash. Community-based tourism, homestays, and cooperatives in places like Costa Rica and rural Thailand show that visitors will pay for authenticity, and that authenticity is best preserved when residents have a financial stake in keeping it.</p>
+      <p>Third, travelers themselves bear responsibility, though less than the industry likes to pretend. Flying less but staying longer, traveling in shoulder seasons, learning a few words of the language, and choosing operators that hire and source locally are modest virtues that compound across millions of trips.</p>
+      <p>Tourism&#x27;s growth is not going to reverse. The real question is whether destinations and travelers will accept the discipline—pricing, caps, local ownership—that turns a potentially extractive industry into a sustainable exchange.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The core problem isn’t tourism itself but the industrial model that treats destinations as disposable backdrops. When cruise ships disgorge thousands into a medieval port for a few hours, when all-inclusive resorts import food and export profits, and when travelers chase checklist sights without engaging the place, the economic benefits leak away while the social and environmental costs mount. The most effective way for tourists to do less harm is to behave less like consumers and more like temporary residents.</p>
+      <p>Money spent thoughtfully is the strongest lever. A traveler who books a locally-owned guesthouse, eats at family-run restaurants, and hires a neighborhood guide keeps dollars circulating within the community. In Costa Rica, decades of promoting small-scale ecolodges and locally-led nature tours have shown that tourism can fund conservation and raise rural incomes without sacrificing cultural identity. The key is that the community retains control, not outside investors. Before booking, tourists can research whether an operator is locally owned and whether it pays fair wages — a task made easier by certification programs like the Global Sustainable Tourism Council’s criteria, which were well established by 2014.</p>
+      <p>Equally important is defying the herd. Overtourism hotspots like Venice’s St. Mark’s Square and Peru’s Inca Trail suffer because too many people arrive at the same time. Shifting a trip to shoulder seasons or exploring a lesser-known neighboring town eases pressure on infrastructure and often yields a more authentic experience. Bhutan’s policy of requiring a minimum daily spend, while controversial, demonstrates that limiting volume can protect heritage and environment when done deliberately. Individual travelers can emulate this by choosing destinations that aren’t yet straining under their own popularity and by staying longer in one place rather than rushing through five cities in a week.</p>
+      <p>Respectful behavior might sound trivial, but it’s not. Learning a few phrases, dressing appropriately for religious sites, and asking before photographing people signals that a visitor sees hosts as equals, not props. This small shift in posture helps counteract the homogenization that occurs when global brands and tourist-oriented shops replace neighborhood life. In the end, tourism can flourish only when the people who live in a destination feel that its benefits outweigh its burdens — and that calculus changes every time a traveler decides to spend, move, and act with intention.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The democratization of global travel is one of the great triumphs of the past few decades. Never before has the opportunity to cross oceans and experience unfamiliar cultures been accessible to so many. Yet, as the middle class expands globally and budget airlines proliferate, the sheer volume of humanity moving across the globe has transformed tourism into a double-edged sword. To ensure tourism flourishes without cannibalizing the very destinations it relies upon, both local governments and individual travelers must undergo a fundamental shift in perspective.</p>
+      <p>First, local municipalities and national governments must stop measuring tourism success exclusively by visitor volume. When the goal is simply head counts, destinations suffer from rapid environmental degradation and infrastructure collapse. Places like Venice and Barcelona are already straining under the weight of massive cruise ships and throngs of day-trippers, prompting vocal backlash from residents. We must look to models that prioritize value and sustainability over sheer numbers. Bhutan’s strategy of enforcing a daily tariff on visitors, or the strict daily quotas imposed at heritage sites like Machu Picchu and the Galápagos Islands, represent necessary interventions. By capping capacity and charging appropriately for access, destinations can generate vital revenue for conservation while preserving the integrity of local life.</p>
+      <p>Equally critical is the behavior of the individual traveler, particularly regarding where their money goes. Too often, tourism dollars bypass the local economy. Visitors fly on international carriers, stay in multinational hotel chains, and eat at imported franchises. To do less harm, tourists must actively seek out locally owned lodgings, hire independent regional guides, and purchase locally made goods. This ensures that the economic benefits of travel empower the host community rather than leaking out to corporate shareholders overseas.</p>
+      <p>Furthermore, travelers must critically reevaluate the booming &quot;voluntourism&quot; industry. While the desire to give back during a vacation is noble, short-term volunteer stints—such as painting a school for a few days or visiting orphanages in developing nations—often disrupt local labor markets and can unintentionally exploit vulnerable populations. Doing good abroad is rarely as simple as booking a two-week service package. Instead of trying to &quot;save&quot; a destination, tourists should focus on respecting it.</p>
+      <p>Ultimately, minimizing the harm of global tourism requires slowing down. It means taking fewer, longer trips rather than jetting off for rapid-fire weekend city breaks that strain local resources. When we view travel not as a checklist of sights to quickly consume, but as a privilege and an opportunity for genuine cultural exchange, we transform ourselves from disruptive consumers into responsible guests.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Tourism will not become harmless by asking travelers to be nicer. Individual behavior matters, but the damage from tourism is usually built into systems: cheap flights that do not reflect carbon costs, cruise ships that leave waste and little local income, resorts that consume scarce water, and historic towns whose residents are priced out by short-term rentals and souvenir economies. If tourism is to flourish without overwhelming the places that attract it, destinations must manage it as carefully as they manage fisheries, parks or drinking water.</p>
+      <p>That begins with limits. Some places cannot absorb unlimited visitors, no matter how well behaved they are. The Galápagos, Bhutan and parts of East Africa’s wildlife reserves show different versions of the same principle: charge enough, cap numbers where necessary, and use revenue to protect the asset. This is not elitism if the money is transparent and locally beneficial; it is an admission that fragile ecosystems, sacred sites and old city centers are not infinitely renewable. Venice, Machu Picchu and Angkor Wat should not have to choose between mass access and slow destruction. Timed entry, zoning, caps on cruise traffic, protected quiet areas and real penalties for damage are practical tools.</p>
+      <p>The second principle is local benefit. Too often tourism revenue “leaks” to foreign hotel chains, tour operators and airlines, while local communities get low-wage jobs and higher rents. Governments can favor locally owned lodging, require fair labor standards, tax hotel stays and cruise arrivals, and dedicate the proceeds to sanitation, transit, conservation and housing. Tour companies should hire local guides, buy local food and crafts, and consult communities before packaging their rituals or neighborhoods as attractions. Indigenous and religious communities in particular need the power to say no, not merely the opportunity to perform for visitors.</p>
+      <p>Travelers still have responsibilities. The best tourist stays longer, moves slower and spends closer to the ground. A week in one region usually does less harm and more good than a frantic itinerary of short flights and checklist attractions. Visitors should learn basic etiquette, dress and photography norms, avoid wasting water and energy, refuse wildlife exploitation, and remember that “authenticity” is not something residents owe them. Carbon offsets are no substitute for reducing unnecessary flights, but they are better than pretending aviation emissions do not exist.</p>
+      <p>Finally, destinations should resist the myth that more arrivals always mean more prosperity. The right measure is not visitor count but net public value: decent jobs, protected landscapes, livable neighborhoods and cultural confidence. Tourism at its best creates curiosity, income and support for preservation. At its worst it turns places into consumable backdrops. The difference depends on whether tourists are treated as temporary citizens with obligations, and whether host communities retain control over the terms of welcome.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Tourism&#x27;s expansion has brought undeniable pressures to destinations worldwide, but abandoning travel is neither realistic nor desirable. Instead, the goal must be restructuring how tourism operates so its benefits flow more equitably and its harms are actively mitigated.</p>
+      <p>First, tourists must become deliberate spenders. The economic leakage that plagues many destinations—where profits leave for foreign-owned hotels and operators—undermines tourism&#x27;s development potential. Travelers should seek locally owned accommodations, hire community guides, and purchase from neighborhood restaurants and artisans. This isn&#x27;t merely about ethical purchasing; it redirects capital to those with genuine stake in preserving their environment and culture.</p>
+      <p>Second, destinations need robust carrying capacity frameworks. Overtourism isn&#x27;t inevitable—it results from poor planning. Cities like Venice and Barcelona have begun recognizing that unlimited visitors degrade the very attractions tourists seek. Implementing timed entry systems, distributing visitors across seasons and regions, and capping daily arrivals require political will but preserve assets for future generations. Tourists themselves can support this by choosing shoulder seasons and less-visited alternatives.</p>
+      <p>Third, environmental literacy among travelers must improve. Many tourists cause harm not from malice but from ignorance—feeding wildlife, removing artifacts, wasting water in drought-prone regions. Tourism operators and governments should provide clear, specific guidance about local ecological sensitivities. Conversely, tourists should demand transparency about their environmental footprint and support operators who invest in renewable energy, waste reduction, and habitat restoration.</p>
+      <p>Finally, community consent matters enormously. Destinations should retain authority over their tourism trajectories. When local residents participate in planning and benefit directly from visitation, they become stewards rather than victims. Puerto Rico&#x27;s community-based tourism cooperatives and Namibia&#x27;s conservancy model demonstrate how indigenous and local communities can retain agency while engaging productively with visitors.</p>
+      <p>None of this is simple. Balancing global mobility with local wellbeing requires sustained attention from tourists, operators, and governments alike. But tourism can remain viable only if it learns to thrive alongside the places and communities that make it possible.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Let Destinations Set the Rules</p>
+      <p>The fundamental problem with the global tourism debate is that it is almost always framed from the traveler&#x27;s perspective. We ask how tourists can be more responsible, what cruise lines should disclose, which guidebooks promote sustainable choices. We rarely ask the more important question: who actually decides how many visitors a place can absorb and on what terms?</p>
+      <p>The answer should be the people who live there. When Venice&#x27;s residents protest the daily disgorging of 30,000 cruise passengers into the lagoon, when Barcelona&#x27;s neighborhoods organize against short-term rentals hollowing out the Gothic Quarter, when residents of Cinque Terre warn that the trail system is being trampled to dust, they are telling us something important. The carrying capacity of a place — ecological, infrastructural, and social — is not a matter of taste. It can be measured and respected, or it can be ignored until something irreversible breaks.</p>
+      <p>Cities and countries should be far bolder about setting hard caps and pricing externalities into the cost of a visit. Bhutan&#x27;s &quot;high value, low impact&quot; tourism policy, with its daily minimum fee, is often dismissed as elitist, but it is one of the few examples of a sovereign nation pricing tourism to reflect what it actually costs the host. The Galápagos charges entry fees and limits boat permits. Machu Picchu rations daily tickets. None of these systems are perfect, but they begin from the right premise: tourism is a privilege extended by hosts, not a right exercised by guests.</p>
+      <p>What&#x27;s missing in most popular destinations is the political will to act before crisis hits. Venice waited until UNESCO threatened to list it as endangered. Iceland is only now grappling with what happened when annual arrivals tripled in a decade. Local governments fear the short-term revenue hit of saying &quot;enough.&quot;</p>
+      <p>The traveler can do their part — fewer flights, longer stays, locally owned guesthouses, respect for custom. But individual virtue cannot solve a coordination problem of this scale. The harm-reduction work has to happen at the level of policy: zoning, taxation, permit caps, environmental impact assessments, and meaningful consultation with the people whose neighborhoods have become attractions. Tourists will adapt to whatever rules they encounter. The rules just have to exist.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Stop Romanticizing Places That Don&#x27;t Want to Be Museums</p>
+      <p>There is a particular kind of hand-wringing about tourism that I have come to distrust. It usually involves a Western journalist, sometimes a traveler themselves, lamenting the &quot;homogenization&quot; or &quot;loss of authenticity&quot; of some far-flung place that has begun to host a Starbucks, a hostel, or English-speaking tour guides. The implication is that the locals were better off before — more authentic, more themselves — and that mass tourism has somehow degraded them.</p>
+      <p>I think this gets things backwards. Tourism is, for many places, the most viable path out of poverty that has ever existed. It is labor-intensive, hard to offshore, and it puts cash directly into the hands of taxi drivers, cooks, guides, hoteliers, and craft makers in countries where formal employment is scarce. The World Travel and Tourism Council estimates the sector supports more than 250 million jobs globally, a disproportionate share in the developing world. Tell a young woman in Siem Reap or Zanzibar that her guesthouse job is &quot;inauthentic&quot; and see how the conversation goes.</p>
+      <p>The concerns about cultural disruption are not nothing — but they are often a projection of the traveler&#x27;s own anxieties. Travelers want their destinations preserved in amber so they can experience them &quot;before they change.&quot; Locals usually want what people everywhere want: better wages, more options, refrigerators, decent schools for their kids. If tourism helps deliver those things, the trade-offs may well be worth it, and that is for them to decide, not for us.</p>
+      <p>The genuine harms of tourism — water depletion in arid resorts, reef damage, displacement of residents by short-term rentals, exploitation of workers — are real and solvable through ordinary regulation. They are not unique to tourism; they are problems of any industry that grows faster than its governance. We don&#x27;t tell people to stop buying smartphones because cobalt mining causes harm; we work on cleaning up the supply chain.</p>
+      <p>So yes, travel thoughtfully, tip generously, learn a few words of the language. But also: travel. The greater harm than mass tourism would be the gated, suspicious world that emerged if we all stayed home.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The Tourist You Are Is a Choice</p>
+      <p>I have spent most of my adult life traveling, and I have come to believe that the question of harm in tourism is overwhelmingly a question of pace. Fast tourism — the kind enabled by cheap flights, three-day city breaks, and Instagram-driven bucket lists — is what produces the worst outcomes for everyone involved. Slow down, and most of the problems shrink.</p>
+      <p>Consider what speed does. It pushes you toward marquee sites, because you don&#x27;t have time to wander. It pushes you toward chain hotels, because they&#x27;re frictionless to book. It pushes you toward English menus and tour buses, because deciphering bus schedules in Cyrillic costs time you don&#x27;t have. It pushes you to take more flights per year, because every trip is short. And it pushes you to treat a place as a checklist rather than a relationship.</p>
+      <p>Conversely, a traveler who spends two weeks in one small region rather than two weeks ricocheting across five countries does almost everything better, almost automatically. They take fewer flights. They eat at the same family-run restaurant three times, becoming a recognized customer rather than a transaction. They learn enough of the language to be polite. They notice when the festival is, or that the bakery closes on Wednesdays. They start to see locals as people rather than as picturesque backdrop. And — crucially — they spend more of their money locally, because chains are no longer the path of least resistance.</p>
+      <p>This isn&#x27;t a luxury prescription. Slow travel is often cheaper than fast travel; a week in a rented apartment in a small town costs less than three nights in a tourist-district hotel. It just requires giving up the fantasy that a vacation is a checklist of monuments.</p>
+      <p>Will this solve cruise-ship overcrowding in Dubrovnik or the impact of resort sprawl in Cancún? Of course not — those are structural problems requiring structural solutions. But the individual traveler still has a real choice about what kind of footprint to leave. The honest answer to &quot;how can tourists do less harm&quot; begins with the recognition that &quot;tourist&quot; is not a fixed identity. It is a way of behaving, and we can behave differently.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The Cruise Ship Is the Problem</p>
+      <p>If you want to identify the single greatest source of tourism-caused harm in the world right now, it is not backpackers, it is not Airbnb, it is not even budget airlines. It is the modern mega-cruise ship, and any honest answer to the question of how tourism can flourish with less damage has to start there.</p>
+      <p>A ship like Royal Caribbean&#x27;s Oasis of the Seas carries more than 6,000 passengers and 2,000 crew. When two or three of these dock in a small port like Dubrovnik, Santorini, or Juneau, they can double or triple the city&#x27;s effective population for a single afternoon. The passengers spend an average of a few hours ashore and a small amount per capita — far less than overnight visitors — because they eat and sleep on the ship. They overwhelm narrow streets, museums, and bathrooms. Then they leave, taking their wallets with them and leaving behind the trash, the wear, and the diesel exhaust. A single large cruise ship at port can emit as much sulfur dioxide as several million cars.</p>
+      <p>The economics are also worse than they look. Ports compete for cruise traffic by cutting docking fees, while the actual onshore revenue per passenger is meager. Studies in Venice and Charleston have shown that cruise visitors generate a tiny fraction of the local spending of staying tourists, despite producing most of the visible congestion. It is the worst possible deal: maximum impact, minimum benefit.</p>
+      <p>The solutions are not mysterious. Cap the number of ships that may dock per day, as Bruges has begun to do. Require ships to use shore power and low-sulfur fuel, as California now mandates. Charge a per-passenger head tax that reflects actual infrastructure costs. Ban the largest ships from the most fragile harbors, as Venetians have demanded for years. Steer the industry toward smaller vessels and longer port stays.</p>
+      <p>Mass tourism is not monolithic. A retiree spending a week in a pension, a family renting a farmhouse, a couple riding trains across a region — these visitors integrate into local economies in ways the cruise model fundamentally cannot. If we want tourism to do less harm, we should be honest about which formats cause most of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Stop Pretending Tourism Is a Neutral Encounter</p>
+      <p>The framing of this debate — &quot;less harm than good&quot; — assumes that tourism is, at root, a benign cultural exchange that can be tuned toward better outcomes through individual virtue and modest regulation. I think that framing obscures more than it reveals. Tourism, as currently practiced on a global scale, is a profoundly asymmetric economic relationship dressed up as a personal experience. Until we see it clearly, we will keep tinkering at the margins.</p>
+      <p>Consider what mass tourism actually is. It is the movement of wealthy populations — overwhelmingly from rich countries, increasingly from urban China and Russia — into places that need their money. The hosts cannot reciprocate; visa regimes, wage differentials, and global inequality mean the Balinese hotel worker will never holiday in the suburbs of the German tourist she is serving. The economic relationship is structurally extractive: foreign-owned hotel chains repatriate profits, the most lucrative jobs (management, marketing) go to outsiders, and locals are left with low-wage service work and rising real estate prices that push them out of their own neighborhoods. The UN&#x27;s own studies on &quot;leakage&quot; suggest that in many developing destinations, 70-80 cents of every tourist dollar leaves the country.</p>
+      <p>Add to this the carbon problem, which polite discussions of &quot;responsible travel&quot; tend to skip over. Aviation accounts for roughly 2-3 percent of global CO2 emissions and rising, and that figure understates the warming impact because of high-altitude effects. There is no realistic technological path to decarbonizing long-haul flight in the near term. The most environmentally responsible long-distance vacation is the one you don&#x27;t take.</p>
+      <p>This does not mean tourism is irredeemable. It means the honest reforms are bigger than choosing a locally owned guesthouse. They include: taxing aviation seriously to reflect its climate costs; requiring foreign tourism investment to take the form of joint ventures with majority local ownership; protecting residential housing from short-term rental conversion; empowering host communities, not just host governments, to set terms. They include accepting that some places — fragile ecosystems, sacred sites, exhausted cities — should simply receive fewer visitors, full stop.</p>
+      <p>&quot;How can tourists do less harm?&quot; is the wrong question. The right one is: who benefits from the current arrangement, and who pays the costs? Until we answer that honestly, the harm will keep accumulating, however well-meaning the individual traveler.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The well-traveled often return with a familiar lament: “It’s just not the same anymore. Too many people, too many McDonald’s.” This complaint captures a real problem, but it also points to the most immediate solution — the choices made by the travelers themselves. While governments and corporations shape the infrastructure of tourism, it is the individual who decides where to go, when to go, and how to behave. The least harm comes from tourists who see themselves not as passive consumers but as temporary stewards.</p>
+      <p>The most straightforward move is to avoid feeding the beast of overtourism. That means resisting the pull of the iconic, over-Instagrammed site during peak season. Choosing a lesser-known town in Tuscany over Florence in July, or hiking a secondary Inca trail instead of the classic four-day route, immediately reduces strain on saturated locales and spreads economic benefits. Equally important is the decision to patronize truly local and sustainable businesses. A guesthouse that hires locally, pays fairly, and sources food from nearby farms does far more good than an international chain that siphons profits abroad. Eco-certifications can help, but a few pointed questions to an owner go further.</p>
+      <p>Behaviour at the destination is equally critical. Minimizing physical footprint — carrying out all waste, sticking to trails, refusing plastic straws — is now basic decency. But cultural footprint matters too. Learning a handful of words in the local language, dressing respectfully at sacred sites, and asking permission before photographing people are small acts that resist the cultural homogenization that makes communities feel like living exhibits. A tourist who treats a morning market as a place of genuine exchange, not a photo op, is already doing less harm than a tour bus full of camera-wielding strangers.</p>
+      <p>Critics will rightly say that individual action is a drop in the bucket against the tide of millions. Yet every collective shift starts with visible personal choices. When travellers share stories of meaningful, low-impact trips, they subtly reshape the aspirations of others. Tourism flourishes not when it conquers every last village, but when it sustains the very diversity that made people want to travel in the first place. The power to tip that balance sits, in part, in every backpack and suitcase.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The notion that tourists, left to their own devices, can cure the ills of mass travel is a comforting fantasy. Tourism is a classic tragedy of the commons: each visitor rationally seeks the best experience, but their aggregate actions degrade the very assets they came to enjoy. No amount of eco-tip pamphlets will stop a cruise ship from disgorging thousands into the fragile alleys of Venice. If tourism is to flourish without devouring its host, the heavy lifting must be done by governments and regulatory bodies, not by well-meaning individuals.</p>
+      <p>The tool kit is well established, though politically difficult. First, direct capacity controls. Machu Picchu now limits daily visitors and enforces a two-entry time slot; Bhutan famously requires a minimum daily spend that filters out mass backpacker tourism in favor of high-value, lower-volume travel. These blunt instruments work because they treat the destination’s carrying capacity as a hard ecological and social boundary, not a suggestion. Second, pricing mechanisms. Congestion taxes for highly-trafficked sites, like the one long discussed for Venice’s day-trippers, can ration access while generating revenue for conservation and infrastructure. The key is that the funds must be visibly ring-fenced for preservation, so visitors see their fees as a contribution rather than a shakedown.</p>
+      <p>Zoning and regulation of the tourist industry itself are equally vital. Cities like Barcelona have begun cracking down on illegal vacation rentals that hollow out residential neighborhoods. Governments must also mandate transparent supply chains and labor standards, ensuring that the hotel you book isn’t just a greenwashed façade dependent on exploited workers. The cruise industry, a notorious emitter and polluter, could be forced to use cleaner fuels and limit port visits — a move only possible through international maritime regulation or port state control.</p>
+      <p>Skeptics argue that regulation stifles the entrepreneurial spirit and denies less affluent travelers access to beauty. But a dead reef or a gated resort town cut off from its own culture is not a meaningful experience for anyone. The goal is not to end tourism, but to recognize it as an extractive industry that needs a strict operating license. Unfettered tourism is a race to the bottom; thoughtful constraint is the only path to a dignified, lasting exchange between guest and host.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>A street in Luang Prabang, Laos, at dawn: hundreds of tourists line up to photograph a procession of monks receiving alms. Cameras flash, onlookers shove, and a sacred daily ritual becomes a frantic spectacle. The money spent that morning goes to tour operators, not the monks or the local vendors. This scene captures the essential problem: when tourism is designed and controlled by outsiders, it is almost guaranteed to disrupt the culture it purports to celebrate. The most potent way to do less harm is to fundamentally shift power and ownership to the communities themselves.</p>
+      <p>Community-based tourism (CBT) is not a niche add-on; it is a different operating system. In its most robust form, the community collectively decides what aspects of its life to share, how visitor numbers will be managed, and where the revenues go. I have seen this work beautifully in the mountains of northern Thailand and in rural cooperatives in Costa Rica. Local families offer homestays, guide hikes through their own forests, and teach cooking classes with profits reinvested in village schools or health clinics. Because the community retains control, there is a direct incentive to protect both the natural environment and cultural traditions — they are the product. Cultural performance becomes cultural continuity, not a commodified put-on.</p>
+      <p>This model also mitigates economic leakage, the phenomenon where the vast majority of tourist dollars fly back to foreign tour companies, airline shareholders, and international hotel chains. In a CBT framework, the multiplier effect stays local: the farmer who sells eggs to the guesthouse, the weaver who sells directly to visitors, the young person who can find dignified work as a guide instead of migrating to a distant city. That economic grounding is what allows a destination to flourish as a living place, not just a postcard.</p>
+      <p>The burden, then, falls on us as travelers to actively seek out and book through community-run enterprises, even when they are harder to find than a one-click resort package. It also falls on governments and development agencies to provide seed funding and legal frameworks that protect communal land rights against hotel developers. Tourism does not have to be an invading force. When a village holds the keys, being a guest starts to feel less like a transaction and more like an act of solidarity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The framing of the debate itself deserves a hard look. “How can tourism flourish while causing as little harm as possible?” The question smuggles in a dangerous assumption: that a high-volume, globe-spanning tourist industry can be rendered benign with enough tweaks and good intentions. The carbon math alone suggests otherwise. By 2014, aviation accounted for around 2-3% of global CO2 emissions, and the figure was growing fast, just as scientists warned that total emissions must peak soon to avoid catastrophic warming. A single long-haul round trip can generate more carbon per passenger than the average person in dozens of countries produces in a year. No carbon offset scheme has yet proven to reliably and permanently balance that ledger.</p>
+      <p>Then there is the physical burden on places themselves. The “flourishing” of tourism is measured in arrivals, revenue, and infrastructure, but a coral reef trampled by snorkelers does not flourish. An alpine valley paved for a parking lot does not flourish. The influx of tourists into cities from Barcelona to Reykjavik has created a housing affordability crisis as residential stock converts to short-term rentals, effectively displacing the very local character tourists seek. We pretend these are manageable side effects, but they are in fact the direct, logical output of an industry built on relentless growth.</p>
+      <p>The uncomfortable truth is that “less harm” requires less travel. This is not an argument for a return to a static medieval world; it is a call for a radical reduction in the frequency and distance of our leisure trips. A family might still take a beach holiday, but perhaps once every two or three years rather than multiple times annually, and by train when possible. Business travel, much of it needless in an age of videoconferencing, could be slashed. This is a degrowth prescription that will be dismissed as impractical or miserly. Yet we already accept the principle of limits in many arenas — fishing quotas, emission caps — because we understand that an open-ended expansion destroys the resource base.</p>
+      <p>If we are serious about doing less harm, we must stop asking how to make the inexorable growth of tourism kinder, and start asking how to build a culture in which a rich, connected life doesn’t depend on burning fossil fuels to reach ever more distant shores. The most ethical tourist in 2014 might just be the one who decided to discover her own region deeply instead of taking a plane to the next bucket-list destination.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The tourist industry often feels like a relic of the 20th century: monolithic hotels, identikit tour packages, and crowds herded toward a handful of overburdened landmarks. But a quiet revolution is underway, powered by the smartphone in your pocket, and it holds real promise for dispersing the harms of travel. By embracing technology and the sharing economy thoughtfully, tourists can become part of a solution that uses digital tools to lighten the footprint of their wanderlust.</p>
+      <p>The first breakthrough is the peer-to-peer lodging model, led by platforms like Airbnb and Couchsurfing. While controversial, these services have a genuine capacity to reduce the environmental and social pressure of building massive new hotels. A spare room in an occupied apartment consumes essentially no additional land, concrete, or energy for construction. It puts money directly into the hands of a local resident, who now has a stake in welcoming visitors rather than resenting them. The key is to favor hosts who actually live in the home they rent — combating the rise of unhosted investor units that do erode neighborhoods.</p>
+      <p>More transformative still is the potential to use data to unclog the arteries of tourism. Real-time crowding apps, such as those already tested in national parks and some city centers, can gently guide visitors to under-visited corners. Imagine an alert suggesting you delay your ascent of the Eiffel Tower by an hour, or redirecting you to a stunning but unknown museum three blocks away. This digital nudging can redistribute the load across time and space without the heavy hand of regulation, preserving both the visitor experience and the site itself.</p>
+      <p>Even operational harms can be cut. Apps that aggregate local farm-to-table eateries, map public recycling and water-refill points, or connect you with walking guides who use no fuel all lower the collective impact. The sharing economy extends to bikes and cars, reducing the need for large rental fleets and encouraging public transport.</p>
+      <p>To be sure, technology is not a magic wand. It demands vigilant governance to ensure platforms don’t simply accelerate gentrification or turn into unregulated hotel empires. Critics are right that an app can’t replace a moral compass. Nevertheless, the tourist who deploys these tools deliberately — who stays in a lived-in home, heeds a crowd-sourced tip to explore a lesser peak, and uses a phone only to tread more lightly — is far from the passenger of an old-school, high-impact tour. Digitally enabled, decentralized tourism may well be the most scalable way to welcome a growing global middle class without loving the world to death.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>To mitigate the destructive impacts of mass tourism, we must stop treating the world’s greatest cultural and natural wonders as free commodities. The overcrowding and degradation of destinations from Machu Picchu to Venice is a classic tragedy of the commons. Because access is historically cheap or free, millions of visitors flood these sites, degrading the very attractions they came to see. The solution to flourishing, sustainable tourism is not moral pleading; it is basic economics.</p>
+      <p>Governments and heritage boards need to aggressively implement dynamic and tiered pricing models. To do less harm, tourists must be required to pay the true cost of their footprint.</p>
+      <p>Currently, a ticket to a world-class archaeological site often costs less than a movie ticket in London or New York. This artificial depression of prices leads to unsustainable demand. By raising entry fees significantly, destinations can accomplish two critical goals simultaneously: they naturally limit the raw number of visitors to manageable, sustainable levels, and they generate massive revenue surpluses. These funds can then be ring-fenced for conservation, waste management, and infrastructure upgrades.</p>
+      <p>Critics often argue that high prices make travel elitist, walling off global heritage from the less wealthy. But tiered pricing solves this. Locals and citizens of the host country can be granted heavily subsidized or free access, ensuring that cultural heritage remains accessible to its rightful inheritors. Foreign visitors, who have already spent hundreds or thousands of dollars on airfare and hotels, can and should bear the financial burden of preservation.</p>
+      <p>Market mechanisms are the most effective tool we have. If a coral reef or an ancient city is being loved to death, a steep &quot;preservation tax&quot; or daily visitor cap auctioned to the highest bidder will instantly stem the tide. Until we stop subsidizing the destruction of the world’s treasures by underpricing them, tourists will continue to cause more harm than good.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The root of tourism’s harm lies not in the traveler, but in the traditional architecture of the travel industry. For decades, the dominant model has been the &quot;tourist enclave&quot;—the all-inclusive resort, the gated cruise port, and the foreign-owned international hotel chain. In this model, up to 80 percent of the money spent by travelers leaks out of the host country entirely, returning to corporate headquarters in the West. Locals bear the brunt of the pollution, the water shortages, and the cultural homogenization, but reap almost none of the economic reward.</p>
+      <p>If tourism is to flourish without destroying its host communities, we must dismantle the enclave model and embrace a decentralized, community-owned approach.</p>
+      <p>The most effective way a tourist can do less harm is by ensuring their money stays in the local economy. This means rejecting multinational hotel chains in favor of local guesthouses or utilizing the emerging sharing economy—like renting a room directly from a resident. It means eating at neighborhood restaurants rather than global franchises, and hiring independent local guides rather than booking generic package tours.</p>
+      <p>Furthermore, host governments need to empower communities to dictate the terms of their own tourism. Right now, tourism boards focus almost exclusively on increasing arrival numbers to boost national GDP. Instead, municipalities should be empowered to zone against mega-resorts and set strict limits on cruise ship docks, as we are beginning to see in cities fed up with the congestion.</p>
+      <p>When tourism is integrated into the existing fabric of a community, rather than walled off in a resort, cultural exchange replaces cultural homogenization. Residents become stakeholders rather than servants. Tourism ceases to be an extractive industry and becomes a regenerative one. The goal shouldn&#x27;t simply be &quot;less harm&quot;; by localizing the economics of travel, tourism can become a profound engine for grassroots poverty alleviation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>There is a growing, romantic notion among modern travelers that the best way to travel responsibly is to &quot;get off the beaten path.&quot; Guidebooks and travel blogs urge us to avoid the tourist traps, seek out untouched beaches, and explore remote, &quot;authentic&quot; villages.</p>
+      <p>From an environmental and cultural standpoint, this is terrible advice. If we want to minimize the harm of a globally expanding tourist class, the answer is concentration, not dispersion.</p>
+      <p>When millions of tourists fan out into pristine ecosystems and quiet, traditional communities, the footprint of tourism expands exponentially. Remote villages are suddenly forced to deal with plastic waste, sewage runoff, and the commodification of their private lives. Fragile ecosystems that could survive a handful of backpackers are rapidly degraded when those backpackers map the route for thousands of followers.</p>
+      <p>The pragmatic solution to mass global tourism is the &quot;sacrificial zone.&quot; We need places like Cancun, Las Vegas, and mega-cruise terminals. These heavily developed corridors are engineered to handle high volumes of humanity with ruthless efficiency. A massive, concentrated resort strip has the tax base and economies of scale to build proper water treatment plants, industrial waste management systems, and dedicated transport infrastructure. It contains the damage.</p>
+      <p>If a tourist wants to cause as little harm as possible, the most environmentally sound choice might just be to take the package holiday to a well-established mega-resort. Let the developed tourist hubs absorb the impact. Leave the untouched places untouched. The worst thing the rising global middle class could do is demand that every quiet corner of the globe be opened up for their personal exploration and &quot;authentic&quot; experiences.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>When we discuss the harms of tourism, we typically focus on local impacts: trampled coral reefs, litter on beaches, or the crowding of historic plazas. But this narrow focus obscures the elephant in the room. The single greatest harm caused by the global tourism boom is catastrophic climate change, driven primarily by the explosion of cheap commercial aviation.</p>
+      <p>Since the deregulation of airlines and the rise of low-cost carriers, air travel has become accessible to the masses. While this has democratized travel, it has unleashed a massive, unregulated source of greenhouse gas emissions. Aviation is one of the fastest-growing contributors to global carbon emissions. A single transatlantic flight can generate a larger carbon footprint than a citizen in a developing nation produces in an entire year.</p>
+      <p>To make tourism sustainable, we cannot rely on individual tourists opting to reuse their hotel towels or refusing plastic straws. We need stringent, international, top-down regulation.</p>
+      <p>First, the international community must implement a global aviation carbon tax. The price of an airline ticket must reflect its environmental cost. This will naturally curb the frivolous weekend jet-setting fueled by budget airlines, encouraging people to travel locally or take trains where available. The revenue from this tax should be channeled directly into climate mitigation and the development of sustainable aviation fuels.</p>
+      <p>Second, the hotel industry is rife with &quot;greenwashing&quot;—slapping an eco-friendly label on a resort without making substantive changes. Governments must mandate strict, standardized environmental audits for the hospitality sector. Hotels should be legally required to meet stringent targets for energy efficiency, water usage, and zero-waste operations to maintain their operating licenses.</p>
+      <p>Tourism is an industry. Like manufacturing or resource extraction, it will optimize for profit until regulations force it to internalize its externalities. Expecting millions of consumers to voluntarily regulate their own travel habits is a fantasy. Only aggressive, systemic policy changes aimed at the carbon footprint of the travel industry can allow tourism to flourish without causing irreversible harm to the planet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>Over the last decade, a troubling trend has emerged in the quest for &quot;responsible&quot; travel: voluntourism. Eager to do less harm and more good, Western tourists—often high school or college students—spend thousands of dollars to fly to the developing world to build a school, paint an orphanage, or dig a well.</p>
+      <p>While the intentions are noble, the results are often disastrous. Voluntourism frequently disrupts local labor markets; why would a village hire a local bricklayer when foreign teenagers will do the work for free? Worse, it creates a perverse market for poverty, most notably in the orphanage industry, where children are sometimes separated from their families specifically to populate institutions that attract lucrative foreign volunteers.</p>
+      <p>If tourists truly want to do less harm, they need to abandon the savior complex. The best way to be a good tourist is simply to be a good guest.</p>
+      <p>This means returning to the fundamental ethics of travel: respect, curiosity, and humility. Before arriving, tourists should educate themselves about the local customs, dress codes, and social norms. Harm occurs when tourists treat a foreign country as a playground designed for their uninhibited consumption, rather than a living, breathing society.</p>
+      <p>Being a good guest means learning a few words of the local language to show respect. It means asking permission before thrusting a camera into a stranger&#x27;s face. It means understanding that the locals are going about their daily lives and are not paid extras in your vacation narrative.</p>
+      <p>We do not need to construct buildings or teach English for two weeks to justify our presence. We simply need to show up with respect, spend our money fairly at local businesses, leave no physical trace, and go home. The transformation required to fix tourism isn&#x27;t about grand philanthropic gestures; it is about a quiet, profound shift from acting as entitled consumers to acting as gracious, observant guests.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The first rule for making tourism less damaging is to stop treating destinations as stage sets. A historic neighborhood, a coral reef or a sacred site is not a product that exists for the visitor’s consumption. It is part of somebody’s home. If tourists, tour operators and governments began from that premise, many practical choices would follow.</p>
+      <p>Travelers should spend their money where it stays local. That means locally owned hotels rather than all-inclusive compounds that import food, managers and entertainment; local guides rather than foreign package operators; restaurants that buy from nearby farms and fisheries; and crafts bought from the people who made them. The question is not whether a visitor spends a lot or a little, but whether the spending supports residents or simply extracts value from them.</p>
+      <p>Destinations, for their part, need the confidence to set limits. Venice, Machu Picchu, Angkor and the Galápagos cannot absorb infinite numbers just because demand exists. Timed tickets, caps on cruise-ship arrivals, limits on hotel construction and higher fees for fragile sites are not anti-tourist measures. They are ways of preserving the very places people travel to see. A park entrance fee that pays rangers and conservation work is more honest than pretending access is “free” while the ecosystem bears the cost.</p>
+      <p>Tourism also needs to become less performative. Visitors often say they want “authentic” culture, but that demand can turn living traditions into scheduled spectacles. The better approach is humility: learn a little of the language, observe local norms, ask before photographing people, dress appropriately, and accept that not every ritual, beach or neighborhood should be open to outsiders.</p>
+      <p>Finally, the industry must take environmental costs seriously. Hotels can conserve water and energy, ban destructive waste practices and stop building in places where development destroys mangroves, reefs or dunes. Tourists can choose trains over short flights where possible, stay longer instead of making rapid checklist trips, and avoid activities that exploit animals or degrade habitats.</p>
+      <p>Tourism will never be impact-free. Nor should the goal be to make travel a privilege only for the wealthy. The aim should be reciprocity: the visitor gains pleasure and understanding, while the host community gains income, respect and control over its future. When local people have real authority over tourism, harm is reduced not by slogans but by power shifting to those who live with the consequences.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The uncomfortable answer is that tourism cannot flourish everywhere, all the time, in ever larger numbers, while causing minimal harm. Some places are being loved to death, and the language of “sustainable tourism” too often functions as a soothing label placed on an expanding industry. A cruise ship that disgorges thousands of passengers into a small port for six hours is not made benign by recycling its brochures. A fragile island is not protected by asking guests to reuse towels while more resorts are built along its beaches.</p>
+      <p>If tourism is to do less harm, we have to talk about restraint. That means fewer visitors in certain places, not merely better-behaved visitors. Cities and natural sites should be willing to impose quotas, restrict buses and cruise ships, ban new hotel construction in saturated districts and charge entrance fees that reflect real maintenance and environmental costs. Cheap access has a democratic appeal, but it can also be a subsidy for degradation. When a site is limited by ecology, water supply or local tolerance, pricing and permits are rational tools, not elitist conspiracies.</p>
+      <p>The same applies to air travel. The falling cost of flying has opened the world to millions, but aviation remains carbon-intensive, and the industry’s growth threatens to overwhelm efficiency gains. It is incoherent to celebrate a weekend shopping trip across a continent as harmless cosmopolitanism. Travelers from wealthy countries, in particular, should fly less often and stay longer when they do. A two-week trip by rail and bus through one region is usually less damaging, and more meaningful, than a series of long-haul “bucket list” hops.</p>
+      <p>There is also a moral cost in the idea that every culture must become available for tourism. Some communities may decide they want visitors; others may want fewer or none. Their decision should be respected, even when outsiders find it disappointing. Indigenous lands, religious sites and residential neighborhoods deserve protection from the market’s appetite for novelty.</p>
+      <p>None of this means tourism should be abolished. It provides jobs, foreign exchange and cross-cultural contact. But an industry can be beneficial in some doses and destructive in others. The question is not how to keep tourism growing indefinitely while polishing its image. The question is where growth should stop. The most responsible tourist may sometimes be the one who decides not to go.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>It is easy for affluent travelers to romanticize places without tourists. It is also easy to forget what tourism has meant for millions of people whose alternatives are worse. In many countries, tourism is one of the few industries that can create employment quickly, bring in foreign currency and give economic value to landscapes that might otherwise be mined, logged or paved over. A safari lodge, a beach hotel or a cultural festival can be imperfect and still provide better livelihoods than subsistence farming under pressure or migration to an urban slum.</p>
+      <p>So the goal should not be to shame tourism, but to govern it well. The worst outcomes occur when destinations lack bargaining power: foreign investors receive tax holidays, local workers get low wages, water and land are diverted to resorts, and profits leave the country. Better policy can change that. Governments can require environmental impact assessments, enforce labor standards, invest hotel taxes in public services, and make sure that local communities share revenue from parks and heritage sites. Tourism ministries should not be mere marketing agencies; they should be regulators and planners.</p>
+      <p>Mass tourism also deserves a more nuanced defense. Not every traveler can afford a boutique eco-lodge or a customized educational tour. Package holidays have allowed middle-class and working-class families to see the world. The answer is not to replace mass tourism with moralized luxury tourism, but to improve the mass market: cleaner transport, better waste systems, water-efficient hotels, fair wages, and strict rules against building on sensitive coastlines.</p>
+      <p>Travelers have responsibilities too, but they should not be asked to solve structural problems with consumer virtue alone. Choosing a locally owned guesthouse helps; it does not substitute for zoning laws. Refusing to buy coral souvenirs is good; it does not replace marine enforcement. Tipping guides fairly matters; it does not create a national labor code. The industry’s impacts are large because the industry is large, and the solutions must operate at that scale.</p>
+      <p>Tourism can even strengthen conservation. The mountain gorillas of Rwanda and Uganda, the wildlife reserves of East Africa, the rainforests of Costa Rica and many marine parks depend partly on visitors who make protection economically visible. When local people benefit from conservation tourism, they have stronger incentives to protect wildlife and landscapes.</p>
+      <p>The challenge is not tourists versus locals, or travel versus purity. It is whether tourism is planned as an extractive business or as part of a broader development strategy. With real regulation, community revenue and environmental enforcement, tourism can do more good than harm.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Tourism’s most neglected damage is not the awkward encounter between a visitor and a traditional culture, but the accumulation of carbon, sewage, plastic and water use that follows the modern vacation. A great deal of travel writing still treats the environment as scenery. Yet the beach resort depends on freshwater, the mountain lodge on fuel, the island hotel on waste disposal, and the long-haul vacation on aviation emissions. If tourism is to flourish responsibly, it must first become honest about its physical footprint.</p>
+      <p>The industry has made gestures in this direction. Many hotels ask guests to reuse towels; some install efficient lighting or solar water heaters. These are useful, but modest. The real test is infrastructure. Resorts should not be approved unless they can demonstrate adequate wastewater treatment, sustainable water supplies and protection of wetlands, reefs and forests. Coastal development must respect setbacks and natural buffers. In many places, mangroves and dunes protect communities better than concrete walls, yet they are sacrificed for ocean views.</p>
+      <p>Air travel is harder. Planes have become more efficient, but cheaper fares and rising demand can erase those gains. Carbon offsets are not a magic absolution; their quality varies, and they can encourage travelers to avoid harder choices. Still, visitors can reduce harm by taking fewer flights, combining trips, staying longer and using trains or buses where feasible. The prestige of the frantic global itinerary should give way to slower travel.</p>
+      <p>Destinations also need to price environmental costs. If a small island must import fuel, desalinate water and ship out waste, hotel taxes should reflect those burdens. If divers and snorkelers visit a reef, user fees should fund mooring buoys, monitoring and enforcement against destructive fishing and anchoring. National parks should not be starved while tour companies profit from their beauty.</p>
+      <p>Tourists can help by asking unglamorous questions: Where does the wastewater go? Are local water supplies being depleted? Are wildlife encounters managed for the animals’ welfare or the visitor’s photograph? Does the lodge employ local people and buy local food? The point is not to turn vacations into audits, but to reward businesses that treat environmental stewardship as central rather than decorative.</p>
+      <p>Tourism will always change places. The choice is between change that consumes the natural basis of the industry and change that protects it. A destination that loses its reef, forest, clean water or livable climate has not merely suffered collateral damage. It has destroyed the reason for going there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The phrase “cultural disruption” can be misleading. Cultures are not museum pieces, and local people are not obliged to remain picturesque for the benefit of visitors who dislike globalization. A young person in Bali, Oaxaca or Marrakech may want a smartphone, a university education and a job in tourism without thereby becoming less authentic. The harm comes not from change itself, but from unequal change: when outsiders define what a place is, capture the profits and pressure residents to perform a simplified version of themselves.</p>
+      <p>Tourism can do less harm when communities have the right to say what kind of tourism they want. That may mean community-owned lodges, cooperatives of guides, village councils that approve trekking routes, or urban neighborhoods that regulate short-term rentals and nightlife. It may also mean refusing certain forms of tourism altogether. The crucial principle is consent, not preservation in amber.</p>
+      <p>Visitors should be wary of the search for “authenticity.” It often produces exactly the artificiality it condemns. When tourists demand untouched villages, local people learn to hide satellite dishes and stage ceremonies. When they demand exotic poverty, they reward underdevelopment as aesthetic experience. A more respectful traveler asks different questions: Who benefits from my visit? Am I intruding on private life? Am I paying fairly? Have I mistaken friendliness for servitude?</p>
+      <p>Education before travel can help. Guidebooks and tour companies should explain local etiquette, history and politics, not just list attractions. Cruise passengers arriving for a few hours in a city should know that their presence affects traffic, rents and public space. Volunteers should understand that good intentions do not qualify them to teach children, build schools or handle wildlife. “Voluntourism” is especially risky when the emotional needs of the visitor come before the actual needs of the community.</p>
+      <p>Technology may worsen or improve these dynamics. Online reviews can punish abusive operators and reward responsible ones, but they can also funnel crowds into the same fragile neighborhoods and turn private places into viral attractions. Travelers should resist treating every encounter as content. Not every meal, child, monk or market stall needs to be photographed and posted.</p>
+      <p>The best tourism is not guilt-ridden. It is reciprocal. Guests bring curiosity, money and respect; hosts offer knowledge, hospitality and, when they choose, access to their home. That relationship requires boundaries. A good tourist does not ask a place to stand still, but does accept that the people who live there should decide how they change.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The first rule of sustainable tourism is that the destination, not the tour operator and not the tourist, should set the terms. Too often “tourism development” means courting more arrivals until residents rebel or the place that drew visitors is damaged. A healthier model begins with an honest local question: How many visitors can this beach, shrine, neighborhood or mountain absorb without degrading water, housing, wildlife, traffic, ritual life and public space?</p>
+      <p>That answer will vary. Some places can welcome large numbers if they invest in transit, sanitation and waste management. Others require hard limits: timed entry at fragile monuments, permits for trekking routes, caps on cruise ships, restrictions on building in coastal zones and seasonal closures to let ecosystems recover. These measures are sometimes portrayed as anti-tourist. They are the opposite. They preserve the very asset tourism depends on.</p>
+      <p>Pricing should also be used more intelligently. Tourists impose costs: trash removal, police, trail maintenance, sewage treatment, erosion, crowding. Those costs should not fall mainly on residents. Visitor taxes, park fees and cruise docking charges can fund conservation and public services, but only if the revenue is transparent and locally controlled. A hotel tax that disappears into a distant treasury will not win public support; a fee that repairs the old city’s drainage system or pays rangers to protect a reef may.</p>
+      <p>Destinations should measure success differently. The crude metric is arrivals: more passengers, more hotel nights, more airport expansion. The better metric is net benefit: decent local wages, local ownership, ecological health, resident satisfaction and preservation of cultural life. Bhutan’s “high value, low volume” approach is not transferable everywhere, and it risks becoming elitist if copied lazily. But it does make one essential point: a country is not obliged to maximize head counts.</p>
+      <p>Finally, communities need the power to say no. That means land-use rules, labor standards, environmental review and consultation with indigenous and local groups before resorts, ports or roads are built. Tourism can flourish, but only if “flourish” means a durable relationship between guest and host — not a boom that leaves behind exhausted residents, polluted water and a souvenir version of a real place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Tourists should begin with a modest thought: they are not the main characters in the places they visit. That sounds simple, but much harm flows from forgetting it. We demand photographs of private rituals, complain when food is not familiar, bargain aggressively with people much poorer than we are, or treat neighborhoods as stages for our self-discovery.</p>
+      <p>The ethical tourist travels more slowly and with more humility. Spend longer in fewer places. Learn basic greetings and local rules before arriving. Dress and behave in ways that respect the setting, especially at religious sites. Ask before photographing people. Buy from local businesses rather than only from international chains. Use public transportation when possible. Carry a refillable bottle where safe, refuse needless plastic and do not leave conservation to the hotel’s towel card.</p>
+      <p>It is also worth being skeptical of experiences sold as “authentic.” A village dance arranged for busloads of visitors may provide income, and there is nothing inherently wrong with performance. But the tourist should not confuse it with ownership of another culture. Likewise, orphanage visits and short-term “voluntourism” often satisfy the visitor’s desire to help more than the community’s needs. If a task would require training at home, it probably should not be done abroad by an untrained traveler on holiday.</p>
+      <p>The best travelers ask where their money goes. A family-run guesthouse, local guide, locally owned restaurant or community conservation project can keep benefits closer to the people bearing the costs of tourism. This does not mean every trip must become a moral audit. Pleasure is a legitimate reason to travel. But pleasure should not require blindness.</p>
+      <p>The old distinction between tourist and traveler is mostly vanity. Everyone who arrives temporarily, camera in hand, is a tourist. The question is whether we behave like extractive consumers or like guests. Guests do not expect the house to rearrange itself around them. They listen, pay fairly, tread lightly and remember to say thank you.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The central question is not simply how many tourists arrive, but who owns the tourism economy. A resort can boast of bringing development while importing its managers, buying food from abroad, paying low wages, enclosing beaches and sending profits to investors elsewhere. In that case tourism may increase gross domestic product while leaving the host community with congestion, higher prices and service jobs that disappear in the off-season.</p>
+      <p>To do less harm, tourism policy must focus on “leakage” — the share of tourist spending that leaves the destination. Governments and donors often subsidize airports, ports and roads to attract visitors, but they pay less attention to whether local farmers can sell to hotels, whether craftspeople receive fair prices, whether guides are licensed and protected, or whether residents can afford to remain in neighborhoods turned into short-term rentals and souvenir corridors.</p>
+      <p>Community benefit should be built into tourism from the start. Large hotels and cruise operators can be required to hire and train locally, purchase local goods where possible, publish wage and procurement data, and contribute to conservation and infrastructure funds. Land deals should require genuine consent, especially where indigenous peoples or customary land rights are involved. “Consultation” after the project is already decided is not consent.</p>
+      <p>Small-scale and community-based tourism is not a magic cure. Local elites can capture the benefits; poorly run projects can fail; visitors can still intrude. But local ownership changes the balance of power. A community that operates its own guesthouses, guiding services, cultural programs or wildlife conservancies has a reason to protect the landscape and the authority to decide what should remain private.</p>
+      <p>Tourists have a role, but the burden cannot rest on individual virtue alone. A traveler may want to choose responsibly, yet be offered mostly opaque packages. Governments and industry associations should make it easier to identify hotels that pay decently, conserve water, reduce waste and respect local rights. Certification schemes can help if they are rigorous and independent; they are mere greenwash if they reward good brochures.</p>
+      <p>Tourism is often defended because it creates jobs. That is true, and in many places those jobs matter enormously. But a job is not automatically justice, and revenue is not automatically development. The purpose of tourism should be to strengthen the host society’s choices, not narrow them until every street, costume and coastline must be monetized for outsiders.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>There is a danger in discussions of harmful tourism: they can become a polite way of saying that other people should stay home. Cheap flights, easier visas and rising incomes have allowed millions of people who were once excluded from international travel to see the world. That democratization is a good thing. The answer to crowding and cultural friction cannot simply be to turn travel back into a privilege for the wealthy.</p>
+      <p>Tourism should be managed as a public-systems problem, not just a personal morality test. Cities know how to handle large flows of people when they invest properly. Good rail links reduce traffic. Clean water and sewage systems prevent resorts from polluting beaches. Zoning can keep hotels from overwhelming residential districts. Museum reservations and timed tickets can smooth crowds. Clear information can direct visitors beyond the same three famous sites, spreading income and reducing pressure.</p>
+      <p>Destinations also need ordinary public administration: building codes, labor inspection, anti-corruption rules, noise ordinances and environmental enforcement. Many tourism disasters are not caused by tourists being uniquely wicked, but by governments allowing unplanned construction, untreated waste, illegal guiding, unsafe boats or the privatization of public space. Blaming visitors can distract from failures of governance.</p>
+      <p>Nor should cultural change be treated as inherently tragic. Cultures are not museum pieces. Local people may want global brands, new music, foreign languages and tourist income. They may adapt ceremonies or crafts for visitors and still retain meanings outsiders do not see. The romantic demand that a place remain “unspoiled” often comes from people who do not have to live with limited opportunities.</p>
+      <p>This does not mean anything goes. Fragile sites need limits, and tourists should behave respectfully. But the goal should be competent management that allows broad access, not a retreat into exclusivity. If tourism is planned around residents’ needs — housing, transit, water, wages, public space — visitors can be accommodated without making the destination unlivable. The real test is not whether a place looks unchanged to the returning traveler. It is whether the people who live there have more choices, not fewer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The uncomfortable truth is that tourism cannot grow without limits and still be called sustainable. The industry’s favorite language — eco-resorts, responsible travel, green hotels — can obscure the scale of the problem. International tourist arrivals have passed one billion a year. Many of those trips depend on aviation, cruise ships, air-conditioned hotels, imported food, golf courses in dry regions and heavy water use in places where residents may already face scarcity. A towel reused in a luxury hotel does not cancel out a long-haul flight.</p>
+      <p>If tourism is to cause as little harm as possible, the first step is to stop assuming that more travel is always better. Some places should receive fewer visitors. Some coastlines should not be developed. Some wildlife encounters should not be sold. Some trips, especially short long-distance holidays, are hard to justify environmentally. A weekend shopping trip across an ocean may be affordable to the traveler because its climate cost is not reflected in the ticket.</p>
+      <p>This does not require puritanism or the end of pleasure. It requires honesty. Travelers can take fewer trips and stay longer. They can favor trains and buses over planes where practical. They can choose destinations closer to home. They can avoid cruises with poor environmental records. They can treat carbon offsets as, at best, a supplement rather than a license to consume. Businesses can design for low energy and water use, but they should not advertise a remote resort as “green” merely because the roof is made of local materials.</p>
+      <p>Governments have the largest responsibility. Aviation fuel and cruise pollution should not enjoy special treatment while ordinary citizens are asked to conserve. Protected areas need enforceable visitor limits, not inspirational slogans. Tourism taxes should be tied to conservation, climate adaptation and local infrastructure. Public money should not subsidize airports or mega-resorts without a serious accounting of environmental costs.</p>
+      <p>The industry may object that limits threaten livelihoods. That concern is real. In many countries tourism provides one of the few sources of cash income and foreign exchange. But dependency on ever-rising arrivals is itself dangerous. A destination that destroys reefs, forests, historic quarters or local goodwill undermines its future. A better model would seek more value from fewer visitors: longer stays, fairer wages, local ownership and less resource-intensive activities.</p>
+      <p>The question asks how tourism can flourish while causing as little harm as possible. The answer depends on what we mean by flourish. If it means endless growth in passenger numbers, it cannot. If it means meaningful encounters, decent livelihoods and protected places, then flourishing may require the discipline to leave some rooms empty, some trails quiet and some journeys untaken.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Tourism, like any powerful industry, is morally neutral—what matters is how we shape it. The framing of &quot;doing less harm&quot; acknowledges a fundamental truth: travel is not going away. The global middle class will continue to expand, and the desire to see the world is deeply human. Rather than demonizing tourism, we should focus on creating frameworks that channel this inevitable movement toward genuine benefit.</p>
+      <p>The most promising approach involves what I call &quot;slow credentialing&quot;—destination certification systems that reward operators meeting rigorous sustainability standards. Just as organic labels transformed food production by creating market differentiation, sustainability certifications can reshape tourism from within. When travelers can easily identify hotels that pay fair wages, source locally, and maintain environmental audits, market incentives align with ethical outcomes.</p>
+      <p>Governments must also abandon the growth-at-all-costs mentality that distorts tourism economics. Many destinations have learned through painful experience that uncapped visitor numbers destroy the very attractions people travel to see. Cap-and-trade systems for visitor permits, similar to those used in sensitive natural areas, allow quantity control while generating funds for conservation.</p>
+      <p>Perhaps most importantly, tourism profits must be structured to stay in communities. Too many destinations function as extraction economies—wealth flows outward to foreign hotel chains and tour operators while locals bear the environmental and social costs. Community land trusts, local hire requirements, and mandatory revenue sharing can reverse this dynamic.</p>
+      <p>The tourists themselves have agency here. Choosing longer stays in fewer destinations, eating at locally-owned restaurants, and rejecting &quot;voluntourism&quot; schemes that displace local workers are simple shifts that compound across millions of travelers. The industry can flourish; it simply requires deliberate architecture to ensure it does so equitably.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The premise of this debate contains a dangerous delusion. We are not searching for ways tourism can &quot;do less harm&quot;—we should be asking whether the current model of mass tourism can be justified at all. The question assumes that with proper management, tourism becomes acceptable. It does not.</p>
+      <p>Consider the basic arithmetic. A transatlantic flight emits roughly a ton of carbon per passenger. The tourism industry generates approximately 8% of global greenhouse gas emissions when including indirect effects. As middle-class consumption spreads globally, these numbers will only climb. There is no &quot;sustainable&quot; way to fly millions of people to fragile ecosystems. The very act of visiting threatens what visitors come to see.</p>
+      <p>Beyond environmental concerns, tourism has consistently failed to deliver promised economic benefits to local populations. Studies across the developing world show a consistent pattern: hotel construction favors foreign workers, hospitality jobs offer poverty wages, and land values shift in ways that displace longtime residents. The economic leakages—money leaving the destination—often exceed 80% of gross tourism revenues.</p>
+      <p>The cultural arguments are no more encouraging. The &quot;authentic&quot; experiences marketed to tourists are typically staged performances, cultural artifacts stripped of meaning and sold back to好奇的旁观者. Meanwhile, local economies reorganize around tourist desires rather than community needs, eroding social cohesion in the process.</p>
+      <p>What we need is not better tourism but less tourism—and different tourism. Virtual travel, local tourism, and dramatically reduced long-distance travel represent the only sustainable paths forward. Environmental constraints make this choice for us; the question is whether we have the wisdom to make it consciously or the arrogance to pretend options exist that do not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The tourism industry&#x27;s harms flow primarily from a simple structural problem: outside operators extract value while local communities absorb costs. Solving this requires shifting control from distant corporations to the people who actually live in tourist destinations.</p>
+      <p>Community-based tourism offers a proven alternative. When indigenous communities own and operate tourism enterprises—from lodges to guiding services—they retain economic benefits and maintain authority over how their lands and cultures are presented. The Ngorongoro Conservation Area in Tanzania demonstrates this model: Maasai communities receive direct revenue shares and participate in management decisions, creating incentives for conservation rather than exploitation.</p>
+      <p>This approach requires legal and institutional support. Land tenure security ensures communities can negotiate from strength rather than being displaced by resort development. Tourism revenue sharing mandates, like those in Namibia&#x27;s conservancy system, provide the financial foundation. Local hiring requirements and microenterprise development programs complete the picture.</p>
+      <p>The tourists&#x27; role shifts in this model. Rather than passive consumers, visitors become guests with responsibilities. Preparation matters—understanding local customs, learning basic language, respecting protocols—transforms the encounter from extraction to exchange. Community guides often provide richer experiences than international operators precisely because they offer perspectives that cannot be purchased elsewhere.</p>
+      <p>The transition is not simple. Communities need training, capital, and institutional support. But the alternative—perpetual dependency on external operators—has proven economically and culturally devastating. The question of how tourism can cause less harm has a straightforward answer: let those who bear the consequences make the decisions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>Behind every tourism statistic lies a human story of economic survival. For millions in developing nations, tourism represents not a cultural intrusion or environmental threat but the most accessible path out of poverty. Our conversation about tourism&#x27;s harms must begin by acknowledging this reality.</p>
+      <p>In many small island nations and least-developed countries, tourism accounts for over half of GDP and virtually all formal employment opportunities. A young woman in Cambodia working as a hotel housekeeper sends her siblings to school. A fisherman in the Maldives transitions to diving instructor and avoids debt bondage to industrial fishing operations. These are not abstractions—they are the concrete stakes of tourism policy.</p>
+      <p>This does not mean the industry should operate without regulation. But it means we must resist the temptation to impose standards that make sense for wealthy nations but eliminate livelihoods in poor ones. Carbon offset requirements that add $200 to a plane ticket price tourism out of reach for the very communities tourism sustains. Environmental certifications that small operators cannot afford create monopolies for well-capitalized enterprises.</p>
+      <p>The tourism sustainability conversation should focus on leakages and local capacity-building, not on reducing visitor numbers. Every dollar that stays in the local economy multiplies—locally owned restaurants purchase from local farmers, guesthouse owners use local construction firms. Closing resorts and reducing flights to save coral reefs has predictable consequences: poverty deepens and the informal economy expands, often with worse environmental outcomes than organized tourism.</p>
+      <p>Well-managed tourism, with appropriate labor standards and environmental safeguards, remains one of the few realistic mechanisms for economic development in places with limited alternative resources. We should improve it; we should not undermine it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Every tourist destination faces a paradox: the qualities that attract visitors—natural beauty, cultural distinctiveness, peaceful atmosphere—are precisely what mass tourism destroys. The most urgent task is not managing tourism but acknowledging hard limits.</p>
+      <p>The concept of carrying capacity provides the analytical framework. Every destination—coral reef, historic city center, indigenous village—has a threshold beyond which visitor impacts exceed the system&#x27;s regenerative capacity. Venice&#x27;s canals grow murky with cruise ship wake erosion. Barcelona&#x27;s neighborhoods hollow out as short-term rentals replace long-term residents. Machu Picchu&#x27;s stone paths erode under millions of feet. These are not management failures; they are the logical endpoint of unlimited growth in finite spaces.</p>
+      <p>Effective tourism policy must begin with genuine capacity assessments—scientific measurements of environmental and social thresholds—followed by enforcement of hard limits. This means turning away visitors when quotas fill, not when complaints become loud enough to matter. It means seasonal pricing that discourages peak-period overcrowding. It means requiring visitors to demonstrate preparation and understanding before granting access.</p>
+      <p>The political economy of this approach is challenging. Destination marketing industries profit from volume, not restraint. Airlines lobby against slot limitations. Hotel chains oppose rent controls that preserve housing for locals. Making hard choices requires political courage that few governments have displayed.</p>
+      <p>But the alternative—continued growth until destinations collapse—destroys both communities and the tourism product itself. Tourists who arrive expecting wonder and encounter degradation spread negative word-of-mouth that eventually kills the market. There is no clever marketing solution to overshoot; there is only accepting limits and working within them.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

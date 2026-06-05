@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Book Award Without Borders · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Culture · Binary</div>
+  <h1 class="debate-title">A Book Award Without Borders</h1>
+  <div class="question-body"><p>The administrators of the Man Booker Prize, one of the world’s most important literary awards, announced this week that as of next year all English-language writers will be eligible for the award. Since its debut in 1969, the prize has been open only to citizens of Britain, other countries of the Commonwealth (including Zimbabwe) and the Republic of Ireland.</p><p>Was this a wise decision? What is gained or lost in the expansion?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>the decision to make all English-language writers eligible for the Man Booker Prize was not wise</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>the decision to make all English-language writers eligible for the Man Booker Prize was wise</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 67%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 17%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 17%;"></div>
+      </div>
+      <span class="bar-num">n=6</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 40%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 40%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 39%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 14%;"></div>
+        <div class="seg ws" style="width: 17%;"></div>
+        <div class="seg ss" style="width: 31%;"></div>
+      </div>
+      <span class="bar-num">n=36</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_1.html">
+      <td class="arg-text">The Man Booker Prize should remain restricted to Commonwealth and Irish writers to preserve its unique cultural identity and British literary traditions.</td>
+      <td><span class="humans-pill ">6</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_2.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is a wise move that reflects the global reality of modern literature and moves past outdated colonial boundaries.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_3.html">
+      <td class="arg-text">The Man Booker Prize&#x27;s decision to include all English-language writers is a necessary and wise evolution that reflects the global reality of modern literature.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_4.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is unwise because it prioritizes institutional self-preservation over literary value and risks destroying the award&#x27;s unique identity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_5.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to all English-language writers is a wise decision because it decouples literary merit from colonial history, provided the prize actively resists becoming dominated by American cultural hegemony.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_6.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is unwise because it prioritizes prestige over the prize&#x27;s essential function of directing attention to marginalized voices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_7.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is wise because it aligns the award with the globalized reality of modern literature and replaces an indefensible, outdated eligibility system.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_8.html">
+      <td class="arg-text">While the expansion of the Man Booker Prize is a defensible move toward inclusivity, its ultimate success depends on whether the implementation avoids homogenizing the prize or crowding out writers from smaller literary economies.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_9.html">
+      <td class="arg-text">The wisdom of expanding the Man Booker Prize depends on whether future judging panels can resist American literary dominance and maintain a truly cosmopolitan focus.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_10.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is a wise move that prioritizes literary merit over historical colonial ties and national quotas.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_11.html">
+      <td class="arg-text">The Man Booker Prize&#x27;s decision to include all English-language writers is a positive development that ensures the award is based on literary merit rather than nationality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_12.html">
+      <td class="arg-text">The Man Booker Prize&#x27;s decision to include all English-language writers is a positive reform that removes an arbitrary citizenship requirement, though its success depends on maintaining a commitment to diverse global voices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_13.html">
+      <td class="arg-text">The Man Booker Prize&#x27;s decision to expand eligibility to all English-language writers is a necessary and long-overdue modernization that reflects the global nature of literature.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_14.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize&#x27;s eligibility is ultimately inconsequential because literary awards are arbitrary structures that do not impact the inherent quality of literature or the habits of readers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_15.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to include all English-language writers is unlikely to result in a significant cultural transformation or a major shift in the prize&#x27;s outcomes.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_16.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to include American authors is a wise decision because it will use American interest in domestic writers to expose a provincial U.S. audience to global literature.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_17.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to include all English-language writers is a corporate-driven marketing strategy that prioritizes global market share over the preservation of a distinct cultural institution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_18.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to all English-language writers is a logical step that reflects the global nature of modern literature, provided the prize maintains its commitment to discovery and eccentricity over mainstream consensus.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_19.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to all English-language writers is a wise decision only if the administrators implement safeguards to ensure the prize remains adventurous and supports small-press literature rather than just reinforcing the dominance of major publishers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_20.html">
+      <td class="arg-text">The expansion of the Man Booker Prize to all English-language writers is a logical improvement over arbitrary citizenship rules, but it fails to achieve true internationalism by continuing to exclude translated fiction.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_21.html">
+      <td class="arg-text">The decision to open the Man Booker Prize to all English-language writers is a mistake because it sacrifices the unique cultural framework and distinction that made the award significant.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_22.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is wise because it replaces an indefensible, arbitrary system based on colonial history with a more coherent and principled approach.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_a-book-award-without-borders_arg_23.html">
+      <td class="arg-text">The decision to expand the Man Booker Prize to all English-language writers is unwise because it replaces a historically significant arena for post-colonial dialogue with a system governed by market logic and commercial dominance.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Chris Beha</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/chris-beha" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">David Brauner</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/david-brauner" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Elissa Schappell</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/elissa-schappell" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">James Atlas</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/james-atlas" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">James Wood</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/james-wood" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Lan Samantha Chang</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/19/a-book-award-without-borders/lan-samantha-chang" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Opening the Man Booker to all English-language writers is defensible in principle but unfortunate in practice. The argument for expansion is straightforward: in a globalized literary market, drawing a line around the Commonwealth and Ireland looks like an accident of imperial geography rather than a meaningful aesthetic boundary. Why should a novel by Mohsin Hamid be eligible and one by Jhumpa Lahiri not, when they share publishers, readers, and concerns? If the Booker&#x27;s ambition is to crown the best novel in English, restricting the pool is incoherent.</p>
+      <p>Yet what the Booker actually did, over four decades, was something more interesting than crown the best. By bracketing out American writers, it created space for voices from Ireland, India, South Africa, New Zealand, Nigeria, the Caribbean—a constellation that, taken together, told the story of English as a language reshaped by its post-colonial inheritors. Hilary Mantel, Peter Carey, Arundhati Roy, Ben Okri, Keri Hulme, Marlon James-style writers do not need protection, exactly, but they benefit from a stage on which American publishing weight does not automatically dominate. The risk now is that the shortlist gradually tilts toward the major New York houses and their well-funded campaigns, and that the prize comes to resemble a transatlantic National Book Award.</p>
+      <p>There is also a quieter loss: the Booker&#x27;s distinctive identity. Prizes earn authority partly through what they exclude. The Pulitzer remains American; the Goncourt remains French. By becoming everything, the Booker risks becoming less. A wiser path might have been to admit Americans selectively, or to create a parallel international prize, preserving what the original did so well.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The Man Booker Prize’s expansion to all English-language writers is a mistake that sacrifices cultural specificity for a hollow claim to universality. For over four decades, the prize carved out a space for voices from Britain, Ireland, and the Commonwealth—a literary ecosystem struggling for recognition in a market dominated by American publishing. This exclusivity was not parochial; it was a curatorial act that elevated authors like Salman Rushdie, Arundhati Roy, and J.M. Coetzee, shaping a global canon with a polycentric, postcolonial character.</p>
+      <p>What is lost is that coherent identity. Opening to American writers makes the Booker compete with the Pulitzer and National Book Award, risking a flattening where the same big names circulate. Commonwealth traditions, inflected by empire, migration, and hybridity, may be crowded out by the commercial weight of U.S. fiction. The prize’s strength lay in surprising readers with voices from outside the Anglophone center. That curatorial nerve is now blunted.</p>
+      <p>Gains are symbolic: a claim to “global” status and perhaps more visibility. But a borderless prize is not a better one. The Booker thrived by drawing lines, insisting that literature from certain geographies carried a specific charge. Jettisoning that principle for nebulous universalism may win short-term buzz but erodes the texture that made the prize essential. Sometimes, a fence is not a barrier but a frame.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The Man Booker Prize’s decision to open its doors to all English-language writers, notably Americans, is a monumental shift that fundamentally alters the landscape of global literary awards. In many ways, this expansion is a welcome, inevitable reflection of how we read today. Literature is increasingly borderless. For years, the exclusion of American titans like Philip Roth or Toni Morrison felt like an artificial constraint on an award that purported to recognize the very best of contemporary English fiction. By embracing all English-language writers, the Booker positions itself as the undisputed premier global prize for a novel in English, free from the colonial legacy of the Commonwealth boundary.</p>
+      <p>Yet, this globalization comes with a profound risk of homogenization. The Booker’s historical strength has been its ability to elevate voices from the literary margins of the English-speaking world. Authors from Nigeria, New Zealand, India, and Canada have routinely found themselves vaulted onto the global stage thanks to the Booker&#x27;s spotlight. There is a legitimate fear that the sheer gravity and marketing muscle of the American publishing juggernaut will crowd out these vital Commonwealth voices.</p>
+      <p>While the inclusion of American authors enriches the pool of contenders, the prize committee must remain fiercely vigilant. The true loss will occur only if an award without borders inadvertently becomes an award dominated by a single, booming American center.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Opening the Man Booker to all English-language fiction is defensible, but it is not a simple enlargement of merit. Prizes do not merely discover excellence; they create a field of attention. The old Booker’s odd geography — Britain, Ireland and the Commonwealth — was a historical compromise, but it gave the prize a character no other major award had. It made London a meeting place for writers from Lagos, Toronto, Sydney, Delhi, Dublin and the Caribbean, and it helped readers understand English not as a possession of England or America but as a language altered by empire, migration and local speech.</p>
+      <p>The danger is not that American novelists are unworthy. Many are obviously worthy. The danger is scale. The United States has a vast publishing industry, an enormous review culture and a talent for turning literary prizes into market events. Even if judges act with perfect independence, American books may crowd the conversation simply because they arrive with louder machinery behind them. A prize that once corrected the imbalance of Anglophone literary power could become another arena in which that imbalance is reproduced.</p>
+      <p>Still, exclusion by passport is a crude instrument. English-language fiction is now genuinely global, and a prize claiming world importance cannot easily explain why a novelist in New York is ineligible while one in Toronto is not. The better reform would be to expand eligibility while consciously preserving diversity: adventurous judging, attention to small presses and a shortlist that resists becoming a mirror of marketing budgets. Without that vigilance, something valuable will be lost.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The Man Booker Prize&#x27;s decision to open its doors to all English-language writers marks a significant moment in literary culture, and I believe the gains outweigh the losses, though not without reservation.</p>
+      <p>What is gained is straightforward: a more expansive definition of excellence. The original restrictions made sense in 1969 when Commonwealth literary traditions were still coalescing and needed institutional support. But half a century later, American fiction dominates global literary consciousness partly because awards like the National Book Award remain domestically focused. The Booker can now compete as the world&#x27;s premier English-language literary prize, unencumbered by nationality requirements that increasingly felt like anachronisms. The pool of potential winners becomes genuinely global, potentially recognizing work that might otherwise remain provincial.</p>
+      <p>Yet there is something lost worth mourning. The prize was always more than a literary contest; it was an assertion that Commonwealth letters constituted a distinct tradition worth celebrating. That identity — with its roots in postcolonial recovery, its attention to writers from India, South Africa, Nigeria, the Caribbean — gave the Booker its particular character. Now it risks becoming simply a very well-funded and prestigious English-language award, losing the cultural work of affirming that Commonwealth writers share something beyond a common language.</p>
+      <p>Whether this represents progress or dilution depends largely on what we want from literary awards. If the goal is recognizing the best novels written in English, regardless of origin, the expansion is welcome. If we believe such prizes should actively cultivate and honor particular literary traditions, the change represents a loss.</p>
+      <p>Perhaps the answer lies in maintaining the prize&#x27;s existing traditions while creating new awards specifically for Commonwealth fiction. That way, the newly opened Booker can pursue global excellence while the Commonwealth legacy finds institutional support elsewhere.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The Booker&#x27;s decision to throw open its doors to all English-language writers is, on balance, a mistake — and not because Americans shouldn&#x27;t be celebrated, but because a prize is defined as much by what it excludes as by what it honors. The Booker&#x27;s restriction to Commonwealth and Irish writers wasn&#x27;t a quaint relic; it was the source of the prize&#x27;s distinctive cultural work. It surveyed a particular literary world — one stretching from Lagos to Wellington, from Toronto to Mumbai — and forced readers and judges to take that geography seriously as a coherent literary space.</p>
+      <p>Strip away the boundary and what remains? A prize that will, within a decade, likely look like every other major Anglophone award: heavy on American heavyweights, with the occasional Briton and a token writer from the Global South. The Pulitzer exists. The National Book Award exists. The PEN/Faulkner exists. American letters are not exactly starved for institutional validation. Meanwhile, a Zimbabwean novelist who might once have had a realistic shot at the Booker shortlist will now be competing against the full firepower of New York publishing&#x27;s marketing budgets.</p>
+      <p>Defenders argue that talent should trump geography, and that excluding Philip Roth or Marilynne Robinson made the prize look provincial. But &quot;provincial&quot; is a sneer disguised as an argument. Every prize is provincial in some sense — the Goncourt is French, the Akutagawa is Japanese, and no one demands they universalize. The Booker&#x27;s provinciality was its peculiar gift: it noticed writers the American-dominated global market often overlooked, and it built careers — Ben Okri, Arundhati Roy, DBC Pierre — that might never have crystallized otherwise.</p>
+      <p>There are also practical worries. Judges already strain under the reading load; doubling or tripling the eligible pool will either force a longer submission cap (favoring established names that publishers prioritize) or exhaust the panel. And the cultural prestige the Booker accumulated by being the Booker — not a generic &quot;world novel in English&quot; award — is precisely what the administrators are now spending down.</p>
+      <p>I hope I&#x27;m wrong. But I suspect we&#x27;ll look back on the pre-2014 Booker as a more interesting prize than whatever replaces it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>The howls of protest greeting the Booker&#x27;s expansion betray a curious anxiety: the fear that British and Commonwealth writers cannot compete with Americans on a level playing field. This is both insulting to those writers and almost certainly wrong. Hilary Mantel, Eleanor Catton, NoViolet Bulawayo, Jhumpa Lahiri — the Commonwealth-and-Ireland field is bursting with talent that would hold its own anywhere. If British literary culture really believes its writers can only win when Americans are barred from entering, it has a confidence problem far deeper than any prize rule can address.</p>
+      <p>The expansion is the correct decision for a simple reason: the category &quot;English-language literature&quot; no longer maps onto the borders of the old British Empire, if it ever did. Readers in Edinburgh and Auckland and Cape Town read Jonathan Franzen and Marilynne Robinson alongside Ian McEwan and J.M. Coetzee. To pretend otherwise — to construct a prize as if American fiction inhabited a separate planet — is to indulge a fiction that no actual reader believes.</p>
+      <p>There is also a slightly embarrassing colonial residue in the old eligibility rules. The Commonwealth is a historical artifact of empire; using it as the unit of literary citizenship implies that English somehow still belongs more to those who inherited it through British rule than to those who developed it elsewhere. Opening the prize gently dissolves that implication. English is a global language now, and its highest-profile literary prize is rightly catching up.</p>
+      <p>Will Americans dominate? Possibly, for a season. But prize cultures self-correct: judges, conscious of perceived bias, often lean the other way, and the Booker&#x27;s distinctive sensibility — its taste for structural ambition, its impatience with mere domestic realism — is unlikely to vanish overnight. More likely, we&#x27;ll see a more interesting longlist, with Anne Enright and George Saunders and a Nigerian debut novelist genuinely competing, and the discussion that follows will be richer for it.</p>
+      <p>The Booker is making a bet that excellence travels and that its own judgment is robust enough to identify it wherever it appears. That is exactly the bet a serious literary prize should make.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>What&#x27;s been lost in the debate over the Booker&#x27;s expansion is any serious discussion of what literary prizes are actually for. They are not, despite the rhetoric, neutral instruments for identifying the year&#x27;s &quot;best&quot; novel — a concept that barely makes sense. They are mechanisms for directing reader attention, shaping canons, and conferring economic life on books that would otherwise drown in the slush of an oversupplied market.</p>
+      <p>Once you see prizes this way, the Booker question becomes empirical rather than philosophical. Which configuration produces the most useful attention-directing? The old rules pointed readers toward writers — particularly from smaller Commonwealth literatures — they were unlikely to encounter through ordinary commercial channels. A Booker win for Keri Hulme or Aravind Adiga genuinely changed what people read. The new rules will, in all likelihood, direct attention toward American writers who already enjoy enormous publicity machines.</p>
+      <p>This is not a knock on those writers. It is a question about marginal utility. The added attention a Booker confers on a Roth or a DeLillo is small; the added attention it confers on a first-time novelist from Sri Lanka is career-defining. By widening the pool, the Booker administrators have likely reduced the prize&#x27;s marginal impact on world literature, even as they have increased its prestige within an American market that scarcely needs another prize.</p>
+      <p>Defenders will say the Booker should pick the best book regardless of origin. But &quot;best&quot; is the wrong frame. The Pulitzer doesn&#x27;t try to pick the best novel in the world; it picks the best American novel, and is more useful for the limitation. The Goncourt is similarly bounded. Bounded prizes do better cultural work than universal ones, because they accept their role as curators of particular conversations rather than arbiters of a fictional global standard.</p>
+      <p>The Booker has chosen prestige over usefulness. It will likely get both, for a while. But the literary ecosystem is poorer for losing one of its few major institutions explicitly oriented toward writing from outside the American center.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Let&#x27;s be honest about the immediate provocation here: the Folio Prize. Announced last year and launching in 2014, it is explicitly open to any novel written in English and published in the UK, with the not-very-coded suggestion that the Booker had become too middlebrow and too parochial. The Booker&#x27;s expansion is, transparently, a defensive maneuver — an attempt to occupy the global English-language territory before the Folio can plant its flag there.</p>
+      <p>Read this way, the decision looks less like a principled embrace of cosmopolitanism and more like institutional self-preservation. That&#x27;s not necessarily a bad thing — institutions are entitled to defend themselves — but it&#x27;s worth naming. The Booker administrators didn&#x27;t suddenly discover that American literature exists. They discovered that a rival was about to eat their lunch.</p>
+      <p>Whether the move succeeds depends on whether the Booker can retain its distinctive flavor while broadening its catchment. Here I&#x27;m skeptical. The Booker&#x27;s identity has been built over four decades around a particular set of literary virtues — ambition of structure, postcolonial reach, a certain skepticism of pure domestic realism — that emerged partly because of, not despite, its eligibility rules. When Salman Rushdie, Peter Carey, and Hilary Mantel define your house style, you have a house style. Adding American submissions risks diluting it toward something more generic.</p>
+      <p>There&#x27;s also a publishing-industry wrinkle worth flagging. Each publisher gets a limited number of submissions. Big American houses with deep Booker-relevant lists will demand slots; British publishers will find their own submissions squeezed. The midlist British novel, already endangered, may quietly become collateral damage of internationalization.</p>
+      <p>I&#x27;d have preferred a different solution: keep the Booker as it is, and let the Folio be the global English prize. Two distinct prizes serving two distinct functions is more useful to the literary ecosystem than two prizes converging on the same territory. Instead we may end up with redundancy, and a Booker that, in trying to be everything, becomes less than it was. The decision is defensible, but I don&#x27;t think it&#x27;s wise.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Good. About time.</p>
+      <p>The notion that the world&#x27;s most prestigious English-language literary prize should exclude writers from the country that produces the largest share of English-language literature was always strange. It was defensible mainly as historical accident: the Booker grew out of a particular post-imperial moment, and its Commonwealth-plus-Ireland frame made a kind of sense in 1969. It makes far less sense in 2013, when literary culture is unmistakably transnational and readers cheerfully ignore the national-origin labels publishers stick on book jackets.</p>
+      <p>The strongest objection to expansion is that American writers will swamp everyone else. I find this unpersuasive on two grounds. First, it underestimates the Booker juries, which have repeatedly shown an independent streak — favoring formal experiment, historical fiction, postcolonial voices — that no amount of American submission volume will simply override. Second, it overestimates American dominance. The most exciting English-language fiction of the past fifteen years has come at least as often from outside the United States as inside it: Mantel, Coetzee, Adichie, Mitchell, McCarthy yes, but also Catton, Atwood, Ondaatje. A genuinely open Booker will produce shortlists that reflect this diversity, not bury it.</p>
+      <p>The deeper point is that literary nationalism, however well-intentioned its protective forms, has costs. Prizes that fence off a domain to &quot;protect&quot; writers from competition tend, over time, to feel slightly minor-league — and to be seen that way by the very writers they meant to elevate. The Booker has avoided this fate largely because the Commonwealth contains so much extraordinary writing. But the fence was always going to look more anachronistic with each passing year.</p>
+      <p>Will something be lost? Perhaps a certain coziness, a certain sense that the Booker was &quot;ours&quot; in a way that Anglophone prizes administered from New York are not. That feeling has its charms. But a prize that aspires to identify the best novel in English should actually be open to the best novel in English. The administrators have caught up with reality. The reality was overdue.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Two cheers, not three.</p>
+      <p>The case for the Booker&#x27;s expansion is real: English is a global language, the old eligibility map was an imperial relic, and excluding Americans from a &quot;world&quot; prize had grown awkward. The case against is also real: prizes do their best cultural work when they have a defined territory, and the Booker&#x27;s territory was unusually productive.</p>
+      <p>What&#x27;s striking is how the debate has flattened into a binary — open versus closed, cosmopolitan versus parochial — when the more interesting questions are about implementation. How many submissions will each publisher get? Will there be any structural mechanism (regional quotas, separate longlists, anything) to ensure that writers from smaller literary economies aren&#x27;t crowded out by American and British submissions backed by aggressive marketing? Will the judging panels be reconstituted to reflect the broader catchment? These are the questions that will determine whether expansion enriches the prize or homogenizes it.</p>
+      <p>I suspect the administrators have not fully thought through the second-order effects. The Booker&#x27;s prestige derives partly from scarcity of attention: a shortlist of six novels that readers might plausibly all read, drawn from a coherent literary world. Multiply the eligible pool substantially and you put pressure on that scarcity. Either the longlist expands and dilutes, or the longlist stays the same size and many deserving books — particularly from outside the major publishing centers — vanish from consideration entirely.</p>
+      <p>So I&#x27;d offer a qualified verdict. The principle is defensible; the symbolism is good; the execution will matter enormously. If the Booker treats this as license to crown American literary celebrities, it will have squandered something valuable. If it treats it as an invitation to define &quot;literature in English&quot; more capaciously than American prizes typically do — looking to Pakistan and Jamaica and New Zealand as seriously as to Brooklyn — it will have genuinely expanded the literary conversation.</p>
+      <p>The choice is the judges&#x27;, year by year. We&#x27;ll know in a decade whether this was a broadening or a flattening. For now: cautious approval, with eyes open.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The Booker&#x27;s decision to throw open its doors to all English-language writers is not just wise; it&#x27;s long overdue. For too long, one of literature&#x27;s most prestigious prizes has operated under a colonial-era map, drawing arbitrary lines around Britain and its former possessions. This expansion finally acknowledges what readers already know: great novels in English come from everywhere, from Lagos to Lahore to Los Angeles, and the literary conversation is now genuinely global.</p>
+      <p>The worry that this will drown out Commonwealth voices is misplaced. The prize&#x27;s administrators aren&#x27;t fools; they will still weigh literary merit, and a truly exceptional novel from a small press in New Zealand can stand toe-to-toe with a New York blockbuster. What&#x27;s more, the expanded prize will bring new readers to those very Commonwealth authors. When a longlist includes an American heavyweight next to a debut Indian novelist, the latter gains exposure that was previously unimaginable. This isn&#x27;t a zero-sum game; it&#x27;s a rising tide.</p>
+      <p>The real gain is symbolic. The Booker has always been a tastemaker, shaping not just what we read but how we conceive of &quot;literary fiction.&quot; By removing the nationality requirement, the prize tells a powerful story: that the English language no longer belongs to any one empire or nation. It is a shared, global medium. For a prize that carries such cultural weight, aligning its rules with that reality is both courageous and necessary. The only loss is the narrowness of the old guard.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The decision to universalize the Booker Prize is a profound mistake, one that sacrifices a unique cultural institution on the altar of globalized commerce. What is lost is precisely what made the prize distinctive and vital: its role as a powerful amplifier for the literatures of Britain, Ireland, and the Commonwealth. This was a space where authors from Africa, the Caribbean, South Asia, and the Pacific could compete on a relatively level playing field, without being swamped by the promotional megaphone of American publishing.</p>
+      <p>The Booker wasn&#x27;t just another prize; it was a corrective. It forced the literary world to pay attention to voices that the market otherwise marginalized. Now, imagine a longlist dominated by the latest works of established American literary lions, backed by enormous marketing budgets. Can a brilliant, unsettling novel from a small Nigerian press really compete for the attention of judges and readers? The sheer volume and commercial power of American fiction will inevitably tilt the field. The prize will become a slightly more international National Book Award, and we will lose a crucial window into the imaginative life of the post-colonial world.</p>
+      <p>The expansion is framed as inclusivity, but in practice, it&#x27;s a form of cultural homogenization. The Booker&#x27;s charm—its slightly eccentric, fiercely argumentative, often politically charged shortlists—stemmed directly from its geographical limits. By dissolving those borders, the prize abandons its stewardship of a specific, ongoing literary conversation in favor of a bland, global mainstream. It is a loss not just for writers, but for readers everywhere who valued the prize&#x27;s distinct, contrary perspective.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The Booker&#x27;s expansion is a gamble, and whether it proves wise depends entirely on the nerve of future judging panels. The potential gains are genuine: a more exciting, unpredictable prize that pits the best of Mumbai against the best of Montreal, sparking fresh comparisons and broader readerships. The internationalization of English-language fiction is a fact, and the prize risked becoming a parochial relic if it didn&#x27;t adapt.</p>
+      <p>Yet the danger is equally real, and it has a name: American literary fiction. The U.S. market is not just larger; it operates with a prestige and publicity machine that can make even a mediocre novel seem like a cultural event. The fear isn&#x27;t that American writers are better, but that they are louder. The Booker&#x27;s longlist could easily become a list of the usual transatlantic suspects, crowding out the very writers from smaller markets that the prize historically championed.</p>
+      <p>The key is in the judging. If the Booker foundation is serious about this being a prize for all English-language writers, it must appoint judges with genuinely cosmopolitan tastes, not just revolving-door London-New York literati. It must consciously seek out and elevate the strange, the local, the non-metropolitan. Done right, the expansion could dynamite the cozy Anglosphere club and create a truly planetary literary prize. Done lazily, it will simply hand the trophy to Jonathan Franzen every other year, and a unique Commonwealth forum will be mourned. The decision isn&#x27;t wise or foolish in itself; its wisdom will be written by the choices to come.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The hand-wringing over the Booker’s expansion is, at heart, a nostalgic refusal to accept the economics of modern publishing. The decision was wise because it was inevitable. Literature in English is a global commodity, and the Booker, despite its lofty aura, competes for attention in a crowded marketplace. By opening to Americans, the prize secures a massive new audience and vastly increases its media impact in the world&#x27;s largest English-language market. This is not a sell-out; it is a survival strategy that will ultimately benefit all writers on its lists.</p>
+      <p>For years, publishers and booksellers have grumbled that the Booker’s nationality rule was an anachronistic brake on sales. A great American novel might be ineligible, forcing the prize to ignore a major literary conversation. Meanwhile, the Booker winner from a small Commonwealth nation would often struggle to find a U.S. readership. Now, the prize can build a bridge: an American reader intrigued by the longlist might discover a Jamaican or Irish author they&#x27;d never have encountered. The commercial uplift could be transformative for those very writers who are supposedly under threat.</p>
+      <p>Of course, this changes the prize&#x27;s character. The old Booker felt like a family argument among cousins with a shared, complicated history. That intimacy will likely fade. But the trade-off is a prize that is more robust, more widely discussed, and more central to the global literary scene. The loss of a cozy club is a small price to pay for a truly world-class award that can command the attention of readers from Boston to Bangalore.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Let’s be honest: the Booker’s old eligibility rules were always a bit absurd. A novelist living in Topeka was excluded, but one in Harare, a city with deep British colonial ties, was in. The prize was never a pure reflection of some coherent “Commonwealth” literary spirit; it was a messy inheritance of empire. Expanding it to all English-language writers corrects a historical inconsistency and refocuses the prize where it should be: on the sentence, the story, the quality of thought, not the passport.</p>
+      <p>The real question is whether this expansion will genuinely serve literary excellence or simply crown the most aggressively hyped American novel. That fear is overblown. Judges are not passive sponges for marketing; they are, one hopes, readers who can distinguish between a buzzy bestseller and a work of startling artistry. If the Booker’s panels consistently defer to American commercial success, that’s a failure of nerve, not of the new rules. The prize’s prestige has always rested on its capacity to surprise, to elevate the difficult and the brilliant. That task remains the same.</p>
+      <p>What is gained is a truer, more demanding competition. A novel from Canada or Cameroon will now be measured directly against the best from the United States, and vice versa. If that prospect makes some people uncomfortable, perhaps it’s because they doubt the quality of their own favored regions. A prize that fears comparison is no prize at all. The Booker should be a contest of books, not a quota system for nations. This decision strips away a polite, protective fiction, and in doing so, boldly declares that the best writing in English can come from anywhere—and must prove it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>From a postcolonial perspective, the Booker’s expansion feels like the final dissolution of a rare and vital space. For decades, the prize served as an informal parliament of Commonwealth letters, where writers from formerly colonized nations could talk back to the center, challenge its assumptions, and reshape the English novel from within. The exclusion of Americans was not a flaw; it was the definition of the conversation. It created a distinct literary ecosystem, one where the margins often set the terms of aesthetic debate. Losing that is a cultural tragedy.</p>
+      <p>The decision’s champions speak of globalism, but this is a globalism with a familiar, hegemonic accent. The American literary market, with its immense capital and cultural reach, does not enter a level playing field; it reshapes the field to its own image. The Booker will now increasingly reflect the concerns and styles validated by New York publishing. The particular cadences, histories, and political urgencies that animated the best Commonwealth fiction—think of the magical realism of the Indian subcontinent, the stark reckonings of South Africa—risk being smoothed over or exoticized as they compete for recognition against the domestic realism of American suburbia.</p>
+      <p>What is lost is not just a prize category but a counterweight. The Commonwealth Booker often judged London’s literary values against those of the wider world, and found London wanting. The new, unbordered Booker will likely just measure everyone against the dominant Anglophone culture. That is not an expansion of horizons; it is an absorption of the former periphery into a new center. The decision may be pragmatically wise for the prize’s brand, but for the global architecture of literature in English, it marks a retreat from a truly pluralistic ideal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The decision to open the Man Booker Prize to all English-language writers is a profound mistake that threatens to homogenize the most interesting literary award in the English-speaking world. The expansion is being framed as a triumphant embrace of global literature, but let us be entirely honest about what &quot;all English-language writers&quot; really means in practice: Americans.</p>
+      <p>By removing the Commonwealth and Irish boundaries, the Booker committee is essentially inviting the behemoth of the United States publishing industry to take over the prize. The American literary establishment is incredibly well-resourced, culturally dominant, and heavily marketed. When the longlists of the future are inevitably crowded with the likes of Jonathan Franzen, Philip Roth, or Donna Tartt, who will be squeezed out? It will be the emerging talents from Nigeria, New Zealand, India, and Jamaica—the very writers for whom the Booker has traditionally provided an unparalleled, life-changing global platform.</p>
+      <p>The Booker Prize was never meant to be the Nobel. Its specific geographic constraint was its greatest strength, forcing readers and critics to engage with the literary output of the post-colonial world. It leveled the playing field between British authors and those from former colonies, creating a fascinating, ongoing dialogue about the legacy of the British Empire, language, and identity.</p>
+      <p>Opening the doors to the United States changes the dynamic entirely. American writers already have the Pulitzer, the National Book Award, and a domestic market that dominates global culture. They do not need the Booker. Giving it to them is a capitulation to American cultural imperialism, sacrificing a unique, historically rich literary ecosystem on the altar of globalization. We are not gaining the world; we are simply losing the distinct, post-colonial conversation that made the Booker matter in the first place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>It is about time. For decades, the Man Booker Prize has operated on a deeply antiquated premise: that the map of the British Empire is the only relevant boundary for evaluating literature. In the 21st century, clinging to the political ghost of the Commonwealth to define literary merit is not just quaint; it is fundamentally absurd.</p>
+      <p>English is a global language, and its literature is a global phenomenon. It makes no sense that an American expatriate living in London cannot win the UK’s most prestigious literary prize, while a Canadian who has never set foot in Britain can. Literature defies borders, and any prize that claims to recognize the &quot;best&quot; novel in the English language must actually look at the entirety of the English language.</p>
+      <p>Some fear an American takeover, but this underestimates the incredible vitality of literature emerging from everywhere else. If an American writes the best novel of the year, they deserve the prize. If we believe in the strength of British, Indian, South African, and Australian writers, we should trust them to compete on a truly open stage. Artificial protectionism has no place in art. The Booker’s expansion finally acknowledges the reality of the modern literary world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>To understand the Booker Prize’s sudden expansion to include all English-language writers, one must look past the lofty rhetoric about &quot;global literature&quot; and look directly at the balance sheet. This is not a literary decision; it is a corporate and economic one.</p>
+      <p>The Man Group, the financial firm that sponsors the prize, operates in a globalized market, and literary awards are, at their core, branding exercises and marketing engines. For years, the Booker has been the most important prize for publishers in the UK and the Commonwealth, capable of turning a mid-list author into a global bestseller overnight. But it has always faced a hard ceiling in the United States. American readers, notoriously insular in their reading habits, pay little attention to awards for which their own authors are not eligible.</p>
+      <p>By allowing American authors to compete, the Booker administrators are making a calculated play to conquer the US book market. They want the Booker sticker on front tables in Barnes &amp; Noble stores across middle America. They want the prize to be recognized as the definitive English-language equivalent of the Nobel Prize in Literature.</p>
+      <p>Will this sell more books? Undoubtedly. Will it elevate the Man Group’s brand in North America? Yes. But we should be wary of what this means for the literary ecosystem. The Booker will inevitably become more conservative in its choices. To appeal to a broader, globalized market, the judges will face immense structural pressure to favor universally accessible, commercially viable American heavyweights over challenging, idiosyncratic works from smaller Commonwealth nations.</p>
+      <p>We are trading a distinct cultural institution for a homogenized, transatlantic marketing tool. The expansion is a brilliant business strategy, but it represents the corporatization of literary gatekeeping, where market share, not artistic curation, dictates the boundaries of the prize.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The controversy over the Man Booker Prize’s expansion misses the most fascinating aspect of its previous rules: the prize was entirely defined by the legacy of British imperialism. By restricting eligibility to the UK, Ireland, and the Commonwealth, the Booker was, for better or worse, the premier award for post-colonial literature.</p>
+      <p>Since its inception, the Booker has served as a barometer for how English was being reclaimed, reshaped, and revolutionized by the very people upon whom the language had been imposed. When Salman Rushdie won for *Midnight’s Children*, or Arundhati Roy for *The God of Small Things*, or Chinua Achebe was honored for his life&#x27;s work, it wasn&#x27;t just a nod to great writing. It was a recognition of the vibrant, sometimes fraught dialogue between the imperial center and the former margins. The Booker captured a very specific historical and cultural tension.</p>
+      <p>Abandoning this framework means the Booker is losing its specific identity. It will now become just another &quot;best book&quot; prize. While it is true that the Commonwealth is a political relic, it was a relic that provided a highly productive friction for literature. By sweeping away these historical borders in favor of a flat, globalized definition of English, the prize administrators are erasing the very context that made the Booker so vital and politically resonant for the last forty years.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The hand-wringing over the Man Booker Prize changing its eligibility rules is a perfect illustration of how seriously the literary world takes its own artificial structures. The truth is, it does not matter.</p>
+      <p>Prizes do not create great literature; writers do. The Booker, like the Pulitzer or the Nobel, has always been an arbitrary selection made by a small committee of people with their own subjective tastes, biases, and blind spots. Changing the passport requirements for the winner will not change the fundamental nature of the award: it is a lottery that brings a temporary spike in sales and fleeting media attention to a single author.</p>
+      <p>Whether an American, a Brit, or a Zimbabwean wins next year, the broader reality remains unchanged. Readers will continue to seek out books that move them, challenge them, and entertain them, regardless of what sticker is slapped on the cover. We should spend less time debating the bureaucratic rules of corporate-sponsored prize committees and more time simply reading the books we love.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>While many British and Commonwealth critics are loudly mourning the opening of the Man Booker Prize as a capitulation to American dominance, I suspect the actual outcome will be quite the opposite. This expansion is going to be incredibly good for American readers, precisely because it will force them to look outward.</p>
+      <p>Let us be honest about the United States: its literary culture can be deeply provincial. The vast majority of books published and read in America are by Americans. The major domestic prizes—the Pulitzer and the National Book Award—reinforce this closed loop. When Americans do look for the &quot;best&quot; books of the year, they are rarely guided toward international voices.</p>
+      <p>By making American authors eligible for the Booker, the prize will finally command the attention of the US mainstream media. When the longlists and shortlists are announced, they will be covered by American morning shows and newspapers not as foreign curiosities, but as vital competitions involving hometown heroes.</p>
+      <p>And this is where the Trojan Horse effect comes in. In order to root for their favorite American authors, US readers will have to pay attention to the entire Booker list. They will see American heavyweights placed shoulder-to-shoulder with brilliant, lesser-known writers from South Africa, India, Australia, and Britain. The Booker will act as a bridge, tricking a notoriously insular reading public into discovering international authors they would otherwise never have encountered. Rather than Americans dominating the Booker, the Booker will finally successfully integrate global literature into the American mainstream.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The Man Booker’s old borders were not arbitrary in the way, say, a tax district’s borders are arbitrary. They created a particular literary conversation: Britain, Ireland, the Commonwealth and the long afterlife of empire arguing with one another in English. That conversation produced a list of winners that no purely British prize would have produced: Rushdie, Atwood, Ondaatje, Coetzee, Kiran Desai, Aravind Adiga. It made visible the fact that English literature is not owned by England.</p>
+      <p>Opening the prize to all English-language writers risks making that conversation less distinctive. The fear is not that American novelists are unworthy; many are obviously excellent. The fear is that the scale and prestige of American publishing will alter the ecology of the prize. American books already dominate much of the English-language market. They have their own major prizes, review machinery, university circuits and publicity systems. If the Booker becomes another global prize in which American and British publishing houses compete on roughly unequal terms, something will be lost: the prize’s unusual ability to draw attention to writers from Canada, India, South Africa, Australia, Nigeria, New Zealand and the Caribbean.</p>
+      <p>The old Booker was never perfectly fair. Citizenship rules are clumsy; migration and dual nationality complicate them; and the category “Commonwealth” carries colonial baggage. But prizes need identities. A prize for “the best novel in English” sounds grander, yet it may be less culturally useful than a prize with a narrower history and a recognizable imaginative territory.</p>
+      <p>The Booker’s administrators are understandably chasing global relevance. But in literary culture, bigger is not always better. A prize can gain entrants, headlines and perhaps sponsorship value while losing the reason readers cared about it in the first place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The decision is wise because the old rule had become intellectually indefensible. If the Booker is meant to honor the best novel written in English, then excluding a writer because she holds an American passport is a bureaucratic fiction masquerading as literary principle. English-language fiction is not neatly organized by the old imperial map. Writers live across borders, publish across borders, study across borders and address readers who may be anywhere. The novel has already globalized; the prize is merely admitting it.</p>
+      <p>The objection most often heard is that American writers will swamp the Booker. That is possible only if judges decide to let reputation and marketing do their work for them. But that is a problem of judging, not eligibility. A strong panel can choose the best book from a broad field. Indeed, American inclusion may sharpen the prize. If a British, Indian, Nigerian, Canadian, Irish or Australian novel wins against the whole English-language field, its victory becomes more meaningful, not less.</p>
+      <p>Nor should we romanticize the old arrangement. The Commonwealth rule did not simply protect diversity; it also preserved an imperial genealogy. It included some countries because they once belonged to Britain’s sphere and excluded others for reasons that had nothing to do with literature. An Irish writer was eligible; an American writer was not. A Zimbabwean writer could compete; a Filipino or Liberian writer writing in English could not, unless another eligibility path applied. That is not a coherent literary principle.</p>
+      <p>A broader Booker could also benefit readers. Prizes are not only crowns; they are recommendation engines. The annual longlist and shortlist send people toward novels they might not otherwise encounter. A genuinely international English-language Booker may put unexpected writers into the same conversation as familiar names. It may produce more argument, more comparison and more reading.</p>
+      <p>The administrators should remain alert to publishing inequality. They should make sure small presses are not crowded out and that judges do not treat American publicity as a proxy for excellence. But those are practical challenges, not reasons to maintain a border that no longer makes sense. A literary award should not be more provincial than literature itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The expansion is neither an obvious triumph nor an obvious betrayal. It is a gamble, and its wisdom will depend on how the Booker manages the practical consequences.</p>
+      <p>The strongest argument for the change is simple: English-language literature is no longer containable within the categories Britain inherited from empire. The old eligibility rules looked increasingly strange in a world of diasporic writers, international publishing contracts and readers who order books across oceans. If the prize claims world importance, it is reasonable for it to welcome the whole world of English-language fiction.</p>
+      <p>But the strongest argument against the change is also serious. The Booker has functioned as a counterweight to American cultural dominance. American novels already receive enormous attention in the United States and, often, abroad. The Pulitzer, National Book Award and National Book Critics Circle Award are influential, but they are largely American conversations. The Booker, by contrast, helped make international reputations for writers from former colonies and smaller literary markets. It gave readers in London and beyond reason to read Australia, India, South Africa, Canada and the Caribbean as part of a shared literary field. That is worth preserving.</p>
+      <p>The danger is not merely that an American might win. That would be fine if the book deserved it. The danger is that the longlist itself becomes more predictable: the same large publishers, the same transatlantic publicity campaigns, the same handful of already reviewed books. A prize can become global in name while narrowing in practice.</p>
+      <p>If the Booker wants the benefits of expansion without losing its character, it should treat the rule change as only the first step. It should actively solicit submissions from small and independent publishers. It should choose judges with knowledge of more than London and New York. It should be transparent about the volume of submissions and about how books enter consideration. It should resist the idea that “international” means “British plus American.”</p>
+      <p>The old Booker’s borders were historically compromised, but they produced a distinctive prize. The new Booker may become more just and more exciting. It may also become blander. The difference will lie in whether its administrators understand that eligibility is not the same thing as openness.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>A literary prize is not a passport office, but neither is it a universal court of beauty. Every prize creates a frame. The Booker’s frame was odd, imperial and sometimes anachronistic, yet it was also productive. It asked: what is happening in the English-language novel outside the United States, in Britain, Ireland and the many places tied to Britain by history? That was a valuable question.</p>
+      <p>Changing the frame to “all English-language novels” may sound nobler, but it could make the prize less interesting. The English-language publishing world is not level. The United States has an enormous domestic market, powerful publishers, energetic agents, well-funded university writing programs and a massive reviewing apparatus. American fiction does not lack platforms. What is scarce is attention for writers from countries where a single major prize nomination can transform an international readership.</p>
+      <p>Supporters of the change say judges can simply pick the best book. But “best” is not discovered in a vacuum. Judges read what is submitted, what publishers push, what arrives with advance noise, what is already framed as important. When eligibility expands, institutional muscle matters even more. The Booker could unintentionally reward not literary excellence but the most efficient publicity system.</p>
+      <p>There is also a symbolic loss. The old Booker reminded readers that English belongs to many accents and histories. Its Commonwealth structure was morally complicated, but its result was often anti-provincial. It helped canonize books that explored migration, colonial memory, race, class and national fracture. It turned the residue of empire into an argument about literature.</p>
+      <p>Perhaps the rule needed reform. Perhaps eligibility should have been based on publication in Britain or Ireland, or on some broader but still defined relationship to the existing Booker world. But total expansion feels like surrender to scale. The Booker should not aspire to be the Nobel Prize for novels written in English. It was more useful as itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The anger over American eligibility is understandable, but it risks defending a rule that was never innocent. The Man Booker’s old boundaries were drawn from Britain’s imperial history. They made room for many postcolonial voices, which is to the prize’s credit, but they did so under the sign of a club Britain once organized. To say that the Commonwealth rule protected diversity is partly true. To say it was a principled literary boundary is much harder.</p>
+      <p>So the expansion should be welcomed as a chance to detach the prize from a colonial map. English is now a language of adoption, inheritance, coercion, commerce and invention. It is used by writers whose relation to Britain may be intimate, hostile, accidental or nonexistent. If the Booker is to matter as an English-language prize, it should not pretend that the history of English fiction can be contained by Commonwealth membership.</p>
+      <p>That said, the old empire should not be replaced by a new one. American cultural power is real. The United States exports books, films, graduate writing norms and celebrity on a scale no other English-speaking country can match. If the new Booker becomes a contest among London and New York conglomerates, then the reform will have traded one hierarchy for another. The administrators should therefore recognize that formal openness can coexist with practical exclusion.</p>
+      <p>A postcolonial defense of the expansion would insist on two things at once. First, citizenship categories inherited from empire should not govern literary value. Second, the prize must actively resist the unequal distribution of attention. The judges should be chosen for genuine range. Publishers from outside the largest markets should not be treated as afterthoughts. The longlist should be allowed to surprise, not merely confirm what the Anglo-American review pages have already anointed.</p>
+      <p>The most exciting possibility is that the enlarged Booker will create stranger juxtapositions: a Nigerian novel beside an American one, an Irish novel beside a Pakistani-British one, a Caribbean novel beside a Canadian one, all read not as representatives of flags but as works of art in a shared, contested language. That would be a gain.</p>
+      <p>The worst possibility is that “global” becomes a polite word for “Americanized.” The decision is wise only if the Booker understands that abolishing borders is not the same as abolishing power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The Booker’s expansion should be judged by what prizes actually do. They do not merely identify excellence; they distribute attention. A shortlist can sell books, rescue a title from obscurity and place a writer in an international conversation. The question, then, is not whether American writers deserve consideration. Of course they do. The question is whether adding them improves the distribution of attention in the English-language literary world.</p>
+      <p>I doubt it. American fiction is not underrecognized. It has the Pulitzer Prize, the National Book Award, the National Book Critics Circle Award, major magazines, large newspapers, influential universities and a vast internal readership. Many American writers are translated, reviewed and discussed abroad. By contrast, the Booker has been one of the few prizes that reliably forced British and international readers to look beyond the United States. Its longlists helped map a different literary geography.</p>
+      <p>There is a common claim that if American books are strong enough to win, excluding them is unfair. But all prizes exclude. The Pulitzer excludes most of the world. The Goncourt is French. The Miles Franklin is Australian. Eligibility rules are not embarrassments; they define the service a prize performs. A prize for a particular literary community is no less legitimate than a prize for the whole language.</p>
+      <p>The old Booker community was imperfectly defined, and the Commonwealth label carried uncomfortable history. Still, the answer to an imperfect boundary is not necessarily boundlessness. A revised prize could have addressed anomalies without inviting the full weight of the American market.</p>
+      <p>Perhaps the new Booker will surprise skeptics. Perhaps judges will use the wider field to discover unexpected books rather than ratify familiar reputations. But the incentives point the other way. Publishers will submit heavily promoted titles; journalists will focus on the first American contenders; controversies will cluster around national prestige. The Booker may gain publicity while losing its distinctive role.</p>
+      <p>Literature has enough global marketplaces. It also needs curated spaces with particular histories, loyalties and limits. The Booker was one of those spaces. Making it larger may make it less necessary.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The expansion is wise because the old rule was increasingly impossible to defend. A prize that asks us to take the novel seriously should not have to begin by inspecting a novelist’s passport. The Booker’s original boundaries — Britain, Ireland and the Commonwealth, plus Zimbabwe — reflected a recognizable book trade and a post-imperial map. But English-language fiction no longer moves neatly along that map. Writers live between countries, publish across oceans, and belong to literary traditions that cannot be reduced to citizenship.</p>
+      <p>The obvious anxiety is that Americans will take over. It is not a trivial worry: American publishing is large, loud and good at producing consensus around certain “major” novels. But the answer to that problem is not to preserve an arbitrary exclusion. Judges can be instructed, and submission rules designed, to prevent the prize from becoming a second National Book Award with a London ceremony. The Booker has always depended on the independence and nerve of its judges. If they have those qualities, more eligible books should make the prize better, not worse.</p>
+      <p>Nor should we romanticize the old arrangement. It gave attention to important writing from India, Nigeria, South Africa, Canada, Australia and the Caribbean; that is a real achievement. Yet it also rested on a colonial inheritance. Why should a writer from New Zealand be eligible while a writer from the Philippines, writing in English and published in Britain, is not? Why should an Irish novelist be in and an American novelist be out, except by tradition?</p>
+      <p>What is gained is coherence. The prize can now say what many readers thought it already said: that it honors the best novel written in English and available to British readers. What may be lost is a distinctive Commonwealth conversation. That loss should be answered not by literary protectionism, but by stronger regional prizes, more adventurous publishers and judges willing to notice books outside the Anglo-American publicity machine. A borderless Booker will be only as good as its guardians. But the principle is sound.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>This is a mistake, and not because American writers are unworthy. Many are magnificent. The problem is that literary culture is healthier when its prizes do not all try to occupy the same global space. Boundaries are not always provincial; sometimes they create a necessary frame.</p>
+      <p>The Booker became powerful precisely because it was not the Pulitzer, not the National Book Award and not the Nobel. Its peculiar eligibility rules made it a forum for Britain, Ireland and the former empire to read one another. That framework produced a remarkable public conversation. Salman Rushdie, V.S. Naipaul, Nadine Gordimer, J.M. Coetzee, Ben Okri, Arundhati Roy, Michael Ondaatje, Peter Carey, Kiran Desai and Aravind Adiga were not simply “English-language novelists” floating in a neutral marketplace. They were part of a literary world shaped by empire, migration, argument and linguistic inheritance.</p>
+      <p>Opening the prize to all English-language writers risks flattening that history into a generic contest of prestige fiction. American writers already have an ample prize infrastructure: the Pulitzer, the National Book Award, the National Book Critics Circle Award, the PEN/Faulkner and a large reviewing culture. They also benefit from the sheer scale of American publishing and publicity. Even scrupulous judges do not operate in a vacuum. Longlists emerge from submissions, campaigns, proofs, reviews, reputations and the confidence of major houses. The books most loudly present in the marketplace often become the books considered “unmissable.”</p>
+      <p>Defenders of the change will say that judges can simply choose the best novels. But prizes never reward pure merit in some abstract realm. They distribute attention. A place on the Booker longlist can transform the fate of a novel from a small country or a modest publisher. If American fiction begins to occupy even a few of those places each year, the opportunity cost will be real.</p>
+      <p>The Booker should have kept its oddness. In an age when English is already dominated by a transatlantic commercial culture, we need more literary centers, not fewer. A new global English prize could have been created if the sponsors wanted one. Turning the Booker into that prize sacrifices the very distinction that made it matter.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The decision is defensible, but only if the administrators understand that “open” does not automatically mean fair. The real imbalance in literary prizes is not nationality alone. It is the difference between a novel launched by a huge New York or London publisher and a novel from a small press with a shoestring publicity budget.</p>
+      <p>On paper, admitting American writers corrects an absurdity. If a novel is written in English, published in Britain and read by the same audience as other eligible books, why should citizenship decide whether it can compete? The modern literary world is full of dual nationals, migrants, expatriates and writers whose imaginative lives cross borders. A passport test is a blunt instrument.</p>
+      <p>But the Booker is not just a medal. It is a machine for producing attention. A longlisting can change a writer’s career, and the prize’s value has often been its ability to put unexpected books into public view. That function will suffer if the expanded prize simply ratifies the taste of the largest publishers and most influential review pages.</p>
+      <p>So the change should be accompanied by safeguards. Submission limits by imprint matter. Judges must retain broad “call-in” powers so that books without large campaigns can be considered. The prize should be transparent about how many books are submitted and from what kinds of publishers. It should resist any informal drift toward celebrity judging or celebrity shortlists. Quotas by nation would be clumsy, but a self-conscious attention to range is essential.</p>
+      <p>The fear of American domination is partly a fear of bigness, and bigness is not confined to America. A mediocre British novel from a major house has advantages over a brilliant Australian, Nigerian or Caribbean novel from a smaller publisher. If the Booker’s new rules expose that problem, they may even be useful. The expansion is wise only if it leads to a more adventurous prize, not merely a larger one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The phrase “without borders” is too easy. The old Booker border was not innocent: it was drawn along lines left by empire. Britain, the Commonwealth, Ireland and Zimbabwe were not a natural literary family. They were a historical one. Yet that history was precisely why the prize mattered. It created an uneasy arena in which writers from formerly colonized societies could remake English in public and be read, uncomfortably, at the old imperial center.</p>
+      <p>That is no small thing. One of the Booker’s great achievements has been to make British readers encounter English as a language with many owners. “Midnight’s Children,” “The Famished Road,” “The God of Small Things,” “Disgrace” and “The White Tiger” are not merely successful novels that happened to qualify under an old rule. They are part of an argument about history, power, class, migration and the afterlife of empire. The prize’s odd eligibility kept that argument visible.</p>
+      <p>Opening the prize to all English-language writers may look like liberation from colonial categories. But it may also replace history with market logic. In practice, the new “borderless” field will still have gatekeepers: British publication, literary agents, review attention, submission rules and the budgets of large publishing houses. A novel from a major American imprint and a novel from a small African or Caribbean press do not enter the race equally. To pretend otherwise is to confuse formal eligibility with genuine access.</p>
+      <p>If the Booker wished to escape its imperial inheritance, it had other choices. It could have strengthened pathways for writers from the global South. It could have given more power to small presses. It could have created a prize that brought translated fiction into equal competition with English-language work. Instead it has moved from the map of empire to the map of Anglophone commerce.</p>
+      <p>Still, the old rule did deserve questioning. No one should be sentimental about Commonwealth labels. But abolishing a compromised boundary is not the same as creating a just literary space. What may be lost is the Booker’s historical memory: its role as a place where English was contested, not merely celebrated. A better reform would have admitted the arbitrariness of the old system while preserving the prize’s responsibility to the literatures it helped bring to wider notice.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>For readers, the old rule was always a little baffling. If a novel is written in English, published in Britain and sitting on the same bookstore table as the other contenders, why should the author’s citizenship decide whether it can be considered? Most readers come to the Booker not for constitutional theory but for discovery. They want a shortlist that tells them, “Here are six books worth arguing about.”</p>
+      <p>On that simple test, the expansion makes sense. It removes a piece of literary bureaucracy that mattered more to administrators than to readers. It also acknowledges the way books now travel. A novel may be written in one country, edited in another, published in several at once and read everywhere. Fiction has already crossed the border; the prize is catching up.</p>
+      <p>But the Booker should be careful not to confuse size with excitement. Its prestige has never rested only on choosing the grandest or most heavily promoted novel of the year. It has mattered because it can be surprising, contentious and occasionally eccentric. If the new rules produce shortlists dominated by famous American names, readers will rightly ask what has been gained.</p>
+      <p>So yes, let Americans and everyone else in. But keep the prize strange. The Booker should not become a transatlantic consensus machine. It should remain a guide to the books we might otherwise miss.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The expansion is both too broad and not broad enough. It is too broad if the purpose of the Booker is to preserve a distinctive prize for Britain, Ireland and the post-Commonwealth literary world. It is not broad enough if the purpose is genuinely to create “a book award without borders.”</p>
+      <p>The new rule still makes English the decisive border. A novelist writing in Arabic, Spanish, Chinese, French, Bengali or Russian is outside the main prize unless she writes in English. That may be administratively convenient, but it should not be dressed up as cosmopolitanism. English is already the most powerful language in global publishing. To make a “world” prize for English-language fiction alone is to widen the clubhouse while leaving the same language on the door.</p>
+      <p>There is already a Man Booker International Prize, but it is a different kind of award, honoring a body of work rather than a single novel in the same annual race. That distinction matters. Translated fiction remains structurally disadvantaged in Britain and the United States. A truly borderless Booker would consider any novel published in Britain in English, whether originally written in English or translated into it, and it would honor translators as visibly as authors. That would place an American novel, a Nigerian novel in English and an Argentine or Egyptian novel in translation in the same conversation.</p>
+      <p>Still, the old citizenship rule was plainly arbitrary. It is hard to explain why an Australian writer qualified but an American, Liberian or Filipino writer did not, if all were writing in English for an audience that included British readers. Moving from citizenship to language is an improvement in logic.</p>
+      <p>What is gained, then, is simplicity and a larger field. What is lost is the chance for a more radical reform. The Booker administrators could have used this moment to challenge the dominance of English rather than consolidate it. They have chosen a bigger Anglophone prize, not a borderless one. That may produce better shortlists. It should not be mistaken for internationalism in the fullest sense.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The Man Booker Prize&#x27;s decision to open its doors to all English-language writers marks a watershed moment for literary culture, and it is one we should celebrate without reservation. For too long, a prize that claimed to recognize the finest in contemporary fiction was encumbered by an accident of birth. A Nigerian writer living in London could compete; an American novelist across the Atlantic could not. This inconsistency undermines the very notion of literary merit, which ought to be judged on the quality of the work, not the passport it requires.</p>
+      <p>Expanding eligibility strengthens the prize&#x27;s claim to international relevance. In an era when literature flows across borders with unprecedented ease, when readers worldwide consume fiction translated or written in English from every continent, an award that pretends Commonwealth citizenship matters is clinging to an anachronism. The Booker has always aspired to crown the best novel written in the English language; now it finally can.</p>
+      <p>Critics who mourn the loss of a distinctly British character miss the point. Literature has never respected the boundaries that imperial history drew on maps. By extending the prize to authors from India, South Africa, the United States, and beyond, the Booker invites a richer, more genuinely global conversation about what contemporary fiction can accomplish. American authors like Cormac McCarthy or Marilynne Robinson will now stand alongside the British and Commonwealth voices that have long dominated the shortlist, and readers will benefit from a more diverse field of contenders.</p>
+      <p>Commercial considerations aside, this is fundamentally the right call. Literary prizes exist to honor achievement and guide readers toward outstanding work. The Man Booker can now fulfill that mandate with integrity, drawing from the entire breadth of English-language literature rather than a shrinking subset of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>The Man Booker Prize&#x27;s expansion to include all English-language writers is a welcome reform, though we should approach it with clear eyes rather than uncritical enthusiasm. Opening the prize to American, Canadian, Australian, and other English-language authors removes an arbitrary boundary that had become increasingly difficult to justify. If the prize truly aims to honor the finest novel in the English language, then citizenship in a former British colony should not be the decisive criterion.</p>
+      <p>Yet some caution is warranted. The Booker&#x27;s identity has long been intertwined with a particular literary sensibility—one shaped by Commonwealth voices from diverse postcolonial contexts. This has been a genuine strength, giving the prize a perspective on fiction that differs from American awards like the Pulitzer or National Book Award. We should ensure that expansion does not simply result in the prize becoming another showcase for American or British commercial fiction, crowding out the innovative voices from places like Nigeria, India, or the Caribbean that have enriched the shortlist in recent years.</p>
+      <p>The practical question is whether this change will actually alter outcomes. The prize&#x27;s judges, drawn largely from British literary culture, may continue favoring work in familiar styles. American writers have won the Booker before—Jennifer Egan and Hilary Mantel both hold dual citizenship—and their inclusion has not diluted the prize&#x27;s character. What matters more than formal eligibility is the breadth of the longlist and the diversity of voices the judges are willing to take seriously.</p>
+      <p>Still, the principle matters. Removing a citizenship requirement that no longer reflects literary reality is the right step. Whether the Booker rises to the occasion of its new global mandate depends on the choices judges make in the years ahead.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The decision to expand the Man Booker Prize strikes me as a significant loss, and I say that not out of reflexive conservatism but out of genuine concern for what literary prizes are supposed to accomplish. The Booker was established in 1969 to recognize and promote the best fiction from Britain, the Commonwealth, and Ireland—a defined literary community with shared historical roots and, arguably, a common tradition. This was not mere parochialism; it reflected a judgment that geography and culture shape what writers do and how readers receive them.</p>
+      <p>Now that judgment is being abandoned. The prize will become a competition among all English-language writers, which sounds cosmopolitan and expansive but may prove dilutionary. When the Booker included Kenyan, Jamaican, and South African writers alongside British novelists, it created a productive tension between different literary traditions. It implicitly asked readers to attend to voices and concerns that might otherwise be overlooked in the global marketplace. That function is now threatened.</p>
+      <p>Consider what is really being lost: a space where literary merit was recognized within a particular cultural context. The Commonwealth connection gave the prize specificity. It allowed the Booker to champion writers like Chinua Achebe, Nadine Gordimer, and Peter Carey, whose work emerged from colonial and postcolonial experience. American writers, by contrast, will bring the weight of their own enormous publishing industry and literary establishment. The field becomes less about discovery and more about the already-powerful asserting their dominance.</p>
+      <p>Literature is not simply about quality in the abstract; it is about conversation among specific communities at specific moments. The Booker&#x27;s expansion trades that specificity for a vague globalism that benefits those who least need another prize to validate them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>I confess to a certain skepticism about whether the Man Booker Prize&#x27;s expansion will matter much in practice. Citizenship requirements are formalities; what shapes any prize is the taste of its judges and the dynamics of the literary establishment. The Booker already reached beyond Britain in meaningful ways—Ngũgĩ wa Thiong&#x27;o, Amitav Ghosh, and other non-British writers have been shortlisted or won. Opening eligibility to American authors changes the rules but not necessarily the game.</p>
+      <p>The real question is whether judges will suddenly develop an appetite for American fiction that they previously lacked. Given that many Booker judges have been academics or critics steeped in British and Commonwealth literature, this seems unlikely. American writers who write in modes that British literary culture already respects will stand a chance; those who operate in distinctly American traditions may find the Booker remains uninterested.</p>
+      <p>What strikes me as more significant is the timing. The expansion coincides with a period when questions about literary awards, diversity, and gatekeeping have become increasingly prominent. The prize may be responding more to external pressure than to any genuine belief that the field needed broadening. If so, we should not overstate the idealism behind this move.</p>
+      <p>My expectation is that the Booker shortlist will look remarkably similar in the years ahead. A few American names may appear, but the core of Commonwealth voices that has characterized the prize will likely persist. Change the rules if you must, but do not confuse rule changes with cultural transformation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>From a publishing industry perspective, the Man Booker Prize&#x27;s expansion to include all English-language writers makes pragmatic sense, though we should examine the commercial logic carefully. The prize generates enormous attention and, more concretely, significant sales bumps for shortlisted and winning titles. Publishers in the United States, Canada, and Australia now have a stake in the Booker that they lacked before. This is not nothing.</p>
+      <p>The practical effects may be most visible in the American market. The Booker has long enjoyed greater prestige in Britain and the Commonwealth than in the United States, where awards like the National Book Award and Pulitzer Prize dominate literary conversation. Now American publishers have a direct incentive to market the Booker to readers who might previously have dismissed it as an overseas affair. This could expand the prize&#x27;s audience and influence, benefiting the literary ecosystem more broadly.</p>
+      <p>For authors, the change means another avenue of recognition. American writers like Thomas Pynchon or Cormac McCarthy, who have never sought prizes as validation, may not care much. But for those who do value such honors, the Booker becomes another path to visibility. This is especially meaningful for authors from smaller presses, where a Booker shortlist can mean survival.</p>
+      <p>Critics who worry about dilution overlook that literary prizes are commercial as well as cultural phenomena. By broadening its base, the Booker secures its future relevance in a globalized publishing market. Whether that future serves readers and writers well depends on execution, but the direction is defensible.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>What does it mean to award the best novel written in the English language? The Man Booker Prize&#x27;s expansion forces us to confront this question directly, and the answer is less obvious than it might appear. Language is a carrier of culture, but it is also a medium of exchange; English fiction now flows across national boundaries in ways that make geographic restrictions seem quaint. The prize&#x27;s decision to drop citizenship requirements implicitly accepts that English-language literature has become a genuinely global entity, with no center and many peripheries.</p>
+      <p>This strikes me as philosophically sound, though it raises uncomfortable questions about literary judgment itself. If the Booker now draws from everywhere English is written, can it maintain coherent criteria? British, American, Indian, and South African fiction operate in overlapping but distinct traditions. A novel like Arundhati Roy&#x27;s &quot;The God of Small Things&quot; and one like Don DeLillo&#x27;s &quot;White Noise&quot; represent different literary cultures despite sharing a language. Can they be fairly compared by the same judges against the same standards?</p>
+      <p>The answer must be yes, if we take seriously the premise that literature is about human experience rendered in language. Great fiction transcends its immediate context without abandoning it; readers from anywhere can recognize achievement even when the specific settings and concerns are foreign. The Booker&#x27;s judges have long demonstrated this capacity, engaging seriously with work from Nigeria, India, and the Caribbean despite obvious cultural distances.</p>
+      <p>Expanding eligibility extends this already-existing practice to writers who were arbitrarily excluded. In doing so, the prize accepts that English-language literature is now what Commonwealth literature used to be: a genuinely pluralistic tradition with no single home. That is something worth marking.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

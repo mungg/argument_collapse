@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presidential Power vs Congressional Inertia · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Politics · Open-ended</div>
+  <h1 class="debate-title">Presidential Power vs Congressional Inertia</h1>
+  <div class="question-body"><p>Appearing before a Congress that has been among the least productive in history, President Obama said in his State of the Union message Tuesday night that he would like to work with lawmakers, “but America does not stand still — and neither will I. So wherever and whenever I can take steps without legislation to expand opportunity for more American families, that’s what I’m going to do.” His promise of executive orders to deal with issues that have defied legislation comes as the Supreme Court considers his use of recess appointments to avoid intractable Senate approval.</p><p>What are the strengths and dangers of presidents acting unilaterally?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_presidential-power-vs-congressional-inertia_arg_1.html">
+      <td class="arg-text">Unilateral presidential action that bypasses or contradicts congressional legislation violates the separation of powers and inflicts permanent damage on the constitutional architecture of representative government.</td>
+      <td><span class="humans-pill ">5</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_presidential-power-vs-congressional-inertia_arg_2.html">
+      <td class="arg-text">The judiciary should constrain unilateral presidential power by establishing clear, practical boundaries that prevent executive overreach while ensuring the government remains functional in the face of legislative obstruction.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_presidential-power-vs-congressional-inertia_arg_3.html">
+      <td class="arg-text">The legitimacy of presidential unilateralism should not be judged categorically but rather evaluated contextually based on the scope of authority claimed, the state of congressional function, and the impact on future legislative options.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_presidential-power-vs-congressional-inertia_arg_4.html">
+      <td class="arg-text">The threat of unilateral executive action is vastly overstated because such measures are largely symbolic gestures with limited practical impact rather than a challenge to constitutional order.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_presidential-power-vs-congressional-inertia_arg_5.html">
+      <td class="arg-text">Presidential unilateralism should be evaluated based on its legal authorization and the exercise of restraint rather than being viewed as inherently good or bad.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Elizabeth Price Foley</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/29/presidential-power-vs-congressional-inertia/elizabeth-price-foley" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Eric Posner</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/29/presidential-power-vs-congressional-inertia/eric-posner" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Norman J. Ornstein</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/29/presidential-power-vs-congressional-inertia/norman-j-ornstein" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Robert Dallek</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/29/presidential-power-vs-congressional-inertia/robert-dallek" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Saikrishna Prakash</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/01/29/presidential-power-vs-congressional-inertia/saikrishna-prakash" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>When Congress refuses to legislate, presidents face a genuine dilemma. The country&#x27;s problems—long-term unemployment, a broken immigration system, climate change, stagnant wages—do not pause while the House and Senate quarrel. A president sworn to &quot;take care that the laws be faithfully executed&quot; possesses real discretion in how statutes already on the books are implemented, and using that discretion energetically is not, by itself, an abuse of power. President Obama&#x27;s announced plan to raise the minimum wage for federal contractors, for example, falls squarely within powers Congress has already delegated to the executive branch as a purchaser of services. Similarly, EPA rulemaking on power-plant emissions rests on the Clean Air Act as interpreted by the Supreme Court in Massachusetts v. EPA.</p>
+      <p>The strengths of unilateral action are thus practical and constitutional at once. Practically, it gives voters something other than gridlock; constitutionally, it reasserts that executive energy—what Hamilton praised in Federalist 70—is essential to republican government. Recess appointments, prosecutorial discretion (as with the deferred action program for DREAMers), and executive orders directing agency priorities are tools every modern president has used, from Reagan&#x27;s deregulatory orders to Bush&#x27;s faith-based initiatives.</p>
+      <p>The dangers, however, are real and worth taking seriously. First, what one president does by pen, the next can undo by pen; durable policy requires statutes. Second, aggressive unilateralism corrodes the incentive for Congress to legislate at all. If lawmakers know the president will act alone, the minority gains by obstructing and the majority gains by avoiding tough votes—exactly the dynamic now visible on immigration. Third, the line between executing the law and rewriting it is genuinely blurry. The administration&#x27;s repeated unilateral delays to the Affordable Care Act&#x27;s employer mandate, however administratively sensible, sit uneasily with the statute&#x27;s plain timetable. The pending Noel Canning case at the Supreme Court suggests the Court is prepared to push back on at least some claims of unilateral authority.</p>
+      <p>The right posture, then, is calibrated: presidents should use the discretion the law gives them vigorously, but resist the temptation to manufacture authority that isn&#x27;t there. A Congress that abdicates invites an executive that overreaches—and the constitutional cost of that exchange compounds across administrations, regardless of which party holds which branch.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The promise of executive action has long been both a safety valve and a flashpoint in American governance. President Obama’s State of the Union pledge to use his “pen and phone” wherever Congress stalls is the latest iteration of a recurring dilemma: when the legislature becomes a graveyard for legislation, does the presidency rightly fill the void, or does it corrode the very design of separated powers? The question is not whether unilateral action is efficient, but whether its efficiency comes at too high a constitutional price.</p>
+      <p>The immediate strength of unilateral executive action is its capacity to break through the paralysis of a Congress that, by most measures, has been historically unproductive. With legislation stalled on immigration, climate policy, and economic mobility, the president’s ability to act through executive orders, agency rulemaking, and prosecutorial discretion enables the government to respond to evolving challenges without waiting for a fractured legislature. The Deferred Action for Childhood Arrivals (DACA) program, launched in 2012, illustrates how such measures can deliver tangible relief to millions when a comprehensive immigration bill remains frozen. In a system designed with multiple veto points, the executive’s capacity to move nimbly can serve as a necessary counterweight to gridlock, ensuring that the machinery of the state does not grind to a halt. Moreover, the historical record shows that some of the nation’s most consequential steps toward justice—from the Emancipation Proclamation to the desegregation of the armed forces—were taken by presidents wielding unilateral authority.</p>
+      <p>Yet the dangers are profound, and they accelerate when temporary measures harden into a substitute for lawmaking. The most obvious threat is to the constitutional framework itself. Article I vests legislative power in Congress, and while the executive necessarily exercises discretion in enforcement, the systematic use of that discretion to reshape policy effectively rewrites statutes, usurping the people’s representatives. The Supreme Court is currently weighing this tension in the Noel Canning case, which tests whether President Obama’s recess appointments—an end-run around a Senate that refused to confirm nominees—violated the separation of powers. A broad ruling against the administration could significantly constrain a tactic that presidents of both parties have used for two centuries, reminding us that the courts serve as a critical backstop. Beyond legal challenges, unilateral actions create a kind of policy whiplash, where each new president can undo his predecessor’s orders with the stroke of pen, breeding instability for businesses and families alike. DACA, for instance, could be dismantled as easily as it was created, leaving its beneficiaries in a state of perpetual uncertainty.</p>
+      <p>There is also the danger of institutional atrophy. When presidents increasingly govern through executive fiat, Congress loses both the muscle memory and the incentive to legislate. Why take difficult votes and haggle over compromise when the other branch will simply do the job? Congress can then retreat to the politically safer ground of messaging and investigation, deepening the very dysfunction that triggered the executive action in the first place. Over time, this dynamic risks creating a de facto plebiscitary presidency—one that looks more like an elected monarch than a constitutional officer—while the legislative branch withers into a sideshow.</p>
+      <p>The challenge, then, is not to pretend that presidents can always wait on a deliberative body that has ceased to deliberate. But neither can the republic afford a permanent shift toward governance by executive order. The cure for congressional inertia ought to be political—electoral accountability, internal rule reforms, renewed pressure for compromise—rather than constitutional byways that, however convenient in the moment, undermine the deliberate, messy, but ultimately stabilizing process of lawmaking. The real question is whether voters will reward obstruction or demand a Congress that reclaims its Article I responsibilities. If they do not, we should not be surprised when future presidents, of either party, discover they can govern quite a lot without it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>President Obama’s declaration that he will use his executive authority to bypass a paralyzed Congress is an understandable, perhaps even necessary, response to historic legislative dysfunction. Yet, it carries profound long-term risks for our constitutional design. When a coordinate branch of government effectively ceases to legislate—yielding one of the least productive Congresses in modern American history—the executive is inevitably pressured to fill the vacuum.</p>
+      <p>The primary strength of unilateral presidential action lies in its agility and responsiveness. The nation faces pressing economic and social challenges that do not pause for congressional gridlock. By issuing executive orders, such as his pledge to raise the minimum wage for federal contractors or directing environmental regulations through the EPA, the president can deliver tangible progress. Executive action serves as a vital release valve. It allows the government to function and adapt, ensuring that the wheels of administration do not grind to an absolute halt simply because a fractured legislature cannot agree on basic policy.</p>
+      <p>However, the dangers of this approach are substantial and enduring. The most immediate drawback is the fragility of executive action. What one president achieves with the stroke of a pen, the next can undo just as easily. This creates policy whiplash rather than the durable, predictable governance that businesses and families rely on.</p>
+      <p>More concerning is the structural threat to the separation of powers. Aggressive reliance on executive orders and disputed mechanisms like recess appointments—currently facing skeptical scrutiny at the Supreme Court—invites a dangerous escalation. If Congress feels marginalized, its members may become even more entrenched in their obstruction, viewing the president as an overreaching monarch rather than a negotiating partner. Furthermore, presidential power acts as a one-way ratchet. The precedents established by President Obama to advance a progressive agenda will undoubtedly be inherited and utilized by future conservative presidents to advance their own.</p>
+      <p>Ultimately, while unilateral executive action can provide temporary remedies to acute political paralysis, it is a poor substitute for the messy, consensus-building work of legislation. A democracy cannot thrive indefinitely on executive decrees. Bypassing Congress may yield short-term victories, but it risks eroding the constitutional friction that is designed to protect our liberties in the long run.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Unilateral presidential action is neither a constitutional aberration nor a cure for democratic failure. It is an old feature of the office, made more tempting by a Congress that is polarized, filibuster-bound and, by ordinary measures, unusually unproductive. The president is not obliged to watch agencies sit idle or statutory authority go unused simply because Congress refuses to pass new bills. But the very circumstances that make unilateral action attractive also make it dangerous.</p>
+      <p>The strongest case for executive action is practical and constitutional. Article II requires the president to “take Care” that the laws be faithfully executed. Modern statutes often give agencies broad discretion: environmental laws, labor laws, immigration laws and procurement rules all require judgment about priorities and implementation. A president who raises wages for employees of federal contractors, directs agencies to simplify college aid forms, or orders more aggressive enforcement of existing anti-discrimination rules is not necessarily usurping Congress. He is using tools Congress has already placed in executive hands. In a system where national problems do not pause for congressional stalemate, such action can be a legitimate way to make government function.</p>
+      <p>There is also a democratic argument for presidential initiative. Unlike committee chairs or anonymous filibuster threats, the president is nationally elected and politically visible. If he acts unwisely, voters know whom to blame. Executive action can clarify responsibility in a system often designed to obscure it.</p>
+      <p>But the dangers are real. The Constitution deliberately makes lawmaking difficult because durable national policy should rest on broad consent. When presidents stretch statutes to achieve what Congress has refused to enact, they weaken that bargain. Executive orders are also fragile. What one president does alone, the next can often undo alone, making policy less stable and encouraging each side to treat presidential power as a substitute for persuasion.</p>
+      <p>The recess appointments dispute illustrates the stakes. Presidents need some ability to keep government staffed when the Senate is unavailable. But if “recess” can be defined so broadly that it nullifies the Senate’s advice-and-consent role, a safety valve becomes a constitutional bypass. The same concern applies across the administrative state: discretion is inevitable; pretext is corrosive.</p>
+      <p>The proper test is not whether the president’s goals are popular or whether Congress is behaving responsibly. It is whether the action rests on a fair reading of constitutional or statutory authority, is transparent, and remains subject to judicial and political checks. Congressional inertia may justify presidential energy. It does not justify presidential lawmaking.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The constitutional tension between executive initiative and legislative deadlock is as old as the Republic, but President Obama&#x27;s announcement that he will act unilaterally where legislation has failed reflects a particularly acute phase in this ongoing struggle. There are legitimate arguments on both sides, and thoughtful citizens reasonably disagree about where to draw the line.</p>
+      <p>The strongest case for executive action lies in the Constitution&#x27;s practical necessity. When Congress refuses to govern—when it cannot pass basic legislation due to procedural obstruction and ideological paralysis—the executive branch cannot simply shut down. The president takes an oath to &quot;take Care that the Laws be faithfully executed,&quot; which implies affirmative duties that do not vanish because the legislative branch is dysfunctional. Obama&#x27;s use of executive authority to address immigration enforcement priorities, for instance, represents not an assault on separation of powers but an exercise of prosecutorial discretion that presidents of both parties have always possessed. Where statutory authority already exists, redirecting enforcement resources toward sympathetic priorities seems defensible.</p>
+      <p>Yet the dangers are real and should not be dismissed. Unilateral executive action, even when tempting, risks several outcomes. It may further inflame partisan polarization by allowing the president to circumvent elected representatives who disagree with his policies. It threatens to establish precedents that future presidents—perhaps with very different values—will exploit. Most fundamentally, it short-circuits the deliberation that representative government is designed to promote. Executive action decided behind closed doors and announced in press conferences cannot match the public argument, committee hearings, and amendments that characterize genuine legislative process.</p>
+      <p>The recess appointment cases pending before the Supreme Court will define important boundaries. The Court&#x27;s eventual decision will clarify whether the constitutional text&#x27;s original meaning permits the aggressive interpretation the administration has advanced. Until then, the president should exercise restraint out of respect for our constitutional structure, even when legislative inertia is maddening. The remedy for congressional dysfunction is democratic—winning elections, changing Senate rules, electing different representatives—not executive unilateralism that further concentrates power in one branch.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The framers were not subtle. Article I, Section 1 vests &quot;all legislative powers&quot; in Congress — not most, not those Congress chooses to exercise, but all. When a president announces from the rostrum of the House that he will act &quot;wherever and whenever&quot; he can without legislation, he is announcing, in effect, that congressional disagreement with him is itself a kind of vacancy to be filled by executive will. That is not how the Constitution works.</p>
+      <p>The danger is structural, not partisan. Conservatives who cheered George W. Bush&#x27;s signing statements and aggressive war powers claims should have known they were building a throne their opponents would soon occupy. Liberals applauding President Obama&#x27;s &quot;pen and phone&quot; governance are doing the same. Executive orders are reversible by the next executive; rules promulgated by agencies can be unwound by new appointees; recess appointments stuffed into pro forma gaps invite the kind of constitutional confrontation now pending at the Supreme Court in Noel Canning.</p>
+      <p>Congressional inertia is frustrating, but it is also frequently the point. Bicameralism and presentment were designed to make legislation hard. The remedy for an unproductive Congress is an election, not a more muscular presidency. Otherwise we are not muddling toward efficiency — we are drifting toward a plebiscitary executive, accountable only every four years and restrained only by its own forbearance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Let us be honest about what &quot;congressional inertia&quot; means in 2014. It is not the dignified gridlock of a divided republic deliberating carefully. It is a House majority that has voted more than forty times to repeal a law that is already on the books, a Senate where the filibuster has been deployed at historically unprecedented rates, and a confirmation process so broken that the President was forced into the recess appointments now before the Supreme Court. To describe Obama&#x27;s modest executive actions as the aggressor in this story is to mistake the symptom for the disease.</p>
+      <p>What the President proposed Tuesday night is not Caesarism. Raising the minimum wage for federal contractors, creating a new retirement savings vehicle through Treasury, tightening fuel economy standards — these are well within established executive authority. Every modern president has used the tools of the office to advance policy when Congress would not act. Reagan deregulated by executive order; George W. Bush created faith-based initiatives and the terrorist surveillance program by executive fiat. The complaints we are now hearing from the right have a remarkably short memory.</p>
+      <p>The strength of unilateral action is that it allows the government to function when one branch has decided that dysfunction is a strategy. The danger, of course, is precedent: tools available to a president one trusts will be available to one she does not. That is a real concern, and it argues for restraint at the margins — not for the proposition that a president must stand still while Congress refuses to govern.</p>
+      <p>The deeper problem is not too much presidential power. It is a legislature that has, for partisan reasons, abandoned the basic responsibilities of legislating. Until that changes, Americans will keep electing presidents who promise to act. They should.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The question of presidential unilateralism is usually framed as a contest between energy and restraint, but it is more usefully understood as a question about institutional incentives. Congress has not stopped working because its members are lazy. It has stopped working because the incentives facing individual legislators — safe districts created by partisan gerrymandering, primary electorates more ideological than general electorates, a campaign finance system that rewards purity over compromise — make legislating actively dangerous to a member&#x27;s career. In that environment, gridlock is not a bug; it is the equilibrium.</p>
+      <p>Presidents respond to a different incentive structure. They are elected by a national constituency, judged by national outcomes, and remembered for what they did rather than what they prevented. So when Congress freezes, presidents move. This is not an Obama phenomenon. Theodore Roosevelt&#x27;s &quot;stewardship theory,&quot; FDR&#x27;s alphabet agencies, Truman&#x27;s seizure of the steel mills, Nixon&#x27;s impoundments, Reagan&#x27;s regulatory review, Clinton&#x27;s &quot;third way&quot; rulemaking, Bush&#x27;s signing statements — the trend line is long and bipartisan.</p>
+      <p>The strengths of unilateralism are real. It allows the government to address problems Congress will not — climate emissions, immigration enforcement priorities, labor standards for federal contractors. It permits experimentation; executive actions can be reversed if they fail. And it provides democratic accountability of a sort: the president, unlike a gerrymandered House majority, faces the entire country.</p>
+      <p>The dangers are equally real. Policy made by executive order lacks durability; what one administration does, another undoes, leaving regulated parties whipsawed. Unilateralism encourages Congress to abdicate further, since hard questions can always be punted to the executive. And the constitutional ratchet only turns one way: each president inherits the powers his predecessors asserted and adds a few of his own.</p>
+      <p>The honest answer to the source question is that the strengths and dangers cannot be separated from the dysfunction that produces them. Trim the presidency without fixing Congress and you get paralysis. Fix Congress and the demand for an imperial executive recedes on its own.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Progressives celebrating the &quot;pen and phone&quot; presidency should think harder. The executive orders President Obama previewed Tuesday are, by and large, small-bore: a $10.10 minimum wage for new federal contracts, a starter retirement account, some convenings on job training. They are not a substitute for the comprehensive immigration reform, climate legislation, voting rights restoration, or labor law overhaul the country actually needs. Treating modest administrative tinkering as a triumphant workaround for legislative failure lowers the bar for what we expect from American government, and it lets a broken Congress off the hook.</p>
+      <p>Worse, the precedents being set will not stay in friendly hands. The same unitary-executive theories that authorize aggressive domestic rulemaking also authorize warrantless surveillance, targeted killings of American citizens, indefinite detention, and the continuing operation of Guantánamo — all of which this administration has embraced or extended. Liberals who object to the surveillance state but cheer expansive domestic executive power are drawing a distinction the Constitution does not draw and that future presidents will not honor.</p>
+      <p>There is a real left critique here that gets lost in the partisan back-and-forth. The problem is not that Obama is too imperial; it is that the imperial presidency, inherited from Bush and largely ratified by this administration, has hollowed out democratic politics. Citizens are encouraged to focus their hopes on a single charismatic figure rather than on the slow work of organizing, legislating, and building durable majorities. When that figure inevitably disappoints — because executive orders cannot fix structural problems — disillusionment follows.</p>
+      <p>The strength of unilateral action is that it does something rather than nothing. The danger is that &quot;something&quot; becomes a substitute for the real thing, and that the tools we hand this president will be used by the next one against the very people they were meant to help.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Every generation rediscovers the tension the framers built into the Constitution: a legislature designed to be deliberate to the point of sluggishness, paired with an executive designed for &quot;decision, activity, secrecy, and dispatch,&quot; as Hamilton put it in Federalist 70. The current standoff between President Obama and the 113th Congress is not a constitutional crisis. It is the Constitution doing what it was meant to do, more or less, in unusually polarized conditions.</p>
+      <p>History offers some perspective. Thomas Jefferson, the supposed strict constructionist, doubled the size of the country by executive purchase without clear constitutional warrant. Lincoln suspended habeas corpus, blockaded Southern ports, and emancipated slaves in rebel territory all before Congress could weigh in. Franklin Roosevelt issued more than 3,700 executive orders, reorganized the entire federal bureaucracy, and interned American citizens on his own authority. Harry Truman desegregated the armed forces by executive order because Congress would not. Dwight Eisenhower sent federal troops into Little Rock. Lyndon Johnson and Richard Nixon expanded a war in Southeast Asia largely on executive authority. George W. Bush built, by his lawyers&#x27; creative readings, an entire post-9/11 architecture of detention, interrogation, and surveillance.</p>
+      <p>Against that backdrop, the actions President Obama outlined Tuesday are small. Raising the minimum wage for new federal contractors is well within the procurement authority Congress has delegated to the executive for decades. New fuel economy rules operate under statutes already on the books. Even the recess appointments at issue in Noel Canning, while constitutionally contested, fall within a practice every modern president has employed.</p>
+      <p>The strengths of unilateral presidential action are dispatch, accountability to a national electorate, and the capacity to keep the federal government functioning when one branch will not. The dangers are equally familiar: executive overreach is hard to roll back, it weakens the incentive for legislative compromise, it produces policy that lacks durability, and — most importantly — it accustoms citizens to looking to a single officeholder for solutions that ought to come from broad democratic deliberation.</p>
+      <p>What is genuinely new in our moment is not presidential ambition but congressional incapacity. A Senate where sixty votes are required for routine business and a House majority that treats government shutdowns as bargaining tools has shifted the equilibrium toward the executive almost by default. The Supreme Court can police the edges — and in Noel Canning it likely will — but no judicial ruling can manufacture the political will Congress currently lacks.</p>
+      <p>The honest verdict is mixed. Obama&#x27;s unilateralism is, on its face, modest and traditional. The precedent it solidifies — that a president may act broadly whenever Congress chooses not to — is not. Citizens who care about constitutional balance should worry less about this president and more about the structural rot in the legislature that keeps producing him.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The president had it right Tuesday night: America cannot afford to stand still while Congress sits on its hands. The 113th Congress has been one of the least productive in modern history, failing to act on immigration reform, gun safety, a minimum wage increase, and climate change, issues that a majority of Americans support addressing. In the face of such dysfunction, President Obama’s pledge to use his executive authority is not a power grab; it is a necessary response to a broken legislative branch.</p>
+      <p>The Constitution vests “the executive power” in the president and charges him to “take care that the laws be faithfully executed.” Executive orders are a long-established tool, used by every chief executive since George Washington. What Obama is proposing—targeted actions on wages, job training, and environmental regulation—fits squarely within that tradition. He is not making new law; he is directing the vast machinery of the federal government to achieve policy goals within existing statutes, often with significant discretion granted by Congress itself.</p>
+      <p>Critics cry “tyranny” every time a president acts unilaterally, but they ignore the structural safeguards that remain. Congress can override an executive order with legislation, withhold funding, or refuse to confirm nominees. The courts stand ready to strike down any action that exceeds statutory or constitutional bounds, as the Supreme Court’s review of the recess appointment case reminds us. Those checks are real and robust.</p>
+      <p>The greater danger lies in inaction. When millions of workers remain stuck at a poverty-level minimum wage because the House refuses to vote, the human costs mount. When long-term unemployed Americans lose benefits because Congress cannot extend them, the economy suffers. A president who refuses to use all legal means to address such harm is abdicating his own responsibility.</p>
+      <p>Executive action is not a substitute for lawmaking. It is, however, a legitimate and often vital supplement, especially when one chamber of Congress systematically blocks even modest compromise. The president’s vow to go it alone where he can is not a threat to democracy; it is a reminder that the executive branch must sometimes prod, push, and fill the void left by a do-nothing legislature. Until Congress decides to govern again, the American people deserve a president who will.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The State of the Union address is meant to frame a vision of shared governance. But what President Obama offered Tuesday night—a sweeping promise to bypass Congress through executive orders—was a vision of unilateral power that should trouble anyone who cares about the constitutional order. Strengths? There are short-term tactical gains. Dangers? They are profound and corrosive.</p>
+      <p>Proponents argue that gridlock justifies executive action. Yet the Constitution deliberately makes legislating difficult, requiring the consent of two houses and presentment to the president. That slow, inefficient process is the price of liberty. It forces compromise, tempers majority passions, and protects minority interests. When a president, weary of bargaining, simply decrees policy, he short-circuits that entire framework. The result is not just a few isolated fixes but a permanent shift in the balance of power.</p>
+      <p>We have seen this movie before. Richard Nixon claimed that if the president did it, it was not illegal. George W. Bush issued signing statements asserting the right to ignore laws passed by Congress. Now Obama, frustrated after years of partisan trench warfare, declares he will act “wherever and whenever” he can without legislation. Each step, however justified at the moment, normalizes an imperial presidency that future occupants of any party will inherit and expand.</p>
+      <p>The danger is not that Obama will seize dictatorial power overnight. It is that he—or his successors—will accrue so much de facto authority that Congress withers into irrelevance. Already, lawmakers increasingly see their role as checking the executive only when the other party holds the White House. The process becomes purely adversarial rather than collaborative, and the public learns to expect that the president, not their elected representatives, will solve problems. That breeds cynicism and, ultimately, a contempt for democratic institutions themselves.</p>
+      <p>The courts are a backstop, but they cannot police every action, and their decrees come slowly. The real check must come from citizens and their representatives who insist that the legislative branch reclaim its proper role. Obama’s executive activism may produce good headlines for a day, but it sets a precedent that liberals will one day regret when a conservative president discovers the same tools. If we want a government of laws and not of men, we must resist the temptation to cheer unilateralism just because the man in the Oval Office shares our party.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The debate over President Obama’s promise to use his executive pen has been cast as a story about an assertive White House. But focusing on the presidency obscures the true institutional failure: a Congress that has abandoned its constitutional duties. The dangers of unilateral executive action are real, but they are symptoms of a legislative body that has systematically incapacitated itself.</p>
+      <p>Start with the raw numbers. The 113th Congress is on track to pass fewer laws than any in recent memory. Major legislation stalls not because of filibusters alone but because House leadership refuses to bring bills to the floor without the support of a majority of the majority party—a self-imposed rule that kills even bipartisan compromises. The Senate, meanwhile, has become a graveyard for executive and judicial nominations, prompting the very recess-appointment maneuvers now under Supreme Court review. In this environment, a president who waits for Congress to act waits in vain.</p>
+      <p>Thus, when Obama says he will take steps on his own, he is not just seizing power; he is filling a vacuum. Modern government requires continuous administration—on air quality standards, overtime rules, border enforcement, and a thousand other issues. If Congress will not legislate, it falls to the executive branch to interpret old statutes and allocate resources. That is not an invasion of legislative prerogative; it is the inevitable consequence of legislative abdication.</p>
+      <p>The danger, then, is not primarily that the president overreaches but that Congress forgets how to govern. When lawmakers observe that the executive always steps in, they lose the incentive to do the hard work of coalition-building. The institution atrophies. Its members become cable-news pundits rather than legislators, offering sound bites instead of statutes. Eventually, the public may come to see the House and Senate as mere debating societies, with the real decisions made at 1600 Pennsylvania Avenue.</p>
+      <p>The solution is not to demand that presidents wear a self-imposed straitjacket. It is to fix Congress: reform the filibuster, change internal party rules that empower extremes, and return to the regular appropriations process. Only then can we restore the healthy rivalry between branches that the Framers envisioned and that democracy requires.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The Supreme Court’s recent arguments in *NLRB v. Noel Canning* offer a crisp illustration of how unilateral presidential power should—and should not—be constrained. At issue is Obama’s January 2012 recess appointment of three National Labor Relations Board members during a three-day Senate break. The Constitution’s recess appointments clause was designed for a time when Congress traveled by horse and met only months a year. The modern Congress gavels in and out constantly, but the Senate’s “pro forma” sessions were clearly a dodge to prevent the president from filling vacancies.</p>
+      <p>The president’s move was aggressive, but the judiciary’s role is not to pick sides in a political food fight. The proper question is whether the Senate was genuinely capable of advising and consenting. If it was not, the president’s action, while stretching the text, can be seen as a practical response to a deliberate blockade. Yet a ruling that gives the president unfettered power to decide when the Senate is “unavailable” would dangerously tip the scales.</p>
+      <p>The court should draw a clear line: recess appointments are permissible during genuine breaks between sessions, not during manufactured gaps. That protects the Senate’s constitutional role while still allowing presidents to staff the government. Far better for the court to nudge both branches back toward negotiation than to bless executive unilateralism with a sweeping opinion.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Presidents grasping for power when Congress stalls is an American story as old as the republic. Abraham Lincoln suspended habeas corpus without congressional approval at the start of the Civil War. Franklin Roosevelt threatened to pack the Supreme Court when it blocked his New Deal, then issued thousands of executive orders to mobilize the economy. Harry Truman seized steel mills during the Korean War, insisting national security required it. We often remember such moments as crises that demanded boldness, even if they later drew legal rebuke.</p>
+      <p>Obama’s posture fits this pattern. Facing a Congress that cannot pass even popular measures, he is reaching for the few levers directly under his control. The strength of such unilateralism is its speed and clarity: the government can act rather than remain paralyzed. Regulatory changes on carbon emissions or minimum wage rules for federal contractors, for instance, can have immediate, tangible effects that no filibuster can stop.</p>
+      <p>But the dangers are equally familiar. Truman’s steel seizure was struck down by the Supreme Court, an embarrassing lesson in overreach. Lincoln’s wartime suspensions were later normalized in ways that eroded civil liberties. Each executive innovation, once made, becomes a precedent that the next occupant of the office can use for very different purposes. Conservatives who cheer a president bypassing Congress on energy policy may soon find a liberal president bypassing Congress on labor rules, and vice versa.</p>
+      <p>The sober reality is that unilateral action is both an indispensable executive tool and a perpetual threat to legislative sovereignty. It works best when it is narrow, time-limited, and clearly tied to existing statutory authority—and when the president openly acknowledges that he would prefer a bill to an order. The moment an administration treats executive power as just another weapon in partisan warfare, the constitutional system begins to rust. The proper response to a do-nothing Congress is not an everything-does president, but a renewed commitment from voters to demand compromise.</p>
+      <p>What makes our current moment distinct is not the unilateralism itself but the utter collapse of the legislative branch as a coequal partner. History suggests the solution is not to cripple the presidency but to rebuild Congress, restoring the creative tension on which self-government depends. Otherwise, we will lurch from one executive to the next, each more imperial than the last.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>When President Obama pledged in his State of the Union address to bypass a paralyzed Congress, critics immediately cried tyranny. But this reaction fundamentally misreads both the historical role of the presidency and the specific crisis of our current moment. The strength of unilateral executive action lies in its capacity to ensure that the machinery of government does not grind to a halt when the legislative branch abdicates its responsibilities.</p>
+      <p>We are currently suffering under the 113th Congress, which is on track to be one of the least productive in modern American history. Facing a legislative body that routinely flirts with defaulting on the national debt and shutting down the government, a president cannot simply throw up his hands and wait for the fever to break. The American people elected the President to lead, and the presidency is uniquely positioned to act with the speed and decisiveness that a fractured legislature lacks.</p>
+      <p>When the President issues an executive order to raise the minimum wage for federal contractors, or directs agencies to create new retirement savings options, he is not rewriting the law. He is exercising his rightful authority as the chief executive to manage the federal workforce and implement existing statutes to their fullest extent. This is not a usurpation of congressional power; it is the fulfillment of the executive’s constitutional mandate to &quot;take care that the laws be faithfully executed.&quot;</p>
+      <p>Historically, the presidency has always expanded its reach during times of legislative gridlock or national crisis. From Teddy Roosevelt’s expansive view of executive stewardship to Franklin Roosevelt’s aggressive administrative actions, presidents have stepped into the breach when Congress falters. Today&#x27;s &quot;congressional inertia&quot; is not a benign pause in lawmaking; it is a profound failure to address urgent national challenges like income inequality and climate change. By using his pen and his phone, President Obama is providing necessary triage. It is a feature, not a bug, of our constitutional system that when one branch becomes dangerously stagnant, another can flex its inherent powers to keep the country moving forward.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>President Obama’s declaration that he will act without legislation whenever Congress refuses to bend to his agenda is a deeply troubling assertion of executive power. The inherent danger of unilateral presidential action is that it corrodes the foundational architecture of the American republic: the separation of powers.</p>
+      <p>The gridlock we see in Washington today is certainly frustrating, but legislative &quot;inertia&quot; is not a constitutional crisis that justifies executive overreach. In fact, the Framers designed the legislative process to be arduous. The requirement for bicameralism and presentment was explicitly intended to force compromise and build broad national consensus before altering the laws that govern the citizenry. When a president dismisses a lack of congressional consensus as mere &quot;inertia&quot; and decides to bypass the legislature entirely, he substitutes the will of one man for the deliberative process of the people&#x27;s representatives.</p>
+      <p>The danger extends far beyond the current administration. Power seized by the executive branch is rarely, if ever, relinquished. Those cheering President Obama’s promise to use executive orders to enact environmental regulations or alter immigration enforcement mechanisms must ask themselves a sobering question: Will they be equally comfortable when a president of an opposing party uses the exact same unilateral mechanisms to dismantle regulations or rewrite social policy? A pen and a phone in the hands of a president you agree with is a blueprint for an autocrat you oppose.</p>
+      <p>Furthermore, governing by executive fiat creates dangerous instability. Executive orders can be undone with a single stroke of a pen by the next occupant of the Oval Office. This creates a whiplash effect in federal policy, undermining the long-term certainty that businesses and communities need to thrive.</p>
+      <p>The Supreme Court’s current review of the President&#x27;s recess appointments is a timely reminder that the Constitution places explicit limits on the executive&#x27;s ability to end-run the Senate. True leadership requires the grueling, unglamorous work of persuasion and negotiation with political opponents. Bypassing Congress because it is difficult to work with is not leadership; it is a shortcut that weakens our democratic institutions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>While the rhetoric in the State of the Union was bold, the actual threat of unilateral executive action is vastly overstated by both its champions and its detractors. Governing by executive order is, in large part, an exercise in political theater.</p>
+      <p>Consider the headline executive action from Tuesday night: raising the minimum wage for federal contractors to $10.10 an hour. It is a nice gesture, certainly. But it only applies to future contracts, affecting a tiny fraction of the American workforce. It does nothing to alter the federal minimum wage for millions of other workers, which requires an act of Congress. Similarly, creating a &quot;starter&quot; retirement savings account through the Treasury Department is a modest bureaucratic tweak, not a sweeping overhaul of the American economic system.</p>
+      <p>The limits of unilateral action are severe. A president cannot levy taxes, appropriate funds, or rewrite foundational statutory law by decree. Obama cannot sign comprehensive immigration reform into existence, nor can he unilaterally implement universal pre-K. The &quot;pen and phone&quot; strategy is less about enacting a transformative policy agenda and more about managing political optics heading into the 2014 midterm elections. It allows the White House to project momentum and rally the Democratic base, contrasting an &quot;active&quot; president with a &quot;do-nothing&quot; Republican Congress.</p>
+      <p>We should not mistake these administrative maneuvers for a constitutional crisis. They are the modest actions of a second-term president who has realized the legislative window of his presidency has firmly closed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The current debate over whether President Obama is overstepping his bounds by threatening executive action misses the forest for the trees. The real story of 2014 is not the expansion of the imperial presidency, but the absolute collapse of the United States Congress as a functional institution. Executive unilateralism is merely a symptom; structural legislative dysfunction is the disease.</p>
+      <p>We are witnessing a Congress that has been immobilized by hyper-partisanship and structural perversions of the democratic process. In the House of Representatives, aggressive partisan gerrymandering has created a dynamic where the vast majority of incumbents fear a primary challenge from their political extremes far more than they fear a general election defeat. Consequently, compromise is treated as political treason. The Hastert Rule—where Republican leadership refuses to bring a bill to the floor unless it has the support of a &quot;majority of the majority&quot;—effectively allows a radical faction to hold the entire legislative process hostage, even when bipartisan majorities exist for measures like immigration reform.</p>
+      <p>In the Senate, the routine abuse of the filibuster has transformed what was once an exceptional tool into a daily 60-vote supermajority requirement for virtually every piece of legislation and routine executive nomination.</p>
+      <p>In this environment, &quot;congressional inertia&quot; is too mild a phrase; it is congressional paralysis. When the legislature structurally removes itself from the policymaking process, a vacuum is created. The presidency, being the only office with a national constituency, naturally expands to fill that void. The public still demands that government function, that problems be addressed, and that the economy be managed.</p>
+      <p>Therefore, arguing about the legal minutiae of Obama’s executive orders on environmental standards or federal contracting is to debate the bandages while ignoring the bleeding. If conservatives are truly worried about the expansion of executive power, their remedy should not be to sue the President or threaten impeachment. Their remedy should be to fix Congress. Until the structural incentives that reward legislative obstructionism are dismantled, every president, Democrat or Republican, will be forced to govern increasingly through the executive branch.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The clash between presidential action and congressional inaction is a recurring theme in the hydraulic system of American government. When pressure builds and one valve is closed, the energy forces its way through another.</p>
+      <p>President Obama’s State of the Union pledge simply acknowledges this reality. The strength of this approach is immediate relief: administrative agencies can adjust rules to modernize labor standards, reduce carbon emissions, and streamline regulations without waiting for a fractured legislature. This prevents the total stagnation of the state.</p>
+      <p>However, the danger of relying on the administrative state is the gradual erosion of democratic accountability. When laws are debated in Congress, the process is public, messy, and directly accountable to the voters of 435 distinct districts. When policy is formulated in the alphabet soup of federal agencies, it is insulated from the electorate, crafted by unelected experts and technocrats. While this may yield more rational policy in the short term, it breeds deep civic resentment over time, fueling the very populist anger that currently paralyzes Congress. Executive action is a necessary shock absorber, but it cannot become the engine of American democracy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The strongest argument for presidential unilateralism is not that presidents are wiser than Congress. It is that the executive branch already has legal responsibility for carrying out vast areas of federal policy, and in many cases a president can legitimately choose how to enforce, prioritize, and administer the law. When Congress refuses to update statutes, confirm officials, or even negotiate in good faith, a president does not stop being president. Agencies still write rules, allocate resources, set standards, and decide where to focus their limited enforcement capacity.</p>
+      <p>President Obama’s State of the Union language was carefully framed around “wherever and whenever I can” act without legislation. That caveat matters. Raising the minimum wage for employees of federal contractors, changing procurement rules, improving energy efficiency on federal property, or directing agencies to coordinate job training programs are not constitutional coups. They are ordinary uses of executive authority, especially when Congress has delegated broad discretion.</p>
+      <p>There is also a democratic argument for action. The modern presidency is the only nationally elected office. If the public elects a president who promises immigration enforcement priorities, climate regulation under existing environmental statutes, or consumer protection, it is not inherently undemocratic for him to use the tools Congress has already placed in the executive branch. In fact, Congress often writes broad laws precisely because it cannot anticipate every administrative detail.</p>
+      <p>But the danger is real. The temptation is for every president to transform “faithful execution” into policy freelancing. A president who cannot persuade Congress may begin treating congressional silence as permission. That reverses the constitutional design. The president may fill gaps in law, but he cannot create law merely because Congress is gridlocked.</p>
+      <p>Recess appointments illustrate the problem. Presidents of both parties have used them aggressively, and the Senate has used pro forma sessions to block them. The Supreme Court’s pending review is important because the appointment power is not a minor housekeeping matter. If the president can define “recess” too expansively, he can weaken the Senate’s advice-and-consent role. If the Senate can prevent recess appointments through procedural theater while refusing to vote, it can disable agencies. Both branches have abused ambiguity.</p>
+      <p>The best answer is neither executive passivity nor executive government by decree. Presidents should act unilaterally when they are implementing statutes, managing federal operations, or responding to emergencies. They should not use inertia as a substitute for legal authority. And Congress should not complain about presidential overreach while refusing to legislate, appropriate responsibly, or confirm nominees.</p>
+      <p>Unilateral action is sometimes necessary, often useful, and always dangerous. It is a constitutional tool, not a governing philosophy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>President Obama’s promise to act “wherever and whenever” he can should trouble anyone who cares about the separation of powers, even those sympathetic to his policy goals. The Constitution did not create a parliamentary system in which the executive implements his agenda unless the legislature stops him. It created a system in which lawmaking is deliberately difficult because coercive national policy should require broad agreement.</p>
+      <p>Congressional inertia is frustrating, but it is not a constitutional emergency. Sometimes Congress is “unproductive” because the country is divided. The House, Senate and presidency are elected on different cycles and from different constituencies. Gridlock may reflect dysfunction, but it may also reflect genuine disagreement. A president is not entitled to convert his electoral mandate into legislation-by-other-means simply because legislators will not enact his program.</p>
+      <p>The danger of applauding unilateral action when one likes the president is that the precedent will not remain ideological. If Democrats cheer executive improvisation on climate, labor policy or immigration, they should imagine a future Republican president using the same theories to decline enforcement of environmental rules, redirect regulatory agencies, or stretch national-security powers. Conservatives made the same mistake when they defended aggressive executive power under President George W. Bush and then discovered that broad discretion does not belong to one party.</p>
+      <p>The recess appointments case now before the Supreme Court is a useful example. The Senate’s obstruction of nominees may be irritating, but the appointments clause gives the Senate a role. If presidents can evade that role whenever confirmation becomes politically inconvenient, then advice and consent becomes advice if convenient. That is not a small matter. Independent agencies, labor boards and courts derive legitimacy partly from the constitutional process that staffs them.</p>
+      <p>Of course the president has powers of his own. He can direct executive agencies, issue regulations authorized by statute, manage federal employees and contractors, and use enforcement discretion. No serious critic can deny that. The question is whether he is acting within law or using law’s ambiguities to achieve what Congress rejected. The more openly a president says he will act because Congress will not, the more suspicious courts and citizens should be.</p>
+      <p>The remedy for a do-nothing Congress is political: elections, public pressure, compromise, and institutional reform. It is not the normalization of executive unilateralism. A president may be energetic, but he is not a substitute Congress. If constitutional government means anything, it means that frustration is not enough to confer power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The debate over unilateral presidential action often confuses two very different questions: “May the president act?” and “Should we want government to work this way?” The answer to the first is frequently yes. The answer to the second is usually no.</p>
+      <p>Modern statutes give presidents and agencies enormous discretion. The Clean Air Act, immigration laws, labor laws, education programs, procurement statutes and budgetary rules all require interpretation. No administration enforces every rule against every violator. No agency can regulate every risk at once. When President Obama directs an agency to emphasize certain priorities, he is often operating in terrain Congress itself created. It is misleading to describe every executive order as a power grab.</p>
+      <p>Still, there is something unhealthy about a political system in which major policy comes increasingly from administrative interpretation, waivers, guidance letters and enforcement priorities. Those tools are less visible than statutes. They are harder for ordinary citizens to track. They can be reversed by the next administration. They also encourage Congress to posture rather than govern: legislators can write vague laws, refuse to update them, denounce the bureaucracy, and avoid responsibility for hard choices.</p>
+      <p>Executive action is therefore both a symptom and an accelerant of institutional decay. It is a symptom because presidents reach for unilateral tools when Congress cannot perform basic tasks. But it is an accelerant because each unilateral move teaches Congress that it can either obstruct or complain, while the president handles the messy details. Over time, lawmaking migrates away from the legislature.</p>
+      <p>The recess appointments controversy shows this institutional spiral. The Senate increasingly uses holds, filibusters and procedural devices to prevent votes. Presidents respond by using recess appointments or czars or acting officials. The Senate then escalates its procedural resistance. Each branch can point to the other’s abuse. Neither looks very constitutional.</p>
+      <p>The right standard should be practical but firm. The president may act alone when his authority is rooted in the Constitution or in a plausible statutory delegation. He should be especially careful when acting in areas where Congress has recently considered and rejected the same policy. He should explain the legal basis for action, not merely the moral urgency. And courts should police structural boundaries without pretending that administration can be reduced to mechanical rule-following.</p>
+      <p>Obama is right that America does not stand still. Presidents are elected to govern, not simply to wait. But a republic cannot thrive on executive workaround. If unilateral action becomes the normal answer to congressional failure, the public may get occasional policy victories at the cost of more fragile, less accountable government.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The complaint that President Obama is “going it alone” sounds more dramatic than the reality. The president cannot raise the national minimum wage by executive order. He cannot enact comprehensive immigration reform. He cannot pass a carbon tax, rebuild infrastructure at scale, create universal prekindergarten, or restore long-term unemployment insurance by proclamation. Most of what progressives want still requires Congress. That is precisely the problem.</p>
+      <p>So the strength of unilateral action is modest but important: it can help real people at the margins. If the federal government contracts with private companies, it can insist on better wage standards for those contracts. If agencies have authority to regulate pollution, they can regulate. If prosecutors and immigration officials have limited resources, they can focus on serious threats rather than pretending every case is equal. If federal programs are badly coordinated, the president can demand coordination.</p>
+      <p>These steps are not tyranny. They are governance. The president is not obligated to let every tool rust simply because the House of Representatives will not move legislation. The constitutional system gives Congress the power to write laws and appropriate money; it also gives the president responsibility for execution. Execution includes judgment.</p>
+      <p>The danger, however, is that unilateral action becomes a substitute for movement-building and legislative ambition. A clever executive order can produce a headline, but it cannot repair the bargaining power of low-wage workers across the economy. It cannot solve inequality. It cannot make a durable climate policy that survives changes in administration and litigation. It cannot replace the legitimacy of a statute passed after public debate.</p>
+      <p>For that reason, liberals should welcome lawful executive action without overselling it. The president should use every legal authority he has to expand opportunity, especially when congressional obstruction is not a neutral accident but a strategy. But citizens should not be lulled into thinking that the presidency can rescue democracy from Congress. The answer to a broken legislature is not a permanently enlarged presidency; it is a better legislature.</p>
+      <p>There is also a civil-liberties warning. Progressives who like administrative action on wages or the environment should remember the same executive branch claims secrecy, conducts surveillance, uses drones, and deports people. Executive power is never only compassionate. It is also police power, military power and bureaucratic power.</p>
+      <p>Obama should act, but he should act transparently, legally and with humility. Executive orders can open doors. Only democratic politics can keep them open.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The presidency was designed to be energetic. Hamilton argued in Federalist No. 70 that energy in the executive is essential to good government, especially for decision, activity, secrecy and dispatch. That insight remains true. A government in which every administrative adjustment requires a new statute would be paralyzed even in less polarized times.</p>
+      <p>Yet Hamilton was not arguing for a president who absorbs legislative power. Energy was to exist within a constitutional structure. The president executes laws; Congress makes them. The hard part in 2014 is that the boundary is often blurred because Congress has built a vast administrative state by passing broad statutes and then failing to maintain them.</p>
+      <p>The best way to evaluate unilateral action is to ask three questions.</p>
+      <p>First, what is the source of authority? If the president is relying on a statute, the public deserves to know which one and how it supports the action. “Congress won’t act” is a political explanation, not a legal basis.</p>
+      <p>Second, whose rights or interests are affected? Managing federal contractors is different from imposing obligations on the entire private economy. Setting enforcement priorities is different from announcing that a class of people is exempt from a law Congress clearly made applicable.</p>
+      <p>Third, how reversible and accountable is the action? Executive orders can be efficient, but their ease is also their weakness. Policies made by one president can be undone by the next. Regulated parties and beneficiaries alike need stability.</p>
+      <p>On these measures, some Obama initiatives will be defensible and others may not be. The same would be true of any president. The conversation should not begin with whether one likes Obama’s goals. It should begin with the institutional principle one would be willing to apply to presidents of both parties.</p>
+      <p>Congress deserves much blame for the current moment. The Senate’s confirmation wars and the House’s refusal to legislate on major problems have encouraged presidents to search for alternatives. But congressional irresponsibility does not erase constitutional limits. Nor does presidential restraint excuse Congress from doing its job.</p>
+      <p>Unilateral action is strongest when it is transparent, legally grounded and used to make existing government function. It is most dangerous when it becomes a theory that national problems entitle presidents to bypass political disagreement. America does not stand still, but neither should the Constitution be treated as an obstacle to be maneuvered around whenever politics becomes difficult.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The phrase “acting unilaterally” makes presidential action sound like a shortcut around democracy. Sometimes it is. But often it is simply what the presidency is for: using authority already conferred by the Constitution or by statutes that Congress itself has enacted.</p>
+      <p>Congress does not have to pass a new clean-air law every time the Environmental Protection Agency regulates greenhouse gases under the Clean Air Act. It does not have to vote again each time the Department of Labor sets rules for federal contractors, or when the president tells agencies how to use their enforcement resources. A president who refuses to use lawful discretion because the House and Senate are frozen is not being humble; he is allowing legislative paralysis to nullify existing law.</p>
+      <p>That is the strongest case for President Obama’s approach. The country has real problems — stagnant wages, climate change, immigration limbo, a backlog of nominations — and Congress has often chosen not to legislate at all. A minimum wage for new federal contractors will not transform the labor market, but if the government is purchasing services, it can reasonably decide not to subsidize poverty wages. Deferred action for some young immigrants does not rewrite the immigration code, but it recognizes that no administration can deport everyone and that enforcement priorities should reflect public values. Agency action can be transparent, reviewable and democratically accountable in ways that endless congressional stalemate is not.</p>
+      <p>The recess appointments dispute illustrates the same tension in sharper form. The Senate’s advice-and-consent role is essential. But when a minority uses procedural devices to prevent agencies like the National Labor Relations Board from functioning at all, the president has a constitutional duty to keep government operating. A “session” consisting of pro forma taps of the gavel is not a serious substitute for confirmation votes. The Supreme Court should be careful not to reward obstruction masquerading as institutional dignity.</p>
+      <p>Still, the dangers are real. Executive orders are not legislation. They are narrower, less durable and more dependent on lawyers’ theories of delegated authority. A president who stretches statutes today creates precedents for an ideologically opposite president tomorrow. Worse, unilateral action can become a substitute for building majorities, persuading the public and bargaining with Congress.</p>
+      <p>The right answer is not presidential passivity. It is discipline. The president should identify the legal source of his authority, make the reasoning public, invite judicial review when appropriate, and avoid pretending that an executive order can accomplish what only a statute can do. But congressional inertia is not a constitutional trump card. The framers created separated powers, not a system in which one chamber can prevent both lawmaking and execution. When Congress refuses to move, the president may not invent new powers. But he should use the powers he lawfully has.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Congressional inaction is frustrating, but frustration is not a source of constitutional authority. The president’s statement — that if Congress will not act, he will — may be politically satisfying, yet it reverses the order of our system. The president executes the law. Congress makes it.</p>
+      <p>The American Constitution was designed to make sweeping national policy difficult. Bicameralism, presentment, staggered elections and divided powers are not bugs; they are protections. A Congress that fails to enact the president’s agenda has not necessarily failed in its constitutional role. It may be reflecting a divided country. It may be wrong, shortsighted or obstructionist. But “no” is sometimes a legitimate legislative answer.</p>
+      <p>This does not mean presidents are clerks. They must manage the executive branch, conduct foreign affairs, respond to emergencies and exercise enforcement discretion. Every administration issues executive orders. But the danger arises when discretion becomes legislation by another name. Delaying statutory deadlines in the Affordable Care Act, attaching policy conditions to waivers from No Child Left Behind, or creating broad immigration categories through non-enforcement policies all raise the same question: is the president faithfully executing the law, or revising it?</p>
+      <p>The recess appointments case is a particularly important test. The Constitution gives the president a recess appointment power because, in the eighteenth century, the Senate might be unavailable for long periods. It does not give him the power to decide that the Senate is in recess whenever the Senate is inconvenient. If the Senate is abusing its rules, voters can punish senators. The remedy is not for the executive to declare the chamber effectively absent.</p>
+      <p>The great danger is not President Obama alone. It is the precedent. Every president believes his goals are urgent and his opponents unreasonable. If liberals applaud unilateralism because it raises wages or protects immigrants, they should imagine the same theory used to weaken environmental enforcement, restrict access to benefits, or redirect regulatory agencies in ways they abhor. Conservatives, for that matter, should remember their tolerance for broad executive power in national security when they object to domestic executive action now.</p>
+      <p>A strong president can be useful in war, disaster and administration. But a president who treats congressional resistance as permission to govern alone weakens the very system he is sworn to preserve. The answer to a dysfunctional Congress is elections, persuasion and institutional reform, not executive improvisation. Inertia may be ugly. It is not an emergency clause.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The debate over executive power often imagines two grand alternatives: bold presidential action or constitutional restraint. For many Americans, the real problem is more modest and more depressing: executive action is too small to meet the scale of the crisis.</p>
+      <p>Take the proposal to raise wages for federal contract workers. It is a good idea. The federal government should not reward companies that rely on poverty pay. But it reaches only a slice of workers, mainly under new or renewed contracts, and it cannot substitute for raising the minimum wage nationally, strengthening unions, extending unemployment benefits or investing in jobs. An executive order can help some families. It cannot rebuild the bargaining power of the working class.</p>
+      <p>The same is true elsewhere. Deferred action for young immigrants has made an enormous difference in individual lives, but it is precarious by design. It offers a reprieve, not citizenship. Environmental regulation can proceed under existing statutes, but it moves slowly, faces lawsuits and can be starved by appropriations. Administrative action is often better than nothing, yet “better than nothing” is a thin governing philosophy.</p>
+      <p>The danger of unilateralism, then, is not only that it creates an imperial presidency. That danger is real, especially in national security. But in domestic policy, the more immediate danger is that liberals mistake managerial fixes for democratic victories. A signing ceremony at the White House can drain pressure from Congress while leaving the underlying structure unchanged. It can encourage citizens to look upward for rescue instead of organizing outward for power.</p>
+      <p>President Obama should use every lawful tool available. There is no virtue in leaving people without relief simply to demonstrate respect for a Congress that refuses to function. But he should describe these measures honestly: partial, temporary and inadequate. The central task remains political, not administrative. If the country wants higher wages, immigration reform, climate action and voting rights, it needs durable statutes, stronger movements and a Congress that can be forced to act. The pen can relieve suffering. It cannot replace democracy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The useful way to think about presidential unilateralism is not to ask whether it is “strong” or “weak,” but where it comes from. Executive action is not one thing. It ranges from routine management of federal employees to claims of power that collide directly with Congress.</p>
+      <p>Justice Robert Jackson’s famous framework in the Youngstown steel seizure case remains the clearest guide. A president is at the height of his authority when he acts with congressional authorization. He is in a zone of uncertainty when Congress has been silent. He is at his weakest when he acts against the expressed or implied will of Congress. That framework is more helpful than either cheering the president’s “pen and phone” or denouncing every order as tyranny.</p>
+      <p>Some Obama actions fit comfortably within delegated authority. Congress has given the executive branch broad power over federal procurement; setting labor standards for contractors can plausibly be tied to efficient and economical purchasing. Congress has enacted environmental statutes that require agencies to regulate pollutants; presidents will inevitably shape regulatory priorities. Agencies always set enforcement priorities because resources are finite.</p>
+      <p>Other actions are harder. The administration’s recess appointments to the National Labor Relations Board raise serious separation-of-powers questions because the Senate was holding pro forma sessions precisely to block such appointments. Were those sessions real? Were they a transparent evasion of the appointments process? Both claims have force. That is why the Supreme Court’s pending decision matters: it will define not only a technical appointments rule, but the boundary between legislative obstruction and executive self-help.</p>
+      <p>The strengths of unilateral action are obvious. It can be timely. It can bring expertise to bear. It allows a nationally elected president to respond when a polarized Congress cannot assemble a majority for measures that many citizens support. It can also make responsibility clearer: voters know whom to praise or blame.</p>
+      <p>But the dangers are equally structural. Executive action is often unstable; the next administration can reverse it. It can be less deliberative than legislation, shaped by White House messaging needs rather than committee hearings and compromise. It can tempt presidents to read old statutes as blank checks for new agendas. And it can produce a cycle of escalation: each party condemns executive overreach when out of power and expands it when in power.</p>
+      <p>Congressional inertia does not move an action from Jackson’s third category to the first. A deadlocked Congress has not silently delegated all unresolved policy to the president. At the same time, Congress cannot enact broad statutes, refuse to update them, block appointments and then complain whenever the executive branch implements the laws that remain on the books.</p>
+      <p>The proper standard is legality plus restraint. Presidents should act where the Constitution or statutes authorize them, explain their reasoning, and respect judicial limits. Congress should legislate more clearly, fund agencies responsibly and vote on nominees. The alternative is a government in which no branch truly governs, and each blames the other for the vacuum.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The biggest danger in President Obama’s promise is not that he will become a monarch. It is that Americans will accept a shrunken idea of self-government.</p>
+      <p>Yes, presidents must act. Agencies need direction. Vacancies must be filled. Existing laws must be enforced. If Congress will not raise wages, it is perfectly sensible for the executive branch to ask what it can do for workers on federal contracts. A president who never uses discretion is not respecting Congress; he is pretending the modern administrative state does not exist.</p>
+      <p>But the celebration of unilateral action is a symptom of failure. Congress is not simply “lazy.” It is polarized, gerrymandered in many districts, constrained by the filibuster in the Senate, and rewarded by activists and media for confrontation. The public, too, is divided. Executive orders do not fix any of that. In some cases they worsen it, because legislators can posture against the president instead of taking responsibility for governing.</p>
+      <p>The president should use lawful unilateral powers sparingly and visibly, while making clear that they are no substitute for legislation. The harder work is rebuilding Congress’s capacity to decide: regular budgets, real confirmation votes, fewer procedural blockades, and elections in which voters punish sabotage rather than reward it. A pen can move policy. It cannot restore a republic’s muscles.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The Constitution grants presidents inherent authority to act when coordinate branches refuse to fulfill their duties. Obama is not overreaching—he is filling a dangerous vacuum created by congressional dysfunction. When the Senate systematically blocks appointments and legislation through procedural abuse, it effectively abandons its constitutional responsibilities. The recess appointment controversy illustrates this precisely: by declaring the Senate technically in session through pro forma recess games, the Senate has itself created an institutional fiction that presidents must counterbalance.</p>
+      <p>The unitary executive theory, whatever its other flaws, correctly recognizes that presidents bear unique constitutional responsibility for national execution. When Congress refuses to appropriate funds or authorize action on pressing matters—from immigration to minimum wage—presidents face a genuine dilemma. They can remain paralyzed while Americans suffer, or they can act within existing legal authority.</p>
+      <p>Critics who invoke separation of powers seem to assume Congress is a perfectly functioning institution that deserves deference. But dysfunction has consequences. The 113th Congress accomplished almost nothing while families struggled with economic insecurity. If we treat congressional inertia as a ceiling on presidential action, we effectively hand veto power to the most obstructionist Senate minority.</p>
+      <p>Executive orders and administrative action are not substitutes for legislation—they are implementation tools for duly enacted policy. Obama is not claiming to be a dictator; he is saying his administration will pursue its policy goals through every lawful channel available. This is what voters expect from functional government. The danger is not that presidents act boldly but that constitutional norms have allowed minority obstruction to prevent any action at all.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The framers designed an elaborate system of shared powers precisely because they feared executive tyranny. Obama&#x27;s rhetoric—&quot;America does not stand still&quot;—echoes precisely the kind of emergency justification that constitutional checks exist to prevent. Every president believes their priorities are urgent; the question is whether unilateral action can substitute for democratic deliberation.</p>
+      <p>The recess appointments case currently before the Supreme Court reveals the core problem. Three judges appointed during a sham recess bypassed the advise-and-consent process entirely. Whatever one thinks of those particular nominees, the principle matters: if presidents can declare sessions recesses, the Senate&#x27;s constitutional role becomes meaningless. Constitutional interpretation cannot depend on which party controls the White House.</p>
+      <p>More fundamentally, unilateral executive action undermines democratic accountability. When Congress refuses to act, voters can hold legislators accountable—or elect different ones. When presidents circumvent legislative failure through executive fiat, they insulate policy from electoral consequences. The minimum wage campaign Obama announced will proceed without congressional votes, meaning senators can avoid casting difficult votes. This is convenient for politicians but corrosive for self-government.</p>
+      <p>The &quot;least productive Congress&quot; framing deserves scrutiny. Productivity measured by bills passed tells us nothing about whether those bills were good policy. The Senate&#x27;s delays, while frustrating, reflect genuine constitutional cooling. Unilateral presidentialism concentrates power in an institution already prone to personality-driven excess.</p>
+      <p>We should want presidents who work harder at coalition-building, not who celebrate circumventing democratic process. Obama&#x27;s promise normalizes rule by executive, regardless of which party benefits.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Presidential unilateralism has a distinguished history that neither advocates nor critics fully acknowledge. Lincoln suspended habeas corpus; FDR interned Japanese Americans; Truman seized steel mills. These ranged from constitutional crises to accepted practice. The question is not whether presidents can act alone—they always have—but when such action strengthens or weakens democratic governance.</p>
+      <p>The contemporary situation has distinctive features. Congressional obstruction, while not new, has reached unprecedented intensity. Senate procedure now allows minorities to block virtually everything with minimal cost. Against this backdrop, executive action functions less as executive overreach and more as administrative improvisation.</p>
+      <p>Yet institutional memory matters. Every expansion of unilateral authority creates precedent that future presidents will invoke. Presidents who celebrate today&#x27;s executive latitude typically forget they won&#x27;t always occupy the White House. The unitary executive theory that empowers Obama will equally empower presidents whose priorities critics find abhorrent.</p>
+      <p>A useful distinction separates action within clear statutory authority from action claiming inherent constitutional power. Obama has mostly pursued the former—using existing agency authority and administrative law. This is less constitutionally troubling than the recess appointments, which claimed textual authority the Constitution probably doesn&#x27;t grant.</p>
+      <p>The strongest argument for measured unilateralism is that constitutional text matters less than practical function. If Congress cannot govern, pretending otherwise serves no one. But the solution is structural reform, not executive substitution for legislative failure. Presidents acting boldly might solve today&#x27;s problem while creating tomorrow&#x27;s constitutional crisis.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>Behind the constitutional arguments lies a democratic theory question: who should govern? Obama&#x27;s framing—&quot;I will act because America cannot wait&quot;—presumes executive judgment should override legislative deadlock. But deadlock is the system working, in a sense. When majorities cannot override minorities, that reflects the constitutional structure designed to protect dissenters.</p>
+      <p>The State of the Union formulation is rhetorical sleight of hand. Of course America shouldn&#x27;t &quot;stand still.&quot; But neither should presidents assume they know better than Congress what action, if any, serves the national interest. Legislative failure is not necessarily a problem presidents are empowered to solve.</p>
+      <p>Consider the minimum wage executive order. Obama&#x27;s authority would extend only to federal contractors—perhaps a million workers. Extending this broadly requires legislation. But announcing the proposal without authority to implement it accomplishes little except political messaging. This is the poverty of unilateral presidentialism: it produces symbolic action where real change requires constitutional majorities.</p>
+      <p>Separation of powers exists not from institutional jealousy but from hard experience with concentrated authority. Madison&#x27;s insight was that ambitious men would check each other. When presidents celebrate congressional dysfunction as justification for unilateral action, they embrace a theory that any future majority Congress could similarly bypass judicial review or executive constraints.</p>
+      <p>Democratic legitimacy requires that consequential decisions flow from accountable institutions. Executive orders and agency rules receive far less scrutiny than legislation. Administrative law provides some check, but not the full deliberative process the Constitution envisions for major policy choices. Presidents acting alone may sometimes be right—but the constitutional system was designed to make such action difficult, not convenient.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The debate framing treats presidential unilateralism as a single phenomenon requiring a single verdict. Reality offers more nuance. Not all executive actions are equal: emergency response differs from policy transformation; agency discretion differs from circumventing statutory limits; recess appointments differ from executive orders to existing law.</p>
+      <p>A contextual approach asks several questions. First, what is the scope of claimed authority? Broad theories of presidential power warrant more skepticism than modest claims of administrative discretion. Second, what alternative channels exist? When Congress has abdicated its functions entirely, different standards apply than when legislative deliberation continues. Third, does action foreclose future legislative options? Unilateral measures that eliminate negotiation space deserve more scrutiny than those that create leverage for subsequent compromise.</p>
+      <p>By these measures, Obama&#x27;s posture in January 2014 looks mostly defensible. He has announced intentions to use existing authority more aggressively, not claimed new constitutional powers. The minimum wage executive order, whatever its limited scope, doesn&#x27;t preclude future legislative action—it pressures Congress to act or accept that the executive has addressed part of the problem.</p>
+      <p>The recess appointments remain genuinely troubling. Appointing judges to lifetime positions during periods the Senate doesn&#x27;t recognize as recesses goes beyond aggressive administration into constitutional avoidance. But this represents one disputed area among many.</p>
+      <p>Critics who see unilateral presidency as inherently dangerous and defenders who see obstruction as authorizing any action both err. Presidential power is contextual, bounded by institutional norms and specific constitutional grants. The relevant question is not whether presidents can act alone but whether particular actions enhance or undermine democratic governance. Answering that question requires disaggregating the phenomenon rather than categorical judgment.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

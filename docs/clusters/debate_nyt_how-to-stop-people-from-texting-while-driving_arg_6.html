@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New York should implement the Textalyzer as a tool to enforc... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_how-to-stop-people-from-texting-while-driving.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_how-to-stop-people-from-texting-while-driving.html">How to Stop People From Texting While Driving</a> · Cluster 6 of 37</div>
+  <h1 class="arg-title">"New York should implement the Textalyzer as a tool to enforce texting-while-driving bans, provided it is governed by strict privacy safeguards and limited to serious crash investigations."</h1>
+  <div class="arg-meta">0 human · 2 LLM · 2 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"New York should implement the Textalyzer as a tool to enforce texting-while-driving bans, provided it is governed by strict privacy safeguards and limited to serious crash investigations."</p>
+        <button class="essay-view-full" data-target="full-6-43021">View full essay</button>
+        <div class="essay-full" id="full-6-43021" style="display:none;">
+            <p>Yes, New York should try the Textalyzer, with strict safeguards. Texting while driving is not a minor etiquette problem. It is a public safety hazard that combines the reaction-time impairment of intoxication with the illusion that one is still in control. A driver who looks down for five seconds at highway speed has effectively driven the length of a football field blind. Laws against texting are common, yet they are notoriously hard to enforce because the evidence often disappears into a pocket before the officer arrives.</p>
+            <p>The Textalyzer addresses that enforcement gap. If a driver causes a serious crash, society has a legitimate interest in knowing whether the driver was manipulating a phone at the time. We already reconstruct crashes through skid marks, black boxes, witness statements and toxicology tests. Phone activity is now part of the crash environment. Ignoring it because the evidence is digital would be perverse.</p>
+            <p>The civil liberties concerns are real, but they are not fatal. The device should be designed and regulated to answer a narrow question: was the phone being touched, unlocked, used to type, swipe or open an app during the relevant time window? It should not show message content, contact names, photographs, browsing history or app data. The statute should limit use to crashes involving injury, death or significant property damage, require logging of every test, allow defendants to challenge the device’s reliability and impose penalties on officers who exceed the permitted scope. If the test indicates activity and investigators want content, they should still need a warrant.</p>
+            <p>This is similar to the evolution of drunk-driving enforcement. Breath testing became acceptable because the public decided that the right to drive comes with responsibilities, and because procedures were standardized. The same can be true here. A driver does not have an absolute right to conceal whether he was using a device in the seconds before striking another car.</p>
+            <p>Of course, the Textalyzer is not a complete solution. Public education, phone-based blocking tools, employer rules and stronger penalties are necessary. But none of those will work if drivers believe the law is unenforceable. The greatest weakness of texting bans is that everyone knows how easy they are to evade. A carefully limited Textalyzer would change that calculation. It would not stop every distracted driver, but it would make clear that “I was not texting” is no longer an untestable excuse after a crash.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The Textalyzer addresses the current enforcement gap where digital evidence of distracted driving is easily hidden from law enforcement.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Society has a legitimate interest in reconstructing crashes using phone activity data, just as it uses skid marks, black boxes, and toxicology reports.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Privacy concerns can be mitigated by designing the device to detect only physical interaction with the phone rather than accessing private message content or personal data.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The legal precedent for the Textalyzer is similar to breathalyzer tests, where the privilege of driving carries the responsibility of being held accountable for dangerous behavior.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The Textalyzer serves as a necessary deterrent by removing the belief that texting-while-driving laws are unenforceable and easy to evade.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"The implementation of a narrowly tailored &quot;Textalyzer&quot; law is a reasonable and necessary enforcement tool to create accountability for distracted driving after a crash."</p>
+        <button class="essay-view-full" data-target="full-6-69023">View full essay</button>
+        <div class="essay-full" id="full-6-69023" style="display:none;">
+            <p>The “Textalyzer” is not a complete answer to distracted driving, but it is a reasonable and overdue enforcement tool if it is designed narrowly. A law that everyone violates because no one expects to be caught is not much of a law. Texting bans now often depend on an officer seeing a driver’s thumbs moving at precisely the right moment. After a crash, the driver can simply deny using the phone. That gap between prohibition and proof is one reason the practice remains so common.</p>
+            <p>The analogy to the Breathalyzer is imperfect but useful. Drunk-driving laws became powerful not merely because legislatures raised penalties, but because police gained a practical way to establish impairment and the public came to understand that detection was plausible. Texting while driving creates a similar public risk: a driver moving at highway speed while looking away for several seconds is effectively operating blind. If a crash occurs, it is legitimate for investigators to ask whether the driver was using a device at the time.</p>
+            <p>But the safeguards matter. A phone is not a vial of blood or a breath sample. It contains intimate records of a person’s life. Any Textalyzer law should therefore be limited to crashes, not ordinary traffic stops; it should reveal only whether the device was activated, touched or used at the relevant time, not the contents of messages, photographs, contacts or apps; and the software should produce an auditable report rather than giving officers browsing access. If police want message content, they should get a warrant.</p>
+            <p>There should also be penalties for refusal, such as license suspension, similar in spirit to implied-consent rules for alcohol testing. Driving is a licensed activity, and the privilege carries obligations when a driver may have injured someone. At the same time, the law must account for passengers, multiple phones in a car and emergency use. The test should be a starting point for investigation, not automatic proof of guilt.</p>
+            <p>Other measures are necessary too: automatic “driving mode” settings on phones, stronger employer policies for commercial drivers, public education and insurance incentives. But none of those substitutes for accountability after a crash. We should not let privacy concerns become an excuse for doing nothing; we should let them shape a careful law. A narrowly tailored Textalyzer could help make texting while driving feel as socially and legally unacceptable as drunk driving.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Current texting bans are ineffective because there is a significant gap between prohibition and the ability for law enforcement to prove a violation occurred.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Just as the Breathalyzer made drunk-driving laws enforceable, a digital testing tool would make the risk of detection plausible to the public.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">To protect privacy, the device must be limited to crash investigations and designed to detect only device activity rather than accessing personal content.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Driving is a licensed privilege that should carry the obligation to submit to activity testing when a crash occurs, similar to implied-consent rules for alcohol.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">While technological settings and public education are necessary, they cannot substitute for the legal accountability provided by post-crash forensic evidence.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

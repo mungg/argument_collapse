@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prison Could Be Productive · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Society · Open-ended</div>
+  <h1 class="debate-title">Prison Could Be Productive</h1>
+  <div class="question-body"><p>So many Americans end up in prison for so long, and sometimes find little or no support after they are released.</p><p>A recent Times editorial called for measures that would reduce spending on prisons. A series of letters to the editor followed up with proposals for sentencing reform.</p><p>Now Room for Debate is asking: Given that most inmates will one day be released, how should incarceration change to prepare people to rejoin the outside world? How can a prison sentence change a person for the better?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_1.html">
+      <td class="arg-text">To reduce recidivism and improve public safety, the American prison system should be transformed from a punitive institution into a therapeutic and educational residential community focused on rehabilitation.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_2.html">
+      <td class="arg-text">To effectively prepare inmates for release and reduce recidivism, incarceration must prioritize comprehensive mental health and substance abuse treatment through structured therapeutic communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_3.html">
+      <td class="arg-text">Replacing traditional incarceration with smart community supervision involving close monitoring and swift sanctions is a more effective and cost-efficient way to reduce crime and reintegrate offenders into society.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_4.html">
+      <td class="arg-text">To ensure successful reentry and reduce recidivism, the prison system must prioritize maintaining and strengthening the bonds between inmates and their families.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_5.html">
+      <td class="arg-text">Legislative and community leaders should expand access to higher education for incarcerated individuals to improve re-entry outcomes and reduce recidivism.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_6.html">
+      <td class="arg-text">To reduce recidivism and prepare inmates for release, prison systems should adopt the principle of normality by making life inside prison resemble life outside as closely as possible.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_7.html">
+      <td class="arg-text">Incarceration should be restructured around a restorative justice model that focuses on accountability and making amends rather than passive punishment or simple therapy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_8.html">
+      <td class="arg-text">Prison theater programs should be implemented to effectively prepare inmates for successful reentry into society.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_9.html">
+      <td class="arg-text">To prepare inmates for release, incarceration must shift from a focus on financial costs to a model that fosters self-efficacy and restores the full rights of citizenship.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_10.html">
+      <td class="arg-text">The primary obstacle to making prison productive is not a lack of knowledge regarding effective rehabilitation, but rather a lack of political will to fund and implement known solutions.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_11.html">
+      <td class="arg-text">The focus of prison reform should prioritize reducing the overall incarcerated population through sentencing reform and diversionary programs rather than merely improving the productivity of the prisons themselves.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_12.html">
+      <td class="arg-text">To ensure incarceration is productive and prepares people for reentry, the justice system must prioritize sentencing reform to reduce the prison population and transform remaining facilities into humane, supportive environments.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_13.html">
+      <td class="arg-text">To make prisons truly productive, we must reduce the incarcerated population and implement evidence-based programs rather than relying on rehabilitation as a justification for mass incarceration.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_14.html">
+      <td class="arg-text">To successfully reintegrate inmates into society and reduce recidivism, American prisons must replace idleness with mandatory, purposeful, and paid labor programs that teach marketable trades.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_15.html">
+      <td class="arg-text">To effectively rehabilitate inmates and prepare them for release, prisons should implement a system of mandatory, paid labor that mirrors real-world economic responsibilities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_16.html">
+      <td class="arg-text">Instead of attempting to make the inherently destructive prison environment rehabilitative, we should minimize incarceration and focus on removing the legal barriers that prevent formerly incarcerated people from reintegrating into society.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_17.html">
+      <td class="arg-text">To make incarceration productive and reduce recidivism, prisons should adopt the Risk-Needs-Responsivity (RNR) model of criminology to provide evidence-based, individualized interventions.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_18.html">
+      <td class="arg-text">To make incarceration more productive, the justice system must prioritize sentencing reform that reserves prison for dangerous offenders while implementing early, comprehensive reentry planning for those who must be incarcerated.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_19.html">
+      <td class="arg-text">To effectively prepare inmates for reentry and change them for the better, prisons must prioritize comprehensive clinical treatment for mental illness and addiction alongside structured transition planning.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_prison-could-be-productive_arg_20.html">
+      <td class="arg-text">To change a person for the better, prison must shift from a model of passive suffering to one of restorative justice that demands moral accountability and active restitution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Agnes Wilcox</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/agnes-wilcox" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Gerhard Ploeg</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/gerhard-ploeg" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">James Gilligan</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/james-gilligan" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Mark A. R. Kleiman</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/mark-a-r-kleiman" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Mary W. Byrne</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/mary-w-byrne" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Vivian Nixon</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/18/prison-could-be-productive/vivian-nixon" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The starting point should be honest about what prison currently does: it warehouses people, often hardens them, and severs the very ties — to family, employers, housing — that predict whether someone goes straight after release. With roughly 700,000 people leaving prison each year and two-thirds rearrested within three years, the status quo is itself a public-safety failure.</p>
+      <p>A productive sentence would treat reentry as the goal from day one. That means risk-needs assessments at intake, followed by mandatory programming matched to those needs: literacy and GED classes, vocational training tied to labor-market demand, cognitive-behavioral therapy, and serious drug and mental-health treatment. Evaluations of programs like RSAT and prison-based CBT show recidivism reductions in the range of 10–30 percent — modest individually, but cumulatively transformative.</p>
+      <p>Prisons should also stop manufacturing barriers to reintegration. Pell Grant eligibility for inmates, restored after its 1994 repeal, would cost little and pay back many times over; the RAND meta-analysis last year found correctional education cut recidivism by 43 percent. Work-release, halfway houses, and &quot;ban the box&quot; hiring policies smooth the cliff at the gate.</p>
+      <p>Finally, shorter sentences for nonviolent offenders, combined with earned good-time credits for completing programming, would align inmates&#x27; incentives with the rehabilitative mission prisons claim to serve.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The sheer scale of American incarceration—with over two million people behind bars and a recidivism rate that sees roughly half return within three years—reveals a profound policy failure. Prisons are not merely expensive warehouses; they are squandered opportunities. If we are serious about public safety, we must transform incarceration from a sentence of idleness and degradation into a structured period of human development. Preparing people to rejoin society cannot be an afterthought; it must be the central purpose of confinement.</p>
+      <p>A productive prison is first and foremost an educational institution. Studies have consistently shown that inmates who participate in correctional education are significantly less likely to return to crime. A comprehensive meta-analysis by the Washington State Institute for Public Policy found that vocational training and basic adult education programs reduce recidivism by around 9 to 12 percent, delivering a return on investment of several dollars for every dollar spent. Yet access to these programs is shockingly limited. Mandating literacy and numeracy courses for those who lack them, and expanding access to college-level coursework—such as the highly successful Bard Prison Initiative—would equip prisoners with the cognitive skills and credentials needed for legal employment. Pair this with robust, market-aligned vocational training in fields like construction, coding, or culinary arts, and you replace a cycle of despair with a pathway to a paycheck.</p>
+      <p>Mental health and addiction treatment must be integrated into the sentence itself. Over half of inmates suffer from mental health problems, and drug offenses are a primary driver of incarceration. Without treating the underlying causes of criminal behavior, we simply recycle sickness. Cognitive-behavioral therapy programs that teach impulse control and moral reasoning have demonstrated real promise in changing criminogenic thinking. Moreover, the entire prison culture must shift. Correctional officers should be reimagined as mentors and facilitators of growth, trained in de-escalation and rewarded for fostering rehabilitation, not just enforcing rules.</p>
+      <p>If a prison term is to change a person for the better, it must mirror the structure of a productive life outside: accountability, skill-building, and the expectation of contribution. The alternative—letting people out more bitter, broken, and unemployable than when they entered—is not just a moral failure; it is a formula for more crime. An incarcerated person is a future neighbor. We have every reason to invest in them wisely.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>If we accept that the vast majority of the 2.2 million Americans currently behind bars will eventually return to our communities, the purely punitive model of incarceration is not just cruel; it is catastrophically counterproductive. To change a person for the better, prisons must be transformed into engines of rehabilitation, primarily through rigorous education and real-world vocational training.</p>
+      <p>First, we must reverse the disastrous 1994 ban on federal Pell Grants for prisoners. Study after study demonstrates that inmates who participate in correctional education programs are significantly less likely to return to prison. Education changes the trajectory of an inmate&#x27;s life, fostering critical thinking and self-worth, yet state and federal budget cuts frequently target these exact programs.</p>
+      <p>Second, vocational training must align with the modern economy. Teaching outdated skills guarantees post-release unemployment, which is a primary driver of recidivism. Prisons should partner with private industries to offer apprenticeships in growing fields like green technology, computer literacy, and advanced manufacturing.</p>
+      <p>Finally, true rehabilitation requires treating the root causes of criminality. Expanding access to substance abuse treatment and cognitive behavioral therapy inside prison walls is essential. If we treat inmates solely as permanent outcasts, they will act as such upon release. We must instead equip them to be our future neighbors.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Prison can change a person for the better only if we stop treating idleness, isolation and humiliation as the main instruments of punishment. The loss of liberty is the sentence; inside that boundary, the public interest is served by building habits and capacities that make another crime less likely.</p>
+      <p>The first priority is education. A large share of prisoners enter with weak literacy, interrupted schooling and little legitimate work history. GED classes, college courses where possible, and vocational training tied to real labor-market needs should be central, not optional luxuries. Work programs should teach punctuality, teamwork and usable skills, and prisoners should earn modest wages that can support restitution, child support and savings for release.</p>
+      <p>Second, prisons must address the problems that often helped bring people there: addiction, mental illness, trauma and anger. Evidence-based drug treatment, cognitive behavioral programs, and competent mental health care are cheaper than repeated imprisonment. These programs should be evaluated honestly, expanded when they work and abandoned when they are merely symbolic.</p>
+      <p>Third, re-entry should begin on the first day of incarceration. Each prisoner needs an individualized plan: education goals, treatment, identification documents, housing prospects, family contact and links to parole officers and community providers. Maintaining family ties through visits and phone calls is not softness; it is a stabilizing force.</p>
+      <p>Finally, prison conditions must reinforce responsibility. Overuse of solitary confinement, arbitrary discipline and dangerous understaffing make people worse. Incentives for progress, graduated privileges and respectful staff-prisoner relationships make order more likely.</p>
+      <p>A productive prison is not a pleasant prison. It is a disciplined institution organized around the fact that nearly everyone inside will come home.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The central failing of American prisons is that they treat incarceration as an endpoint rather than a transition. Nearly everyone confined will eventually return to society, yet we invest little in preparing them for that return. The result is staggeringly high recidivism rates and communities that struggle to absorb people who exit with fewer skills and fewer connections than when they entered.</p>
+      <p>Reforming prisons to be genuinely productive requires rethinking what happens behind the walls. Educational programs—GED completion, college courses, literacy initiatives—have demonstrated consistent success in reducing reoffending. Vocational training that actually matches market demands gives released individuals a realistic path to legitimate employment. Mental health treatment and substance abuse programs address underlying issues that often drive criminal behavior in the first place.</p>
+      <p>Equally important is maintaining family connections. Incarceration should not sever the bonds that anchor people to law-abiding lives. Visitation policies, phone access, and reintegration planning that involves families can reduce the alienation that makes recidivism more likely.</p>
+      <p>The question of whether prison can change a person for the better is ultimately about opportunity. Punishment alone changes no one—it merely delays. But meaningful engagement with education, treatment, and skill-building creates the conditions under which transformation becomes possible. The question is not whether change is achievable, but whether we have the political will to fund the programs that make it real.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Prison should be a place of education, full stop. The single most consistent finding in correctional research over the past three decades is that inmates who participate in education programs while incarcerated are dramatically less likely to return. A RAND-style meta-analysis isn&#x27;t needed to grasp the basic logic: a person released with a GED, a vocational certificate, or college credits has options that a person released with nothing does not.</p>
+      <p>The 1994 crime bill&#x27;s elimination of Pell Grant eligibility for prisoners was a self-defeating piece of symbolic politics. It cost the federal government almost nothing — incarcerated students were a tiny fraction of Pell recipients — but it gutted college-in-prison programs nationwide. Restoring that eligibility, or creating a parallel funding stream, would do more to reduce recidivism per dollar than almost any other intervention available to policymakers.</p>
+      <p>Beyond formal schooling, prisons should be running serious vocational programs tied to actual labor market demand: welding, HVAC repair, commercial driving, coding. Too many existing &quot;prison jobs&quot; are make-work or institutional maintenance that produces no transferable credential. If an inmate spends five years inside, those five years should produce a résumé, not a gap on one.</p>
+      <p>Critics will say taxpayers shouldn&#x27;t fund education for people who broke the law when law-abiding citizens struggle to afford college. That framing misses the point. We are already paying — roughly $30,000 a year per inmate in many states — to warehouse these people. The question isn&#x27;t whether to spend the money. It&#x27;s whether we want anything in return.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Before we redesign prisons to be &quot;productive,&quot; we should ask a more uncomfortable question: why are so many of these people in prison at all?</p>
+      <p>The United States incarcerates roughly 2.3 million people, a rate five to ten times that of comparable democracies. A large share are inside for nonviolent drug offenses, technical parole violations, or property crimes driven by addiction and untreated mental illness. No amount of in-prison job training will fix a system whose front end is fundamentally broken.</p>
+      <p>I worry that the &quot;productive prison&quot; framing, well-intentioned as it is, lets sentencing policy off the hook. If we get good at running rehabilitative prisons, we may simply become more comfortable filling them. The deinstitutionalization of state mental hospitals in the 1970s did not eliminate the impulse to confine the mentally ill; it just rerouted them, eventually, into county jails. Reform that doesn&#x27;t shrink the system tends to get absorbed by it.</p>
+      <p>The real productivity gains come earlier. Drug courts divert addicts into treatment for a fraction of the cost of imprisonment. Mental health crisis teams keep psychotic episodes from becoming felony arrests. Restorative justice conferences, used in parts of Vermont and elsewhere, often produce better outcomes for victims than trials do. Shorter sentences — coupled with intensive supervision and services — repeatedly outperform long ones on recidivism.</p>
+      <p>By all means, make the prisons we keep more humane and more useful. But don&#x27;t let that project crowd out the larger one: putting far fewer people in them to begin with.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The hardest part of reentry isn&#x27;t the prison gate; it&#x27;s the first ninety days outside it.</p>
+      <p>I&#x27;ve spent years working with men coming home from state prison, and the pattern is depressingly consistent. They are dropped at a bus station with $40 in gate money, the clothes they were arrested in, and a felony record that disqualifies them from public housing, food stamps in many states, student loans, and entire categories of employment. Within a week they are sleeping on the couch of the same cousin whose neighborhood landed them inside in the first place. Within three months, half are violating parole.</p>
+      <p>So when the Times asks how prison can &quot;change a person for the better,&quot; I&#x27;d flip the question. Most of the men I know changed inside. They got sober. They got their GEDs. They became, in the strange ecology of the cellblock, more thoughtful people. What undoes them is the world we release them into.</p>
+      <p>The reforms that would matter most are mostly outside prison walls: &quot;ban the box&quot; hiring policies, automatic record expungement after a clean period, restoration of occupational licenses, transitional housing, and Medicaid enrollment that begins before release rather than after. Some of this is happening — California&#x27;s realignment under AB 109 is a tentative experiment in this direction — but it remains the exception.</p>
+      <p>A productive prison sentence requires a society willing to receive the person back. Without that, we are just running very expensive holding pens and blaming the people inside them for not transforming themselves enough.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Let&#x27;s not romanticize this. Prisons hold a great many people who have done terrible things to other people, and the first job of a prison is to keep the rest of us safe from them. Any conversation about rehabilitation has to start there, not end there as an afterthought.</p>
+      <p>That said, the safety argument cuts in favor of rehabilitation more often than tough-on-crime rhetoric admits. About 95 percent of state prisoners will eventually be released. The relevant policy question is not whether they come back to our neighborhoods but in what condition. A man who leaves prison angrier, more institutionalized, and more deeply networked into criminal subcultures than when he went in is a public safety problem. A man who leaves with a trade, a sponsor, and a place to sleep is much less of one.</p>
+      <p>Three things have decent evidence behind them and should be expanded. First, cognitive-behavioral therapy programs aimed at criminal thinking patterns — boring, structured, classroom-style — consistently reduce recidivism in the 10-30 percent range. Second, in-prison substance abuse treatment, particularly therapeutic communities like Stay&#x27;n Out, work when they last long enough. Third, structured work-release in the final months of a sentence eases the cliff between total confinement and total freedom.</p>
+      <p>None of this is soft. It is, in fact, the harder path: it requires staffing, programming, and follow-through that purely punitive incarceration does not. But if the goal is fewer victims down the road, sentimentality has nothing to do with it. The numbers do.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>There&#x27;s a quieter case for productive prisons that I rarely hear made, and it has to do with the dignity of work itself.</p>
+      <p>When Norway&#x27;s Halden Prison opened in 2010, much of the American coverage focused on the IKEA-style furnishings and the lack of bars — easy targets for ridicule. Less remarked upon was the fact that inmates work. They cook. They study. They have schedules. The premise is that a person preparing to live as a citizen needs to practice being one, every day, for years.</p>
+      <p>American prisons, by and large, do the opposite. Inmates are infantilized: told when to wake, when to eat, when to move, with long stretches of enforced idleness in between. Then we release them and act surprised when they cannot navigate a job interview, a lease application, or a bus schedule. We trained them, for years, in the opposite of self-direction.</p>
+      <p>A productive sentence would treat each day as preparation for the day of release. That means real work for real (modest) wages, with deductions for victim restitution and savings the inmate can draw on upon release. It means decisions — what classes to take, what jobs to apply for inside, how to spend free time — rather than the elimination of decisions. It means contact with family preserved rather than severed by distance and absurd phone-call pricing.</p>
+      <p>This is not coddling. It is the recognition that you cannot punish someone into citizenship. You have to let them, gradually, practice it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Any serious answer to this question has to grapple with two stubborn facts.</p>
+      <p>The first is that we know, roughly, what works. Decades of correctional research — from Canada&#x27;s Andrews and Bonta, from the Washington State Institute for Public Policy, from countless evaluations of specific programs — converge on a recognizable set of effective interventions. Risk-needs-responsivity assessment to match people to appropriate programs. Cognitive-behavioral therapy. Education and vocational training. Substance abuse treatment. Graduated reentry. None of this is mysterious.</p>
+      <p>The second fact is that we mostly don&#x27;t do these things, or do them at a scale wildly disproportionate to need. WSIPP estimates returns of several dollars per dollar invested in well-designed programs, and yet most state corrections budgets allocate the overwhelming share of spending to custody and almost none to programming. Why?</p>
+      <p>Part of the answer is political. &quot;Tough on crime&quot; still wins elections in most jurisdictions, and any politician who funds college courses for inmates while a community college nearby raises tuition will find the contrast weaponized in the next campaign. Part of it is institutional: correctional officer unions are powerful and programming staff are not. Part of it is simply that the people most affected — prisoners, their families, and the poor communities they come from and return to — have the least political voice.</p>
+      <p>So I&#x27;d answer the prompt this way. The question is not really &quot;how should incarceration change?&quot; The technical answers are well-known. The question is whether the broader public is willing to spend political capital on a population it has spent forty years being taught to fear and despise.</p>
+      <p>The recent shift — Right on Crime, the Pew public safety project, even Texas&#x27;s pragmatic reforms — suggests maybe, finally, yes. I hope so. But the obstacle has never been knowing what to do. It has been wanting to do it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>When John walks out of prison after a decade, he has no high school diploma, no résumé, and the shriveled social networks of a man who has been locked away. Within months, he will likely be back behind bars. This isn’t just John’s failure — it’s the failure of a system that warehouses humans and then dumps them, less prepared for the world than when they entered.</p>
+      <p>If we are serious about changing a person for the better during incarceration, we must transform prisons into places of learning. Education is not a soft-on-crime add-on; it is the single most powerful tool for breaking the cycle of reoffending. Studies have consistently shown that inmates who participate in educational programs — whether basic literacy, vocational training, or college courses — are significantly less likely to return to prison. In one frequently cited meta-analysis, the odds of recidivism dropped by nearly half for those who earned a degree behind bars.</p>
+      <p>The reason goes beyond a simple line on a CV. Education rewires a prisoner’s sense of self. It replaces the identity of “convict” with “student,” and eventually “worker.” A carpentry apprentice learns not just a trade but the patience and pride of building something that lasts. A young man who earns his GED inside begins to believe that he can be a provider, not a burden. That psychological shift is the foundation for reentry.</p>
+      <p>Mandating participation in education and vocational training as a condition of early release, and making programs universally available, should be the cornerstone of any reform. We need classrooms in every facility, partnerships with local community colleges, and the elimination of rules that bar inmates from federal financial aid. Yes, this requires upfront money. But with states spending tens of billions on corrections, and seeing 40 percent of released prisoners back inside within three years, the true waste is doing nothing. An educated prisoner stands a chance. An illiterate, unskilled one is sentenced to fail.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Before we ask how prison can be productive, we must ask whether prison itself is the problem. The overwhelming evidence, even by 2012, is that incarceration frequently makes people worse. It exposes them to violence, severs family ties, strips them of agency, and forces them into a hypermasculine survival mode that is the very opposite of healthy reentry. If we take the Hippocratic oath seriously, our first duty must be to “do no harm.”</p>
+      <p>The most straightforward way to improve post-release outcomes is to drastically reduce the number of people we send to prison. For the majority of nonviolent offenders — drug users, petty thieves, people who owe child support — community-based alternatives like intensive probation, drug courts, and electronic monitoring produce better recidivism results at a fraction of the cost. Studies have shown that lower-risk individuals placed in prison actually reoffend at higher rates than those dealt with in the community, because prison serves as a school for crime and a stain on future employability. Decarceration is not merely a cost-saving measure; it is a moral and safety imperative.</p>
+      <p>For the smaller, dangerous core who must be physically separated, the goal should be to minimize the damage. This means abandoning the fortress-like mega-prisons that isolate men hundreds of miles from their families and replacing them with smaller, regional facilities that allow for regular visitation, outdoor space, and meaningful daily routines. Inside, every prisoner needs universal screening and treatment for mental illness and addiction — conditions that drive a stunning proportion of crime. Without that, any talk of job training is hollow.</p>
+      <p>Ultimately, the premise of the debate needs adjusting. A prison sentence cannot change a person for the better through sheer deprivation of liberty. That model has failed. We should stop trying to make prison “productive” in the sense of a factory, and instead make it a last-resort intervention of the shortest possible length, surrounded by the human connections and clinical care that actually give people a chance upon release.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Idle hands are the devil’s workshop, and for too long American prisons have been idle in the extreme. Real work — not folding laundry for ten cents an hour, but productive labor that teaches a trade and pays a wage — can transform an inmate from a drain on society into a contributor before he even walks out the gate. If we want to prepare people for the outside world, we must make prison a place where work is expected, rewarded, and purposeful.</p>
+      <p>The counterargument is simple: forced labor sounds exploitative. But what is far more exploitative is locking a healthy adult in a cell for years with nothing to do but lift weights and watch television. A mandatory work program, properly structured, instills discipline, time management, and the simple dignity of completing a task. Inmates could be paid a wage, a portion of which goes to victim restitution, family support, and a savings account for release day. They could learn construction, coding, logistics, welding — skills with real labor-market value.</p>
+      <p>Historical precedent shows this is possible. Prison farms and factories once filled supply chains, and while the brutal chain gangs of the South must never return, the principle of productive labor is sound. Today, a few states operate prison industry programs that cut recidivism substantially because they attach a paycheck and a reference to a release date. Expanding such initiatives nationwide, with private-sector partnerships that guarantee job interviews, is a concrete, commonsense step. Work won’t solve every problem, but it is the sturdiest bridge back to a life of responsibility.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Nearly two-thirds of prisoners meet the criteria for substance abuse or dependence, and well over half suffer from a serious mental illness. These are not peripheral facts about the incarcerated population; they are the engine of the crisis. A man who commits burglary to feed a heroin addiction, or a woman whose untreated schizophrenia leads to public disorder, will not be made whole by a welding class. Their prison sentence must become a sentence of healing.</p>
+      <p>Therapeutic communities — dedicated prison units where the entire environment is structured around recovery — offer a proven model. In these settings, inmates participate in daily group therapy, learn to recognize the distorted thinking that led to their crimes, and practice the emotional self-regulation that free society demands. They mentor one another, creating a peer culture that rewards honesty and accountability rather than the predatory norms of the general yard. Cognitive-behavioral therapies, dialectical behavior training, and substance abuse treatment are not luxuries; they are the core curriculum.</p>
+      <p>When Vermont evaluated its therapeutic prison programs, it found significant drops in recidivism. The logic is straightforward: addiction and mental illness are chronic conditions, and without treatment, the stress of reentry will trigger relapse, which triggers re-arrest. A person cannot hold a job, pay rent, or rebuild a family while in the grip of active psychosis or compulsive drug use. Providing mental health care and addiction counseling — purposefully, comprehensively, and with aftercare that continues into the parole period — changes the trajectory. Incarceration will only change a person for the better if it forces a reckoning with the internal demons that landed them there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>To ask how prison can change a person for the better is to ask the wrong question. We should ask how prison can help a person confront the harm they’ve caused and make amends. Restorative justice offers that path, and it has been relegated to the margins of our punishment system for too long.</p>
+      <p>In a restorative model, incarceration would not be a passive waiting room but an active process of accountability. Inmates would participate in facilitated dialogues with their victims — if victims consent — to understand the real human consequences of their actions. They would engage in community service projects, working to repair, symbolically or literally, the damage they inflicted. They would build plans for restitution and participate in circles where peers and community members challenge their thinking and support their growth.</p>
+      <p>The reason this works is that it cultivates empathy and a new moral identity. Traditional punishment breeds resentment and a sense of victimization among offenders. A purely therapeutic approach can ignore the obligation to those who were harmed. Restorative justice bridges the two: the offender is not merely a sick patient or a body to be warehoused, but a moral agent capable of making things right. Those who go through such programs often emerge with an internalized sense of responsibility that no number of lectures can produce. That is the real transformation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The single strongest predictor of successful reentry is not a diploma, a trade, or a counseling session — it’s a family that waits. And yet the American prison system, by design, shatters families. Prisons are built in remote rural areas, hours from the urban neighborhoods most prisoners call home. Visiting rooms are cramped and humiliating. Phone calls can cost a dollar a minute, forcing families to choose between contact and groceries. If we truly want inmates to rejoin the outside world, we must stop severing the lifelines that will pull them through the prison gates and keep them out.</p>
+      <p>The evidence is overwhelming. Inmates who maintain close ties with spouses, children, and parents while inside have significantly lower recidivism rates. A parent who receives regular visits and phone calls has a reason to stay clean and working upon release. Children who sustain a relationship with an incarcerated parent fare better developmentally, which in turn strengthens the family unit that will welcome the returning adult. The family is the original rehabilitative institution, and it is the most powerful.</p>
+      <p>Policy must change to reflect this truth. Phone rates should be capped at a reasonable cost, or even eliminated as a public safety expense, as some countries do. Visitation rules must be drastically relaxed: physical contact, longer hours, and dedicated spaces where children can be children. Prisons should offer parenting classes that actually teach men and women how to nurture, not just discipline. For inmates who are mothers, we need mother-infant units that allow the bonding that benefits both. Reentry planning should begin with the family from day one, including mediation to heal the wounds of the crime and prepare a realistic household plan. The road home runs through the living room. It is time we paved it properly.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>To make prison truly productive, we must bring higher education back behind bars.</p>
+      <p>In 1994, Congress passed a crime bill that, among other punitive measures, stripped incarcerated individuals of their eligibility for Pell Grants. Overnight, hundreds of thriving college-in-prison programs were decimated. We have spent the last two decades paying the price for that short-sighted political posturing.</p>
+      <p>The data on correctional education is overwhelming and unequivocal. Inmates who participate in educational programs are significantly less likely to return to prison than those who do not. Education transforms a prisoner’s self-concept from that of a societal outcast to a capable, future-oriented citizen. Furthermore, it equips them with the critical thinking skills and credentials necessary to compete in an unforgiving job market upon release.</p>
+      <p>When we warehouse individuals in idle isolation, we virtually guarantee their failure upon reentry. They return to their communities with the same lack of opportunity that often contributed to their incarceration in the first place, now compounded by the stigma of a felony conviction.</p>
+      <p>State budgets are currently buckling under the immense weight of mass incarceration. If policymakers are serious about reducing prison spending, they must invest in the front-end interventions that prevent recidivism. Restoring Pell Grant access for incarcerated people is the most economically rational and morally sound step we can take. We cannot expect people to change for the better if we actively deny them the tools required for self-improvement.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The fundamental flaw in our current penal system is the assumption that time alone is a corrective force. For the vast majority of those incarcerated, a prison sentence will only change them for the better if it serves as a gateway to intensive, evidence-based treatment.</p>
+      <p>Today, America’s jails and prisons are serving as the nation’s largest psychiatric facilities and drug detox centers. Decades of defunding community mental health services and prosecuting a failed War on Drugs have resulted in the mass incarceration of the sick and the addicted. Expecting these individuals to emerge from a traumatizing, violent environment &quot;rehabilitated&quot; without targeted clinical intervention is pure fantasy.</p>
+      <p>To make incarceration productive, prisons must transition from punitive warehouses to therapeutic environments. This requires a massive shift in resource allocation. We must hire clinical social workers, psychiatrists, and addiction specialists. Cognitive Behavioral Therapy (CBT), which has been proven to help offenders recognize and change the distorted thinking patterns that lead to criminal behavior, should be mandatory and widely available. Furthermore, substance abuse treatment must not end at the prison gate; it must be seamlessly connected to community-based aftercare programs upon a prisoner&#x27;s release.</p>
+      <p>If we release a drug-addicted individual after five years of cold-turkey confinement with no coping strategies, no mental health support, and $40 in gate money, we are orchestrating their relapse and re-arrest. A productive prison is one that diagnoses the root causes of criminal behavior and actively treats them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>A productive prison system must be grounded in the principles of hard work, personal responsibility, and restorative justice. Currently, prison life is characterized by forced idleness. Inmates spend years sitting in cells, watching television, or lifting weights, completely insulated from the economic realities and responsibilities that law-abiding citizens face every day. This environment breeds apathy and entitlement, not rehabilitation.</p>
+      <p>To prepare inmates for the outside world, prisons should be structured as closely to the real world as possible, centered around mandatory, meaningful labor. I am not advocating for chain gangs, but for real industrial and service jobs within the prison walls that operate on standard 40-hour work weeks.</p>
+      <p>Crucially, inmates should be paid a real wage for this work, but they should not be allowed to simply pocket it. Their earnings should be garnished to pay for their room and board, relieving the massive burden currently placed on the American taxpayer. Furthermore, a significant portion of their wages should be directed toward victim restitution and mandatory child support.</p>
+      <p>When an offender works week after week to actively pay back the person they harmed and support the children they left behind, they learn the true cost of their crimes. This instills a work ethic and a sense of accountability that no classroom lecture can provide. By the time they are released, they will be accustomed to the demands of a daily job and will have tangibly demonstrated their willingness to make amends to society.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>We frequently talk about what happens *inside* the prison, but we ignore the walls that separate the incarcerated from their most important support system: their families. If we want inmates to succeed upon release, the single most important reform we can enact is to preserve and strengthen their ties to the community.</p>
+      <p>Currently, the correctional system acts as a wedge, deliberately isolating individuals. Prisoners are often transferred to rural facilities hundreds of miles away from their urban homes, making family visits a logistical and financial impossibility for their loved ones. To compound this isolation, private telecommunications companies hold monopolies over prison phone systems, charging exorbitant, exploitative rates—sometimes upwards of a dollar a minute—just so a father can say goodnight to his child.</p>
+      <p>This isolation is a recipe for high recidivism. Decades of sociological research confirm that strong family bonds are the strongest predictor of a successful reentry. Families provide housing, emotional support, and employment leads when the state provides none of these.</p>
+      <p>Incarceration should change by prioritizing geographical proximity. Inmates should be housed as close to their home communities as possible. Prison administrations must eliminate predatory phone rates and actively encourage visitation by creating child-friendly environments, rather than treating visiting families as suspected accomplices.</p>
+      <p>Reentry doesn&#x27;t begin on the day of release; it is prepared for throughout the duration of the sentence. If we sever a person&#x27;s ties to their community for a decade, we have no right to be surprised when they struggle to find their place in it upon return.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The premise that a prison sentence can &quot;change a person for the better&quot; is fundamentally flawed. We need to stop asking how to make prisons productive and start recognizing that the institution of prison is inherently toxic and destructive.</p>
+      <p>Prisons are environments of total control, characterized by violence, deprivation, and rigid racial hierarchies. To survive in prison, a person must adopt hyper-vigilant, defensive, and often aggressive behaviors. These survival mechanisms are the exact opposite of the pro-social behaviors required to function in a free society. We take people who have broken social rules, place them in an environment completely devoid of normal social functioning, and then expect them to emerge as well-adjusted neighbors. It is an absurd proposition.</p>
+      <p>Instead of pouring more money into the prison system in a futile attempt to make it &quot;rehabilitative,&quot; we should be minimizing the use of incarceration altogether and shifting those funds to the reentry phase.</p>
+      <p>The focus must be on removing the crippling collateral consequences of a felony conviction. Right now, a released individual faces legally sanctioned discrimination. They are barred from public housing, denied food stamps, and legally discriminated against by employers due to the ubiquitous &quot;check the box&quot; question on job applications.</p>
+      <p>A prison sentence will never be a positive experience. The best we can do is ensure it is a short one for non-violent offenders, and ensure that once a person has served their time, they are legally permitted to fully rejoin society without carrying a permanent scarlet letter.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Discussions about prison reform often drift into extremes—either advocating for harsh, austere punishment or for turning prisons into utopian college campuses. The pragmatic middle ground, which relies on the Risk-Needs-Responsivity (RNR) model of criminology, offers the most realistic path to making prisons productive.</p>
+      <p>To change incarceration for the better, correctional departments must abandon a &quot;one-size-fits-all&quot; approach to inmates. The RNR model dictates that we must first accurately assess an offender&#x27;s risk of re-offending. Low-risk offenders should not be housed with, or subjected to the same intense programming as, high-risk offenders; in fact, mixing them often increases the recidivism rate of the low-risk group.</p>
+      <p>Secondly, we must target criminogenic &quot;needs&quot;—the specific dynamic factors that drive criminal behavior. This means moving beyond generic programs. If an inmate&#x27;s primary driver of crime is a lack of self-control and anti-social peer associations, teaching them a trade like carpentry will not stop them from re-offending. They need targeted cognitive-behavioral interventions that address their specific behavioral deficits.</p>
+      <p>Finally, the &quot;responsivity&quot; principle requires that these interventions be tailored to the learning style and cognitive ability of the offender. Delivering a highly theoretical rehabilitation program to an inmate with a low literacy level is a waste of taxpayer money.</p>
+      <p>Productive incarceration is not about coddling, nor is it about mindless punishment. It is about applying rigorous, actuarial science to human behavior. By diagnosing the specific risks each inmate poses and systematically applying evidence-based interventions to mitigate those risks, we can turn prisons into engines of public safety rather than revolving doors.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>If prison is to be more than a warehouse, the first change should be simple: make education and work the normal business of the day. Too many inmates spend years in enforced idleness, then are released with a criminal record, weak literacy, no recent work history and few legal ways to earn money. That is not punishment plus rehabilitation; it is punishment plus preparation for failure.</p>
+      <p>A productive prison would begin with assessment. Does the person read at a sixth-grade level? Does he have a high-school diploma? Has she ever held a steady job? Is there a substance-abuse problem? The answers should determine a plan, just as a hospital would not prescribe one treatment for every patient.</p>
+      <p>The plan should include basic education, GED classes, vocational certificates that have value outside the walls, and real work habits: arriving on time, following directions, working with others, finishing tasks. Prison industries can be exploitative if they are merely cheap labor, but they can be useful if tied to training, safety standards and savings accounts for release. An inmate who leaves with a credential, some money and a record of steady work is in a different position from one who leaves with only a bus ticket.</p>
+      <p>We should also restore the idea that higher education in prison serves the public. The 1994 elimination of Pell Grants for prisoners was politically popular, but it helped turn prison away from self-improvement. Education is not a gift to criminals; it is a crime-prevention strategy. If most inmates are coming home, the question is not whether they “deserve” classes. The question is whether we want them to return as better neighbors or as more desperate ones.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The premise is right but incomplete: most prisoners will be released, so prison should not make them worse. But we should not pretend that prison is naturally suited to making people better. American prisons are built on coercion, isolation, racial and class segregation, and fear. Those conditions do not teach responsibility. They teach survival.</p>
+      <p>The most productive reform is therefore to send fewer people there in the first place. Drug possession, technical parole violations and many low-level property offenses should be handled through treatment, restitution, probation and community supervision. For many people, incarceration interrupts the very things that reduce crime: work, family ties, school and stable housing. A short prison stay can cost a job, an apartment and custody of children. Calling that “correction” is a stretch.</p>
+      <p>For those who must be confined because they pose a serious danger, the institution should be as small, safe and normal as possible. People should have contact with family, access to education, mental health care and meaningful work, and protection from assault. Solitary confinement should be rare and brief. A person cannot learn how to live in society by being deprived of every normal social responsibility.</p>
+      <p>Reentry must begin before the prison gate. No one should leave without identification, a place to sleep, health coverage arranged, and a connection to employment or training. But the larger reform is sentencing reform. Mandatory minimums, three-strikes laws and excessive parole revocations have filled prisons beyond any rehabilitative capacity. We have built a system that produces damaged people and then blames them for being damaged.</p>
+      <p>A prison sentence can change a person for the better only when it is used sparingly and humanely. The first principle should be: do not cage people unless there is no safer alternative.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>A prison sentence can change a person for the better if it insists on responsibility rather than merely imposing suffering. The current system often does neither. It removes offenders from the community, at great expense, and then allows many of them to pass their time in boredom, grievance and dependency. That is bad for victims, taxpayers and offenders themselves.</p>
+      <p>A better model would be structured around work, restitution and character. Every able-bodied prisoner should be expected to work or study full time. The work should not be make-work. It should produce goods or services, teach skills and generate modest wages. A portion of those wages should go to victim restitution, child support or savings for release. This reinforces a moral lesson prison too often avoids: crime creates obligations.</p>
+      <p>Religious and civic groups should also have wider room to operate, so long as participation is voluntary and constitutional limits are respected. Many inmates need not only a trade but a new set of loyalties and habits. Programs like mentoring, addiction recovery, fatherhood classes and faith-based counseling can help prisoners imagine themselves as husbands, parents, workers and neighbors rather than as permanent outsiders.</p>
+      <p>Discipline matters too. Rehabilitation is not permissiveness. Prisons must be safe places where officers are respected, gangs are not allowed to rule, and inmates who choose education and work are protected from those who would prey on them. Disorder makes every decent program impossible.</p>
+      <p>Finally, release should be earned and supervised. Good behavior, completion of treatment, restitution efforts and educational progress should count. But once a prisoner has met those requirements, the state should help him get documents, housing and employment, and should not set him up to fail with impossible parole conditions.</p>
+      <p>Punishment and rehabilitation are not opposites. Properly designed, punishment can be a period in which a person repays, reflects and rebuilds.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>We talk about prisoners as if they are primarily undereducated workers in need of training. Many are. But a huge share are also people with untreated mental illness, addiction, brain injury or histories of trauma. If incarceration is going to prepare people for life outside, it must stop functioning as the country’s default mental hospital and detox center.</p>
+      <p>The deinstitutionalization of the mentally ill was supposed to be accompanied by community treatment, but that promise was never fully kept. Jails and prisons became the backstop. Add to that the war on drugs, poverty and inadequate health care, and the result is predictable: people cycle from the street to jail to prison and back again without the underlying problem being treated.</p>
+      <p>A productive prison would screen every inmate for mental illness, addiction and suicide risk. Treatment would not mean only medication, though medication is often necessary. It would include counseling, cognitive behavioral therapy, drug treatment, peer recovery groups and planning for continuing care after release. Prisoners with serious mental illness should be held in therapeutic units, not thrown into segregation for symptoms they cannot control. Solitary confinement, especially for the mentally ill, is not correction; it is deterioration.</p>
+      <p>Substance abuse treatment is equally central. Many inmates committed crimes while addicted, or committed crimes to support addiction. If they leave prison sober only because drugs were less available, without recovery support, they remain at high risk. Treatment should be connected to community clinics, halfway houses and supervision that rewards stability rather than waiting for relapse and sending people back.</p>
+      <p>This is not softness. It is realism. A psychotic person, an untreated heroin addict or a traumatized young man with no impulse control does not become safer because we ignored the condition for five years. Public safety requires treatment, continuity and health care on the day of release. If we want fewer victims, we must treat the conditions that help produce crime.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The most important part of a prison sentence may be the last six months. That is when the state should stop thinking like a jailer and start thinking like a reentry agency. Yet too many people are released with little more than a set of instructions, a few dollars and a warning not to come back.</p>
+      <p>Reentry should be built into the sentence from the beginning, but it must become intensive near release. Every person leaving prison should have a birth certificate or other identification, a Social Security card, medical records, prescriptions, a benefits appointment if eligible, and a realistic housing plan. If the person has children, family reunification should be planned carefully, not left to a chaotic first week home. If the person owes fines, fees, child support or restitution, there should be a payment plan that does not make legal employment pointless.</p>
+      <p>Employment is the hardest piece. Employers are understandably cautious, but blanket exclusion of anyone with a felony record is self-defeating. The state should expand transitional jobs, wage subsidies and bonding programs, and should encourage licensing boards to distinguish between relevant and irrelevant convictions. A person convicted of burglary may not be suited to every job, but that does not mean he should be barred from all work forever.</p>
+      <p>Housing policy also needs reform. If public housing rules or private landlords make it nearly impossible for former prisoners to live anywhere stable, parole officers are supervising homelessness. That is a recipe for technical violations and new crimes. Some restrictions are necessary, especially in cases involving violence or sexual offenses, but many are simply overbroad.</p>
+      <p>The United States releases hundreds of thousands of prisoners each year. We can pretend that release is the inmate’s private problem, or we can recognize it as a public safety issue. The prison gate should not be a cliff. It should be a bridge.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The call to make prison “productive” is attractive, but it risks promising more than prisons can deliver. We should be honest: prison is an expensive, blunt institution designed first to incapacitate and punish. It can offer programs, and some programs help. But prison cannot repair all the damage of poverty, family breakdown, addiction, bad schools and violent neighborhoods. Nor should rehabilitation become a slogan used to justify long sentences.</p>
+      <p>That means reform should be guided by evidence and restraint. Legislators love announcing new prison programs, but too many are symbolic. A class with no certified instructor, a job that teaches no marketable skill, or a counseling group with a long waiting list will not change much. Programs should be evaluated for recidivism, employment and cost. If a vocational program does not lead to work after release, redesign it or stop funding it. If drug treatment works better in the community for low-risk offenders, do that instead of sending them to prison.</p>
+      <p>We also need to target resources. High-risk prisoners nearing release should get the most intensive help, because that is where public safety gains are likely greatest. Low-risk offenders can actually be harmed by being mixed into prison culture. For them, shorter sentences, probation, electronic monitoring or treatment courts may be better. Violent and predatory inmates must be securely confined, but even they should be managed in ways that reduce brutality and prepare those who will eventually come home.</p>
+      <p>The most dangerous fantasy is that we can keep current sentencing policies, continue imprisoning enormous numbers of people for long periods, and simply rehabilitate our way out of the consequences. We cannot. Productive prisons require fewer prisoners, safer institutions, tested programs and a willingness to measure results rather than intentions.</p>
+      <p>A prison sentence can change a person for the better. But it will do so only sometimes, and only if we stop asking prisons to substitute for every failed social policy outside their walls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>If prison is going to prepare people for release, it has to stop treating release as an afterthought. For most inmates, the last day of a sentence is not a surprise; corrections officials often know years in advance that a person will return to a particular city, with a particular education level, work history, addiction problem, family situation and set of legal debts. A productive prison would build the sentence around that known fact.</p>
+      <p>The first requirement is assessment. Every prisoner should receive a serious educational, vocational, mental-health and substance-abuse evaluation on entry, followed by an individualized plan. That plan should not be a brochure handed out six weeks before release. It should determine daily life: literacy classes, GED preparation, college courses, apprenticeships, cognitive-behavioral programs, parenting classes and supervised work.</p>
+      <p>Education is the most obvious missed opportunity. The 1994 ban on Pell Grants for prisoners was penny-wise and pound-foolish. Many inmates enter with poor schooling; many leave with no credential that helps them compete legally. If we can pay tens of thousands of dollars a year to confine someone, we can pay a fraction of that to teach him to read well, finish high school or learn a trade that exists outside the prison gate.</p>
+      <p>Work matters too, but not make-work. Prison industries should be tied to real labor-market skills and should pay enough to support restitution, savings and family obligations. Employers, community colleges and unions should be involved before release, not summoned afterward for speeches.</p>
+      <p>Finally, corrections departments should be judged by outcomes, not occupancy. Wardens know how to count escapes and assaults; they should also be accountable for employment, housing stability and recidivism after release. A prison sentence can change a person for the better only if the institution is designed less like a warehouse and more like a demanding school with walls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The best way to make prison productive is to use much less of it. That may sound like an evasion of the question, but it is central to the answer. Prison is an extreme environment: it separates people from families, weakens work habits, exposes them to violence and teaches survival skills that can be useless or harmful outside. For many low-level offenders, especially those driven by addiction, a long sentence is not a cure. It is an interruption that often makes reentry harder.</p>
+      <p>So the first reform is sentencing reform. Reserve prison beds for people who pose a serious danger, and use community sanctions, drug treatment, mental-health courts, restitution and intensive supervision for many others. A person can be held accountable without being removed from every stabilizing institution in his life. Some conservative states have begun to see this not as softness but as fiscal realism: prisons are expensive, and failure is expensive too.</p>
+      <p>For those who must be incarcerated, the sentence should be shorter, clearer and connected to release from day one. Six months before discharge is too late to start asking whether a man has an address, a birth certificate, medication, child-support arrears, a parole plan or any hope of a job. Reentry planning should begin at intake, and prisons should be close enough to home to permit family contact.</p>
+      <p>We should be modest about what incarceration can accomplish. A prison sentence can sometimes produce sobriety, maturity or remorse. But it cannot reliably “change a person for the better” if we keep using it on people who would be better changed outside prison.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>A prison can change a person for the better only if it requires more than passive suffering. Sitting in a cell is punishment, but it is not necessarily accountability. In many cases, offenders can serve years without ever facing the human meaning of what they did. Victims, meanwhile, may receive little besides the knowledge that someone has been locked away.</p>
+      <p>A more productive prison would make restoration a central purpose. This does not mean naïve forgiveness sessions or forcing victims to participate. It means creating structured opportunities, where victims consent, for offenders to hear directly about the harm they caused, answer questions, apologize, and make concrete amends. Restorative justice programs have been used in juvenile systems and in some adult settings; they are not appropriate for every crime or every victim, but they can be powerful precisely because they demand moral engagement rather than mere compliance.</p>
+      <p>Restitution should also be taken seriously. Prison work should not be a token job at pennies an hour that produces neither skill nor repair. Inmates who are able to work should earn wages that allow them to contribute to restitution funds, child support, savings for release and perhaps victim services. Work should be paired with instruction: budgeting, conflict resolution, communication, vocational training. The message should be, “You are responsible for what you have done, and you are still capable of obligations.”</p>
+      <p>This approach also changes the culture inside. Prisons often infantilize people: orders, counts, uniforms, no meaningful choices. Then we release them and demand adult responsibility. A restorative model would gradually increase responsibility as behavior improves: mentoring younger prisoners, participating in service projects, maintaining family ties, and preparing a release plan that includes repairing relationships where possible.</p>
+      <p>Victims deserve safety and recognition. Communities deserve fewer new crimes. Offenders deserve neither excuses nor permanent exile. A prison sentence changes a person for the better when it teaches him to see himself not merely as someone who got caught, but as someone who owes a debt and has the capacity to repay part of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Productive prison should not mean comfortable prison, and it should not mean pretending that crime is just a social misunderstanding. A sentence is imposed because a person broke the law and harmed other people. Any reform that forgets that will lose public trust quickly. But the opposite error is just as costly: warehousing offenders in idleness and rage, then releasing them more dangerous than when they arrived.</p>
+      <p>The conservative case for prison reform begins with order. Safe prisons are the foundation for everything else. Gangs, contraband, assaults and staff corruption make rehabilitation impossible. Inmates who want to study, work or get clean should not have to ask permission from the strongest gang on the tier. Professional staffing, swift discipline and separation of predators from vulnerable prisoners are not luxuries.</p>
+      <p>After order comes expectation. Able-bodied inmates should work, study or both. They should get up in the morning, report on time, stay sober, obey rules and earn privileges. Programs should be tied to measurable behavior: literacy progress, drug-treatment participation, vocational certification, restitution payments. Time credits for good conduct can be useful, but they should be earned, not automatic.</p>
+      <p>Faith-based and volunteer programs also deserve room, so long as they are genuinely voluntary and open to different beliefs. Many former offenders credit religious conversion, mentoring or a disciplined community with changing their lives. Government does not have to preach in order to let responsible citizens help.</p>
+      <p>Finally, reentry must be supervised firmly and intelligently. A parole officer with an impossible caseload is just a paperwork machine. Supervision should combine drug testing, job assistance, graduated sanctions and quick responses to violations. The public wants fewer crimes, not just longer punishments. A prison system that produces citizens who can obey the law is tougher, in the only sense that ultimately matters.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>No prison system will prepare people for the outside world if it ignores addiction and mental illness. American prisons have become, by default, some of the largest mental-health and substance-abuse institutions in the country. Many inmates arrive with untreated trauma, psychiatric disorders, alcohol dependence or long histories of drug use. We can punish them for crimes and still recognize that sending them home untreated is irrational.</p>
+      <p>A productive sentence should include real clinical care. That begins with screening at intake, but it cannot end with a diagnosis written in a file. Prisons need evidence-based drug treatment, including medication-assisted treatment where appropriate. It makes little sense to deny methadone or buprenorphine on moral grounds if the result is relapse, overdose and reoffending after release. Cognitive-behavioral therapy, anger-management programs and trauma-informed care should be available to those who need them, not merely to those who are easy to manage.</p>
+      <p>Mental-health treatment must also be protected from the worst features of prison life. Solitary confinement is often used on people who are symptomatic, disruptive or suicidal, yet isolation can make psychiatric problems worse. For prisoners with serious mental illness, segregation should be rare, brief and clinically supervised. Staff should be trained to distinguish defiance from decompensation.</p>
+      <p>The handoff to the community is just as important as treatment inside. A prisoner leaving with three days of medication, no Medicaid appointment, no identification and no stable housing is being set up to fail. States should suspend rather than terminate Medicaid where possible, arrange appointments before release, connect people to community clinics, and make sure they leave with documents, prescriptions and a realistic plan.</p>
+      <p>Women prisoners require special attention. Many have histories of abuse, are primary caregivers, and return to children whose lives have already been disrupted. Parenting programs, family visitation and trauma services are not sentimental add-ons; they are crime-prevention tools.</p>
+      <p>A prison sentence can change a person for the better when it creates a period of enforced stability and uses that period for treatment. Without treatment, incarceration is often just an expensive pause between crises.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The phrase “productive prison” should make us cautious. In American history, “productive” incarceration has too often meant convict leasing, chain gangs or prison labor that benefits someone other than the prisoner, the victim or the community. We should not answer mass incarceration by making cages more efficient. The goal is not to extract more value from confined people; it is to return them to society with dignity, responsibility and a real chance to live legally.</p>
+      <p>That requires a different moral starting point. Prisoners should lose their liberty, not their humanity. Daily life in prison should resemble responsible adult life as much as security permits: cooking, cleaning, studying, working, budgeting, resolving disputes and maintaining family relationships. The more prison becomes an artificial world of total dependency and arbitrary power, the less it prepares anyone for freedom.</p>
+      <p>Family contact is especially important. Many prisoners are parents, sons, daughters and spouses. Strong family ties are among the few stabilizing forces waiting at the gate. Yet prisons are often far from home, phone calls are expensive, visiting rules are humiliating, and parents may have little chance to remain present in their children’s lives. A productive system would place people closer to home when possible, expand visiting, use video only as a supplement, and teach parenting rather than severing bonds.</p>
+      <p>We should also look beyond the prison walls. Reentry fails when the law keeps punishing people after the sentence ends. Criminal records can bar people from jobs, housing, student aid, professional licenses and public benefits. Some restrictions are justified for safety, but many are broad, permanent and counterproductive. If we tell people to become law-abiding workers while making lawful work nearly unavailable, we should not be surprised by failure.</p>
+      <p>Other democracies have shown that prisons can be smaller, more normal and less brutal while still holding people accountable. The United States need not copy any model wholesale, but it can learn from the principle that the prisoner is a future neighbor. Correction officers should be trained not only as guards but as professionals who manage behavior, de-escalate conflict and support reentry.</p>
+      <p>Prison can change a person for the better only when it is not organized around humiliation. The test is simple: does the sentence increase the prisoner’s capacity to live responsibly among us? If not, it is merely expensive banishment with an expiration date.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The most pragmatic path forward focuses on what actually works: evidence-based rehabilitation programs that address the root causes of criminal behavior while prisoners are incarcerated and robust support systems when they return home.</p>
+      <p>Vocational training stands out as a cornerstone. Teaching prisoners marketable skills—welding, electrical work, computer literacy—gives them genuine alternatives to crime upon release. Several states have already demonstrated success with such programs, and the return on investment is substantial: every dollar spent on education and job training reduces the likelihood of recidivism and saves far more in future incarceration costs.</p>
+      <p>Equally important is addressing substance abuse and mental health issues that drive much criminal behavior. Simply isolating people from society without treating underlying problems guarantees that old patterns will resurface. Treatment programs should be mandatory for those with documented addiction or mental health disorders, not optional afterthoughts.</p>
+      <p>Beyond programs within prison walls, we must reform the artificial barriers that follow released prisoners forever. Expungement of records for non-violent offenses, restrictions on occupational licensing, and blanket bans on public assistance create a permanent underclass. Someone who served their time should not face a lifetime of punishment through exclusion.</p>
+      <p>Finally, reentry planning must begin on day one of incarceration, not the day before release. Case managers should work with inmates to develop housing plans, employment connections, and family reconciliation strategies throughout their sentences.</p>
+      <p>The goal is simple: when we release someone, they should be better equipped to contribute to society than when they entered. That requires investment, but the alternative—endless cycles of incarceration—is far more expensive in every sense.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>I want to be honest about something that often gets lost in these discussions: prison may not be able to change people in the ways we hope, and we should not pretend otherwise.</p>
+      <p>The institution of prison was designed primarily for punishment and isolation, not rehabilitation. Its architecture, daily routines, and social structures teach anti-social behaviors, not pro-social ones. Exposing someone to violence, forcing them into a hierarchical culture of deference and aggression, and removing their autonomy for years does not naturally produce citizens equipped for lawful, productive lives.</p>
+      <p>Moreover, the conditions of American prisons—overcrowding, understaffing, lack of programming, widespread solitary confinement—often actively worsen mental health and increase the likelihood of future offending. We cannot expect an institution in crisis to serve as a therapeutic environment.</p>
+      <p>What would actually change a person? Meaningful relationships, economic opportunity, mental health treatment, addresses to addiction, stable housing. These are precisely what prison lacks and what most released prisoners continue to lack upon reentry.</p>
+      <p>Perhaps we should focus less on making prison &quot;productive&quot; and more on reserving it for people who genuinely require incapacitation—those who pose ongoing safety risks—while developing entirely different responses to non-violent offenses. Drug courts, community service, restorative justice processes, and intensive supervision outside prison walls may better serve rehabilitation goals.</p>
+      <p>For those who must be incarcerated, we should at minimum minimize harm: reduce overcrowding, provide meaningful programming, maintain family connections, and ensure comprehensive reentry support. But let us not romanticize an institution that was never designed for redemption.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>Family relationships are the single most underutilized resource in preparing inmates for successful reentry, and any serious discussion of productive incarceration must center them.</p>
+      <p>Research consistently shows that maintained family ties during incarceration dramatically reduce recidivism. Children with incarcerated parents are less likely to become involved in the criminal justice system themselves. Inmates who receive regular visits, phone calls, and letters are more likely to find housing, maintain employment, and avoid reoffending after release.</p>
+      <p>Yet our prison system systematically undermines these connections. Visitation hours are limited and often inaccessible for working families. Phone rates are inflated by kickback arrangements that line prison budgets. Distance from home means many families cannot visit at all. And the punitive culture of many institutions treats family contact as a privilege to be revoked at the slightest infraction.</p>
+      <p>We should reform all of these barriers. Video visitation, extended hours, affordable communication, and transportation assistance for families in poverty would cost relatively little and yield significant returns.</p>
+      <p>Beyond maintaining existing relationships, prisons should actively support family reunification. Parenting classes, family counseling, and gradual reintegration programs that involve family members prepare inmates for the reality of life after release.</p>
+      <p>Consider the psychological transformation needed: someone who has been institutionalized, stripped of autonomy, and isolated from normal human relationships must suddenly navigate complex family dynamics. Without deliberate preparation, this transition often fails, and families suffer along with the returning prisoner.</p>
+      <p>Investing in family connections is not soft or sentimental—it is pragmatic crime prevention.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>The debate about productive prisons often overlooks a fundamental reality: the majority of incarcerated Americans suffer from mental illness, substance use disorders, or both, and our criminal justice system has become the default provider of treatment—albeit poorly.</p>
+      <p>Prison psychiatric units are overcrowded, understaffed, and ill-equipped for long-term therapeutic care. Mental illness in prison often goes untreated or is managed with medication alone, without the counseling and support that actual recovery requires. For those with addiction—the root cause of countless offenses—prison provides abstinence without treatment, leaving released prisoners unequipped to resist relapse in environments flooded with drugs.</p>
+      <p>This is not simply a moral failing; it is a massive waste of resources. Every dollar spent treating mental illness and addiction in the community or during incarceration saves multiple dollars in downstream criminal justice costs, emergency healthcare, and lost productivity.</p>
+      <p>We need a fundamental shift: assessment and treatment planning at intake, not just classification. Evidence-based therapies—cognitive behavioral therapy, motivational interviewing, trauma-informed care—delivered by qualified professionals, not correctional officers improvising as therapists.</p>
+      <p>For those with serious mental illness, we should question whether prison is the appropriate setting at all. Forensic mental health facilities and specialized courts can provide appropriate treatment while maintaining public safety.</p>
+      <p>Release planning must include continuity of care: medications, therapy appointments, and support groups already arranged before the prison gate opens. Without this bridge, months of institutional stability collapse within weeks of release.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>Mainstream reform discussions focus almost entirely on the individual offender—what skills they need, what treatment they require, what barriers they face. This misses a crucial piece: the communities to which they return bear enormous responsibility for whether reentry succeeds or fails.</p>
+      <p>Restorative justice offers a framework that addresses both sides of this equation. Rather than treating crime as a violation of abstract law requiring punishment, restorative justice recognizes crime as harm to real people and communities that requires repair.</p>
+      <p>In practice, this means involving victims, offenders, and community members in meaningful dialogue about how harm can be addressed and relationships restored. It means community-based sentencing alternatives where offenders work directly with those they have affected. It means restorative circles that build community capacity to support returning citizens.</p>
+      <p>This approach addresses the isolation that feeds recidivism from both directions. Offenders build genuine connections to community members who are not authority figures or fellow prisoners. Communities develop ownership over reintegrating their neighbors rather than viewing ex-offenders as strangers to be feared and excluded.</p>
+      <p>Restorative practices also reduce the dehumanization that traditional incarceration reinforces. When offenders must face those they have harmed and participate in determining how they will make amends, they engage differently with their own behavior and its consequences.</p>
+      <p>We should pilot restorative justice programs alongside traditional incarceration and track outcomes carefully. Given what we know about the failures of purely punitive approaches, we owe ourselves the opportunity to test alternatives.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>Here is an uncomfortable truth: what happens inside prison matters far less than what happens after someone walks out the gate.</p>
+      <p>We can implement the finest vocational programs, the most comprehensive therapy, the most humane conditions during incarceration—and still fail people if we abandon them upon release. The transition from total institutional control to freedom is brutal, and without support, even the most motivated individuals struggle.</p>
+      <p>Consider the barriers: no housing because of background checks, no employment because of background checks, no benefits during waiting periods, no healthcare continuity for mental illness or addiction. Suddenly removed from the structure of prison but with none of the supports of legitimate society, many revert to what they know.</p>
+      <p>Effective reentry begins before release. Pre-release job placement programs, housing applications submitted before the release date, medical appointments scheduled in advance—these bridges prevent the gap that currently swallows so many.</p>
+      <p>Upon release, we need intensive case management for the first critical months. Help navigating bureaucracy, emergency assistance with basic needs, immediate connections to treatment and support groups. Transitional housing for those with nowhere to go. Micro-loans and small business support for those with entrepreneurial ambitions.</p>
+      <p>The cost of these interventions is trivial compared to the cost of reincarceration. We spend tens of thousands of dollars per year to lock someone up; spending a fraction of that on support after release would reduce the likelihood they ever return.</p>
+      <p>We must stop treating release as an ending and start treating it as the beginning of a process that requires as much investment as the sentence itself.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

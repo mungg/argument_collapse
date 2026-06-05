@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What’s Holding Back Renewable Energy? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Environment · Open-ended</div>
+  <h1 class="debate-title">What’s Holding Back Renewable Energy?</h1>
+  <div class="question-body"><p>Oxford researchers recently predicted precipitous growth in green energy over the next 10 to 15 years, decreasing global need for fossil fuels. Yet, the largest renewable energy company in the world, SunEdison, just filed for bankruptcy on the heels of the fall of another clean energy giant, Abengoa.</p><p>Is the renewable energy sector in trouble? What is holding back more immediate success in the industry?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_1.html">
+      <td class="arg-text">The bankruptcy of SunEdison is a result of specific corporate mismanagement rather than a systemic failure, as the solar industry remains fundamentally strong and poised for continued growth.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_2.html">
+      <td class="arg-text">The primary obstacle to the immediate success of renewable energy is the complex challenge of integrating variable, location-dependent power sources into an aging grid and financial system not yet designed for them.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_3.html">
+      <td class="arg-text">Renewable energy is being held back not by technical limitations, but by a political and economic landscape designed to favor incumbent fossil fuel industries.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_4.html">
+      <td class="arg-text">The primary obstacle to the widespread adoption of renewable energy is building owners&#x27; lack of data and understanding regarding their current energy consumption and potential efficiency gains.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_5.html">
+      <td class="arg-text">The growth of renewable energy is being hindered by utility companies that use their monopoly power and outdated laws to create financial and regulatory barriers for solar customers.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_6.html">
+      <td class="arg-text">The renewable energy sector is struggling because its growth has been artificially inflated by political incentives and subsidies rather than genuine economic competitiveness against flexible, low-cost fossil fuels.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_7.html">
+      <td class="arg-text">The primary obstacle to renewable energy&#x27;s success is not technological, but rather the financial system&#x27;s failure to treat it as a stable, long-term infrastructure business.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-holding-back-renewable-energy_arg_8.html">
+      <td class="arg-text">The renewable energy sector&#x27;s immediate success is hindered by a lack of realism regarding its technical limitations, economic trade-offs, and the necessity of a broader, technology-neutral climate policy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Andrew Chen</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/05/03/whats-holding-back-renewable-energy/andrew-chen" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">David Sandalow</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/05/03/whats-holding-back-renewable-energy/david-sandalow" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Joseph Aldy</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/05/03/whats-holding-back-renewable-energy/joseph-aldy" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Katie Ottenweller</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/05/03/whats-holding-back-renewable-energy/katie-ottenweller" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The bankruptcies of SunEdison and Abengoa are dramatic, but they tell us more about corporate strategy than about the health of renewables. Both firms collapsed under aggressive, debt-fueled acquisition sprees and complicated &quot;yieldco&quot; financial engineering — not because demand for solar or wind dried up. In fact, 2015 was a record year: global renewable capacity additions hit roughly 150 GW, solar module prices continued their decade-long slide, and unsubsidized solar power purchase agreements in places like Dubai and Texas cleared below 4 cents per kilowatt-hour. The Oxford forecast of rapid green-energy growth is consistent with what installation data already show.</p>
+      <p>So what is holding the sector back from being even further along? Three things stand out.</p>
+      <p>First, the cost of capital. Renewables are capital-intensive up front and cheap to operate, which makes them exquisitely sensitive to financing terms. SunEdison&#x27;s fall partly reflects how punishing markets become when interest-rate expectations shift or when investors lose confidence in opaque structures. Until renewable projects can be financed as routinely as utility bonds, growth will be lumpier than the underlying economics suggest.</p>
+      <p>Second, the grid and policy architecture were built around dispatchable thermal plants. Intermittency is manageable at today&#x27;s penetration levels, but in markets like California and Germany we are already seeing curtailment, negative midday prices, and the &quot;duck curve.&quot; Without faster build-out of transmission, demand response, and storage — and without electricity market rules that compensate flexibility — integration costs will rise before they fall. Battery prices are dropping quickly (Tesla&#x27;s Powerwall, recent lithium-ion auctions), but utility-scale storage is still early.</p>
+      <p>Third, politics and incumbency. The December 2015 extension of the U.S. Investment Tax Credit and Production Tax Credit was a major tailwind, and the Paris Agreement signaled global direction. But fossil fuels still receive substantial direct and indirect subsidies, cheap natural gas is undercutting both coal and new renewables in some U.S. markets, and the Supreme Court&#x27;s stay of the Clean Power Plan introduced real regulatory uncertainty.</p>
+      <p>The sector is not in trouble. It is in transition — and the bottlenecks now are financial, infrastructural and political rather than technological.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The collapse of solar giant SunEdison and Spain’s Abengoa, coming on the heels of bullish long-term forecasts, feels like a contradiction. It isn’t. These bankruptcies are not a verdict on renewable energy itself but a symptom of the industry’s awkward adolescence: rapid growth colliding with an outdated energy system, fickle policy, and the punishing economics of low fossil fuel prices.</p>
+      <p>The fundamental obstacle remains intermittency. Wind and solar generate power when nature cooperates, not when demand peaks. Without cheap, utility-scale storage—a technology still years from widespread commercial viability—grid operators must maintain near-total backup from conventional plants. This physical reality caps the immediate share of renewables on most grids and erodes the economic case once subsidies phase out, because you aren’t just paying for the electrons but also the idle gas plant next door. The infrastructure itself is another bottleneck. The sunniest and windiest regions are often far from population centers, and building long-distance transmission lines is a decade-long slog through regulatory and political thickets.</p>
+      <p>Policy uncertainty amplifies these structural problems. In the United States, the on-again, off-again nature of the production tax credit has created boom-bust cycles, while state-level battles over net metering threaten the rooftop solar business model. When the rules of the game can shift with an election, capital gets cautious. Meanwhile, the macroeconomic landscape since 2014 has been brutal. The fracking revolution sent natural gas prices plummeting, directly undercutting the competitiveness of zero-fuel-cost renewables in wholesale markets. A strong dollar made dollar-denominated power-purchase agreements in emerging markets—the very places where demand is soaring—far riskier.</p>
+      <p>SunEdison’s failure was not a parable of flawed technology but of Wall Street hubris. The company borrowed heavily to morph into a sprawling, acquisitive developer just as those market headwinds stiffened. When growth bets soured, the debt load was fatal. Abengoa, a biofuel and solar-thermal pioneer, drowned in similar leverage and a cash-flow mismatch between its ambition and the slow pace of project returns.</p>
+      <p>These are real, immediate barriers, but they signal a maturing industry enduring a shakeout, not a terminal illness. The cost curves for solar panels and wind turbines continue their steep, technology-driven descent. The long-term trajectory remains clear; it is the near-term path that is littered with landmines of grid inertia, policy myopia, and the sovereign-like scale of investment required. The green revolution isn’t stalled; it’s learning that building a new energy order is more about finance and wires than panels and turbines.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The recent bankruptcies of SunEdison and Abengoa have understandably cast a shadow over the renewable energy sector, prompting fears that the clean energy transition is stalling. However, these high-profile failures are not indictments of renewable technology or market demand. Rather, they are classic cases of corporate hubris, aggressive debt-fueled expansion, and over-reliance on complex financial engineering. SunEdison’s downfall was driven by a voracious acquisition strategy and the misuse of financial vehicles known as &quot;yieldcos&quot; to manage massive debt, not by a lack of appetite for solar panels. The underlying economics of wind and solar continue to improve at a staggering pace.</p>
+      <p>If consumer demand and technological viability are not the problem, what is actually holding back more immediate success? The primary hurdles are infrastructural, regulatory, and economic. First, our electrical grid was built for a 20th-century model of centralized, steady power generation. Integrating decentralized and intermittent sources like wind and solar requires massive investments in grid modernization and utility-scale energy storage. While battery costs are falling rapidly, they are not yet cheap enough to entirely solve the intermittency problem on a national scale.</p>
+      <p>Second, regulatory uncertainty remains a persistent drag on the industry. Although Congress recently provided a welcome degree of stability by extending the federal investment and production tax credits late last year, state-level policies are increasingly volatile. Recent legislative and utility commission battles over net metering in states like Nevada demonstrate how quickly regulatory shifts can upend local solar markets. Clean energy investors need long-term policy predictability, which the current patchwork of state and federal mandates often fails to provide.</p>
+      <p>Finally, renewables are competing in a market heavily influenced by historically low fossil fuel prices. The ongoing shale boom has flooded the market with cheap natural gas, creating a formidable short-term economic barrier for clean energy projects trying to compete on cost alone—especially when the externalized costs of carbon emissions remain largely unpriced in the broader market.</p>
+      <p>The optimistic predictions of precipitous green energy growth remain entirely plausible. The clean energy industry is currently experiencing profound growing pains, transitioning from a heavily subsidized niche into a mature, fiercely competitive global market. SunEdison&#x27;s collapse is a painful but necessary market correction that will ultimately leave the renewable energy sector more financially disciplined, even as the fundamental shift toward a low-carbon future accelerates.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>SunEdison’s bankruptcy is a serious warning, but not primarily a verdict on renewable energy. It is a verdict on overleveraged growth, financial engineering and the difficulty of turning a fast-expanding market into reliable corporate profits. SunEdison tried to be developer, manufacturer, financier and owner all at once, using debt and “yieldcos” to fund rapid expansion. When investor confidence weakened, that structure became fragile. Abengoa’s troubles similarly reflected heavy borrowing and complex infrastructure bets. These failures say less about whether wind and solar work than about whether particular balance sheets did.</p>
+      <p>The underlying industry is not collapsing. Solar module prices have fallen dramatically over the past decade, wind turbines have become more efficient, and 2015 saw record global renewable installations. In many places, especially with good sun or wind, new renewable power is already competitive with new fossil generation, particularly when tax credits, fuel-price risk and pollution costs are considered. The Paris climate agreement, state renewable portfolio standards and corporate clean-energy purchasing all point toward continued demand. If anything, the paradox is that renewable energy can be a good technology trend while still being a brutal business.</p>
+      <p>What holds it back is less a single obstacle than a stack of them. First is policy uncertainty. In the United States, the repeated expiration scares over the production tax credit and investment tax credit have created boom-bust cycles that make planning more expensive. Second is grid integration. Wind and solar are variable, and while variability is manageable, it requires transmission, better forecasting, demand response, flexible gas plants, storage and modern market rules. Third is incumbency. Fossil fuels benefit from existing infrastructure, political influence, and in many places subsidies or market designs that do not fully price carbon, local air pollution or water impacts.</p>
+      <p>Finance is another bottleneck. Renewable projects have high upfront costs and low operating costs, so they depend heavily on cheap capital. That makes them vulnerable to interest rates, tax-equity constraints and investor sentiment. In emerging markets, where energy demand is growing fastest, currency risk and weak utilities can raise costs even when the technology itself is cheap.</p>
+      <p>So the sector is not “in trouble” in the sense that the transition has stalled. It is in the difficult middle stage between subsidy-supported infancy and full integration into power markets built for another era. The technology is advancing faster than institutions, grids and financing models. The immediate task is not to rescue a fad, but to redesign markets so clean power’s falling costs can translate into durable, bankable deployment.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The apparent contradiction between optimistic forecasts and the collapse of major renewable energy companies points to a real tension in the sector, but it&#x27;s a tension between long-term potential and short-term market realities rather than evidence that green energy is fundamentally failing.</p>
+      <p>The SunEdison and Abengoa bankruptcies reflected specific business model failures—aggressive acquisition strategies funded by heavy debt loads—rather than broader technological or market collapse. The underlying technology continued to improve and costs continued to decline. What these failures revealed was that the renewable energy industry was still maturing, struggling to develop sustainable financial structures that could survive volatile energy markets and policy uncertainty.</p>
+      <p>Several structural barriers impede more rapid deployment. First, natural gas prices remain low following the shale boom, making it difficult for wind and solar to compete on pure economics without subsidies. Second, the intermittent nature of solar and wind generation creates grid integration challenges that remain only partially solved; energy storage technology, while improving, has not yet reached the scale needed for a fully renewable grid. Third, policy uncertainty—especially in the United States following debates over tax credits and state-level renewable standards—creates hesitation among investors seeking stable returns over longer time horizons.</p>
+      <p>Soft costs, including permitting, interconnection, and installation overhead, also remain stubbornly high in many markets, limiting the benefits of falling hardware prices.</p>
+      <p>Perhaps most fundamentally, our energy infrastructure is a vast, slow-moving system. The coal plants and natural gas facilities operating today represent hundreds of billions in sunk capital that won&#x27;t be abandoned overnight, regardless of how promising renewables become. The Oxford researchers&#x27; optimism about long-term trends may yet prove correct, but transition periods in energy systems tend to be measured in decades, not years. The industry needs not just better technology but more robust business models, clearer policy signals, and continued innovation in storage to bridge the intermittency gap.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>SunEdison&#x27;s collapse is being read as an indictment of renewable energy itself. That reading is wrong. SunEdison failed for the same reasons WorldCom and Enron failed: a debt-fueled acquisition spree, opaque accounting, and a corporate structure (yieldcos buying assets from the parent) that depended on perpetually rising stock prices to keep working. Abengoa, similarly, was a sprawling Spanish conglomerate undone by overleverage when Spain pulled back its solar subsidies in the early 2010s. Neither bankruptcy tells us much about the underlying economics of photovoltaics or wind turbines.</p>
+      <p>In fact, the underlying economics keep improving. Unsubsidized levelized costs for utility-scale solar have fallen below $50/MWh in sunny markets, and onshore wind regularly clears auctions in the $30s. Lazard&#x27;s annual cost surveys, IRENA&#x27;s data, and the recent Oxford paper all point the same direction. The technology is winning on price in a growing number of geographies, which is precisely why deployment hit record levels in 2015 even as headline-grabbing firms went under.</p>
+      <p>What the bankruptcies do reveal is a structural problem with how renewable projects are financed. Developers operate on thin margins, depend on tax-equity partners, and chase production tax credits or investment tax credits that Congress periodically lets lapse. That stop-start policy environment encourages exactly the kind of overextension SunEdison engaged in: pile up projects while the credits are alive, hope to refinance later. When capital markets tightened in late 2015 and oil prices collapsed (dragging energy-sector valuations with them), the music stopped.</p>
+      <p>The lesson isn&#x27;t that renewables are in trouble; it&#x27;s that the industry is maturing into a normal capital-intensive business and needs the financial plumbing to match. That means longer-duration policy commitments (the December 2015 extension of the ITC and PTC was a real step forward), better mechanisms for monetizing tax credits without elaborate yieldco gymnastics, and clearer interconnection and curtailment rules from utilities and ISOs. It also means accepting that some companies will fail. The dot-com bust didn&#x27;t mean the internet was a bad idea; it meant a lot of business plans were bad.</p>
+      <p>What is genuinely holding renewables back is less dramatic than bankruptcy headlines suggest: grid integration costs at high penetrations, the slow pace of transmission build-out (try permitting a new HVDC line across three states), and the absence of cheap, scalable storage. Those are solvable problems, and a lot of capital is now chasing them. Meanwhile, the global pipeline of solar and wind projects is the largest it has ever been. The Oxford forecast may prove optimistic on timing, but its direction is right. Don&#x27;t confuse the failure of particular firms with the failure of a technology that is, quietly, eating the energy world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>The renewable energy sector is in trouble, and the reasons go deeper than two bankruptcies. SunEdison and Abengoa are symptoms of a fundamental mismatch between what wind and solar can physically deliver and what their boosters have promised.</p>
+      <p>Start with the physics. Wind and solar are intermittent and non-dispatchable. The sun doesn&#x27;t shine at night, and the wind blows when it pleases. In Germany, after more than a decade of the Energiewende and over $100 billion in subsidies, renewables routinely produce either far too much electricity (forcing the country to dump power onto neighbors at negative prices) or far too little (requiring lignite and imported gas backup). Retail electricity prices in Germany are nearly triple those in the United States, and emissions have barely budged because coal still fills the gaps. This is not a success story to emulate.</p>
+      <p>Now consider the economics. The &quot;levelized cost&quot; figures cited in glowing reports systematically exclude integration costs: the backup capacity, the transmission build-out, the curtailment, and the storage that intermittent sources require at scale. When MIT, the OECD&#x27;s Nuclear Energy Agency, and others have tried to add those costs back in, the apparent cheapness of solar and wind disappears. At low penetration, you can hide the integration costs in the existing grid. At 20, 30, 40 percent penetration, you can&#x27;t, and the marginal cost of adding more renewables rises sharply.</p>
+      <p>SunEdison&#x27;s collapse is instructive precisely because it shows what happens when a business depends on subsidies and creative finance rather than genuine economic value. Yieldcos were a clever way to securitize tax credits and feed-in tariffs; they were never a sound way to build a power company. Abengoa&#x27;s solar thermal plants in Spain were built because Madrid promised guaranteed rates that the Spanish treasury could not actually afford. When the subsidies were cut, the business model evaporated.</p>
+      <p>What is &quot;holding back&quot; renewables, then, is not lack of political will or fossil-fuel lobbying. It is the technology itself. Until storage costs collapse by an order of magnitude — and despite headlines about Tesla&#x27;s Powerwall, we are nowhere near that — wind and solar will remain supplementary technologies, useful at the margin but incapable of running a modern grid on their own. The Oxford prediction of precipitous growth conflates installed nameplate capacity with delivered energy, and ignores the rising marginal integration costs.</p>
+      <p>If we are serious about decarbonization, the honest answer involves nuclear power, carbon capture, and perhaps a meaningful price on carbon, rather than another round of subsidies for the next SunEdison. Pretending otherwise sets up the public for repeated disappointment — and repeated bankruptcies.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>It is tempting, watching SunEdison unravel, to declare the renewable revolution overhyped. Resist the temptation. The underlying story of the last decade is one of the most dramatic cost declines in industrial history, and a couple of corporate failures don&#x27;t change the trajectory.</p>
+      <p>Consider the numbers. The price of a solar module has fallen from roughly $4 per watt in 2008 to under $0.60 per watt today — a learning curve steeper than even optimists projected. Onshore wind has followed a similar trajectory. Lithium-ion battery pack prices, which were near $1,000 per kWh in 2010, are approaching $300 and falling. Bloomberg New Energy Finance, the IEA (which has historically underestimated renewables), and now Oxford all see these curves continuing. When something gets cheaper every year for thirty years running, the smart bet is that it will keep getting cheaper.</p>
+      <p>So why the bankruptcies? Because cost declines are brutal for incumbents and overextended developers alike. When module prices fall 20 percent in a year, a company that bought inventory or signed PPAs at last year&#x27;s prices gets squeezed. SunEdison didn&#x27;t fail because solar is failing; it failed because it tried to grow faster than its balance sheet allowed, bought TerraForm and Vivint and a dozen other things on debt, and ran into a wall when capital markets cooled. This is the Cisco-in-2001 problem, not the pets.com problem. The technology works; one company&#x27;s business model didn&#x27;t.</p>
+      <p>What is holding the industry back is less the technology than the surrounding system. Grids were designed for centralized, dispatchable generation, and they don&#x27;t yet accommodate distributed, variable generation gracefully. Net metering fights in Nevada and Arizona show how utilities, whose business model is threatened, can use regulators to slow rooftop adoption. Interconnection queues stretch for years. Transmission planning is balkanized across regions. And storage, while improving fast, isn&#x27;t yet cheap enough at grid scale to smooth out the duck curve.</p>
+      <p>These are engineering and institutional problems, not fundamental ones. California is already running entire afternoons on more than half renewables. Texas, of all places, has more wind capacity than most countries. Denmark routinely exceeds 100 percent of demand from wind. As batteries get cheaper and grids get smarter, the integration ceiling keeps rising.</p>
+      <p>The Oxford forecast is not naive. It reflects the basic math of exponential cost declines meeting linear demand growth. Bankruptcies will continue — that&#x27;s what happens in fast-moving industries with thin margins — but installations will keep rising. Ten years from now, we&#x27;ll look back at SunEdison the way we look at Webvan: a cautionary tale about execution, in a sector that nonetheless transformed the world.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Ask what&#x27;s holding back renewables, and you will get technical answers about storage, intermittency, and grid integration. These are real but secondary. The primary obstacle is political: a fossil fuel industry that has spent a century building the infrastructure, the regulatory regimes, the tax codes, and the political relationships that keep it on top, and that is now using every tool available to slow its competitors down.</p>
+      <p>Consider the subsidy landscape. The IMF estimated in 2015 that global fossil fuel subsidies, including unpriced externalities, exceed $5 trillion a year. Even by narrower definitions, direct producer subsidies to oil, gas, and coal dwarf anything renewables receive. The U.S. tax code embeds century-old giveaways — the intangible drilling cost deduction, the depletion allowance, master limited partnerships available to oil and gas but not to solar — that the renewable industry has spent decades trying merely to match. When SunEdison and Abengoa stumbled, it was partly because the playing field was never level to begin with.</p>
+      <p>Consider the regulatory landscape. In state after state, investor-owned utilities have used their captive public utility commissions to throttle rooftop solar. Nevada&#x27;s NV Energy persuaded regulators to gut net metering retroactively, effectively destroying the state&#x27;s residential solar market overnight. Arizona, Florida, and others have followed similar scripts. ALEC has circulated model legislation in dozens of statehouses to impose fees on solar customers and weaken renewable portfolio standards. None of this is about technology; it is about incumbents protecting rents.</p>
+      <p>Consider the policy whiplash at the federal level. The wind production tax credit has been allowed to expire and be reinstated half a dozen times, each lapse triggering a boom-bust cycle that makes long-term capital planning nearly impossible. Compare that to the permanent depletion allowance for oil and gas, undisturbed since 1926. A company like SunEdison, trying to scale in that environment, has to gamble on whether Congress will renew the ITC; an Exxon does not.</p>
+      <p>Even the bankruptcies themselves reflect this asymmetry. Abengoa&#x27;s Spanish solar business was destroyed when the government retroactively cut feed-in tariffs to protect utility incumbents and balance budgets pressured by an austerity regime that left fossil subsidies largely untouched. SunEdison&#x27;s collapse was hastened by a 2015 oil price crash engineered, in part, by Saudi Arabia explicitly to discipline competitors — shale producers, yes, but the chill extended across the whole energy-finance ecosystem.</p>
+      <p>Renewables are winning on cost, and will keep winning. But they are doing so against an opponent that controls much of the legal and financial terrain. Until we end fossil fuel subsidies, price carbon honestly, and reform utility regulation to reward clean generation, the SunEdisons of the world will keep stumbling — not because their technology fails, but because the game is rigged.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The recent bankruptcies of SunEdison and Abengoa have triggered a wave of eulogies for the renewable energy sector, but such hand-wringing mistakes the failure of specific companies for a verdict on an entire industry. The real issue holding back renewables isn&#x27;t a technological or economic dead end — it&#x27;s the self-inflicted wound of inconsistent and politically vulnerable policy. The sector has been yanked from boom to bust by a patchwork of tax credits, mandates, and subsidies that expire, phase out, or get renewed at the last minute, creating a boom-bust cycle that rewards financial engineering over steady deployment.</p>
+      <p>Consider the U.S. Production Tax Credit for wind. Over the last two decades, its on-again, off-again nature has caused installation rates to lurch wildly, making it impossible for manufacturers and developers to plan beyond the next legislative cycle. A similar drama has played out with solar investment tax credits. When Congress unexpectedly extended the solar ITC at the end of 2015, it was rightly celebrated, but the years of uncertainty leading up to that moment had already squeezed margins, encouraged risky growth strategies, and starved long-term research. In Europe, retroactive cuts to feed-in tariffs in Spain and Italy eviscerated investor confidence. It was in this environment that SunEdison, which had taken on massive debt to fund a global acquisition spree under the assumption of ever-rising subsidies, collapsed when market sentiment turned.</p>
+      <p>Meanwhile, the global playing field remains tilted. The International Energy Agency estimates that fossil fuel consumption subsidies totaled nearly $500 billion in 2014, more than four times the support for renewables. These entrenched subsidies depress the apparent price of coal, oil, and gas, making it harder for renewables to compete on pure market terms without complementary carbon pricing. When you add in the unpriced externalities — the public health costs of particulate pollution, the climate damage of carbon emissions — fossil fuels enjoy an enormous hidden advantage. In many countries, utilities are still structured as regulated monopolies that profit from capital-intensive, centralized fossil fuel plants and have little incentive to integrate distributed generation.</p>
+      <p>The bankruptcies, far from being a death knell, are a healthy market correction that clears out over-leveraged, poorly managed players. What’s holding renewables back is not the technology, which has seen precipitous cost declines, nor the resource potential. It’s the absence of a stable, predictable policy framework that puts a fair price on carbon and provides a steady incline of support, rather than a cliff. Only then will the sector transition from a subsidized adolescence to a truly competitive mature market.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>For all the buoyant projections about green energy&#x27;s exponential growth, the bankruptcies of SunEdison and Abengoa expose an uncomfortable truth: the fundamental physics of renewable power are still at odds with the demands of a modern grid. The chief obstacle is intermittency — the fact that the sun doesn&#x27;t always shine and the wind doesn&#x27;t always blow — and until we solve the problem of large-scale, affordable energy storage, renewables will remain a dependent, niche player, not the backbone of our energy system.</p>
+      <p>Advocates often point to dramatic reductions in the levelized cost of energy from solar panels and wind turbines. That metric, while impressive, is misleading. It measures the cost to generate a megawatt-hour when the resource is available, but it ignores the system-level costs that intermittency imposes. A grid must balance supply and demand in real time. When a cloud passes or the wind dies, grid operators must instantly ramp up another source — typically a fast-cycling natural gas plant — to keep the lights on. These backup plants must be built, maintained, and staffed, but they only run part-time, driving up their own per-unit costs. Germany&#x27;s Energiewende, while celebrated for its renewable deployment, has seen its carbon emissions remain stubbornly high because it has had to rely on lignite coal plants to back up renewables, and German household electricity rates are among the highest in Europe.</p>
+      <p>This is not a marginal issue: as the penetration of wind and solar rises above 20–30% on a grid, the integration costs become nonlinear. You begin to encounter &quot;curtailment,&quot; where excess renewable power must be dumped because there is no way to store it or transport it to where it&#x27;s needed. Storage technologies like lithium-ion batteries remain orders of magnitude too expensive for grid-scale seasonal storage, and promising alternatives like flow batteries or compressed air are still in the demonstration phase. Pumped hydro, the one proven large-scale storage technology, is geographically limited and faces environmental opposition.</p>
+      <p>The bankruptcies in the sector are symptomatic of this mismatch. Companies like SunEdison expanded rapidly on the assumption that solar modules could be deployed anywhere with equal economics, without grappling with the localized grid constraints and the hidden costs of intermittency. Their financial models assumed a world that doesn&#x27;t yet exist. The renewable sector is not failing because of policy ineptitude or fossil fuel conspiracies; it&#x27;s failing because the core product itself — variable, non-dispatchable electricity — is inherently less valuable than reliable baseload power. Until a storage breakthrough changes that equation, the industry&#x27;s success will be limited to low-penetration niches and heavily subsidized markets.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The bankruptcies of two high-flying renewable energy companies have sparked a predictable round of gloating from the sector&#x27;s detractors, but they are not an indictment of the industry. They are, instead, a glaring symptom of the real bottleneck: an antiquated electrical grid that was built for the last century, not the next one. The technology to harness the wind and sun is now remarkably cost-competitive; what’s holding back its full-scale deployment is an inflexible, centralized infrastructure that cannot accommodate the variable and distributed nature of clean power.</p>
+      <p>We have invented a stunning array of renewable generation, but we are still trying to pour it into a grid designed around giant, spinning turbines located far from population centers. To take full advantage of high-quality wind resources in the Great Plains or solar in the Southwest, we need major investment in high-voltage transmission lines that cross state boundaries. Such projects are routinely blocked by a web of conflicting state jurisdictions, not-in-my-backyard activism, and regulatory hurdles that delay approvals for a decade or more. The result is that clean energy often gets stranded, unable to reach the markets that need it. Abengoa, a company that specialized in building huge concentrating solar plants and transmission projects, was particularly vulnerable to these delays; its financial troubles were intimately tied to the difficulty of executing large-scale infrastructure in a fragmented regulatory environment.</p>
+      <p>Equally important is the distribution grid — the low-voltage local lines that bring power to homes. Those wires were laid out for one-way flow from a central power station. When thousands of rooftops start sending solar power back onto the grid, the system can become unstable. Utilities in states like Hawaii and parts of California have fought to slow down rooftop solar adoption not because they oppose clean energy, but because the grid hardware itself — the transformers, the voltage regulators — was not designed for two-way traffic. Upgrading these components is costly, and the utility business model, which relies on selling kilowatt-hours, crumbles when customers generate their own power.</p>
+      <p>The solution is not to retreat from renewables but to embark on a serious modernization campaign: deploying smart inverters that can manage voltage, investing in demand response and energy storage, and building out a nationwide backbone of high-voltage direct current lines. These are not science fiction; they are proven but capital-intensive undertakings that require a level of coordination and public investment we have not seen since the interstate highway system. The renewable sector is not in existential trouble — global installations hit record levels in 2015 — but its immediate success is being throttled by a transmission and distribution system that is its Achilles&#x27; heel.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>There is a breathtaking irony in the spectacle of SunEdison&#x27;s collapse: the most prominent renewable energy company in the world didn&#x27;t fail because solar panels were too expensive or because the sun forgot to shine. It failed because it was run more like a Wall Street hedge fund than an energy utility. The twin bankruptcies of SunEdison and Abengoa are not a crisis of the green energy sector; they are a cautionary tale of corporate hubris, over-leveraged acquisition sprees, and financial complexity that would make Enron blush. What’s holding back renewable energy isn&#x27;t a technology barrier — it&#x27;s a business model problem rooted in short-term greed.</p>
+      <p>SunEdison&#x27;s downfall was breathtakingly banal. It borrowed billions to gobble up companies and projects across the globe, transforming itself from a modestly successful solar developer into a sprawling &quot;super yieldco&quot; complex. The yieldco structure — a kind of publicly traded subsidiary designed to hold operating assets and pay out reliable dividends — was supposed to unlock cheap capital. Instead, it created a labyrinth of cross-holdings, debt guarantees, and perverse incentives. As long as the stock price kept climbing, the machine appeared brilliant. But when energy commodity prices softened and growth projections missed, the house of cards crumpled. SunEdison&#x27;s market capitalization evaporated from over $10 billion to near zero in less than a year. That is not a verdict on solar power; it’s a classic story of a boardroom chasing growth at any cost.</p>
+      <p>Abengoa&#x27;s story is similar, though with a European twist. The Spanish company bet heavily on massive concentrated solar thermal plants and biofuel refineries, often using complex financing vehicles that loaded debt onto projects with aggressive return assumptions. When Spain and other governments renegotiated tariffs in the wake of the financial crisis, the foundation cracked. But the underlying problem was hubris and poor risk management, not a failure of the technology itself. Hundreds of other solar and wind companies, run by more conservative management teams with sane balance sheets, quietly chug along, deploying gigawatts of capacity each year at ever-lower costs. The global renewable energy installation market grew by a record 25 percent in 2015, according to Bloomberg New Energy Finance, with $330 billion invested.</p>
+      <p>The real drag on the industry&#x27;s reputation and its ability to attract prudent capital is the continued dominance of a &quot;growth at all costs&quot; ethos that permeates the clean tech venture capital world. Investors have been tantalized by the prospect of a &quot;disruptive&quot; unicorn that follows the Silicon Valley script of exponential scaling. But energy is not software. It is a capital-intensive, infrastructure-heavy, low-margin business that demands patience and financial discipline. Until the sector matures from a speculative playground into a realm of boring, predictable utilities, it will be periodically rocked by these self-inflicted collapses. The good news is that the underlying project economics remain sound. The challenge is to convince the capital markets that steady returns are sexier than spectacular bankruptcies.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The recent bankruptcy of SunEdison, along with the financial collapse of Abengoa, has predictably brought out the doom-sayers who want to declare the renewable energy transition a failure. However, treating these high-profile corporate bankruptcies as an indictment of the entire clean energy sector is a profound mistake. What we are witnessing is not a crisis of renewable energy technology, but a crisis of reckless corporate governance and unsustainable financial engineering.</p>
+      <p>SunEdison did not fail because solar power is too expensive or because the world lacks demand for clean energy. It failed because it operated more like a heavily leveraged hedge fund than a disciplined energy developer. The company went on a massive, debt-fueled acquisition spree, buying up wind, solar, and energy storage companies across the globe. It relied on complex financial structures, known as &quot;yieldcos,&quot; which demanded constant, aggressive growth to satisfy dividend-hungry investors. When the financial markets soured on this model, SunEdison’s mountain of debt crushed it. Abengoa suffered a similar fate, suffocating under billions of euros in debt taken on for rapid global expansion.</p>
+      <p>If we look beyond the boardrooms of these specific companies to the actual hardware and market fundamentals, the picture is incredibly bright. The cost of solar photovoltaic modules has plummeted by over 80 percent in the last decade. Onshore wind is now cost-competitive with fossil fuels in many parts of the world. In 2015, the world added a record amount of renewable energy capacity, outstripping new additions of fossil fuel generation. Markets like China and India are deploying solar and wind at breathtaking speeds.</p>
+      <p>The Oxford researchers are right to predict precipitous growth over the next decade. The transition to a low-carbon energy system is structurally underway and technologically viable. What is holding back the industry from a perfectly smooth ascent is simply the immaturity of the sector’s financial models. The clean energy industry is currently undergoing a healthy, if painful, maturation process. Just as the dot-com crash of the early 2000s wiped out over-leveraged companies with bad business models without stopping the internet revolution, the fall of SunEdison will clear the field for better-managed, financially disciplined companies to lead the next phase of global renewable deployment.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>While corporate bankruptcies like SunEdison grab the headlines, the real barrier holding back the immediate success of renewable energy is deeply physical. We are trying to run a 21st-century energy transition on a 20th-century power grid, and we are rapidly hitting the infrastructural ceiling.</p>
+      <p>The fundamental challenge with wind and solar power is intermittency. The sun does not always shine, and the wind does not always blow. As renewable penetration increases, this creates massive logistical headaches for grid operators. In places like California, we are already seeing the infamous &quot;duck curve,&quot; where a glut of solar power floods the grid during the middle of the day, driving wholesale electricity prices to zero—or even into negative territory. Then, as the sun sets and people come home from work, demand spikes just as solar production drops off, requiring natural gas plants to rapidly ramp up.</p>
+      <p>This dynamic is toxic to the financial stability of renewable developers. If adding more solar panels simply depresses the price of electricity during the day to zero, new projects cannot guarantee the returns necessary to pay off their investors. This is why aggressive developers eventually run out of cash.</p>
+      <p>To solve this, we need a massive, coordinated build-out of infrastructure. First, we need high-voltage transmission lines to move power from where it is generated to where it is needed. The best wind resources in the United States are in the Great Plains, and the best solar is in the Southwest desert. Moving that energy to the population centers of the East and West coasts requires interstate transmission lines, which currently face years of localized NIMBY opposition and Byzantine regulatory hurdles.</p>
+      <p>Second, we desperately need utility-scale energy storage. While the costs of lithium-ion batteries are falling, they are not yet cheap enough to deploy on the massive scale required to store gigawatts of daytime solar for nighttime use.</p>
+      <p>Until we recognize that grid modernization and energy storage are just as important as the solar panels and wind turbines themselves, renewable energy will remain capped. We cannot simply subsidize generation without building the circulatory system to support it. The sector isn&#x27;t failing, but it is waiting on an infrastructure revolution that policy makers have largely ignored.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The bankruptcies of clean energy giants like SunEdison and Abengoa are certainly a setback, but they should not be surprising given the deeply uneven playing field on which the renewable energy sector is forced to compete. What is holding back renewables is an economic and regulatory system that heavily favors entrenched fossil fuel interests and refuses to price the true cost of carbon pollution.</p>
+      <p>Today, renewable energy is asked to compete head-to-head with natural gas and coal in a market where the rules are rigged. The fracking boom has driven natural gas prices to historic lows, making it the cheapest option for new power generation in the short term. But this &quot;cheapness&quot; is an illusion. Fossil fuel generation does not pay for the climate change, extreme weather, and public health crises caused by its emissions. The International Monetary Fund recently estimated that global fossil fuel subsidies—both explicit cash subsidies and the unpaid costs of environmental damage—total trillions of dollars annually. If fossil fuels were forced to pay for their externalities through a carbon tax, wind and solar would be overwhelmingly the cheapest power sources on earth tomorrow.</p>
+      <p>Furthermore, renewable energy has been plagued by policy uncertainty. Energy infrastructure requires decades-long planning horizons. Yet, in the United States, support for renewables has historically been a political football. The federal Investment Tax Credit (ITC) and Production Tax Credit (PTC) were subject to constant, down-to-the-wire expiration dramas for years, paralyzing long-term investment. While Congress thankfully extended these credits late last year, the damage of previous boom-and-bust policy cycles left many developers financially vulnerable.</p>
+      <p>At the state level, utility monopolies are actively fighting to preserve their business models against the threat of distributed generation. We saw this clearly in Nevada, where the public utilities commission abruptly slashed net metering rates, effectively destroying the rooftop solar market overnight and forcing major installers to flee the state.</p>
+      <p>SunEdison made its own fatal mistakes, but it operated in a punishing environment. The Oxford predictions of a rapid green transition are technologically possible, but they will not materialize under the current market design. Until we implement a price on carbon and guarantee stable, long-term policy support, renewable companies will continue to face artificial headwinds manufactured by the fossil fuel status quo.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The collapse of SunEdison and Abengoa is a painful but necessary wake-up call for the clean energy sector. What has been holding back a stable, sustainable transition to renewable energy is the toxic injection of Silicon Valley &quot;unicorn&quot; culture into heavy infrastructure. The industry is not in trouble technologically, but it must desperately shed its reliance on financial engineering and the pursuit of unrealistic growth.</p>
+      <p>In the wake of the 2008 financial crisis, an era of zero-interest-rate monetary policy flooded the global economy with cheap capital. Investors, desperate for yield, poured money into green energy. However, instead of building stable, slow-growth utility businesses, executives at companies like SunEdison tried to operate like software startups. They sold Wall Street a narrative of exponential, disruptive growth.</p>
+      <p>To maintain the illusion of endless expansion, these companies utilized financial vehicles like &quot;yieldcos,&quot; which allowed them to raise massive amounts of capital to buy up projects globally. But energy generation is fundamentally a low-margin, capital-intensive business. It requires pouring concrete, erecting steel, and signing thirty-year power purchase agreements. It is not an app that can scale globally overnight with zero marginal cost. When SunEdison grew too fast, taking on billions in debt to acquire a disjointed portfolio of assets across continents, it built a house of cards. The moment investor sentiment cooled and capital became slightly harder to access, the entire edifice collapsed.</p>
+      <p>The failure here is not of solar panels or wind turbines, but of expectations. We have expected a monumental restructuring of the global energy grid—a process that historically takes half a century—to happen at the speed of a tech boom.</p>
+      <p>For the renewable energy sector to achieve the Oxford researchers&#x27; predictions over the next 15 years, it must embrace a return to boring, disciplined capitalism. The future of clean energy deployment will likely not be led by swashbuckling, high-flying pure-play developers, but by cautious, well-capitalized traditional utilities, energy majors, and pension funds. These entities understand how to manage massive debt loads, navigate complex regulatory environments, and accept steady, single-digit returns. The clean energy industry isn&#x27;t dying; it is just finally growing up.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>SunEdison’s bankruptcy is a warning about financial engineering, not a verdict on renewable energy. The company was once celebrated for its ambition: it bought projects, developers and service companies around the world; it used yieldcos to recycle capital; it promised growth at a pace that outstripped its balance sheet. When investors lost faith in that structure, the machine seized up. Abengoa’s troubles, similarly, reflected leverage, complex corporate arrangements and exposure to large infrastructure bets. These are not the same thing as panels failing to produce electricity or wind turbines becoming uneconomic.</p>
+      <p>In fact, the underlying technology story is moving in the opposite direction. Solar photovoltaic costs have fallen dramatically over the last decade. Wind power is already one of the cheapest sources of new electricity in many windy regions. In the United States, the extension of the federal tax credits for wind and solar at the end of 2015 removed one major source of near-term uncertainty. Around the world, competitive auctions are revealing prices that would have seemed implausible only a few years ago.</p>
+      <p>What is holding the industry back is not lack of promise but the mismatch between a fast-improving technology and slow-moving institutions. Electricity is not a normal commodity. It travels through regulated wires, is governed by public utility commissions, depends on interconnection queues, and must be financed over decades. A solar developer can cut the cost of panels rapidly, but it cannot always cut the cost of permitting, customer acquisition, grid studies, legal work or capital. In residential solar, for example, “soft costs” remain stubbornly high in the United States compared with countries such as Germany.</p>
+      <p>The sector also suffers from stop-and-go policy. Tax credits expire, get revived, get phased down, and become bargaining chips in Congress. State net-metering rules are challenged just as households begin to understand rooftop solar. Utilities are often rewarded for building capital-intensive assets, not for integrating distributed generation or helping customers use less power. Fossil fuels, meanwhile, benefit from long-established infrastructure, favorable tax treatment, and the fact that their environmental costs are still only partially priced.</p>
+      <p>So no, renewable energy is not “in trouble” in the sense that its basic economics have collapsed. The trouble is that success has attracted companies that mistook cheap capital for a permanent business model. The coming shakeout may even be healthy if it separates sound projects from speculative balance sheets. More immediate success will require boring but essential reforms: stable policy, better grid planning, lower permitting costs, smarter utility regulation and financing structures that match long-lived assets with patient capital. The revolution is real, but it will look less like a tech boom and more like infrastructure modernization.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>Renewable energy is being held back by a political economy built for the fuels of the last century. The bankruptcies of SunEdison and Abengoa make for dramatic headlines, but they should not distract us from the deeper imbalance: fossil fuels enjoy the advantages of incumbency while clean energy is asked to compete on a playing field designed by and for coal, oil and gas.</p>
+      <p>The most obvious problem is that carbon pollution remains largely free. A coal plant can impose health costs, climate risks and environmental damage without paying the full bill. Natural gas, made cheap by the shale boom, looks inexpensive partly because methane leakage and carbon emissions are not fully reflected in the market price. If climate change is a real cost — and the scientific case is overwhelming — then the absence of a meaningful carbon price is not neutrality. It is a subsidy for pollution.</p>
+      <p>Renewables also face institutional barriers. Utilities have spent a century building centralized systems in which power flows from large plants to passive customers. Rooftop solar, community solar, demand response and distributed storage disrupt that model. It is no surprise that utilities in states such as Nevada and Arizona have fought over net metering and fixed charges. They worry about cost shifting, but they also worry about losing control of a business model in which sales growth and capital investment have traditionally driven earnings.</p>
+      <p>Policy uncertainty compounds the problem. Wind and solar developers have had to live with expiring production and investment tax credits, while oil and gas tax preferences have been embedded for decades. A wind project can be delayed or canceled because Congress cannot decide whether clean energy should receive support for another year. That is no way to build an industry.</p>
+      <p>There are real technical challenges, especially as renewable penetration rises. Solar production falls at night; wind varies; transmission lines must connect resource-rich regions to cities. But these are solvable engineering and market-design problems. Geographic diversity, better forecasting, flexible gas plants, demand response, transmission expansion and storage can all help integrate higher levels of renewable power. The claim that intermittency makes renewables marginal is increasingly contradicted by experience in places that already get large shares of electricity from wind or solar.</p>
+      <p>The more immediate obstacle is not physics but power — political power. Incumbent industries have lobbyists, sunk assets and sympathetic regulators. Consumers rarely see the hidden costs of the current system, while clean-energy policies are endlessly scrutinized as “subsidies.” If we want renewables to scale faster, we should price carbon, modernize utility incentives, invest in transmission and research, and provide stable rules instead of boom-and-bust support. SunEdison may have overreached. But the planet cannot afford to confuse one company’s balance sheet with the viability of clean energy itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The renewable energy sector is not doomed, but its advocates often understate the seriousness of the integration challenge. Falling costs for solar panels and wind turbines are impressive, yet electricity systems require more than cheap generation at the moment nature provides it. The central obstacle to immediate success is that renewables are variable, location-dependent and increasingly disruptive to the economics of the grid.</p>
+      <p>A kilowatt-hour generated at noon in a sunny desert is not equivalent to a kilowatt-hour generated on demand during an evening peak. As solar penetration rises, the value of additional midday solar can fall sharply unless there is storage, flexible demand, transmission to other regions or conventional backup that can ramp quickly. Wind faces a similar problem: the best resources are often far from population centers, and output can surge when demand is low. These are not arguments against renewables. They are arguments against treating simple cost comparisons as the whole story.</p>
+      <p>The SunEdison bankruptcy illustrates another version of this problem: the industry has been rewarded for growth before it has always proven durable profitability. Cheap capital, tax equity structures and optimistic assumptions about future project values encouraged expansion. When complexity mounted and investors became skeptical, the company’s strategy unraveled. Abengoa’s collapse also showed how capital-intensive clean infrastructure can be vulnerable when leverage and project risk are poorly managed. A sector that depends on large upfront investment must be especially disciplined about finance.</p>
+      <p>Policy can help, but only if it is honest about system costs. Subsidies that pay for production regardless of time and location may encourage megawatt-hours that are less valuable to the grid. Net metering that credits rooftop solar at the full retail rate may be simple and politically attractive, but it can shift grid costs onto non-solar customers if not updated carefully. Conversely, utilities should not be allowed to block competition merely to protect old assets. The right approach is neither blind enthusiasm nor incumbent obstruction.</p>
+      <p>What would accelerate renewable energy responsibly? First, invest in transmission that connects high-quality renewable resources to demand centers. Second, redesign markets so electricity is priced more accurately by time and location, rewarding flexibility as much as generation. Third, support storage research and deployment, while recognizing that batteries in 2016 are improving but not yet a universal answer. Fourth, preserve reliable capacity during the transition, whether from hydro, nuclear, gas or demand response, so decarbonization does not come at the expense of reliability.</p>
+      <p>Renewables are likely to grow substantially, especially where wind and sun are abundant. But “more immediate success” is constrained by the fact that the grid is an intricate machine, not an app store. The industry’s future depends on moving from headline capacity additions to system-level planning. The hard part is no longer proving that renewable energy can work. It is proving that it can work at scale, at all hours, under financial structures that survive contact with reality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The renewable energy industry is in more trouble than its boosters admit. Not because wind turbines do not turn or solar panels do not work, but because too much of the sector’s apparent strength has depended on subsidies, mandates and unusually favorable financing. SunEdison’s bankruptcy is not an isolated morality tale about one reckless company. It is a reminder that industries built around political incentives can expand faster than their economics justify.</p>
+      <p>Consider the business environment in 2016. Oil prices have collapsed from their highs, and natural gas remains cheap in the United States because of the shale revolution. Gas plants are relatively quick to build, can run when needed, and emit less carbon than coal. For many utilities, that is a practical way to reduce emissions without risking reliability or raising costs sharply. Renewables must compete not against an abstract “fossil fuel” category, but against a flexible and inexpensive incumbent.</p>
+      <p>Wind and solar also impose costs that are often ignored in public debate. Their output varies, and the grid still needs backup, storage, transmission or demand management. Those costs do not always appear in the advertised price of a power-purchase agreement. Rooftop solar can be particularly problematic when net-metering rules allow homeowners to avoid paying their fair share of grid maintenance, leaving other customers to make up the difference. A policy that helps affluent homeowners lease panels is not necessarily a sound energy strategy.</p>
+      <p>This does not mean government should do nothing. Basic research, pollution regulation and clear permitting rules are legitimate public roles. Nor does it mean renewables have no future. Wind in the Great Plains can be highly competitive. Solar in the Southwest makes far more sense than solar in cloudy regions with high installation costs. Hydropower already supplies dependable low-carbon electricity where geography allows. But a mature energy policy must distinguish between technologies that are genuinely economic and those that survive because lawmakers hide costs in tax credits, renewable portfolio standards and utility bills.</p>
+      <p>The bankruptcy of a company like SunEdison also reveals a cultural problem in clean energy: the desire to treat energy as if it were Silicon Valley. Electricity is capital-intensive, regulated and unforgiving. Growth at any price is dangerous. Customers do not want a revolutionary narrative; they want reliable power at reasonable prices. Investors eventually rediscover that fact.</p>
+      <p>What is holding back renewable energy is not simply lobbying by fossil fuel companies or a lack of imagination. It is the stubborn reality that energy transitions are slow because infrastructure is expensive, reliability matters and alternatives must beat incumbents on more than aspiration. Renewables will grow where they make economic sense. The danger is trying to force them too quickly, producing backlash, bankruptcies and higher costs. A steadier approach — technology-neutral, cost-conscious and honest about tradeoffs — would serve both consumers and the environment better.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>A bankruptcy is not a census of an industry. SunEdison’s collapse is dramatic, but it is not proof that renewable energy is failing any more than failed airlines prove people have stopped flying. The most important facts about renewables in 2016 are still the steep fall in solar-panel prices, the competitiveness of wind in many regions, and record levels of global investment. The Oxford researchers may well be right about rapid growth even if some of today’s companies disappear.</p>
+      <p>What is holding renewables back is less the resource than the rules around it. Coal, oil and gas benefit from a century of infrastructure, political habit and, most important, prices that do not include their full costs. If the damage from carbon emissions and air pollution were reflected in electricity markets, wind and solar would look even more attractive. Instead, clean power must often compete against plants whose public health and climate costs are sent elsewhere.</p>
+      <p>Policy instability is another brake. Renewable projects have high up-front costs and long payback periods. Investors can handle risk, but they cannot easily handle rules that change every election cycle. In the United States, the production and investment tax credits have repeatedly faced expiration cliffs. State net-metering fights, such as the recent Nevada controversy, make residential solar financing harder. In Europe, Spain’s subsidy reversals left scars across the industry. The Supreme Court’s stay of the Clean Power Plan has added yet another layer of uncertainty.</p>
+      <p>Utilities also have mixed incentives. Many make money by building and owning capital-intensive assets, not by watching customers put panels on rooftops or by buying power from independent developers. Interconnection rules, rate design, transmission planning and capacity markets were largely built for centralized fossil-fuel plants. Those rules can be modernized, but incumbents will naturally resist changes that reduce the value of their existing investments.</p>
+      <p>SunEdison’s failure, in particular, looks like a financial and managerial failure: too much debt, too many acquisitions, and a complex “yieldco” structure that depended on constant confidence from capital markets. Abengoa’s troubles similarly reflect leverage and an unwieldy business model. These are cautionary tales about corporate strategy, not an indictment of wind turbines or solar modules.</p>
+      <p>The remedy is not to pick one miracle technology. It is to create stable, transparent markets: price carbon, end fossil-fuel preferences, build transmission, reward flexibility and storage, and protect consumers without freezing the grid in the past. Renewable energy is not being held back by a lack of sunshine or wind. It is being held back by an energy system still designed to make old fuels look cheaper than they really are.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Renewable energy’s biggest obstacle is not that it is too futuristic. It is that it has become a very ordinary infrastructure business before our financial system has learned how to treat it that way.</p>
+      <p>A wind farm or solar plant is mostly a financing problem. The fuel is free, but the steel, panels, land, interconnection and permits must be paid for up front. Once built, the project may produce power for 20 or 30 years at low operating cost. That is attractive to pension funds and insurers in theory, but only if the contracts are solid, the tax rules predictable, and the developer disciplined. When any of those assumptions wobble, the cost of capital rises, and a project that looked cheap becomes expensive.</p>
+      <p>SunEdison is the most visible example. The company did not fail because nobody wanted solar electricity. It failed because it tried to grow at breakneck speed, using debt, acquisitions and publicly traded yieldcos to turn development projects into a financial machine. That machine required continual access to cheap capital. Once investors questioned the model, the growth story fed on itself in reverse. Abengoa’s crisis carried the same warning: renewable infrastructure cannot be built indefinitely on balance sheets that are too clever by half.</p>
+      <p>This matters because the industry’s immediate success depends on finance as much as engineering. A utility-scale solar plant in Arizona, a wind farm in Texas, and a mini-grid in rural India all live or die by interest rates, currency risk, contract enforcement and the credibility of the buyer. In wealthy countries, the bottleneck is often tax-equity finance, transmission approval or power-purchase agreements. In poorer countries, it may be a weak utility, a depreciating currency or political risk that makes lenders demand high returns. The sunlight may be abundant, but capital is not equally abundant everywhere.</p>
+      <p>The solution is to make renewables boring. Governments should run transparent auctions, honor contracts, streamline permitting and avoid sudden retroactive policy changes. Utilities and regulators should produce bankable long-term procurement plans. Green banks, loan guarantees and standardized contracts can lower financing costs without pretending every company is a technology darling. Carbon pricing would help, but so would mundane institutional competence.</p>
+      <p>The public often judges renewables by the glamour of rooftop panels or the drama of bankruptcies. The real story is less cinematic. Clean energy will scale when investors believe it is as dependable as a toll road or a water system. SunEdison’s fall is therefore not a death notice. It is a reminder that the renewable-energy revolution will be built by patient capital, not by financial acrobatics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The question should not be whether renewable energy “works.” It does. The better question is what kind of electricity system we need when renewable energy stops being a niche and becomes a large share of supply. The answer is: a much more flexible one than most countries have today.</p>
+      <p>Wind and solar are different from coal, gas or nuclear plants because their output depends on weather and time of day. At low levels, that is easy for the grid to absorb. At higher levels, it becomes a central planning challenge. California is already worrying about the “duck curve,” when midday solar production depresses demand for conventional power and the evening ramp becomes steep. Germany and Denmark have shown that high renewable penetration is possible, but they have also shown the importance of transmission, balancing markets, neighboring grids and careful regulation.</p>
+      <p>This is not an argument against renewables. It is an argument against the idea that cheaper panels alone will deliver a clean energy transition. Solar modules have fallen dramatically in price, and wind turbines have improved. But the cost of a power system is not only the cost of generating a kilowatt-hour at noon or on a windy night. It includes transmission lines from windy plains to cities, backup capacity for calm periods, demand response, forecasting, storage, distribution upgrades and market rules that pay for reliability.</p>
+      <p>Storage is improving quickly, especially batteries, and electric vehicles may eventually become part of the solution. But in 2016, storage is not yet cheap enough to solve every problem, especially multi-day or seasonal gaps. Pumped hydro works where geography allows it. Natural gas plants can ramp quickly, but they still emit carbon. Nuclear and hydro provide steady low-carbon power in some places, but each faces political, environmental or cost constraints. A serious clean-energy strategy must manage these trade-offs honestly.</p>
+      <p>Utilities and regulators also need to rethink what they reward. Traditional electricity markets pay for energy generated, but a high-renewable system needs flexibility: fast response, voltage support, reserve capacity, controllable demand and regional coordination. If markets do not value those services, companies will not build them. Conversely, if rooftop solar customers are paid full retail rates without accounting for grid costs, political backlash can slow adoption.</p>
+      <p>SunEdison and Abengoa tell us something about debt and corporate ambition, but they tell us little about the engineering challenge ahead. The bottleneck is not simply that fossil interests are blocking progress, though they often are. Nor is it that renewables are too expensive, since in many places they are not. The bottleneck is that electricity is a system, not a collection of gadgets.</p>
+      <p>More immediate success requires building the missing pieces: long-distance transmission, smarter distribution networks, time-varying prices, demand response, storage, regional power markets and faster permitting. Renewable energy is ready to grow. The grid around it must grow up too.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>Renewable energy is not doomed, but it is being held back partly by its own rhetoric. Advocates often speak as if falling solar and wind costs have already settled the energy debate. They have not. Electricity systems must provide reliable power every hour of the year, at prices voters and businesses will tolerate. On that test, renewables are making impressive progress, but they are not yet a complete substitute for fossil fuels in most places.</p>
+      <p>The bankruptcies of SunEdison and Abengoa should not be dismissed too easily. Yes, both companies made specific mistakes involving debt, acquisitions and complicated financial structures. But those mistakes flourished in an atmosphere of exuberance. Investors were told that renewable growth would be nearly automatic, supported by mandates, tax credits and cheap capital. When oil and gas prices fell, when subsidies became less secure, and when investors asked harder questions, the weakest business models cracked.</p>
+      <p>Oil prices matter less for electricity than many people assume, but cheap natural gas matters a great deal. In the United States, gas plants are relatively quick to build, flexible to operate and supported by existing infrastructure. They emit less carbon than coal, though more than wind or solar. For utilities facing reliability obligations, gas often looks like the practical choice. Telling them that solar will be cheaper at noon does not answer what happens at 8 p.m., during a winter peak, or after several cloudy days.</p>
+      <p>There is also a fairness issue. Subsidies and net-metering policies can shift grid costs from wealthier rooftop-solar customers to renters and lower-income households. Renewable mandates may be justified by climate goals, but politicians should be honest about costs and trade-offs. If clean energy is sold as free, inevitable and painless, public trust will erode when bills rise or reliability becomes a concern.</p>
+      <p>The better course is technology-neutral climate policy. Put a price on carbon and let low-carbon sources compete. Fund basic research in storage, advanced nuclear, carbon capture, geothermal, next-generation biofuels and grid management. Preserve existing nuclear plants where they can operate safely, because shutting them down often means burning more gas or coal. Use efficiency standards, which can cut emissions cheaply. Support renewables, but do not pretend they are the whole answer.</p>
+      <p>The renewable sector is not “in trouble” in the sense of disappearing. Wind and solar will continue to expand because their costs have fallen and because climate change demands cleaner power. But immediate success is held back by intermittency, infrastructure, financing risk and overpromising. A durable clean-energy transition will require less cheerleading and more realism.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The SunEdison bankruptcy is not an indictment of renewable energy itself but rather a cautionary tale about financial engineering masquerading as industrial strategy. When we examine what actually sank this company, the story has less to do with wind and solar and more to do with the same reckless leverage and growth-at-all-costs mentality that brought down Lehman Brothers. SunEdison expanded aggressively through acquisitions, loading up on debt to purchase yield-generating assets, betting that the continuous rise of its stock price would provide the liquidity needed to service that debt. It did not. The renewable energy sector&#x27;s current troubles are, at their core, a financial sector problem wearing an energy sector costume.</p>
+      <p>The fundamental economics of renewable generation have not collapsed. Solar panel costs have fallen roughly 80 percent over the past decade. Wind energy is now competitive with natural gas in many regions without subsidies. The problem is that building a renewable energy company requires enormous upfront capital, long development timelines, and patient investors willing to weather policy uncertainty. Private equity and hedge funds that poured money into SunEdison wanted equity-like returns on what was essentially infrastructure investment. When the stock declined, the whole edifice crumbled.</p>
+      <p>What would actually accelerate renewable deployment is not more Silicon Valley-style &quot;disruption&quot; but rather the patient, boring capital that built the electric utility industry over the past century. Utilities themselves, regulated monopolies with access to low-cost capital, represent the natural home for renewable energy assets. The sector&#x27;s health will improve when developers focus on building high-quality projects that can be held to maturity rather than flipped through repeated financial engineering transactions. SunEdison&#x27;s failure may, paradoxically, help the industry by demonstrating which business models do not work.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The renewable energy industry faces a profound policy paradox: it has become successful enough to attract political opposition but not yet successful enough to survive without support. The immediate setbacks afflicting companies like SunEdison and Abengoa must be understood against this backdrop of regulatory uncertainty, which poisons the investment climate more thoroughly than any technical limitation.</p>
+      <p>Consider what an investor deciding whether to build a utility-scale solar farm actually confronts. She must forecast revenues fifteen to twenty years into the future while facing不明朗的政策环境在州和联邦层面同时存在。联邦税收优惠已经到期、延长、修改，然后又再次成为政治讨价还价的筹码。州 Renewable Portfolio Standards vary wildly and face legal challenges. Carbon pricing, which would most directly internalize the climate costs of fossil fuels, cannot even get a vote in Congress. This policy chaos is not merely an inconvenience; it is a fundamental barrier to the capital allocation the industry needs.</p>
+      <p>The fossil fuel industry, by contrast, operates within a support structure that has accumulated over more than a century. Direct subsidies, favorable tax treatment, and the implicit guarantee that the government will intervene to stabilize prices during crises (the Strategic Petroleum Reserve, fuel price controls) constitute a form of policy reliability that renewables simply do not enjoy. When oil prices collapsed in 2014, the industry did not see mass bankruptcies because governments intervened to constrain supply. When natural gas prices spike, utilities are protected by pass-through regulations. Renewable energy investors absorb their own risks without such cushions.</p>
+      <p>The solution is not complicated: a predictable, market-based carbon price would simultaneously reduce fossil fuel competitiveness and provide renewable investors with the certainty they need to commit capital. Short of that, stable production tax credits and long-term utility contracts could provide the next-best certainty. What the industry cannot sustain is the current pattern of boom-and-bust policy signals that make renewable investment appear to be as much a gamble on political outcomes as on technological performance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>Those declaring renewable energy in trouble based on the SunEdison and Abengoa bankruptcies are committing a basic error: confusing the fate of individual companies with the trajectory of an entire industry. We would not conclude that the automobile industry was failing in 1908 because a particular manufacturer went bankrupt; we would recognize that the technology itself had reached escape velocity. Renewable energy has reached that point.</p>
+      <p>The Oxford researchers the question references are not alone in their optimism. Every major energy forecasting institution—BP, ExxonMobil, the International Energy Agency—projects renewable energy claiming an increasing share of the global energy mix over the coming decades. The fall in costs has been so dramatic that renewable energy is now the default choice for new power generation in much of the world, not because of environmental idealism but because the numbers simply work. The question is no longer whether renewables will grow but how fast.</p>
+      <p>SunEdison&#x27;s troubles, examined closely, reveal a company whose business model was always somewhat peripheral to the core renewable energy market. It was a developer and financial engineer, not an operator of stable, cash-flow-generating assets. The companies that actually manufacture solar panels and wind turbines—First Solar, Vestas, SolarWorld—are performing reasonably well. The utility-scale projects being built today are economically viable without the elaborate financial structures that SunEdison deployed.</p>
+      <p>The industry is experiencing exactly the kind of consolidation and rationalization that occurs in any maturing sector. Weakening players are being eliminated. Stronger players are acquiring assets at distressed prices. This is the normal functioning of creative destruction, not evidence of systemic failure. Five years from now, we will likely look back at 2016 as a healthy correction that separated companies with genuine long-term strategies from those that were riding the clean energy wave without understanding its underlying mechanics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The renewable energy sector&#x27;s current difficulties point to a problem more fundamental than corporate finances or policy uncertainty: we have built a grid designed for centralized, dispatchable power generation and are attempting to retrofit it for distributed, variable sources. The technical challenges of grid integration represent the true bottleneck, and addressing them requires investments and reforms that receive far less attention than company bankruptcies.</p>
+      <p>Solar and wind power generate electricity according to weather patterns, not consumer demand. This intermittency creates two distinct problems. First, the grid must maintain moment-to-moment balance between supply and demand, which becomes more difficult as variable sources grow. Second, seasonal variations in renewable output may not align with seasonal demand patterns—solar peaks in summer while heating demand peaks in winter, for instance. Both problems point to the same solution: affordable, large-scale energy storage. Until that technology matures and deploys at scale, renewable energy will remain dependent on backup generation, typically natural gas plants that can be dispatched on demand.</p>
+      <p>The current electricity market design also creates barriers. Wholesale markets were designed assuming that generators could offer power whenever needed. Renewables, which must take-it-or-leave-it when the sun shines or wind blows, compete not on equal footing with dispatchable resources. Market rules that would allow renewables to receive credit for their capacity contributions even when not generating, or that would value the zero-fuel-cost nature of wind and solar, are either nonexistent or inadequate.</p>
+      <p>Transmission infrastructure presents another constraint that is often overlooked. The best renewable resources—strong winds in the Great Plains, intense solar insolation in the Southwest—often sit far from population centers. Building the high-voltage transmission lines needed to deliver this power requires navigating a maze of permitting requirements, environmental reviews, and local opposition that can stretch over decades. The result is curtailment of renewable generation in resource-rich areas while demand in distant cities continues to be met by fossil fuels. Solving the renewable energy puzzle requires solving these grid integration challenges, not merely celebrating falling panel costs or lamenting corporate bankruptcies.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

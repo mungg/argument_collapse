@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integrating local police into a national domestic-intelligen... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_right_fight.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_right_fight.html">The Right Fight</a> · Cluster 16 of 46</div>
+  <h1 class="arg-title">"Integrating local police into a national domestic-intelligence network is more likely to decrease accountability and increase surveillance abuses than to provide the democratic restraint suggested by Richman."</h1>
+  <div class="arg-meta">0 human · 1 LLM · 1 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Integrating local police into a national domestic-intelligence network is more likely to decrease accountability and increase surveillance abuses than to provide the democratic restraint suggested by Richman."</p>
+        <button class="essay-view-full" data-target="full-16-88828">View full essay</button>
+        <div class="essay-full" id="full-16-88828" style="display:none;">
+            <p>Daniel Richman has written a careful and in many ways persuasive essay, but I want to register a more skeptical response to its central conceit: that drawing local police more deeply into the federal counterterrorism intelligence apparatus will, on balance, make that apparatus more accountable. I think the opposite is at least as likely. The history Richman gestures at — COINTELPRO, the American Protective League, the Church Committee findings on how the FBI laundered domestic spying through municipal &quot;red squads&quot; — should not be quickly dispatched with a wave at the supposed maturation of community policing since 1968. It should be the starting point.</p>
+            <p>Consider what Richman is actually proposing. Roughly 700,000 state and local police officers, with informal access to neighborhoods, schools, mosques, social-service agencies, and informants of every description, are to become the capillaries of a national domestic-intelligence network whose arteries run to the FBI, DHS, and the rest of the alphabet. The promise is that, because mayors are elected and chiefs respond to mayors, this network will be answerable to local political values. But the actual mechanism of accountability requires that local officials know what their officers are doing on behalf of federal agencies. Everything we know about classified intelligence work suggests they will not. JTTF detectives are routinely sworn to secrecy that supersedes their reporting obligations to their own chains of command. The Portland and Boise experiences Richman cites in passing are precisely cases in which local civilian oversight boards were told that federal classification rules prevented them from seeing what their own cops were up to. That is not an inconvenient wrinkle in the model; it is the model failing on its own terms.</p>
+            <p>Richman&#x27;s reassurance that policing has changed since 1968 is also overstated. Community policing as a doctrine has indeed spread, but its translation into operational reality is wildly uneven. The New York Street Crime Unit that killed Amadou Diallo, the Los Angeles Rampart scandal, the Cincinnati riots of 2001 — these are not artifacts of a vanished policing culture. The same NYPD that Richman lauds for its international counterterrorism reach has, since 2002, been quietly building an intelligence division under former CIA officer David Cohen whose internal practices are largely unknown to the City Council, let alone to the communities surveilled. The consent decree in New York that Richman mentions exists precisely because the older NYPD intelligence unit ran amok; the relevant question is whether the new arrangements will be any different, and we have very little evidence either way.</p>
+            <p>There is a deeper problem with Richman&#x27;s framework. He treats &quot;the local&quot; as if it is structurally inclined toward restraint and toward immigrant communities&#x27; interests, because police &quot;need&quot; their cooperation to fight ordinary crime. But this cuts both ways. The same dependence that makes police protective of immigrants for crime-clearance reasons also makes them prone to recruit informants in those communities through coercion — threatening minor immigration consequences to extract cooperation on terrorism matters. We are already hearing reports of this from defense lawyers in Detroit and Brooklyn. The &quot;balanced portfolio&quot; that Richman praises is, viewed from inside an immigrant community, indistinguishable from the &quot;everything is leverage&quot; mentality that fuels the worst kinds of informant abuse.</p>
+            <p>I would also question Richman&#x27;s casual claim that &quot;the need for a national domestic-intelligence network focused on threats of terrorist attack ought not be in dispute.&quot; It ought to be in considerable dispute. The premise that another 9/11 is around the corner unless we build a massive domestic intelligence apparatus is an assumption, not a finding. There are serious analysts — including some who served on the staff of the 9/11 Commission — who think that the actual threat from al-Qaeda inside the United States is far smaller than the political class needs it to be, and that the principal danger of the post-9/11 mobilization is the construction of a surveillance infrastructure that will outlive any actual threat and be turned, eventually, on other targets. Richman barely engages this possibility.</p>
+            <p>What would a more cautious response to the same problem look like? It would begin by drawing sharp legal lines around what local police can and cannot collect, share, and retain on people not suspected of crimes, and would give those lines real teeth through private rights of action and independent inspectors general at the municipal level. It would resist, rather than embrace, the dissolution of the wall between criminal investigation and intelligence collection. It would treat the JTTF model as a narrow exception to be tightly controlled rather than a template to be expanded. And it would be honest that the principal accountability mechanism for domestic intelligence in a free society is not federalism — it is law.</p>
+            <p>Richman ends by acknowledging that much of what he is worried about is not amenable to judicial or legislative oversight, and that &quot;institutional structure&quot; must do the work. That concession is more telling than he allows. If the only thing standing between us and a recrudescence of COINTELPRO is the hope that police chiefs, responding to mayors, responding to voters, will exercise restraint about practices the voters cannot see, then we are not building accountability. We are building a story about accountability. The right fight, in my view, is not to deepen the federal–local intelligence partnership in exchange for a vague promise of local voice. It is to insist that domestic intelligence remain narrow, statutorily bounded, and legally contestable — even at some cost to the project of &quot;connecting dots.&quot;</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Federal secrecy and classification rules effectively prevent local mayors and oversight boards from monitoring what their own officers are doing within joint task forces.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The claim that modern &#x27;community policing&#x27; ensures sensitivity is undermined by recent history and the persistence of aggressive, opaque policing cultures in major cities.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The &#x27;balanced portfolio&#x27; of local police allows them to use their dual role to coerce immigrant communities, using minor criminal or immigration issues as leverage to force cooperation.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The essay assumes the necessity of a massive domestic-intelligence apparatus without considering that the actual threat may not justify the creation of a permanent surveillance infrastructure.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">True accountability in domestic intelligence should rely on strict legal boundaries and judicial oversight rather than the unreliable institutional structures of federalism.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

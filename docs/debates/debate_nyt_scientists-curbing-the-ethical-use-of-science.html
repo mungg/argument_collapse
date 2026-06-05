@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scientists Curbing the Ethical Use of Science · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Science Tech · Binary</div>
+  <h1 class="debate-title">Scientists Curbing the Ethical Use of Science</h1>
+  <div class="question-body"><p>The inventor of a genome-editing technique that might eventually be used to alter future generations wants a moratorium on its use in research on humans. But Chinese scientists have already tried it, albeit unsuccessfully, on human embryos to cure a blood disorder.</p><p>Concerned about how the technique might be applied, the National Academies of Sciences and Medicine has called for an international meeting to discuss research and applications. </p><p>But can a discovery be reined in once the basic science has been published? Can researchers control the ethical use or ramifications of their breakthroughs?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>researchers cannot control the ethical use or ramifications of their breakthroughs</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>researchers can control the ethical use or ramifications of their breakthroughs</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 25%;"></div>
+        <div class="seg n"  style="width: 25%;"></div>
+        <div class="seg ws" style="width: 50%;"></div>
+        <div class="seg ss" style="width: 0%;"></div>
+      </div>
+      <span class="bar-num">n=4</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 20%;"></div>
+        <div class="seg wo" style="width: 20%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 40%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 46%;"></div>
+        <div class="seg wo" style="width: 8%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 21%;"></div>
+        <div class="seg ss" style="width: 25%;"></div>
+      </div>
+      <span class="bar-num">n=24</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_1.html">
+      <td class="arg-text">While scientists cannot fully control the use of their breakthroughs, they can effectively guide the ethical application of technology through self-imposed guidelines and moral persuasion.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_2.html">
+      <td class="arg-text">While scientists have successfully self-regulated in the past, modern breakthroughs like genome editing require a more democratic and diverse deliberative process beyond the control of self-interested researchers.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_3.html">
+      <td class="arg-text">A broad moratorium on human genome-editing research should be rejected in favor of strict oversight that distinguishes between laboratory research on embryos and actual reproductive use.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_4.html">
+      <td class="arg-text">While patents are primarily commercial tools, they can serve as a mechanism for academic and non-profit institutions to enforce ethical restrictions on how their scientific breakthroughs are used by licensees.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_5.html">
+      <td class="arg-text">To effectively manage the ethical and social ramifications of scientific breakthroughs, Congress should revive the Office of Technology Assessment (OTA) to provide nonpartisan, expert guidance on technological applications.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_scientists-curbing-the-ethical-use-of-science_arg_6.html">
+      <td class="arg-text">A moratorium on human genome editing is an ethical mistake because the duty to cure devastating genetic diseases outweighs the hypothetical risks of germline modification.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Alexander M. Capron</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/05/28/scientists-curbing-the-ethical-use-of-science/alexander-m-capron" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Alta Charo</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/05/28/scientists-curbing-the-ethical-use-of-science/alta-charo" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Celia Wexler</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/05/28/scientists-curbing-the-ethical-use-of-science/celia-wexler" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Pilar Ossorio</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/05/28/scientists-curbing-the-ethical-use-of-science/pilar-ossorio" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The question of whether scientists can rein in their own discoveries has a long and largely discouraging history, but the case of CRISPR-Cas9 is not quite as hopeless as that history suggests. Jennifer Doudna&#x27;s call for a moratorium, and the National Academies&#x27; move toward an international meeting, are deliberate echoes of the 1975 Asilomar Conference on recombinant DNA. Asilomar is worth taking seriously as a precedent: a self-imposed pause did hold long enough for researchers, regulators, and the public to develop containment protocols and the institutional review architecture that still governs molecular biology today. It is not true that, once published, a basic technique is simply ungovernable.</p>
+      <p>But Asilomar also flatters us. It worked partly because the relevant community was small, concentrated in a handful of Western labs, and dependent on a few funding agencies that could enforce norms by withholding grants. CRISPR is different on every one of those dimensions. The reagents are cheap, the protocols are in undergraduate teaching labs, and the technique works in any organism anyone has tried. The Sun Yat-sen team&#x27;s experiment on non-viable tripronuclear embryos, published in Protein &amp; Cell after Nature and Science declined it on ethical grounds, is precisely the kind of jurisdictional end-run that a Western moratorium cannot prevent. Multiply that by every country with a competitive biomedical sector and the limits of voluntary restraint become obvious.</p>
+      <p>What scientists can realistically control, then, is not the existence of the technique but the legitimacy of particular uses of it. A clear distinction between somatic editing (which is continuous with existing gene therapy and broadly accepted) and germline editing (which alters the heritable genome) is the single most important line the community can draw. Layered on top of that, a distinction between basic research on non-viable embryos and any attempt at clinical reproduction would let inquiry continue while keeping the most consequential applications off the table. These lines have to be drawn explicitly because, left implicit, they will erode under competitive pressure.</p>
+      <p>The harder problem is that &quot;the scientific community&quot; is not really an agent. Norms ultimately need to be backed by funders, journals, IRBs, professional societies, and, eventually, national regulators coordinating through bodies like the WHO. The Academies&#x27; meeting matters less for whatever consensus statement it produces than for whether it builds the connective tissue among those institutions. Researchers cannot control the ramifications of their breakthroughs alone; they can, however, refuse to let the absence of control become an excuse for not trying.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>In April 2015, Chinese researchers reported using CRISPR-Cas9 to edit the genomes of nonviable human embryos—a world first, though scientifically unsuccessful. The disclosure crystallized a pressing question: once the basic science of a transformative technique is published, can its inventors control its ethical use? The calls for a voluntary moratorium and the planned international summit reflect an awareness that scientific self-governance is both imperative and profoundly limited.</p>
+      <p>The standard reference is the 1975 Asilomar conference, where biologists paused recombinant DNA research and created safety guidelines that allowed the field to thrive. Asilomar succeeded because the community was small and insular; today’s globalized, competitive science makes voluntary restraint far harder to sustain. CRISPR is simpler and more accessible; its components are published and can be adopted by any competent lab. The Chinese study, approved by a local ethics committee, showed how easily a determined team can vault past an ethical boundary.</p>
+      <p>Yet norm-setting should not be underestimated. The pioneers’ call for a moratorium demonstrates that moral authority can shape the conversation even without enforcement power. Leading journals refuse to publish ethically questionable embryo-editing work; major U.S. funders are legally barred from supporting it. The Chinese paper appeared in an obscure journal after rejection by top-tier outlets, showing that reputational gatekeeping still bites. Such mechanisms do not halt risky research, but they make it professionally costly.</p>
+      <p>More fundamentally, the moratorium buys time for the kind of multidisciplinary conversation—among biologists, bioethicists, legal scholars, and the public—that the Human Genome Project’s ELSI program pioneered. That model acknowledged that scientists cannot dictate societal values; instead, their role is to sound the alarm and supply expertise to a broader democratic deliberation. This proactive weaving of ethics into the research endeavor, rather than reacting after a crisis, is perhaps the genome project’s most enduring legacy. The upcoming National Academies summit cannot bind sovereign states, but it can produce a consensus framework that shapes funding rules, national laws, and the moral environment in which science operates.</p>
+      <p>In the end, hoping to fully ‘rein in’ a published discovery is a fantasy—and undesirable, because open science drives progress. The moratorium is less a fence than a flare, signaling that the time for public reckoning has arrived. What scientists can do is act as responsible stewards: articulate the risks, and help build multi-stakeholder governance that nudges the technology toward healing, not harm. The effort will be messy and incomplete, but it is the only responsible path.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Once a foundational scientific discovery is published, the genie is fundamentally out of the bottle. Total containment is a fiction. The recent news that Chinese researchers attempted to edit the genomes of non-viable human embryos using the CRISPR-Cas9 technique proves exactly this point. The inventors of this revolutionary gene-editing tool cannot physically stop laboratories on the other side of the globe from applying their breakthrough. However, acknowledging that absolute control is impossible does not mean researchers are powerless to shape the ethical trajectory of their work.</p>
+      <p>History provides a powerful blueprint for how the scientific community can guide the ramifications of its discoveries. In 1975, molecular biologists gathered at the Asilomar Conference to discuss the emerging technology of recombinant DNA. Recognizing the potential biohazards, scientists voluntarily agreed to a moratorium on certain experiments until robust safety protocols could be established. This self-governance was remarkably successful. It demonstrated that while individual researchers cannot unilaterally dictate how their findings are used, the collective scientific establishment can create binding normative frameworks that policymakers and institutions adopt worldwide.</p>
+      <p>Yet, the challenge facing the National Academies of Sciences and Medicine today is distinctly more complex than Asilomar. Recombinant DNA in the 1970s required specialized, highly funded laboratories. CRISPR, by contrast, is notoriously cheap, efficient, and accessible. Furthermore, the modern scientific enterprise is highly globalized, encompassing diverse cultural and legal landscapes. As the recent embryo experiments highlight, ethical consensus in Western nations does not automatically translate to universally accepted boundaries, especially concerning germline editing—alterations that would be passed down to future generations.</p>
+      <p>Because physical enforcement is impossible, researchers must leverage the tools of professional and institutional influence. The upcoming international summit should not attempt the impossible task of erasing the technology, but rather focus on establishing clear ethical red lines. A global consensus can effectively ostracize rogue actors. If premier scientific journals refuse to publish unethically derived research, and international grant agencies refuse to fund it, the incentive structure for reckless experimentation collapses.</p>
+      <p>Scientists cannot control the ethical ramifications of their discoveries through fiat. But as the first to understand the profound implications of their work, they have a deep responsibility to sound the alarm and convene the necessary stakeholders. By guiding the global dialogue, setting institutional standards, and advising national legislatures, researchers can build a powerful regulatory scaffolding around an open discovery, ensuring that gene editing is used to alleviate human suffering rather than to cross dangerous ethical boundaries.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>A discovery cannot be “reined in” in the literal sense. Once CRISPR-Cas9 methods are published, the reagents are cheap, the papers are downloadable and the skills are widely distributed. No committee in Washington, London or Beijing can make that knowledge disappear. The failed Chinese embryo experiment shows both the power and the limits of any proposed moratorium: even amid public warnings, researchers can proceed in jurisdictions with different rules and incentives.</p>
+      <p>But that does not mean scientists are helpless. The relevant question is not whether knowledge can be erased, but whether dangerous applications can be slowed, stigmatized and subjected to public authority before they become routine. The history of recombinant DNA is instructive. The Asilomar conference did not stop molecular biology; it created shared categories of risk, laboratory safeguards and a norm that responsible scientists observed. Similar norms matter. Journals can refuse to publish reckless experiments. Funders can withhold grants. Universities and hospitals can enforce review-board rules. Professional societies can define misconduct. Regulators can bar implantation of edited embryos. These measures are imperfect, but imperfection is not futility.</p>
+      <p>The distinction between laboratory research and clinical use is crucial. Studying early, nonviable embryos may help scientists understand development and the frequency of off-target mutations. Attempting to create a pregnancy with an edited embryo is a different matter. Germline alteration affects not merely a consenting patient but future persons and, potentially, the human gene pool. At present the technique is too inaccurate, with risks of mosaicism and unintended mutations. There are also ethical concerns beyond safety: enhancement, inequality, parental design preferences and the possibility of reviving eugenic habits under a therapeutic label.</p>
+      <p>Scientists should not pretend that they alone can decide these matters. The consequences are social and political as well as technical. Yet they have special obligations because they understand the tools, set laboratory norms and often create the first opportunities for misuse. A temporary international pause on reproductive germline editing, paired with open debate and carefully reviewed basic research, is not anti-science. It is a way of preserving public trust while drawing a line between curing disease and rushing into heritable human experimentation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The debate over CRISPR-Cas9 and human genome editing represents one of the most consequential scientific ethics questions of our time. The discovery cannot be uninvented, but this does not mean researchers are powerless in shaping its trajectory. The question is not whether science can be contained—it cannot—but whether responsible scientists can establish meaningful norms before applications outpace deliberation.</p>
+      <p>History offers instructive lessons. Recombinant DNA research faced similar concerns in the 1970s. Scientists at Asilomar voluntarily imposed a moratorium on certain experiments until safety protocols could be established. That precedent demonstrates that self-regulation, while imperfect, is possible when the scientific community collectively commits to restraint. The difference now is scale: technology like CRISPR spreads rapidly across borders through publication and collaboration, making coordinated response exponentially harder.</p>
+      <p>Yet the Chinese experiments, which the scientific community rightly criticized, actually strengthened the case for proactive governance. The widespread condemnation signaled that rogue applications would face professional and ethical sanction. This social pressure carries weight even in decentralized research environments. Moreover, the international meeting called by the National Academies represents precisely the kind of multi-stakeholder engagement needed to develop governance frameworks before applications become widespread.</p>
+      <p>Researchers do retain meaningful leverage through several channels. Funding bodies can condition grants on ethical compliance. Professional societies can establish codes of conduct with meaningful consequences for violations. Peer review processes can demand rigorous ethical justification for certain studies. Journals can require transparency about safety protocols. None of these mechanisms are sufficient alone, but collectively they create friction that slows reckless applications.</p>
+      <p>The deeper issue is whether scientists bear special responsibility for downstream uses of their discoveries. I believe they do. Basic research may be curiosity-driven, but the decision to publish techniques with clear human applications carries implicit assumptions about acceptable use. Researchers who pioneer transformative technologies have both the expertise and the ethical obligation to advocate for responsible development, even when this means accepting limits on their own freedom to pursue certain questions.</p>
+      <p>The moratorium proposed by CRISPR&#x27;s inventors represents an encouraging model: scientists themselves calling for restraint pending broader societal deliberation. This suggests the scientific community recognizes that public trust depends on demonstrating commitment to ethical boundaries. The challenge now is transforming that recognition into durable institutional mechanisms that survive individual moral failures and institutional pressures for rapid application.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**The Genie Is Already Out**</p>
+      <p>Jennifer Doudna&#x27;s call for a moratorium on the germline use of CRISPR-Cas9 is admirable, but it arrives roughly three years too late to be effective. The basic technique has been published in major journals, replicated in labs from Boston to Shanghai, and reduced to kits that any competent graduate student can order online. When a Chinese team at Sun Yat-sen University edited non-viable human embryos this April, they were not doing anything secret or technically heroic—they were doing what the literature taught them to do.</p>
+      <p>This is the iron law of published science: once a method is in print, it belongs to everyone. The history of dual-use research bears this out repeatedly. The Asilomar conference of 1975, often invoked as a model, worked in part because recombinant DNA still required scarce reagents and elite institutional infrastructure. CRISPR is cheap, fast, and elegant. The barriers to entry are vanishing. Asking the global research community to refrain from germline editing now is like asking chemists to forget how to synthesize a reaction once the protocol is in Organic Syntheses.</p>
+      <p>That does not mean the moratorium effort is worthless. Norms matter even when they cannot be enforced. The Asilomar precedent did slow certain lines of inquiry long enough for regulatory frameworks to mature, and it created professional expectations that constrained the mainstream of the field even as fringe actors did what they wished. A similar effect is plausible here. Top-tier journals can refuse to publish germline-modification clinical work; major funders can decline to support it; tenure committees can punish researchers who flout consensus. These soft levers shape behavior more than statutes do.</p>
+      <p>But we should be honest about what such norms cannot do. They cannot prevent a wealthy fertility clinic in a permissive jurisdiction from offering &quot;enhancement&quot; services to clients. They cannot stop a national program in a country that sees biotechnology as strategic advantage. And they cannot undo the published methods.</p>
+      <p>The right framing, then, is not &quot;can we control this?&quot; but &quot;what kind of world do we want to inhabit while we cannot control it?&quot; That is a question about governance, international diplomacy, and public deliberation—not about scientific self-restraint. The National Academies meeting is useful insofar as it begins that broader conversation. If it functions only as a guild gathering where biologists reassure one another that they are being responsible, it will have missed the moment entirely.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**Scientists Are Not the Right Decision-Makers**</p>
+      <p>There is something quietly troubling about the assumption embedded in this debate: that scientists, having invented a powerful tool, ought to be the ones deciding how humanity uses it. The fact that Jennifer Doudna and colleagues have called for a moratorium is welcome. The fact that we are largely waiting for them to tell us what to do is not.</p>
+      <p>Germline editing is not a technical problem. It is a question about what kinds of human beings should exist, who gets to decide, and on what terms. Those are political, moral, and ultimately democratic questions. Convening the National Academies is a sensible first step, but it should not become the last step. The Academies represent a professional class with obvious interests—careers, grants, prestige, future therapies they hope to develop. They are not a substitute for broad public deliberation, and they should not pretend to be.</p>
+      <p>Compare how we have handled other technologies that touched the foundations of human life. The debate over in vitro fertilization in the late 1970s and early 1980s included theologians, ethicists, patient advocates, disability scholars, and ordinary citizens, not just embryologists. The UK&#x27;s Warnock Commission, whatever its flaws, took testimony widely and produced a framework that has held up reasonably well. The U.S., by contrast, largely left assisted reproduction to the market, with predictable results: a fragmented, lightly regulated industry that does roughly what paying customers want.</p>
+      <p>If germline editing follows the IVF model in the United States, &quot;ethics&quot; will end up meaning &quot;whatever fertility clinics decide is profitable.&quot; Disability rights groups have a stake here—what does it mean for the social standing of people with sickle-cell disease or deafness if their conditions become routinely &quot;corrected&quot; before birth? Religious traditions have stakes. Future generations, who cannot consent, have stakes. None of these constituencies are well represented at a National Academies meeting.</p>
+      <p>The right move is to use this moment to build genuinely inclusive deliberative bodies—something like a citizens&#x27; assembly with binding influence on policy—before the technology matures. That is harder and slower than a scientific summit, but it is the only response commensurate with the stakes. Researchers can ethically control their experiments. They cannot, and should not, control on behalf of the rest of us what counts as an acceptable human being. That decision is too important to outsource to the people holding the pipettes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**Moratoria Work Better Than Cynics Think**</p>
+      <p>It has become fashionable to dismiss calls for research moratoria as naive—the technology is out there, someone will do it anyway, so why bother? This cynicism is easy and largely wrong. The historical record shows that scientific self-restraint, combined with institutional reinforcement, has repeatedly slowed or reshaped the trajectory of powerful techniques.</p>
+      <p>Consider the 1975 Asilomar Conference on recombinant DNA. Critics at the time predicted, much as they do today, that any voluntary pause would be meaningless because the techniques were widely known. In fact, the moratorium held long enough for the NIH to develop biosafety guidelines, for institutional biosafety committees to be established, and for a professional culture of containment to take root. Forty years later, recombinant DNA research is enormously productive and has caused none of the catastrophes feared in 1974.</p>
+      <p>Consider, too, the de facto international moratorium on human reproductive cloning that has held since the late 1990s. Dolly the sheep was supposed to herald an era of designer babies within a decade. It did not. Some countries banned the practice outright; others created licensing regimes; the major scientific journals refused to publish such work; reputable IVF clinics declined to attempt it. The result is that reproductive cloning, technically feasible for years, simply has not happened at scale.</p>
+      <p>So when Doudna and her colleagues call for a pause on germline CRISPR work in clinical contexts, this is not hand-wringing—it is the activation of a real, if informal, system of governance. Journals, funders, universities, and professional societies are the enforcement mechanism, and they have considerable power. A researcher who flouts a clear international consensus risks unpublishability, loss of grants, and professional exile. Those are serious costs.</p>
+      <p>The Sun Yat-sen experiment actually illustrates the system working, not failing. The work was done on tripronuclear (non-viable) embryos, the results were dismal—wide off-target mutations, low efficiency—and the paper was rejected by Nature and Science partly on ethical grounds before appearing in a smaller journal. The signal sent was clear: this kind of work will face headwinds.</p>
+      <p>None of this means germline editing will never occur, or that the moratorium will hold forever. It means that scientists, working through their institutions, can buy time—time to do safety research, to debate norms, to negotiate international agreements, and to bring publics into the conversation. That is a meaningful form of control, and it would be a mistake to give it up because perfect control is impossible.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>**Be Careful What You Forbid**</p>
+      <p>Most of the commentary around CRISPR has focused, understandably, on the dangers of moving too fast. I want to register the opposite worry: that a poorly framed moratorium, driven by speculative fears about &quot;designer babies,&quot; could foreclose enormous medical benefit and entrench a presumption against germline therapy that is harder to dislodge than its advocates realize.</p>
+      <p>Start with what germline editing could mean for families carrying devastating heritable diseases. Huntington&#x27;s disease. Tay-Sachs. Cystic fibrosis. Severe forms of muscular dystrophy. For couples in which both partners are carriers, or in which one partner has a dominant disorder, preimplantation genetic diagnosis sometimes helps and sometimes does not—if all the embryos carry the disease allele, there is nothing to select. A safe, precise germline edit would be, for these families, not a step toward eugenic excess but a release from a hereditary nightmare. To lump such uses together with cosmetic enhancement is sloppy ethics.</p>
+      <p>The Chinese embryo paper is being read as a cautionary tale, but it can also be read as exactly the kind of careful, early-stage work that ought to be encouraged. The researchers used non-viable embryos that could never have developed. They published their results, including the disappointing off-target rates, openly. That is how a young technology gets characterized—not by edict from on high, but by patient empirical work in laboratories willing to attempt and report.</p>
+      <p>The danger of an open-ended moratorium is that it pushes such work into less transparent venues. If American and European researchers cannot legally pursue safety studies on early human embryos, the science will continue—in private clinics, in jurisdictions with weaker oversight, in classified national programs. The Western scientific community will lose its ability to set norms by example because it will not be doing the work.</p>
+      <p>A better approach distinguishes sharply between clinical application (where caution is warranted and current safety data plainly inadequate) and preclinical research (which should proceed openly, with appropriate ethical review). The National Academies meeting should aim at this distinction rather than at a blanket pause. It should also resist the urge to settle &quot;the ethics&quot; once and for all. Ethical judgments about new technologies improve with evidence about what those technologies actually do, and the evidence comes only from doing the science.</p>
+      <p>Scientists cannot fully control the downstream uses of their discoveries. But they can ensure that the discoveries are made by the most careful hands available. That is worth more than a moratorium.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The earnest plea from the inventor of CRISPR-Cas9 for a moratorium on human germline editing feels less like a policy intervention and more like a lament for a lost innocence. Once the basic science is published, the idea that researchers can truly rein in its ethical use is a comforting fiction. The moment Chinese scientists published their attempt—however flawed—to edit the gene for beta-thalassemia in human embryos, the genie was emphatically out of the bottle. The very act of publication, the cornerstone of scientific progress, transforms a closely held technique into a globally accessible tool, subject to the wildly divergent ethical frameworks, regulatory capacities, and ambitions of researchers worldwide.</p>
+      <p>History shows that voluntary moratoria are effective only when a scientific community is small, homogeneous, and shares a singular ethical compass—the 1975 Asilomar conference on recombinant DNA being the classic and, arguably, unrepeatable example. Today, the life sciences are a sprawling, competitive, and deeply international enterprise. A moratorium that lacks binding legal force is just a speed bump for a well-funded lab in a jurisdiction with lax oversight or a developmental state eager to seize the biomedical future. The Chinese experimenters, who operated with institutional approval and published in a prominent journal, did not violate an international moratorium because none existed with legal teeth; they simply ignored a burgeoning normative preference.</p>
+      <p>The deeper bind is structural. The same logic that drives scientists to publish—the imperative to advance knowledge, secure funding, and build reputation—makes unilateral disarmament irrational. No single nation or institution will willingly cede a perceived advantage in a revolutionary technology. The conversation the National Academies now calls for is essential, but it is a political and diplomatic negotiation, not a scientific one. The researchers who gave us the tool have no special authority to govern its use. That power rests with legislators, treaties, and regulatory bodies that can impose real consequences. We should listen to scientists for technical insight, but we should not mistake their anxiety for control. The horse has bolted; the task now is to build the fences.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The call for a moratorium on human germline editing, led by the very scientists who developed the CRISPR-Cas9 system, is not an exercise in futility but a powerful and historically grounded model of scientific responsibility. The question of whether researchers can control the ethical use of their breakthroughs has a clear precedent: the 1975 Asilomar conference, where scientists voluntarily paused recombinant DNA research to develop safety guidelines, which then shaped the regulatory framework for an entire field. That moment did not stop genetic engineering; it enabled its safe and publicly acceptable progression. We are at a similar inflection point today, and scientists are once again proving they can and should take the lead.</p>
+      <p>The fact that Chinese researchers already attempted embryo editing does not undermine this effort; it underscores its urgency. The results were not a success—off-target effects and mosaic embryos were abundant—demonstrating precisely the technical hazards that a moratorium on clinical applications is designed to address while the science matures. The international summit proposed by the National Academies is the direct descendant of Asilomar, a forum where the scientific community can build consensus on responsible research pathways. Such consensus, even when not legally binding, powerfully shapes funding priorities, journal publication standards, and the reputational calculus that guides ambitious researchers everywhere.</p>
+      <p>Moreover, the scientist’s role is not to govern society but to guide it with informed foresight. When Jennifer Doudna articulates her nightmare of a world where genetic enhancement is casually discussed at the dinner table, she is deploying the moral authority of the inventor to frame the stakes before the market and military interests inevitably do. This public stance creates a crucial democratic space where ethical, legal, and social deliberation can catch up to the technology. It positions scientists not as naive gatekeepers but as essential first responders, raising the alarm so that societies can make deliberative choices rather than sleepwalking into a genetically divided future. The breakthrough cannot be uninvented, but its trajectory can absolutely be steered by the very people who understand it best.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The binary framing of whether scientists can &quot;control&quot; their breakthroughs obscures a more complicated reality. Total control is a fantasy; total abdication is a cop-out. The more productive question is: can researchers meaningfully influence the ethical trajectory of their work after publication, and under what conditions? The honest answer is a qualified yes, but only if they move beyond the language of moratoria and actively embed themselves in the messier worlds of regulation, politics, and public culture. The genome-editing crisis is a perfect test case.</p>
+      <p>The impulse behind the moratorium call is understandable. The Chinese embryo experiment was a shot across the bow, revealing how quickly capability races past collective wisdom. Yet a research moratorium is a blunt instrument that risks halting vital work in non-reproductive contexts while failing to deter the very labs it targets. The real leverage lies not in telling others to stop, but in shaping the infrastructure of legitimacy: which journals will publish what lines of inquiry, which funding bodies will attach ethical riders, and which scientific societies will draw clear, enforceable red lines. The National Academies’ proposed international meeting is a more sophisticated tool than a top-down ban, precisely because it aims to forge a transnational normative architecture. This is the slow, unglamorous work of standard-setting, and scientists are its indispensable contributors.</p>
+      <p>Crucially, influence requires a credible commitment to openness. If the public perceives that scientists are trying to lock the door after they themselves have grabbed the key, the response will be cynicism. The inventor’s public remorse is powerful, but it must be paired with sustained, transparent engagement about both the promise and peril of gene editing—not just for inherited disease, but for enhancement. Researchers cannot control how a society chooses to deploy a technology, but by framing the debate early and honestly, by refusing to hide behind a veil of scientific inevitability, they can shape the very vocabulary with which we judge what is permissible. They can’t ensure a perfect world, but they can ensure that we don’t stumble into a dystopian one without ever having the conversation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The spectacle of the genome-editing pioneer calling for a moratorium after licensing her patents to biotech firms is a deeply problematic piece of political theater. The real question isn’t whether scientists can rein in their breakthroughs—of course they can’t, not in a for-profit system—but why we continue to pretend that individual conscience can stand against the structural forces of capital and national ambition. The Chinese experiment didn&#x27;t happen because Chinese scientists are unethical; it happened because the global biomedical economy relentlessly converts basic science into application, frequently bypassing any gauzy calls for restraint.</p>
+      <p>The idea of an Asilomar 2.0 is dangerously nostalgic. Asilomar addressed a narrow community of publicly funded molecular biologists who shared a cultural background and a fear of laboratory-acquired infections. Today’s gene-editing stakes are incomparably higher: they involve human reproduction, intergenerational justice, and a multi-billion-dollar biotechnology market where the line between therapy and enhancement is a lucrative blur. A voluntary pause merely creates a vacuum that the most aggressive actors, whether state-funded or venture-backed, are structurally incentivized to fill. The moral gravitas of the inventor, however sincere, is no match for the patent portfolio she or her institution holds, which now exists to be commercialized.</p>
+      <p>We should stop asking scientists to be ethical sheriffs and start demanding they be effective advocates for democratic governance. Instead of issuing unenforceable moratoria, Doudna and her colleagues should be using their prestige to campaign for binding, international regulatory treaties with genuine enforcement mechanisms, even at the cost of slowing innovation. They should be transparent about their own financial entanglements and actively work to dismantle the commercial pipelines that make a mockery of ethical restraint. The hubris isn’t in developing CRISPR; it’s in believing that a public letter can curb a technology when the entire system surrounding it is designed to accelerate its deployment, ethics be damned. Let’s have the international summit, but let’s fill it with lawmakers and citizen representatives, not just the very experts who have the most to gain from a controlled—rather than a genuinely curtailed—future.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Scientists absolutely have the power—and the moral obligation—to guide the ethical application of their discoveries. The call for a moratorium on human germline editing using CRISPR-Cas9 is not a naive attempt to un-ring a bell; it is a vital pause button that the scientific community has successfully pressed before. We need only look to the 1975 Asilomar Conference on Recombinant DNA. When the ability to splice DNA across species was first developed, scientists voluntarily paused their work to establish safety guidelines. That self-regulation worked. It built public trust and created a framework that allowed biotechnology to flourish safely for decades.</p>
+      <p>The recent experiment by Chinese researchers on non-viable human embryos highlights exactly why leadership from the inventors of CRISPR is necessary right now. The technology is cheap, accessible, and revolutionary. But editing the human germline means making changes that will be passed down to future generations, permanently altering the human gene pool. The potential for off-target mutations and unintended consequences is immense, and rushing into this territory without consensus risks a devastating public backlash that could cripple all genetic research.</p>
+      <p>By stepping forward, the pioneers of this technology are setting a global normative standard. A moratorium does not mean a permanent ban; it means taking the time to deliberate. Scientists cannot physically stop a rogue actor in an unregulated lab, but they can ostracize them. The scientific enterprise is deeply interconnected. Through peer review, scientists can ensure that top-tier journals will not publish unethical research. They can ensure that major funding bodies will not finance it, and that international scientific societies will condemn it. In a highly collaborative global system, these mechanisms of professional soft power are incredibly effective at curbing premature or unethical applications of basic science.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The notion that the creators of CRISPR-Cas9 can rein in its application is an illusion born of a bygone era. The genie is out of the bottle, and no amount of international summitry will stuff it back in. We must face the reality that basic science, once published, belongs to the world, and the world is not a monolith with a shared ethical compass.</p>
+      <p>The recent news that a Chinese team has already attempted to edit human embryos to cure beta-thalassemia is a stark demonstration of this new reality. While Western scientists agonize over the moral implications of altering the human germline, researchers in other nations are racing ahead, driven by different cultural priorities, nationalistic ambitions, and a fierce desire to claim scientific firsts. The Asilomar conference of 1975 is often cited as a successful model of scientific self-policing, but the world of 1975 was vastly different. Biotechnology was then the domain of a few elite, largely Western institutions. Today, gene editing is democratized, incredibly cheap, and distributed globally.</p>
+      <p>You do not need a billion-dollar facility to use CRISPR; you need a standard molecular biology lab. When a technology is this accessible, attempting to enforce a global moratorium is essentially trying to catch the wind in a net. Even if reputable Western journals refuse to publish rogue research, the knowledge will circulate through other channels. Furthermore, the line between therapeutic editing and enhancement is fundamentally subjective. What one country considers a necessary medical intervention, another might view as unethical eugenics.</p>
+      <p>Instead of clinging to the false hope of top-down control, we should accept that scientists cannot govern the ramifications of their breakthroughs. We should focus instead on transparency, tracking developments, and adapting to a world where human genome editing is an inevitable, messy, and uncontrollable reality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>In our rush to condemn the prospect of &quot;designer babies,&quot; we are losing sight of a profound ethical imperative: the duty to heal. The call for a moratorium on human genome editing is an overreaction that threatens to stifle one of the most promising medical breakthroughs in human history. While caution is necessary, halting research on human embryos is a mistake that privileges hypothetical future risks over the very real, present suffering of millions.</p>
+      <p>Genetic diseases like Huntington’s, cystic fibrosis, and sickle cell anemia inflict devastating tolls on families. Until now, our best approach has been palliative care or imperfect treatments. CRISPR-Cas9 offers a genuine cure—the ability to snip out the defective genetic code and replace it. The recent Chinese experiment, though unsuccessful in its therapeutic aim and performed on non-viable embryos, represents the necessary, albeit messy, first steps toward this goal. It is exactly the kind of iterative research that must happen to make the technology safe.</p>
+      <p>Critics argue that germline editing is inherently dangerous because changes are passed to future generations. But if we can permanently eradicate a lineage&#x27;s predisposition to a fatal neurological decline, why shouldn&#x27;t we? The ethical framing here is entirely backward. It is not unethical to edit the germline to remove a deadly disease; it is unethical to possess the tools to prevent human suffering and refuse to use them out of an abstract fear of the unknown.</p>
+      <p>Scientists should not try to act as global regulators halting progress to appease public anxiety. Their mandate is to advance human knowledge and develop solutions to our most pressing biological problems. By imposing a moratorium, the scientific establishment is capitulating to fearmongering. We need robust, heavily scrutinized, and well-funded research into human embryo editing to perfect the technique and eliminate off-target effects. Halting the science only ensures that the technology remains unsafe and delays life-saving therapies.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The current debate over CRISPR-Cas9 and human gene editing places far too much burden on the shoulders of individual scientists. The question is not whether researchers can control the ethical use of their breakthroughs—they cannot, and we should not expect them to. History shows that self-policing by the scientific community is insufficient when a technology holds immense commercial, medical, and geopolitical value. If we want to rein in the application of genome editing, the answer lies not in scientific moratoriums, but in robust governmental regulation and institutional policy.</p>
+      <p>When the inventors of a new technology call for a pause, they are merely sounding the alarm. It is the responsibility of society’s democratic and regulatory institutions to respond. In the United States, bodies like the Food and Drug Administration (FDA) and the National Institutes of Health (NIH) hold the real levers of power. The NIH can strictly prohibit federal funds from being used for germline editing research, effectively freezing out the vast majority of mainstream American laboratories from crossing ethical lines. The FDA can outright refuse to approve clinical trials for therapies derived from germline modifications.</p>
+      <p>However, because science is a global enterprise, national regulations are only part of the puzzle. The true challenge highlighted by the recent Chinese experiments is the lack of an enforceable international legal framework. Treaties and international law, mediated by bodies like the World Health Organization or the United Nations, are required to establish a baseline of acceptable practices that sovereign nations agree to enforce.</p>
+      <p>We cannot un-publish the basic science of CRISPR, but governments can tightly control the ecosystem in which that science is applied. Patents, funding streams, institutional ethical review boards, and international trade agreements are the true tools of control. We must move past the romantic notion of the independent scientist wrestling with their conscience. Ensuring the ethical use of science requires a strong, active regulatory state that translates moral consensus into enforceable law.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Yes, a discovery can be reined in — not perfectly, not forever, but enough to matter. The question is not whether every rogue laboratory can be stopped. The question is whether the scientific community can set norms before a technology becomes routinized, commercialized and politically impossible to govern. On human germline editing, it must try.</p>
+      <p>CRISPR is not just another laboratory tool. Its power lies in being comparatively cheap, flexible and easy to use. That is precisely why the Chinese embryo-editing experiment has alarmed so many scientists. The researchers used nonviable embryos and sought to correct a serious blood disorder, which are not trivial ethical details. But the results — off-target effects, mosaicism, poor efficiency — underscore how far the science is from any responsible attempt to create a child with edited DNA. When a change would be inherited by future generations, “not ready yet” is not a technical quibble. It is the central ethical fact.</p>
+      <p>Scientific self-restraint has worked before. The recombinant DNA debate in the 1970s, especially the Asilomar conference, did not eliminate risk, but it created a culture of containment and review. It gave funders, journals and universities a framework for deciding what should and should not be done. That is the model needed now, updated for a more global and more competitive scientific environment.</p>
+      <p>A moratorium should not mean banning all research on early embryos or abandoning the search for cures. It should mean a bright line against initiating pregnancies with genetically edited embryos, paired with rigorous oversight of laboratory research. Scientists should be allowed to study whether CRISPR can correct disease-causing mutations in cells and embryos under strict conditions. But no clinic should be permitted to market germline editing as reproductive medicine.</p>
+      <p>The objection is predictable: if responsible scientists pause, irresponsible ones will race ahead. But that argument proves too much. It would make every ethical boundary futile. In reality, most science depends on institutions — journals, grants, universities, patents, professional status, regulatory approval. A broad international consensus can make reckless germline editing difficult, disreputable and legally risky.</p>
+      <p>Scientists cannot control every ramification of their breakthroughs. No inventor can dictate history. But scientists have more power at the beginning of a technology’s life than they admit later. They decide what to publish, what to fund, what to condemn and what to normalize. With heritable genome editing, the burden of proof belongs on those who would proceed, not on those who urge restraint.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The hope that scientists can control the ethical use of their discoveries is understandable, but mostly illusory. Once the essential knowledge is published, especially knowledge as portable as genome editing, control shifts from discoverers to institutions, markets, states and ambition. The inventor of a technique may call for a moratorium, and respected academies may convene a meeting, but the Chinese embryo experiment already shows the limits of scientific gatekeeping.</p>
+      <p>This does not mean “anything goes.” It means we should stop pretending that voluntary restraint by researchers is an adequate answer. CRISPR is not a single machine locked in one laboratory. It is a method, a set of reagents, a conceptual breakthrough. Skilled molecular biologists across the world can adapt it. Unlike nuclear technology, it does not require massive infrastructure visible to governments. Unlike some pharmaceuticals, it does not depend entirely on a regulated manufacturer. The barrier to entry is low enough that prestige and prohibition may merely push the most controversial uses into less visible settings.</p>
+      <p>The history of science gives many examples. Alfred Nobel did not control dynamite’s uses. Physicists did not control nuclear weapons once governments understood their strategic value. The inventors of in vitro fertilization did not settle, once and for all, the moral status of embryo selection, surrogacy or reproductive markets. In each case, the discoverers’ views mattered, but only as one input among many.</p>
+      <p>The better response is legal and political, not merely professional. If society does not want edited embryos used to produce children, governments must say so clearly. Funding agencies should withhold support. Medical licensing boards should discipline physicians who offer unsafe germline procedures. Journals should refuse to reward reckless work, but that alone cannot carry the load. International agreements may not be perfectly enforceable, but even imperfect law is stronger than a gentleman’s agreement among elite scientists.</p>
+      <p>Nor should scientists be allowed to define “ethical use” by themselves. The phrase can smuggle in professional self-interest. Researchers tend to see the value of research; patients may see hope; disability advocates may see stigma; parents may see obligation; religious communities may see transgression. No one group owns the question.</p>
+      <p>So, can a discovery be reined in? Only partly. Can researchers control its ramifications? No. They can warn, advocate and refuse participation. But the central decisions belong to democratic publics and to governments willing to regulate. The academies’ meeting is useful if it marks the beginning of public governance. It is dangerous if it gives the comforting impression that scientists can police themselves.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The call for a moratorium on human genome-editing research is too broad and risks confusing prudence with fear. We should absolutely prohibit, for now, any attempt to bring a genetically edited baby to term. But research on human embryos under strict oversight is not the same thing as reproductive use, and treating them as morally identical could slow the very knowledge needed to make wise decisions.</p>
+      <p>The recent Chinese study is being described as a warning, and in one sense it is. The attempt to correct a mutation linked to a blood disorder in nonviable embryos produced troubling levels of mosaicism and unwanted edits. But that is also exactly why such research is informative. It tells us that the technique is not ready for clinical use. Without carefully conducted studies, the debate will be governed by speculation, hype and worst-case imagination.</p>
+      <p>There is a danger that “moratorium” becomes a rhetorical club. It may satisfy public anxiety while leaving unclear what is actually forbidden. Editing somatic cells to treat cancer, HIV or blood diseases is ethically different from changing sperm, eggs or embryos in ways that affect descendants. Studying abnormal or nonviable embryos is different from implanting edited embryos. A good policy must preserve these distinctions.</p>
+      <p>It is also too easy to frame CRISPR only as a path to designer babies. The first serious uses, if they ever become safe, would probably involve devastating single-gene disorders. Families at risk for Huntington’s disease, Tay-Sachs, cystic fibrosis or beta-thalassemia do not experience this debate as science fiction. They experience it as a question of whether medicine will one day prevent suffering at its source. Preimplantation genetic diagnosis already allows some parents to select embryos without certain mutations, but it is not available or sufficient in every case. Genome editing may someday fill a narrow but real medical gap.</p>
+      <p>Of course, the ethical hazards are serious: off-target mutations, consent by future generations, inequality of access and the slide from therapy to enhancement. These are reasons for oversight, not paralysis. Institutional review boards, national regulators, funding restrictions and journal standards can require transparency and safety thresholds. International meetings can harmonize expectations. Scientists should be condemned if they attempt pregnancies now. But scientists should not be condemned for asking, in controlled settings, whether the technology can be made safer.</p>
+      <p>The worst outcome would be a ban that drives embryo research into secrecy while responsible laboratories withdraw. Ethical science is not science that refuses dangerous questions. It is science that asks them openly, carefully and under public rules.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The debate over CRISPR should not be reduced to a contest between heroic scientists seeking cures and fearful ethicists saying no. Nor should it be framed as a simple matter of whether discoverers can “control” what follows from discovery. The deeper issue is legitimacy: who gets to decide what kinds of human futures biotechnology should help create?</p>
+      <p>Scientists have a special responsibility here because they understand the technique and because their professional incentives helped bring it forward. They can explain what CRISPR can and cannot yet do. They can distinguish somatic therapy from heritable germline alteration. They can refuse premature clinical use. But they should not be the sole governors of the technology. Heritable genome editing touches disability, parenthood, inequality, religion, race, eugenics and the meaning of medical need. These questions belong to society.</p>
+      <p>The Chinese embryo experiment usefully punctures two myths. First, it shows that the science is not ready for reproduction. The technical problems are not minor. Editing an embryo and then creating a child would risk imposing unknown harms on someone who cannot consent, and those changes could be passed on. Second, it shows that a purely national or purely voluntary approach is inadequate. Research will not wait politely for one country’s moral consensus.</p>
+      <p>Still, the conclusion should not be fatalism. Many technologies are shaped even when they are not fully controlled. Human-subjects research is regulated because past abuses taught us that scientific promise is not enough. Organ transplantation, assisted reproduction and stem cell research have all developed within contested but real frameworks. Rules do not eliminate every abuse, but they define responsible practice.</p>
+      <p>A sensible framework would draw lines in several places. It would permit basic research and somatic-cell therapies under oversight. It would forbid clinical germline use unless there is broad public agreement, compelling medical justification, convincing safety evidence and enforceable regulation. It would require open reporting of embryo research rather than secrecy. And it would include voices beyond elite universities: patients, disability-rights advocates, religious and secular ethicists, representatives from poorer countries, and communities historically harmed by eugenic thinking.</p>
+      <p>Equity must be central. A world in which wealthy parents can buy genetic advantages while others lack basic health care would not be an ethical triumph. Even disease prevention can become morally fraught if it implies that people living with genetic conditions are mistakes to be edited out of existence.</p>
+      <p>Can scientists rein in discovery? Not alone. Can they help society steer it? Yes, if they exchange the fantasy of control for the harder work of democratic restraint, transparency and humility.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>A scientific moratorium is not a magic wand, but it is not an empty gesture either. The fact that a technique has been published does not mean every possible use immediately becomes inevitable. The question is not whether CRISPR can be “uninvented.” It cannot. The question is whether the scientific community can slow the most consequential uses long enough for standards, laws and public judgment to catch up. On human germline editing, the answer should be yes.</p>
+      <p>There is precedent. In the 1970s, biologists alarmed by recombinant DNA paused certain experiments and met at Asilomar to set safety rules. That did not stop molecular biology; it legitimized it. The same spirit is needed now, with one important difference: this discussion cannot be held by scientists alone. Editing embryos is not merely a laboratory risk. It concerns future children, parents, disability, inequality and the meaning of consent across generations.</p>
+      <p>The recent Chinese embryo-editing experiment is a warning, not a proof of readiness. The researchers used nonviable embryos, and the results showed low efficiency, mosaicism and off-target effects. That is exactly the sort of evidence that should make implantation of edited embryos unacceptable at present. A child born from such an experiment would not be a brave advance; he or she would be a subject in an uncontrolled trial with no possibility of consent.</p>
+      <p>Still, the right moratorium must be precise. A temporary ban on attempts to establish a pregnancy using an edited embryo is sensible. A blanket ban on all embryo research could be counterproductive, because we need to know more about accuracy, early development and unintended consequences. Ethical restraint should not mean ignorance. It should mean refusing to cross from laboratory study to reproduction before safety, necessity and social acceptability are seriously established.</p>
+      <p>Can researchers control the ramifications of their discoveries? Not completely. But they control more than they sometimes admit: what experiments they perform, what journals publish, what funders support, what professional societies condemn, what patents license, and what young scientists are taught to regard as responsible. A global consensus would not stop every rogue clinic. It would make rogue behavior identifiable as rogue.</p>
+      <p>CRISPR may someday cure devastating genetic diseases. That possibility is a reason to govern it carefully, not to rush. The scientists calling for a pause are not betraying science. They are practicing the humility that powerful science requires.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The idea that scientists can control the ethical use of their discoveries is comforting, but largely false. They can issue statements, convene meetings and refuse to perform certain experiments themselves. They cannot control what happens once a cheap, powerful, widely published technique leaves the hands of its inventors. CRISPR is not a cyclotron or a space program. It is a method that can be reproduced in many laboratories, in many countries, under many legal regimes and with many motives.</p>
+      <p>That does not mean we should shrug. It means we should stop pretending that scientific self-government is enough. The people most invested in a field are not necessarily the best guardians of its moral boundaries. Researchers are subject to career incentives, national prestige, commercial pressure and the understandable desire to help patients. They also tend to define ethical problems as technical problems: make the cut more precise, reduce off-target effects, improve delivery. But the deepest questions about human germline editing are not only questions of accuracy. They are questions about inequality, disability, reproductive freedom, eugenics and what sort of market for children we are willing to tolerate.</p>
+      <p>A voluntary moratorium may buy time, and that is useful. But if the goal is genuine accountability, it must be translated into law, institutional rules and international agreements. Fertility clinics should be licensed and monitored. Implantation of edited embryos should be prohibited unless and until democratic bodies decide otherwise. Journals and funders should refuse to reward reckless work. Patent holders and universities should not license tools for reproductive germline use. These are not perfect controls, but they are more serious than asking ambitious scientists to police themselves.</p>
+      <p>The Chinese embryo-editing paper illustrates the problem. Even after leading researchers urged caution, another group proceeded. They did not produce a viable therapy; they produced evidence of the method’s current dangers. But the experiment also showed that ethical appeals from prominent Western scientists will not govern a global field.</p>
+      <p>Nor should the response be to demonize China or any one laboratory. If there is a race, many countries will be tempted to run it. Patients desperate for cures, companies seeking markets and governments seeking technological leadership will all push in the same direction.</p>
+      <p>Science can discover. Scientists can warn. But society must decide. The ethical use of genome editing cannot be left to the people who are most capable of doing the editing.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The call for restraint around human genome editing is understandable, but we should be careful not to let fear produce a bad rule. There is an enormous moral difference between editing an embryo in a dish for research and creating a pregnancy with an edited embryo. The first can be a legitimate way to learn. The second, at least today, would be reckless.</p>
+      <p>The Chinese experiment on human embryos was not a triumph. It revealed serious obstacles: imprecise editing, mosaic embryos and unintended changes. But precisely because it failed, it supplied information that animal work alone might not provide. If the lesson drawn is “no human embryo research,” we may slow the very knowledge needed to determine whether germline editing is ever safe enough to consider. Ignorance is not an ethical safeguard.</p>
+      <p>Some commentators speak as if the only possible use of germline editing is “designer babies.” That is a real concern, but it is not the whole subject. There are families carrying devastating genetic diseases for whom ordinary embryo selection may not provide an unaffected embryo, especially if both parents are affected or if the genetic circumstances are unusual. To say that germline editing must never be considered is to say that future children should inherit diseases we might one day be able to prevent. Doing nothing also has ethical consequences.</p>
+      <p>This does not justify moving quickly to clinical use. A child created through germline editing would bear risks not only during infancy but throughout life, and those changes could be passed to descendants. Consent is impossible. Safety standards would therefore have to be extraordinarily high. There would also need to be a convincing medical need, independent review and broad public acceptance. Enhancement should be treated with special skepticism, because the social pressures around height, intelligence, appearance and status would be corrosive even if the science became feasible.</p>
+      <p>But a moratorium that blocks responsible research would be a mistake. A better approach is to permit tightly regulated preimplantation embryo research, with consent from donors, no implantation, strict time limits and public reporting. Researchers should not hide failures; failures are part of the ethical record. Funders and journals should demand transparency, not silence.</p>
+      <p>Can discoveries be reined in? Not fully. But they can be channeled. The goal should not be to freeze CRISPR until society becomes perfectly wise. The goal should be to separate careful inquiry from premature reproduction, and to remember that ethical science sometimes requires continuing the research, not stopping it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>“Control” is the wrong word for what scientists can do with a discovery like genome editing. No community, however responsible, can control all the uses of a powerful idea once it has been published. X-rays, nuclear physics, synthetic chemistry and the Internet all escaped the intentions of their creators. CRISPR will be no different. It will move through universities, start-ups, clinics, agriculture, national laboratories and improvised workbenches. It will be shaped by law, profit, fear, hope and accident.</p>
+      <p>But if control is impossible, stewardship is not. The early years of a technology matter. Norms are formed. Red lines are drawn. Regulators learn the vocabulary. The public decides whether scientists are being honest or evasive. That is why the National Academies’ proposed international meeting is important, provided it is not merely a gathering of eminent researchers congratulating one another for prudence.</p>
+      <p>The first step should be to distinguish uses. Somatic gene editing, aimed at treating an existing patient without altering descendants, raises familiar clinical-research questions: safety, informed consent, access and risk. Germline editing is different because it creates permanent changes in future people. Embryo research that does not lead to pregnancy is different again. Collapsing these categories produces either panic or permissiveness, neither of which is helpful.</p>
+      <p>A realistic governance system would be layered. Scientists should adopt professional standards against attempting pregnancy with edited embryos. Journals should refuse to publish work that violates basic ethical norms, while still allowing responsible reporting of legitimate research. Funders and universities should condition support on oversight. Fertility clinics should face legal penalties for offering reproductive germline editing. Patent licenses could exclude certain uses. International registries could make it harder for ethically dubious experiments to disappear into secrecy.</p>
+      <p>This conversation must also include people who are often treated as afterthoughts: patients, disability-rights advocates, religious communities, parents using reproductive technologies, and countries outside the usual American-European scientific circuit. The Chinese embryo-editing experiment should not be used as a morality tale about one nation’s recklessness. Scientific ambition is global. So must be the rules.</p>
+      <p>The central danger is not only a rogue scientist producing an unsafe baby. It is also the gradual normalization of a consumer market in genetic advantage, available first to the wealthy and justified in the language of health. Avoiding that future will require more than laboratory caution. It will require public judgment about what kinds of human differences we should treat as diseases, burdens, risks or simply part of the human condition.</p>
+      <p>Scientists cannot guarantee ethical outcomes. They can, however, refuse to pretend that consequences are someone else’s problem.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The call for a moratorium on human genome editing represents science at its most responsible. When Jennifer Doudna and her colleagues recognized the profound implications of CRISPR-Cas9, they didn&#x27;t simply publish and move on—they convened discussions about ethical boundaries before the technology raced ahead of our moral frameworks. This is precisely what we should expect from scientific leaders.</p>
+      <p>The history of biotechnology offers instructive lessons. When researchers first confronted the risks of recombinant DNA in the 1970s, the Asilomar Conference established a precedent for scientific self-regulation. Scientists paused their work, debated the risks openly, and developed guidelines that allowed the field to advance responsibly. The same approach can work now. The National Academies&#x27; call for an international meeting signals that the scientific community recognizes its obligation to engage with the ethical dimensions of genome editing.</p>
+      <p>Those who argue that discoveries cannot be reined in once published underestimate the power of professional norms and social pressure. Yes, rogue actors exist—but the Chinese researchers whose experiments on human embryos drew condemnation found themselves isolated within the global scientific community. Peer review, funding decisions, and publication gatekeeping all serve as mechanisms for shaping acceptable research. Scientists who violate ethical norms face professional consequences that carry real weight.</p>
+      <p>Furthermore, the alternative to self-regulation is not no regulation but rather regulation imposed by governments with limited understanding of the science. That path leads to either over-restriction that stifles beneficial research or under-regulation that allows harmful applications to flourish unchecked. Scientists possess the expertise necessary to distinguish between legitimate therapeutic applications and reckless interventions on the human germline.</p>
+      <p>The moratorium being proposed isn&#x27;t permanent—it&#x27;s a pause for reflection. The technique may indeed be used someday to eliminate hereditary diseases and reduce human suffering on a massive scale. But proceeding without ethical guardrails risks applications that could create heritable genetic modifications with unforeseen consequences. A brief delay in the service of wisdom is not obstruction of science; it&#x27;s the practice of mature science.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The notion that scientists can control how their discoveries are ultimately used belongs to a vanishing world—one in which knowledge moved slowly, remained confined to specialist journals, and could be contained by professional courtesy. That world is gone, and researchers who imagine otherwise are engaged in wishful thinking.</p>
+      <p>Consider the timeline before us. The CRISPR-Cas9 technique was described in detail in 2012. Within three years, Chinese scientists had already attempted germline modification on human embryos. The technique is now described in thousands of papers, taught in graduate programs worldwide, and could in principle be replicated by any competent molecular biologist with access to standard laboratory equipment. What exactly would a moratorium accomplish at this point? The information is loose in the world, and you cannot unloose it.</p>
+      <p>This isn&#x27;t an argument against ethical reflection—it&#x27;s an argument against the delusion that ethical reflection alone can substitute for robust governance. The scientists calling for restrictions are, almost certainly, well-intentioned. But good intentions have never been sufficient to prevent the application of available technology to morally questionable ends. Nuclear physicists in the 1930s understood the implications of uranium research; many pleaded for restraint. The bombs fell anyway, because knowledge, once created, belongs to everyone capable of understanding it.</p>
+      <p>What actually constrains the misuse of science is not the conscience of individual researchers but the apparatus of state power—international treaties, regulatory agencies, enforcement mechanisms, and the credible threat of punishment. These tools remain underdeveloped for genome editing. The National Academies&#x27; proposed meeting is valuable as a consciousness-raising exercise, but it produces no binding obligations, no inspection regimes, no penalties for violations.</p>
+      <p>Those of us who care about the ethical development of science should focus our energy on building genuine governance structures rather than comforting ourselves with moratoria that exist only in press releases. The Chinese experiments happened despite widespread agreement that they were premature. If we want to prevent heritable genetic modification, we need international agreements with teeth, modeled perhaps on the Biological Weapons Convention—binding, verifiable, and backed by the willingness to impose real consequences on violators.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The current moment presents a genuine governance gap that scientific goodwill alone cannot bridge. Genome editing technology has advanced faster than our collective ability to agree on its appropriate uses, and the international scientific community&#x27;s response—calling for meetings and contemplating moratoria—addresses symptoms rather than causes.</p>
+      <p>The fundamental problem is that science operates globally while ethical frameworks remain stubbornly local. The Chinese researchers who edited human embryos operated within their nation&#x27;s regulatory environment, which apparently permits such work. American or European scientists considering similar experiments face stricter constraints—not because the underlying ethics differ, but because different polities have reached different conclusions about where to draw lines. In a world of open scientific communication and accessible techniques, this patchwork approach is inadequate. Knowledge doesn&#x27;t respect borders, and neither will applications that one nation considers acceptable while another prohibits.</p>
+      <p>What we need is not another conference but a functioning international regulatory body with actual authority. This body should establish minimum standards for germline research, create mechanisms for monitoring compliance, and develop clear pathways for approving therapeutic applications that meet rigorous safety and efficacy thresholds. The model exists in other domains: the International Atomic Energy Agency provides inspections and standards for nuclear technology. A similar institution for advanced biotechnology could provide the coordination that scattered meetings and voluntary moratoria cannot.</p>
+      <p>Critics will object that such a body would be difficult to establish and might be captured by special interests. These concerns deserve serious attention. But they don&#x27;t excuse inaction. The alternative—allowing the technology to proliferate without international oversight—carries risks that dwarf the difficulties of building governance infrastructure. Unregulated germline editing could produce a world in which genetic enhancement becomes a privilege of the wealthy, in which unforeseen consequences propagate through human populations indefinitely, in which nations compete to develop genetic weapons.</p>
+      <p>Scientists like Jennifer Doudna deserve credit for raising ethical concerns proactively. But responsibility for preventing misuse cannot rest with individual researchers. The international community must step up, build institutions, and accept the compromises that genuine governance requires.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>History suggests both more and less than the current debate assumes. More, because we have repeatedly seen that scientists can influence the trajectory of their discoveries—not control it absolutely, but shape it significantly. Less, because the deterministic language of &quot;can&#x27;t be reined in&quot; overstates the case for both sides.</p>
+      <p>The Asilomar conference on recombinant DNA remains the paradigm case for scientific self-regulation. In 1975, researchers agreed to restrict certain experiments pending safety assessments. The moratorium held. The technology advanced. The world did not end. This history demonstrates that voluntary restraint can work under specific conditions: when the scientific community is relatively unified, when credible risks are identifiable, and when alternative pathways for research remain open.</p>
+      <p>But Asilomar also illustrates the limits. The restrictions eventually eased as understanding grew. Some experiments that had been prohibited proceeded without catastrophe. And critics at the time argued that the process had as much to do with protecting researchers from liability as with protecting the public. Scientific self-regulation serves scientists&#x27; interests as well as broader societal interests; that&#x27;s not disqualifying, but it&#x27;s worth acknowledging.</p>
+      <p>The CRISPR situation differs in important ways. The technique is simpler, cheaper, and more widely accessible than recombinant DNA was in the 1970s. The potential applications—particularly germline modification—raise stakes that recombinant DNA never did. And the international dimension creates coordination problems that a small group of American molecular biologists could solve more easily than today&#x27;s sprawling, globalized research enterprise.</p>
+      <p>These differences counsel modesty about what any single response—moratorium, meeting, or regulation—can accomplish. What seems most likely is a messy, iterative process in which some applications are restricted in some jurisdictions, tolerated in others, and gradually normalized through precedent and practice. Scientists will continue to publish, to disagree, and to seek both recognition and absolution for their contributions to knowledge that others will apply in ways they never intended.</p>
+      <p>This outcome is neither catastrophe nor triumph. It reflects the reality that science is a social institution embedded in broader structures of power, law, and culture. Ethical reflection matters, but it operates alongside these other forces rather than above them. The moratorium debate matters less than what comes after: what laws get passed, what gets funded, what gets published, and who gets to make these decisions. Those are the questions that will actually determine how genome editing evolves.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

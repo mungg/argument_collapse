@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does ‘Stop and Frisk’ Reduce Crime? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Justice · Binary</div>
+  <h1 class="debate-title">Does ‘Stop and Frisk’ Reduce Crime?</h1>
+  <div class="question-body"><p>The New York City Police Department’s policy of stopping and frisking thousands of people, mainly young black and Hispanic men, has come under increased attack. A federal judge in Manhattan granted class action status to a lawsuit over the practice and said she had troubling questions about its constitutionality, especially because in many cases there is no evidence of crime or cause for suspicion.  Other judges have raised questions of its fairness. And Philadelphia has reduced its use of the tactic under a consent decree.</p><p>The tactic is definitely controversial. But does it work? Do stop-and-frisk policies lower crime, or are they counterproductive?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>Stop-and-frisk policies do not reduce crime</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>Stop-and-frisk policies reduce crime</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 67%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 33%;"></div>
+      </div>
+      <span class="bar-num">n=6</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 40%;"></div>
+        <div class="seg wo" style="width: 20%;"></div>
+        <div class="seg n"  style="width: 20%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 0%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 33%;"></div>
+        <div class="seg wo" style="width: 11%;"></div>
+        <div class="seg n"  style="width: 17%;"></div>
+        <div class="seg ws" style="width: 28%;"></div>
+        <div class="seg ss" style="width: 11%;"></div>
+      </div>
+      <span class="bar-num">n=36</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_does-stop-and-frisk-reduce-crime_arg_1.html">
+      <td class="arg-text">Stop and frisk is an ineffective and inefficient method for reducing crime because it is too broad and uncoordinated to address the organized nature of violent crime.</td>
+      <td><span class="humans-pill ">4</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_does-stop-and-frisk-reduce-crime_arg_2.html">
+      <td class="arg-text">Stop-and-frisk is an effective and essential crime deterrent that has played a crucial role in the significant reduction of serious crime in New York City and other major urban areas.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_does-stop-and-frisk-reduce-crime_arg_3.html">
+      <td class="arg-text">Because the current data is insufficient to prove that stop-and-frisk significantly reduces crime, the policy should be scaled back until its effectiveness can be empirically demonstrated.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_does-stop-and-frisk-reduce-crime_arg_4.html">
+      <td class="arg-text">While aggressive stop and frisk may reduce some crime, it should be replaced by focused deterrence models that prioritize community partnership and targeted enforcement over mass, arbitrary stops.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_does-stop-and-frisk-reduce-crime_arg_5.html">
+      <td class="arg-text">Stop-and-frisk should be abandoned because it is an inefficient and wasteful use of police resources that distracts from more effective crime-fighting strategies.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Dennis C. Smith</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/dennis-c-smith" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Donnel Baird</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/donnel-baird" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Heather Mac Donald</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/heather-mac-donald" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">John A. Eterno</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/john-a-eterno" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Paul Butler</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/paul-butler" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Robert Gangi</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/07/17/does-stop-and-frisk-reduce-crime/robert-gangi" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The honest answer is that we don&#x27;t know whether stop-and-frisk, as practiced by the NYPD, reduces crime — and the evidence we do have suggests its marginal contribution is small and probably outweighed by its costs.</p>
+      <p>Defenders point to New York&#x27;s remarkable two-decade crime decline as prima facie proof that aggressive proactive policing works. But the same decline has occurred in cities that never adopted anything like NYPD&#x27;s stop-and-frisk regime — San Diego, Los Angeles, even Dallas — and crime in New York fell fastest in the 1990s, before the explosion of recorded stops from roughly 100,000 a year in 2002 to nearly 700,000 in 2011. If stops drove the decline, we should see crime falling fastest when stops rose fastest. We don&#x27;t. Franklin Zimring&#x27;s careful work attributes much of New York&#x27;s success to more cops, smarter deployment, and CompStat — not to mass frisking.</p>
+      <p>The strongest direct evidence comes from Jeffrey Fagan&#x27;s analyses for the Floyd litigation and Andrew Gelman&#x27;s earlier work with Fagan and Kiss. They find that stops are heavily concentrated in minority neighborhoods even after controlling for precinct-level crime rates, that roughly 88 percent yield no arrest or summons, and that the weapons-recovery rate is well under 2 percent — lower than random sampling might predict. A program nominally justified by getting guns off the street is recovering remarkably few guns per stop.</p>
+      <p>Meanwhile the costs are real. Tom Tyler&#x27;s research on procedural justice indicates that when young men experience policing as arbitrary and humiliating, they become less willing to cooperate with police, report crimes, or serve as witnesses — which over time can erode the very legitimacy that effective policing depends on. The class-action certification in Floyd reflects an accumulating record of stops made without the reasonable suspicion Terry requires.</p>
+      <p>A defensible policy might use Terry stops surgically, in hot spots, against specific suspect descriptions. What New York is doing instead — stopping hundreds of thousands of mostly innocent young men of color annually — looks less like crime control than like a constitutional liability searching for a justification.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The assertion that the NYPD’s stop-and-frisk program is responsible for New York’s historic crime drop collapses under scrutiny. While it is tempting to credit aggressive policing, the data available in mid-2012 tells a more complicated story in which the tactic’s contribution to public safety is marginal at best, and its corrosive effect on communities likely undermines the very trust that effective policing requires.</p>
+      <p>Proponents often point to the raw numbers: as stops skyrocketed from 97,000 in 2002 to over 685,000 in 2011, major felony crime fell by more than 30 percent. But this correlation masks a crucial timeline problem. New York City’s crime decline began in the early 1990s, well before the NYPD embraced wide-scale stop-and-frisk. Homicides peaked at 2,245 in 1990 and had already plunged to under 600 by 2002, before the exponential rise in stops. The sharpest crime drops occurred under the Dinkins and early Giuliani administrations, not during the period of mass stops. If anything, the rate of decline slowed during the peak stop years, suggesting that the additional stops added little extra downward pressure.</p>
+      <p>Even within the Bloomberg era, the neighborhoods with the highest stop rates did not experience proportionally larger reductions in crime compared to similar areas with fewer stops. And when Philadelphia scaled back its use of pedestrian stops under a consent decree, violent crime continued to fall there too, further weakening the causal claim.</p>
+      <p>The effectiveness argument also hinges on the idea that stops disarm dangerous people. Yet the NYPD’s own reports reveal an extremely low “hit rate.” In 2011, only about 1 percent of stops resulted in the seizure of a weapon; guns were recovered in just 0.15 percent of stops. The vast majority of people stopped—nearly 90 percent—were innocent of any wrongdoing, receiving neither a summons nor an arrest. It is hard to argue that such an inefficient dragnet is a precision crime-fighting tool. The resources devoted to conducting and processing nearly 700,000 yearly stops could instead be redirected toward targeted investigations of the small population driving violence.</p>
+      <p>Perhaps most damaging is the tactic’s counterproductive effect on community cooperation. A growing body of research by 2012, including work from the Vera Institute and the Center for Constitutional Rights, shows that heavy-handed street stops breed cynicism and fear, particularly among young black and Latino men. When law-abiding citizens view the police as an occupying force, they are less likely to report crimes, serve as witnesses, or share tips. This erosion of “procedural justice” can make neighborhoods less safe over the long run, as police lose the eyes and ears of the community.</p>
+      <p>New York’s crime drop is a complex phenomenon driven by factors like the end of the crack epidemic, demographic shifts, improved economic conditions, and smarter management tools such as CompStat. Stop-and-frisk, with its staggering racial disparities and negligible yield, is more of a drag on police legitimacy than an engine of safety. The question should not be whether the tactic reduces crime on the margins, but whether the profound constitutional and social costs are worth a strategy that, at best, cannot prove it works.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Defenders of New York City’s stop-and-frisk program routinely point to the city’s historically low crime rates as proof that the tactic works. But confusing correlation with causation is a dangerous basis for public policy. When we look closely at the data, the argument that stopping hundreds of thousands of citizens is the engine of our public safety rapidly falls apart.</p>
+      <p>First, the sheer inefficiency of the practice is staggering. In 2011, the N.Y.P.D. recorded nearly 700,000 stops. Nearly 90 percent of those stopped were completely innocent, resulting in neither an arrest nor a summons. If the primary goal of stop-and-frisk is to get illegal firearms off the street, the yield is shockingly low: guns are found in less than one-fifth of one percent of all stops. Casting an incredibly wide net to catch a handful of weapons is not precision policing; it is a dragnet.</p>
+      <p>Furthermore, the timeline undermines the official narrative. New York City’s remarkable crime drop began in the early 1990s and had largely stabilized by the time the Bloomberg administration radically expanded stop-and-frisk. In 2003, there were just over 160,000 stops. By 2011, that number had more than quadrupled, yet crime rates did not drop by a commensurate magnitude. Other major American cities have experienced dramatic, long-term declines in violent crime without subjecting their minority populations to systemic street interrogations.</p>
+      <p>The most significant threat of the current stop-and-frisk policy, however, is that it is fundamentally counterproductive to actual crime-solving. Effective policing relies heavily on community cooperation. Detectives need witnesses to come forward, victims to report crimes, and neighborhoods to trust that officers are there to protect them. By disproportionately targeting young black and Hispanic men—many of whom report being stopped, questioned, and physically searched multiple times a year for simply walking to school or standing outside their own homes—the N.Y.P.D. is eroding that essential trust. When an entire generation of young men grows up viewing the police as a harassing force rather than a protective one, the flow of vital information stops.</p>
+      <p>We do not have to choose between constitutional rights and safe streets. Targeted policing, rooted in genuine reasonable suspicion and focused on actual high-risk individuals, is a proven law enforcement tool. But the mass, indiscriminate use of stop-and-frisk is an illusion of effective policing. It sacrifices fundamental civil liberties and community trust for a statistical drop in the bucket, jeopardizing the very public safety it claims to protect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Stop-and-frisk can reduce crime in the limited sense that any focused police intervention can reduce crime when it is tied to particular places, times and people for articulable reasons. A patrol officer who sees a bulge, hears a credible description, or observes conduct suggesting an imminent robbery should stop the person. The Supreme Court’s Terry doctrine permits that, and cities would be foolish to abandon it.</p>
+      <p>But that is not the same as saying New York’s mass stop-and-frisk program is responsible for the city’s historic crime decline, or that its current scale is justified. The evidence for that broader claim is weak. New York’s crime drop began in the early 1990s and was already dramatic before stops reached today’s levels. Murders fell from more than 2,000 a year to far lower levels before the city was recording anything like 600,000 stops annually. In 2011, the police reported roughly 685,000 stops. Nearly nine in ten ended without an arrest or summons, and the number of guns recovered was tiny compared with the number of people stopped. If the principal goal is getting guns off the street, hundreds of stops for each gun is not a strong showing.</p>
+      <p>Supporters often answer that the true benefit is deterrence: young men do not carry guns because they fear being stopped. That is plausible in theory, but difficult to prove. Deterrence also depends on legitimacy. If large numbers of innocent people, overwhelmingly black and Hispanic, experience the police not as protection but as arbitrary humiliation, the policy may make investigations harder, reduce cooperation with witnesses, and deepen alienation in neighborhoods that most need effective policing. A tactic that produces a few weapons but teaches thousands of law-abiding teenagers that the police see them as suspects can impose hidden crime-control costs.</p>
+      <p>The better evidence from policing research points toward precision, not volume. Hot-spots policing, careful use of crime data, focused deterrence against repeat violent offenders, and problem-solving strategies have shown promise because they concentrate attention where violence is actually occurring and on those most likely to commit it. They do not require treating whole categories of young men as presumptively suspicious. Indeed, the more stops are driven by quotas, vague “furtive movements,” or presence in a high-crime area, the less they resemble policing based on reasonable suspicion and the more they resemble dragnet surveillance.</p>
+      <p>So the fair answer is: stop-and-frisk sometimes works when it is truly investigative, narrowly targeted and constitutionally grounded. But as a mass policy measured by sheer numbers of stops, it is neither proven nor wise. New York should not abolish reasonable street stops; it should abandon indiscriminate ones. Crime reduction and civil rights are not opposing goals. Policing that communities view as legitimate is more likely to prevent violence than policing that makes innocence feel irrelevant.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The evidence on stop-and-frisk&#x27;s crime-reduction effectiveness is genuinely contested, and the honest answer is that we lack the precision to isolate its specific contribution. What we do know is troubling enough to demand serious scrutiny.</p>
+      <p>The NYPD&#x27;s own data presents the strongest case against the practice&#x27;s efficiency. Officers stopped over 600,000 people in 2011, yet weapons were recovered in barely 1.2 percent of those stops. This figure has remained consistently low even as the number of stops has grown dramatically. If stop-and-frisk were a targeted, intelligence-driven tool, we would expect far higher yields. The low hit rate suggests the tactic is generating massive numbers of unproductive contacts rather than focused interventions.</p>
+      <p>Proponents will rightly point out that New York City&#x27;s dramatic crime decline coincided with the policy&#x27;s expansion, and that the city&#x27;s experience has been held up as a national model. But this correlation alone doesn&#x27;t establish causation. Crime fell across the country during this period, driven by factors including demographic shifts, the removal of lead from gasoline, and economic changes. Moreover, stop-and-frisk was part of a broader constellation of policing strategies—broken windows enforcement, CompStat accountability, and increased officer presence—that were implemented simultaneously.</p>
+      <p>The constitutional concerns raised by Judge Shira Scheindlin deserve particular attention because they speak to unintended consequences. When law enforcement routinely contacts young men of color in their own neighborhoods, it generates resentment that can undermine the cooperative relationships police need to solve crimes and gather intelligence. Community policing principles suggest that legitimacy matters—that people who believe they&#x27;re treated fairly are more likely to cooperate with investigations.</p>
+      <p>Philadelphia&#x27;s experience under its consent decree is instructive: the city reduced stops substantially without seeing crime rise. This suggests alternatives exist.</p>
+      <p>I&#x27;m not prepared to conclude that stop-and-frisk has zero crime-fighting value. But given its disparate impact, its low hit rate, and the plausible mechanisms by which it might be counterproductive in certain contexts, the burden of proof lies with defenders to demonstrate that the specific tactic—not merely increased police presence—causes crime reductions that wouldn&#x27;t occur through less invasive alternatives. That burden hasn&#x27;t been met.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Stop and frisk, as practiced by the NYPD, is sold as the secret ingredient behind New York&#x27;s astonishing crime decline. But the evidence for that claim is far weaker than its champions admit. Yes, New York&#x27;s violent crime has fallen dramatically since the early 1990s. So has crime in San Diego, Los Angeles, Dallas, Boston, and most other large American cities — many of which never adopted anything resembling the NYPD&#x27;s aggressive stop regime. If stop and frisk were the engine, we would expect New York&#x27;s decline to dramatically outpace cities that didn&#x27;t use it. It hasn&#x27;t, at least not in any way researchers have been able to isolate.</p>
+      <p>What we do know is that the number of stops has exploded — from roughly 100,000 in 2002 to nearly 700,000 in 2011 — while crime has continued a downward trend that began before the explosion. The marginal stop is producing extraordinarily little: by the NYPD&#x27;s own data, roughly 12 percent of stops result in an arrest or summons, and guns are recovered in less than 0.2 percent of stops. If the program were a fishing expedition for weapons, it would be one of the least efficient policing tools ever devised.</p>
+      <p>Meanwhile the costs fall almost entirely on young black and Latino men, who account for an overwhelming share of stops despite being a minority of the city&#x27;s population. Jeffrey Fagan&#x27;s analysis for the Center for Constitutional Rights found that a substantial portion of stops lacked the constitutionally required reasonable suspicion. That is not a small footnote; it is the legal basis for the practice. When Judge Shira Scheindlin grants class certification and flags constitutional concerns, she is responding to a documented pattern, not a hunch.</p>
+      <p>Defenders will argue deterrence: even unproductive stops, they say, raise the perceived cost of carrying a gun. Maybe. But deterrence cuts both ways. Communities that experience policing as harassment lose trust in officers, are less willing to cooperate with investigations, and less likely to report crimes. Tom Tyler&#x27;s work on procedural justice has shown for years that perceived legitimacy is itself a powerful crime-control tool. Burning legitimacy to chase a marginal deterrent effect is a bad trade.</p>
+      <p>The honest answer to the debate&#x27;s question is: we don&#x27;t have strong evidence that stop and frisk, at the scale New York practices it, reduces crime beyond what better-targeted policing would achieve. We do have strong evidence that it imposes serious costs — constitutional, civic, and psychological — on hundreds of thousands of innocent people each year. A policy that hassles seven young men of color for every weapon it doesn&#x27;t find should have to clear a high evidentiary bar. Stop and frisk does not clear it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Crime in New York City is at levels not seen since the early 1960s. Murders, which topped 2,200 in 1990, came in under 520 last year. Anyone proposing to dismantle the policing strategies that accompanied this transformation owes the city&#x27;s residents — particularly the residents of the high-crime neighborhoods where the gains have been largest — a serious account of what they would replace those strategies with.</p>
+      <p>Stop, question, and frisk is one of those strategies. It is not the only one. CompStat, hot-spot deployment, focused deterrence against gang members, and quality-of-life enforcement all play roles. But the proactive stop is the on-the-ground tool that allows officers to interrupt the carrying of illegal firearms in neighborhoods where shootings are concentrated. Critics like to cite the low &quot;hit rate&quot; — only a small fraction of stops yield a gun — as proof that the practice is wasteful. They have it backward. The point of visible, frequent stops in known violent corridors is to make young men think twice before tucking a pistol into their waistband. The deterred carry never shows up in the data. The shooting that doesn&#x27;t happen never makes the news.</p>
+      <p>Consider the demographics of the city&#x27;s homicide victims. Year after year, roughly 90 percent are black or Hispanic, and the great majority are young men. The same demographic profile that critics point to in the stop data is also the profile of the people most likely to be shot dead. A policing strategy concentrated where the shootings happen will necessarily fall most heavily on the residents of those neighborhoods. That is not racial profiling; it is the geography of violent crime in 2012.</p>
+      <p>None of this means abuses don&#x27;t occur. They do, and the department should be held accountable for stops that lack reasonable suspicion, for rudeness, for failures to explain what&#x27;s happening to the person stopped. Better supervision, better training, and meaningful discipline for officers who cut corners are all warranted. Judge Scheindlin&#x27;s lawsuit may prompt useful reforms around documentation and supervision.</p>
+      <p>But scrapping the tactic, or shrinking it to the point of irrelevance, would be reckless. Philadelphia is now operating under a consent decree; we&#x27;ll see how its murder rate moves. New York&#x27;s experience suggests that aggressive, proactive policing — including stops — saved thousands of lives over the past two decades, disproportionately black and Hispanic lives. The question for the abolitionists isn&#x27;t whether stop and frisk has costs. Of course it does. The question is whether they&#x27;re willing to accept the body count that would come with abandoning it. Until they answer that honestly, the burden of proof remains on them, not on the cops who have made New York the safest big city in America.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The debate over stop and frisk usually proceeds as if there were two crisp options: keep doing what New York is doing, or stop doing it. Both framings miss the more interesting question, which is about dosage and targeting. There is reasonably good evidence that proactive policing in micro-locations with high crime concentration — what criminologists call &quot;hot spots&quot; policing — reduces crime. There is essentially no evidence that scaling that approach up to 685,000 stops a year, the vast majority of innocent people, adds further crime-control value. The research literature, including the Braga meta-analyses and the Lawrence Sherman work going back to the 1995 Kansas City Gun Experiment, supports concentrated, intelligence-driven stops. It does not support dragnet stops.</p>
+      <p>Look at what NYPD data actually show. Stops have grown roughly sevenfold since 2002. Crime over that period has continued to decline at roughly the pace it had been declining beforehand. If the marginal stops added since 2002 were producing significant crime reductions, we&#x27;d expect to see an acceleration. We don&#x27;t. We see diminishing returns at best — and on the cost side, escalating community resentment, hundreds of thousands of innocent young men subjected to public searches, and the constitutional problems Judge Scheindlin has flagged.</p>
+      <p>This is what a well-designed program looks like in theory: officers, equipped with current intelligence about a specific block, a specific crew, or a specific pattern, make stops grounded in articulable suspicion. They document them carefully. Supervisors review the documentation. Stops that don&#x27;t pan out get the supervisor&#x27;s scrutiny, not just the productive ones. Officers receive regular feedback on hit rates and on community complaints.</p>
+      <p>What New York actually appears to be doing is closer to a quota-driven model in which precinct commanders are pressured to generate stop numbers, and officers down the chain are pressured to produce them. That is how you end up with the documented pattern of stops based on &quot;furtive movements&quot; — a category so vague it functions as a placeholder for the officer&#x27;s gut. It&#x27;s also how you end up with the racial disparities that have made the program politically untenable.</p>
+      <p>So: does stop and frisk reduce crime? A focused, evidence-based version of it almost certainly does, at the margins, on top of other strategies. The expansive version New York currently practices probably produces little additional crime reduction beyond a well-targeted core, while imposing very large social and constitutional costs. The smart response to the lawsuit isn&#x27;t to defend every stop or to renounce the tool entirely. It&#x27;s to cut the volume dramatically, invest in supervision, and demand that every stop be justified the way the Constitution and the research literature both require.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Let&#x27;s set aside, for a moment, the question of whether stop and frisk reduces crime in some measurable, aggregate sense. The deeper problem is that we are asking the wrong question. We don&#x27;t usually evaluate policing tactics purely by their crime-control output. We also ask whether they comport with the Fourth Amendment, with equal protection, with the basic civic compact between police and the policed. A policy can &quot;work&quot; in narrow utilitarian terms and still be intolerable.</p>
+      <p>Stop and frisk, as actually administered in New York, is constitutionally suspect on its face. Terry v. Ohio authorized brief investigatory stops based on reasonable, articulable suspicion of criminal activity. It did not authorize the suspicionless stopping of hundreds of thousands of people because they happened to be young, male, black or brown, and outside in the wrong neighborhood. NYPD&#x27;s own paperwork — the UF-250 stop forms — frequently cites &quot;furtive movements&quot; or &quot;high-crime area&quot; as the basis for a stop. Those are not reasonable suspicion. They are post-hoc rationalizations.</p>
+      <p>Imagine the practice applied at equivalent intensity in a wealthy, predominantly white neighborhood. Imagine 500,000 young men on the Upper East Side patted down on the sidewalk over a decade, the overwhelming majority innocent. The political reaction would be ferocious and immediate; the courts would have shut it down years ago. The practice persists because its victims are politically marginal and because the rest of the city tolerates costs it does not bear.</p>
+      <p>This matters even for the consequentialist. Studies of procedural justice, particularly Tom Tyler&#x27;s, show that perceived legitimacy of police shapes whether citizens cooperate with investigations, serve as witnesses, and obey the law in the future. A whole generation of young men in Brownsville, Bed-Stuy, and East New York are being taught, by personal experience, that the police regard them as suspects by default. That lesson will be paid back in noncooperation for decades — in unsolved homicides, in witnesses who won&#x27;t testify, in young people who learn to view the badge as the enemy.</p>
+      <p>Judge Scheindlin&#x27;s class certification matters less as a legal milestone than as a recognition that something systemic, not episodic, is going on. The plaintiffs aren&#x27;t claiming bad luck with a few rogue officers. They&#x27;re claiming that the department has built a machine that produces unconstitutional stops in volume, and they have the paperwork to prove it.</p>
+      <p>Even if some version of focused stops genuinely reduces crime — and I think it probably does — the current regime sails well past what the Constitution permits and what civic legitimacy can sustain. The question isn&#x27;t whether to keep stop and frisk. It&#x27;s whether we are still serious about the Fourth Amendment when its protections are inconvenient to crime statistics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>I want to push back on a premise that runs through most of this debate: the idea that we can answer &quot;does stop and frisk reduce crime?&quot; with the data we currently have. We can&#x27;t. And the confidence on both sides should be much lower than it is.</p>
+      <p>Consider the empirical landscape. New York&#x27;s crime decline began around 1991, well before the explosion of stops in the 2000s. The decline tracks broader national trends that economists and criminologists have attributed variously to demographic shifts, the waning of the crack epidemic, lead abatement, mass incarceration, improved economic conditions, the legalization of abortion (controversially), and the diffusion of new policing technologies. The largest single-city decline happened in New York, but the second-largest happened in Los Angeles, which had nothing like NYPD&#x27;s stop volume. Disentangling stop and frisk from the dozen other things going on at the same time is genuinely hard, and most published analyses do it badly.</p>
+      <p>Defenders point to Franklin Zimring&#x27;s work showing that NYC&#x27;s decline was deeper and longer than the national average, and attribute the difference to policing. Critics point to the timing — stops surged after most of the decline had already happened — and conclude that stops weren&#x27;t the cause. Both are partly right. There&#x27;s probably some crime-reduction signal in there, and it&#x27;s probably much smaller than the NYPD&#x27;s loudest advocates claim.</p>
+      <p>What about the natural experiments? The 2002–2011 increase in stops should give us something. But several analyses have noted that the rate of decline in crime didn&#x27;t change much when stops surged. That&#x27;s not zero evidence, but it&#x27;s not nothing, either: if you sevenfold a treatment and don&#x27;t see a corresponding response, the treatment effect at the margin is probably modest.</p>
+      <p>Then there&#x27;s Philadelphia, which is now reducing stops under a consent decree. In a few years we&#x27;ll have a useful comparison. We don&#x27;t have it yet.</p>
+      <p>What we should do in the meantime is acknowledge uncertainty and let other considerations carry more of the weight. We know with high confidence that the stops impose real costs on innocent people. We know with high confidence that the racial disparities are large. We know with high confidence that the constitutional basis for many stops is dubious. We do not know with high confidence that the program produces large crime reductions at its current scale.</p>
+      <p>Under uncertainty about benefits and certainty about costs, the right move is to scale back, gather better data through pilot programs and randomized variation across precincts, and require the department to demonstrate effectiveness rather than asserting it. The burden of proof should sit with the policy, not against it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The debate about stop and frisk has been framed almost entirely from the perspective of outside observers asking whether the numbers add up. I want to suggest that the more important perspective is that of the residents of the neighborhoods where the stops actually happen — and that their view is more complicated than either side acknowledges.</p>
+      <p>Polling and ethnographic work in places like Brownsville and the South Bronx consistently reveal two things at once. First, residents desperately want safer streets. They are not anti-police. Many have lost children or neighbors to gun violence; they want shooters off the corner; they call 911 and expect a response. Second, those same residents experience the current stop regime as humiliating, frightening, and often arbitrary. A young man can be stopped two or three times walking home from school. A father can be patted down in front of his children. The encounter is rarely explained. Apologies for being wrong are rarely offered. The same officer who is supposed to be a protector becomes, in the texture of daily life, an antagonist.</p>
+      <p>This duality is the key to the policy question. The communities most affected don&#x27;t want less policing; they want different policing. They want officers who know their names, who recognize their kids, who can tell the difference between a corner crew and a teenager waiting for the bus. They want investigation when their family member is shot, and they want it to feel personal, not bureaucratic. What they get instead is a dragnet that scoops up the innocent because the innocent are easier to find than the guilty.</p>
+      <p>The NYPD&#x27;s defenders argue that volume is the point — that mass stops deter weapon-carrying. Perhaps. But there is another model, sometimes called focused deterrence or &quot;pulling levers,&quot; pioneered in Boston&#x27;s Operation Ceasefire and refined by David Kennedy and others. It identifies the small number of people actually driving violence, communicates directly with them, offers services to those who want out, and promises swift, certain enforcement against those who keep shooting. It treats the community as a partner, not a suspect pool. Cities that have implemented it carefully — Boston, High Point, Cincinnati — have seen real reductions in gun violence without saturation stops.</p>
+      <p>So the answer to the debate question isn&#x27;t simply yes or no. Aggressive stop and frisk likely reduces some crime, but at a price the affected communities increasingly refuse to pay, and probably less efficiently than focused alternatives. A serious policymaker would listen harder to the people inside the policy rather than the people defending or denouncing it from outside. They are telling us, if we&#x27;ll hear it, that there is a better way to keep them safe.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>There is a reason that New York City’s extraordinary crime decline over the last two decades is studied around the world — and stop-and-frisk is part of that story. The tactic is undeniably aggressive and sometimes uncomfortable, but the raw correlation between proactive policing and safer streets is too powerful to ignore. Since the early 1990s, when the NYPD began embracing order-maintenance strategies, including the systematic use of street stops, the city saw homicides fall from over 2,200 a year to fewer than 500. That is not an accident. It is a direct result of a philosophy that says minor infractions and suspicious behavior cannot be overlooked, because they set the stage for more serious violence. When officers stop, question and sometimes frisk individuals based on reasonable suspicion of criminal activity, they are interrupting the routines of potential offenders, recovering illegal guns and sending a clear deterrent signal. In precincts where stops are concentrated, shootings have often fallen sharply. That is the definition of effectiveness.</p>
+      <p>Critics point to the racial disparities — the fact that young black and Hispanic men are disproportionately stopped — but they mistake correlation for causation. The NYPD deploys its resources where violent crime is highest, and those neighborhoods are, tragically, overwhelmingly minority. The department is not racially profiling; it is responding to victim data and 911 calls. When you look at the demographics of perpetrators and victims of violent crime in the city, the stop numbers, while stark, align with where the danger is greatest. To abandon stop-and-frisk entirely would be to withdraw police presence from the very communities that need it most.</p>
+      <p>This is not to say the policy should be immune from scrutiny. A federal judge’s questions about constitutionality are serious, and a civil libertarian moment is always useful. But we must remember that the governing standard — reasonable suspicion — already demands more than a hunch. If a small fraction of stops cross the line into unconstitutional territory, the answer is better training and stronger supervision, not abolition. Philadelphia’s experience under a consent decree shows that stop-and-frisk can be reformed and constitutionally restrained while still remaining an available tool. The question is not whether the tactic works in the abstract; it is whether, properly administered, it contributes to public safety. The evidence from New York’s streets strongly suggests it does.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The public conversation about stop-and-frisk often gets stuck on the wrong question. Proponents ask, “Did crime drop while the tactic was in use?” But that is not the same as asking whether stop-and-frisk caused the drop — and the actual evidence for causality is strikingly thin. Crime in New York City was already plunging long before the NYPD’s stop numbers skyrocketed in the mid-2000s. In fact, the most dramatic homicide reductions occurred in the 1990s, when annual stops were still relatively modest. Once stops reached over half a million per year under Mayor Bloomberg and Commissioner Kelly, the murder decline had largely leveled off. If the tactic were uniquely responsible for the crime reduction, you would expect the massive escalation in stops to produce a matching acceleration in safety gains. It did not. Instead, we have a policy that ensnares nearly 700,000 people a year with a hit rate for weapons that is consistently below two percent. That is not effective policing; it is a dragnet that fails the most basic test of efficiency.</p>
+      <p>What the policy does produce, with tragic reliability, is a catalog of constitutional injuries. The Fourth Amendment requires individualized reasonable suspicion, yet officers routinely stop people for furtive movements, for being in a high-crime area or for simply making eye contact and then looking away. The Southern District judge weighing class certification highlighted exactly this pattern: thousands of stops with no evidence of criminal activity. When a practice yields a ninety percent innocent rate — meaning the vast majority of people stopped are neither arrested nor issued a summons — it is fundamentally incompatible with a free society. The racial dimensions are not a statistical side note. They are a deep wound in communities that already experience more than their share of policing. Being repeatedly stopped, questioned and patted down for no lawful reason does not build trust in the police; it destroys it. And in a democracy, a policy that poisons the relationship between citizens and law enforcement cannot be considered successful, even if one could prove it had a marginal deterrent effect — which has not been persuasively shown.</p>
+      <p>Philadelphia’s consent decree demonstrates that cities can dramatically scale back unconstitutional stops without unleashing a crime wave. The demand for safety is real, but the means matter. Stop-and-frisk as practiced in New York has been an expensive, racially corrosive failure.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The binary framing of the stop-and-frisk debate — either it is a magic bullet for crime or an unconstitutional outrage — leaves little room for the more complicated truth. Properly conceived, a policy of street stops can reduce serious crime by intercepting guns and disrupting criminal patterns. But that effectiveness depends entirely on how the stops are conducted. At its best, stop-and-frisk is targeted, based on specific behavioral cues and intelligence, and concentrates resources on the small number of places and people driving violence. At its worst, it degenerates into a quota-driven spectacle that savages constitutional rights without making anyone safer. Right now, New York City is much closer to the latter.</p>
+      <p>The core problem is not the legal standard of reasonable suspicion but its erosion in practice. Police officers have been encouraged, sometimes explicitly, to view any young man of color in a high-crime neighborhood as suspicious. They are asked to produce numbers, and the resulting pressure transforms a legal tool into a system of harassment. When only a tiny fraction of stops leads to a weapon seizure or an arrest, one must ask whether the enormous volume of encounters is getting in the way of effective policing. Genuine suspicious activity gets lost in a sea of low-grade stops that alienate residents and consume time that could be spent on deeper investigations.</p>
+      <p>Yet I am not willing to join those who demand outright abolition. The danger of throwing out the newborn with the bathwater is real. In pockets of the city where shootings are concentrated, a carefully executed stop that uncovers an illegal firearm can save lives — often the lives of other young people of color. The most promising path forward is the one signaled by the federal judge’s concerns and the Philadelphia consent decree: rigorous judicial oversight, detailed reporting of the basis for every stop, and enforceable mechanisms to weed out unconstitutional behavior. Cameras on officers, civilian review of stop data and strict bans on racial profiling can re-center the tactic on its legitimate public-safety purpose. When stop-and-frisk is disciplined and data-driven rather than racialized and volume-driven, it serves as an instrument of protection for the communities bearing the brunt of violent crime. The challenge is not to scrap the tool but to transform the culture that wields it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>When we ask whether stop-and-frisk reduces crime, we usually picture the immediate effect: a gun taken off a waistband, a would-be shooter deterred. But the real answer to that question must account for what happens after the stop. And what happens, in neighborhood after neighborhood, is a slow, corrosive breakdown of the very social order that prevents crime in the first place. Stop-and-frisk, as practiced in New York, is not just a constitutional problem; it is a criminogenic one — it may actually make communities more vulnerable to violence over time.</p>
+      <p>Public safety in any neighborhood depends on a fragile web of informal controls: residents who are willing to call the police, witnesses who will testify, parents who feel the law is on their side. When the state itself becomes a source of capricious humiliation, that web tears. Young men learn that they can be stopped, spread against a wall and frisked simply for walking home. Mothers watch their sons internalize the lesson that the police are an occupying force, not a protector. The result is a collapse of legitimacy. In communities that most need strong police-community partnerships to solve crimes, the NYPD is met with silence and fear. Homicide clearance rates in some heavily stopped precincts are chronically low, in part because witnesses refuse to cooperate with officers they view as hostile. That isn’t a side effect; it’s a direct blow to crime reduction.</p>
+      <p>Moreover, the psychological toll is real and escalates risk. Research by criminologists, including studies from Chicago, has shown that experiences of unjust policing can increase delinquency among young people, as they internalize a sense of legal cynicism. Being treated like a criminal can become a self-fulfilling prophecy. On a community-wide scale, the constant intrusion of suspicion erodes collective efficacy — the shared willingness of residents to intervene for the common good — which is one of the strongest predictors of low neighborhood crime rates. When a tactic undermines the very foundations of order, any short-term suppression it achieves is offset by long-term damage. A crime policy that makes people less safe in the aggregate by destroying trust in law enforcement cannot credibly be called a success. The most effective and sustainable public safety strategy is to build communities up, not to stop-and-frisk them into submission.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>New York City’s transformation from a symbol of urban decay to one of the safest large cities in America is a powerful story. But the narrative that credits stop-and-frisk for that success rests on a selective reading of history. The astonishing crime decline — a 75 percent drop in homicides from the peak — is a complex phenomenon that began before the stop revolution and continued during a period of various overlapping interventions. To isolate the massive increase in pedestrian stops as the decisive variable is to misunderstand how public safety actually improved.</p>
+      <p>Serious scholarship on the New York experience points to a combination of factors: the innovative CompStat system that held precinct commanders accountable for real-time crime patterns, the surge in the size of the police force throughout the 1990s, the end of the crack epidemic, and broad demographic and economic shifts. The broken windows theory itself, which calls for attention to disorder, can be enforced through summonses and community engagement without the heavy-handed, constitutionally suspect stop apparatus. In fact, the most rigorous analyses that try to control for other variables find that stop-and-frisk had at best a marginal effect on crime beyond what those other factors explain. Crime continued to fall in other big cities that did not adopt New York-style stop volumes, such as Los Angeles and San Diego, which suggests the primary mechanisms were national or structural, not locally dependent on coercive street stops.</p>
+      <p>When looked at through a narrow lens, it can seem intuitive that stopping more people would yield more weapons and fewer shootings. But the statistical signal is faint: millions of stops have yielded weapons in a fraction of one percent of cases. Meanwhile, the tactic diverts enormous police resources away from the kind of investigative and community-oriented work that solves crimes and builds lasting security. The harm is not just to liberty; it is to the efficient allocation of law-enforcement energy. Instead of chasing the mirage of a stop-and-frisk-driven deterrent, we should invest in the data-driven, procedurally just strategies that are the real unsung heroes of the crime decline. The question is not whether we want to reduce crime — of course we do — but whether we want to do it with a tool that is, at best, redundant and, at worst, a destructive distraction.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Let’s refuse the false choice that dominates this debate. Stop-and-frisk is not inherently a crime-fighting miracle, nor is it an unworkable tool of oppression. Like any police power, its legitimacy and effectiveness depend entirely on how it is used. The question should not be whether New York’s current implementation works — because that implementation is transparently broken — but whether a properly designed, constitutionally sound stop-and-frisk regime can contribute to public safety without the racial damage we now witness. The answer is a cautious yes, but only if we radically change the way we train, monitor and discipline officers.</p>
+      <p>The evidence from hot-spots policing and focused deterrence strategies shows that concentrating resources on very specific places and on the small number of high-risk offenders can reduce violence dramatically. Stops that flow from that model — based on intelligence and behavioral indicators, not demographic profiles — have a legitimate role. If officers are guided by data to a particular street corner where shootings cluster, and they briefly detain a person based on, say, an observed weapon bulge or an exchange of a suspicious object, that stop can be both constitutional and effective. The problem in New York is that the current volume-driven system encourages officers to stop anyone who fits a vague description in a designated high-crime area, leading to a sea of unjustified encounters that alienate whole populations and obscure the small number of productive stops.</p>
+      <p>Fixing this requires what the federal litigation is already pushing toward: a court-enforceable regime that requires officers to articulate specific, non-racial reasons for every stop, subject to rigorous review. Philadelphia’s experience proves that a consent decree can slash unconstitutional stops while maintaining officer safety and crime reduction. Officer training must pivot from aggressive pat-downs to communication and de-escalation, reserving frisks for genuine threats. And communities must have a formal role in oversight, so that the people most affected can shape the parameters of the tactic that intrudes on their lives. A reformed stop-and-frisk would be narrower in scope, higher in quality, and would recover some of the trust essential for law enforcement to function. The current NYPD program fails that test and must be dismantled through judicial intervention. But a future New York, still committed to keeping its neighborhoods safe, could build a different, more surgical and respectful version of proactive policing — if we are honest about what the last decade got wrong.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>To answer the question of whether stop-and-frisk works, one only needs to look at the remarkable transformation of New York City over the past two decades. New York is currently the safest large city in America, with murder rates hovering at historic lows. While critics point to the staggering number of stops—nearly 700,000 last year—as evidence of an overzealous police department, they fundamentally misunderstand the underlying mechanism of this policy. Stop-and-frisk does not reduce crime primarily through arrests; it reduces crime through deterrence.</p>
+      <p>The strategy’s primary objective is to keep illegal firearms off the streets. When young men know there is a high probability they will be stopped and questioned by an officer, they make the rational choice to leave their handguns at home. A gun left under a mattress cannot be used in a moment of heated passion on a street corner. It cannot be used in a drive-by shooting. It cannot stray and kill an innocent child caught in the crossfire.</p>
+      <p>Critics frequently cite the fact that nearly 90 percent of these stops do not result in an arrest or a citation as proof of the program&#x27;s failure. This is a profound misreading of the data. The fact that officers are finding fewer guns and making fewer arrests is evidence that the deterrent effect is working precisely as intended. If the goal is a weaponless street environment, a high rate of &quot;innocent&quot; stops is the mathematical reality of a successful preventive strategy.</p>
+      <p>Furthermore, we must be honest about who benefits most from this proactive policing. The overwhelming majority of gun violence victims in New York City are young Black and Hispanic men. By aggressively targeting the areas where crime is highest and focusing on the demographic profiles of those who both commit and suffer from violent crime, the NYPD is actively saving minority lives.</p>
+      <p>To abandon stop-and-frisk now, under pressure from lawsuits and civil liberties advocates, would be to invite a return to the bloody days of the early 1990s. We cannot gamble with the lives of New Yorkers by stripping police of their most effective tool for maintaining public order. The policy is tough, but it is undeniably effective.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The defenders of New York City’s stop-and-frisk program routinely credit it with the city’s low crime rate. However, a rigorous look at the data reveals that this massive dragnet is astonishingly ineffective. The sheer scale of the stops—nearly 685,000 in 2011 alone—masks an abysmal success rate that no private enterprise would ever tolerate.</p>
+      <p>Consider the numbers provided by the NYPD itself. In 2011, 88 percent of the individuals stopped were neither arrested nor issued a summons. They were entirely innocent people going about their daily lives. If the primary justification for the policy is taking illegal guns off the street, the statistics are even more damning. Police recovered a gun in less than 0.2 percent of all stops. Statistically speaking, officers would likely yield a similar weapon-recovery rate if they simply blindfolded themselves and searched people at random.</p>
+      <p>Furthermore, the assumption that stop-and-frisk is the driver of New York’s crime decline ignores broader national trends. Violent crime has plummeted across the United States since the 1990s in cities that do not utilize mass stop-and-frisk tactics. Cities like Dallas and Los Angeles have experienced dramatic reductions in homicides and robberies while deploying entirely different policing strategies. This suggests that demographic shifts, economic factors, and better data-driven deployment (like CompStat) are the true engines of the crime drop, not the routine harassment of hundreds of thousands of minority youths.</p>
+      <p>The &quot;deterrence&quot; argument—that the policy works by making people afraid to carry guns—is practically impossible to measure and serves as a convenient catch-all excuse for a policy that fails to produce tangible results. When 9 out of 10 stops yield absolutely nothing, the policy is not a precise surgical tool; it is a blunt instrument.</p>
+      <p>We are sacrificing the fundamental freedoms of Black and Latino New Yorkers on the altar of a statistical illusion. The data simply does not support the assertion that stopping hundreds of thousands of innocent citizens is an effective or necessary method for controlling crime. It is an inefficient, wasteful practice masquerading as proactive policing.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The debate over whether stop-and-frisk &quot;works&quot; to reduce crime represents a dangerous narrowing of our civic values. When we ask only if a tactic lowers crime, we bypass the far more important question of whether the tactic belongs in a free, democratic society. A totalitarian police state with curfews, checkpoints, and warrantless home searches would undoubtedly reduce street crime. We do not implement those measures because we recognize that the preservation of constitutional rights is more important than absolute, absolute security. Stop-and-frisk must be judged by the same constitutional standard.</p>
+      <p>The Fourth Amendment protects citizens against unreasonable searches and seizures, requiring &quot;reasonable suspicion&quot; of a specific crime before an officer can detain someone. Yet, the current reality in New York City is that &quot;furtive movements&quot; or simply &quot;being in a high-crime area&quot; have become catch-all justifications for hundreds of thousands of stops. This is a gross distortion of the legal standard established in *Terry v. Ohio*.</p>
+      <p>More egregiously, the application of this policy violates the Equal Protection Clause of the Fourteenth Amendment. It is an undeniable fact that the NYPD’s dragnet overwhelmingly targets young Black and Hispanic men. Entire neighborhoods in Brooklyn and the Bronx are treated as constitutionally exempt zones where the basic right to walk down the street unmolested is suspended. Being young and Black is not a crime, nor should it be grounds for suspicion.</p>
+      <p>The psychological toll on communities of color is devastating. Young men are forced to internalize the message that the state views them as inherently dangerous and suspect. They are forced to endure public humiliation, spread-eagled against walls or on the hoods of cars, while their neighbors watch. This routine degradation alienates an entire generation of citizens from the civic fabric of their own city.</p>
+      <p>Even if one accepts the controversial claim that stop-and-frisk suppresses gun violence on the margins, the cost is far too high. We are shredding the Constitution to chase a hypothetical deterrence. A society that achieves safety through the systematic, unconstitutional harassment of its minority populations has not achieved true peace; it has merely institutionalized its prejudice. We must end this practice not just because it is ineffective, but because it is fundamentally unjust.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The current polarization around &quot;stop-and-frisk&quot; obscures a crucial distinction: the difference between a valid police tactic and a bureaucratic quota system run amok. Does stop, question, and frisk reduce crime? The answer is yes, when used as intended by the Supreme Court. But the bloated, mass-production version currently deployed by the NYPD does not.</p>
+      <p>In *Terry v. Ohio* (1968), the Supreme Court correctly recognized that police officers need the authority to briefly detain and pat down an individual if they have a reasonable, articulable suspicion that the person is armed and about to commit a crime. When experienced officers use their training to identify genuinely suspicious behavior—casing a storefront, matching a specific suspect description, or displaying the actual outline of a weapon—this tactic is an invaluable tool that prevents violent crime and protects officer safety.</p>
+      <p>The problem in New York City is not the *concept* of the Terry stop; it is the *scale*. Driven by an intense, data-obsessed management culture, precinct commanders are heavily pressured to produce numbers. Stops have been transformed from an investigative tool used at the officer’s discretion into an informal quota system used to demonstrate &quot;productivity.&quot;</p>
+      <p>When officers are expected to hit numerical targets, the threshold for &quot;reasonable suspicion&quot; plummets. They begin stopping teenagers for trivial reasons—walking too quickly, wearing baggy clothes, or simply hanging out in their own neighborhoods. This is why the number of stops skyrocketed from around 160,000 in 2003 to nearly 685,000 last year, while the percentage of stops resulting in an arrest or weapon recovery cratered.</p>
+      <p>This hyper-aggressive, numbers-driven approach is counterproductive. It exhausts police officers who are forced to act as harassment machines rather than investigators, and it wastes thousands of patrol hours processing paperwork for stops that yield nothing.</p>
+      <p>To reduce crime effectively, police departments do not need to abandon the Terry stop. Rather, they must abandon the CompStat-driven pressure that demands high volumes of stops regardless of their quality. If we return discretion to officers and demand that stops be based on genuine, individualized suspicion rather than a dragnet quota, we can maintain public safety without alienating half the city.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The intense focus on whether stop-and-frisk deters immediate street crime ignores a foundational principle of criminology: police cannot solve crime without the cooperation of the community. Far from keeping the public safe, the NYPD’s hyper-aggressive use of stop-and-frisk is actively counterproductive because it destroys the community trust necessary for effective law enforcement.</p>
+      <p>Consider what happens when a serious crime—a homicide, a sexual assault, or an armed robbery—occurs in a neighborhood heavily targeted by stop-and-frisk. To solve these cases, detectives rely on witnesses coming forward, neighbors providing tips, and victims cooperating with investigations.</p>
+      <p>However, when the police department has spent the last decade stopping, searching, and humiliating almost every young man in that neighborhood, the well of goodwill is completely poisoned. Why would a resident voluntarily approach an officer who, just last week, threw his son against a wall for no reason? Why would a community trust an institution that treats them like an occupied territory? The answer is that they do not. The phrase &quot;stop snitching&quot; is often blamed on a criminal subculture, but it is deeply reinforced by the profound alienation caused by policies like stop-and-frisk.</p>
+      <p>Procedural justice research consistently shows that when people believe the police treat them fairly and respectfully, they are far more likely to obey the law and assist law enforcement. New York’s policy achieves the exact opposite. It breeds deep resentment, fear, and hostility. It teaches young men of color that the police are their enemies, not their protectors.</p>
+      <p>Consequently, while stop-and-frisk might theoretically deter a teenager from carrying a handgun on a given Tuesday, it simultaneously ensures that when a shooting does occur, the police will face a wall of silence. This makes it substantially harder to apprehend the truly dangerous, repeat violent offenders who pose the greatest threat to public safety.</p>
+      <p>A policing model that sacrifices long-term institutional legitimacy for short-term, low-level deterrence is deeply flawed. Real public safety requires partnership between the police and the community. By systematically destroying that partnership, mass stop-and-frisk policies ultimately make our streets more dangerous, not less.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>When evaluating public policy, we must always consider the concept of opportunity cost. The question should not merely be whether stopping and frisking nearly 700,000 people a year prevents *some* crime, but whether the massive expenditure of police resources required to execute this program is the most efficient way to achieve public safety. From an administrative and resource-allocation perspective, stop-and-frisk is a spectacular waste of time and money.</p>
+      <p>Every stop requires time. An officer must observe the individual, initiate the stop, conduct the questioning and the physical pat-down, and then complete the mandatory UF-250 paperwork detailing the encounter. When you multiply this process by 685,000 stops—nearly 90 percent of which yield absolutely no evidence of criminal activity—you are looking at millions of police hours redirected away from actual crime-solving.</p>
+      <p>Imagine if those millions of hours were reallocated to investigative work. The NYPD could double its efforts to dismantle the violent drug syndicates and organized gangs responsible for the vast majority of the city&#x27;s shootings. Detectives could be given the resources to clear backlogs of untested rape kits or dedicate more time to solving property crimes and burglaries, which deeply affect residents&#x27; quality of life but often receive minimal investigative attention.</p>
+      <p>Furthermore, these resources could be invested in true community policing. Instead of driving through neighborhoods looking for arbitrary reasons to toss teenagers against a wall, officers could be walking the beat, getting to know local business owners, and identifying the specific, localized problems that lead to crime. They could be collaborating with social workers and community leaders to intervene with at-risk youth before violence occurs.</p>
+      <p>The staggering financial cost of civil rights lawsuits must also be factored in. As federal judges increasingly scrutinize the constitutionality of this dragnet, New York City taxpayers are on the hook for millions in legal settlements.</p>
+      <p>Stop-and-frisk is the equivalent of strip-mining a forest to find a single nugget of gold. It is a wildly inefficient, resource-draining tactic. If mayors and police chiefs truly want to reduce crime, they should abandon this shotgun approach and invest those thousands of wasted patrol hours into targeted, intelligence-led policing that pursues actual criminals rather than innocent bystanders.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>It is too easy to pretend that New York’s stop-and-frisk policy is either a magical crime-fighting tool or a racist ritual with no public-safety value. The truth is more uncomfortable: used aggressively in the right places, it probably does reduce some street crime, especially gun carrying, but the city has allowed the tactic to grow so large and imprecise that its benefits are increasingly difficult to defend.</p>
+      <p>The basic logic is not absurd. If young men in violent precincts believe they may be stopped while carrying an illegal gun, some will leave the gun at home. That matters. Many shootings are not carefully planned assassinations; they arise from arguments, humiliations, robberies, drug disputes and chance encounters. A gun present at the moment of anger can turn a fistfight into a homicide. A strategy that raises the perceived risk of carrying a weapon can plausibly reduce shootings even when few guns are actually recovered.</p>
+      <p>Police Commissioner Ray Kelly and Mayor Bloomberg argue that this is exactly what has happened: New York’s homicide rate has fallen dramatically since the early 1990s, and the city is far safer than it was a generation ago. Critics correctly reply that crime began falling before stop-and-frisk reached its current scale and that many other cities saw declines too. But that does not prove the tactic has no effect. Crime has many causes. A tool can contribute to lower crime without being the sole explanation.</p>
+      <p>Still, the numbers raise serious questions. In 2011, the NYPD made roughly 685,000 stops. The overwhelming majority did not lead to arrests or summonses. Gun recoveries were a tiny fraction of total stops. That does not automatically mean the policy failed—deterrence is invisible—but it does suggest that the department is casting an extraordinarily wide net. A deterrent strategy that requires hundreds of thousands of innocent people to be treated as suspects imposes real social costs.</p>
+      <p>Those costs fall unevenly. Young black and Latino men in certain neighborhoods experience policing not as protection but as routine suspicion. That can damage cooperation with police, reduce witness participation and deepen cynicism about law. If the city wants to preserve any legitimate crime-control benefit, it must narrow the tactic sharply: better supervision, clearer documentation of reasonable suspicion, body or audio recording where feasible, discipline for quota-driven stops, and analysis precinct by precinct of whether stops correlate with reductions in shootings.</p>
+      <p>So yes, stop-and-frisk can reduce crime, especially gun violence, when it is targeted and constitutionally grounded. But New York’s version has become too blunt. The question is not whether police should ever stop suspicious people; Terry v. Ohio permits that. The question is whether mass stops of mostly innocent residents are the best way to keep neighborhoods safe. Public safety requires both fewer shootings and fewer unjustified intrusions. New York should keep the lawful tool, but abandon the dragnet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The strongest argument against New York’s stop-and-frisk program is not that it is unpleasant, though it plainly is. It is that the city has not shown that the program works. For a policy that subjects hundreds of thousands of people, overwhelmingly black and Hispanic men, to police detention and sometimes physical searches, “trust us” is not good enough.</p>
+      <p>Supporters usually point to New York’s falling crime rate. But crime in New York began to fall in the early 1990s, long before the stop numbers reached their current extraordinary level. Crime also fell in cities that did not use stop-and-frisk on New York’s scale. The decline has many possible explanations: more police, better management, changing drug markets, incarceration, demographics, economic conditions, improved emergency medicine, the waning of the crack epidemic and other factors scholars continue to debate. To isolate stop-and-frisk, one would have to show that increases in stops produced additional reductions in crime after accounting for those other influences. The public evidence for that claim is thin.</p>
+      <p>The hit rates are damning. Hundreds of thousands of stops yield comparatively few guns. Most people stopped are neither arrested nor ticketed. Police and city officials say the low gun recovery rate may prove deterrence: people are not carrying guns because they fear being stopped. But that argument is nearly unfalsifiable. If police find guns, stop-and-frisk works because it finds guns. If police do not find guns, it works because it deterred guns. A policy this intrusive deserves a more rigorous defense.</p>
+      <p>Meanwhile, the costs are obvious. Being stopped on the way to school, work or a store is not a minor inconvenience when it happens repeatedly and mainly to one racial group. It teaches young men that the police view them first as potential criminals and only second as citizens. That is counterproductive. Homicide investigations depend on witnesses. Anti-gang efforts depend on community intelligence. Domestic violence and robbery victims must believe calling the police will help them. A department that spends years humiliating innocent residents should not be surprised when those residents become reluctant partners.</p>
+      <p>Nor is this a choice between stop-and-frisk and doing nothing. Police can focus on the small number of people and places most associated with shootings. They can build cases against gun traffickers, use probation and parole intelligence, deploy officers to hot spots and work with community groups that know which crews are feuding. These approaches are also imperfect, but they do not require making suspicion a routine condition of living in Brownsville, East Harlem or the South Bronx.</p>
+      <p>The question is whether stop-and-frisk reduces crime. At New York’s current scale, the answer should be presumed no until the city proves otherwise. Crime control cannot be measured only by aggregate crime rates while ignoring constitutional injury, racial burden and public trust. A strategy that treats vast numbers of innocent people as acceptable collateral damage is not effective policing. It is bad policing with a falling crime rate beside it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Asking whether stop-and-frisk reduces crime is an important question, but it is not the only question. Some tactics may reduce crime and still be unacceptable in a constitutional democracy. Random house searches would probably recover contraband. Curfews for all young men in high-crime neighborhoods might prevent some assaults. Neither would be legitimate. The Fourth Amendment does not disappear because officials invoke public safety.</p>
+      <p>The Supreme Court’s Terry decision allows officers to stop a person when they have reasonable suspicion of criminal activity and to frisk when they reasonably believe the person may be armed and dangerous. That is a narrow doctrine, created for specific encounters. New York’s problem is that the practice appears to have moved from individualized suspicion toward a mass administrative program. When hundreds of thousands of people are stopped and the great majority are found to have done nothing wrong, it is fair for judges to ask whether “reasonable suspicion” has become a formula on a police form rather than a real legal standard.</p>
+      <p>This matters even if the policy has some deterrent effect. Rights are designed to restrain government precisely when officials can make plausible arguments that violating them would be useful. The city cannot answer a constitutional challenge merely by citing lower homicide rates. It must show that its officers are making lawful stops based on specific facts, not on race, neighborhood, age and vague gestures.</p>
+      <p>There is also a practical reason to care about legality: illegitimate policing can undermine the very safety it seeks to create. Communities with high crime need effective police more than anyone. Residents of Bedford-Stuyvesant, the South Bronx and Harlem are not asking to be abandoned to gangs or gunmen. They are asking to be policed as citizens. If young people learn that police encounters are arbitrary or degrading, they will be less likely to report crimes, serve as witnesses or encourage their friends to cooperate. That harms investigations and leaves violent offenders freer to operate.</p>
+      <p>The racial dimension cannot be treated as incidental. The burden of the policy falls mainly on black and Latino New Yorkers, many of whom are innocent. Defenders say stops reflect crime patterns, not bias. Crime patterns may justify more police attention in some neighborhoods, but they do not justify stopping individuals without cause. A person does not carry diminished constitutional rights because he lives in a precinct with high robbery statistics.</p>
+      <p>The better path is not to forbid all street stops. Police need authority to act when someone appears to be casing victims, carrying a weapon or fleeing a crime scene. But the department should be required to document real suspicion, supervise officers closely, end any quota pressures and disclose data sufficient for public evaluation. The goal should be lawful, focused policing—not mass suspicion.</p>
+      <p>So does stop-and-frisk reduce crime? Perhaps in some limited circumstances. But if the price is routine violation of constitutional norms, the city has asked the wrong question. Public safety and liberty are not rival luxuries. In a democratic city, each depends on the other.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The debate over stop-and-frisk suffers from a common problem in crime policy: people argue about a slogan rather than a mechanism. “Stop and frisk” can mean a lawful officer-initiated stop based on a concrete observation, or it can mean a vast numbers game in which officers pressure young men in high-crime neighborhoods because they are young men in high-crime neighborhoods. The first can reduce crime. The second is likely to produce diminishing returns and serious harm.</p>
+      <p>We know from criminology that crime is concentrated. A small number of places generate a large share of calls. A small number of people are involved in a disproportionate amount of serious violence. Policing that concentrates on hot spots can be effective. Focused deterrence strategies, in which police and community leaders communicate directly with violent groups, have also shown promise in some cities. In that context, stops based on specific intelligence—an identified crew, a recent shooting pattern, a reliable description, a known gun carrier—may prevent violence.</p>
+      <p>But New York’s stop totals suggest a program far broader than that. Nearly 700,000 stops in a year is not a surgical approach. If the object is to deter illegal gun carrying, the city should be asking: Which stops? In which precincts? At what times? By which officers? After what observations? With what outcomes? Do stops near shooting hot spots reduce shootings in the following days or weeks? Do stops for vague “furtive movements” perform differently from stops based on a bulge, a radio run or a matching suspect description? Without these distinctions, the public is left with competing anecdotes.</p>
+      <p>The city’s defenders say the policy saves lives, especially minority lives, because most shooting victims in New York are black or Latino. That argument deserves respect; residents of high-crime neighborhoods have the strongest claim to protection. But protection must be effective. If a tactic imposes large costs on the same communities while producing only marginal crime reductions, then invoking victims becomes a way to avoid measurement.</p>
+      <p>The critics, however, should not imply that every street stop is abusive or useless. Police work often occurs before probable cause is available. Officers must be able to investigate suspicious behavior. A constitutional stop can prevent a robbery or remove a gun. The issue is proportionality and precision.</p>
+      <p>A sensible policy would shrink stop-and-frisk dramatically while making it smarter. Tie it to recent violence, specific suspect information and carefully mapped hot spots. Audit officers whose stops almost never produce arrests, summonses or weapons. Require supervisors to reject boilerplate explanations. Publish data. Combine enforcement with community-based violence interruption, witness protection and serious investigations of gun supply.</p>
+      <p>Does stop-and-frisk reduce crime? Targeted stop-question-and-frisk probably can. Mass stop-question-and-frisk probably does far less than its defenders claim and more damage than they admit. The answer is not abolition of police discretion, but discipline: fewer stops, better stops and proof that the stops are doing what the city says they do.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>For many New Yorkers, the stop-and-frisk debate sounds abstract. For families in neighborhoods where shootings occur, it is not abstract. Neither is it abstract for a teenager stopped for the third time in a month while walking to the subway. Any honest answer has to begin by recognizing both experiences. People want the police to get guns off the street. They also want their sons to come home without being treated like suspects for existing.</p>
+      <p>That is why the simple yes-or-no question—does stop-and-frisk reduce crime?—can be misleading. It may reduce some crime in some places by discouraging gun carrying. But it may also produce another kind of insecurity: the feeling that the law is something done to you, not something that protects you. A neighborhood can have fewer robberies and still be harmed if a generation of young people learns to distrust every uniform.</p>
+      <p>Supporters often note that the victims of gun violence are disproportionately black and Latino. This is true and morally important. It should embarrass anyone who discusses policing as though the only danger facing young minority men is the police. Mothers who ask for more patrols after shootings are not asking for civil liberties lectures. They are asking for their children to live.</p>
+      <p>But they are also not asking for indiscriminate humiliation. Residents can distinguish between officers who respond to real problems and officers who sweep up everyone on the block. When the vast majority of stops find no weapon and lead to no arrest, people reasonably suspect that the policy is less about specific danger than about control. The fact that the stops fall so heavily on black and Latino men reinforces that suspicion.</p>
+      <p>The public-safety cost of alienation is real. Police need people to say who fired the shots, where the gun is hidden, which young men are in danger of retaliating. If residents believe the department sees them as partners, they may help. If they believe the department sees them as targets, they may stay silent. That silence can be deadly.</p>
+      <p>A better approach would start with respect. Police should concentrate on the people most likely to shoot or be shot, not entire categories of youth. The department should work with clergy, schools, tenant associations, probation officers and outreach workers who know local conflicts. It should investigate gun trafficking and retaliatory violence with the seriousness they deserve. When officers do stop someone, they should be able to explain the specific reason and record it. People who are stopped lawfully should still be treated with dignity.</p>
+      <p>The city should not abandon active policing. High-crime neighborhoods have suffered too much from both violence and neglect. But mass stop-and-frisk is not the same thing as protection. If the tactic reduces crime at all, it does so at a cost that grows heavier with every innocent person stopped. Safety cannot mean choosing between being afraid of criminals and being afraid of police. The goal must be a city where residents have less reason to fear both.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>Conservatives should be wary of New York’s stop-and-frisk regime. That may sound surprising, because the policy is often defended in the language of law and order. But law and order are not the same as maximum police discretion. A government powerful enough to stop hundreds of thousands of people on thin grounds is a government that should trouble anyone who values limited government and equal citizenship.</p>
+      <p>The constitutional rule is clear enough in principle. Police may stop a person based on reasonable suspicion and frisk for weapons when they have reason to believe the person is armed and dangerous. That is a practical rule. It gives officers room to protect themselves and the public without requiring probable cause for every brief encounter. But a practical exception can become a general license. When a department normalizes stops on the scale New York has, the risk is that the exception swallows the rule.</p>
+      <p>The effectiveness case is weaker than advertised. New York’s crime decline is real and impressive, but it cannot simply be credited to stop-and-frisk. Crime fell across much of the country. New York also changed many other things: police deployment, management accountability, misdemeanor enforcement, technology, demographics and the general recovery from the crack years. To say “crime is down, therefore the most controversial tactic caused it” is not analysis.</p>
+      <p>Moreover, if the policy is so successful, one would expect a more convincing yield. Instead, the vast majority of people stopped are not arrested or given summonses, and weapons are found in only a small percentage of cases. Defenders respond that deterrence explains the low yield. Perhaps partly. But government programs should not be insulated from scrutiny by theories that convert lack of evidence into evidence of success.</p>
+      <p>There are also opportunity costs. Every hour spent stopping an innocent person is an hour not spent building cases against repeat offenders, solving burglaries, targeting illegal gun suppliers or improving clearance rates for shootings. Broad street enforcement can create the appearance of productivity because it generates numbers. But numbers are not the same as results. A department chasing stop totals may be managing what is easy to count rather than what matters.</p>
+      <p>This is not an argument for passive policing. The state has a basic duty to protect people from violence, and poor neighborhoods are most harmed when it fails. Officers should be present in dangerous areas. They should question people who are genuinely suspicious. They should seize illegal guns and arrest violent offenders. But they should do so under rules that preserve the presumption that an ordinary citizen may walk down the street unmolested.</p>
+      <p>The best crime policy is both tough and constrained: tough on people who commit violence, constrained toward everyone else. New York’s stop-and-frisk program, at its current scale, appears to reverse that formula. It is broad toward the innocent and uncertain in its marginal effect on the guilty. If it reduces crime, the city has not proved it well enough to justify the intrusion. Law and order should mean ordered liberty, not dragnet policing.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The case for New York’s stop-and-frisk program rests heavily on a simple observation: crime in New York is far lower than it was two decades ago. But that is not the same as proof that stopping hundreds of thousands of mostly black and Hispanic men is what made the city safer.</p>
+      <p>Crime began falling in New York before stop-and-frisk reached its current scale. It fell across the country, including in places that did not employ anything like New York’s volume of street stops. Homicides in the city dropped dramatically from the early 1990s, but the most explosive growth in stops came later, under Mayor Bloomberg and Commissioner Kelly. If the policy is credited for every robbery not committed, it should also be tested against periods and neighborhoods where stops rose without equivalent crime drops. Correlation is doing too much work here.</p>
+      <p>The program’s own numbers raise doubts. In 2011, the police recorded nearly 700,000 stops. Close to nine in ten ended without an arrest or summons. Guns were recovered in a tiny fraction of encounters, roughly one-tenth of one percent. Defenders reply that low gun recovery proves deterrence: people do not carry weapons because they fear being stopped. That is possible in theory. But a theory that can explain both many guns found and almost no guns found is hard to verify. At some point, a very low hit rate suggests not a brilliantly preventive strategy but an extremely blunt one.</p>
+      <p>The costs are not abstract. A young man who is repeatedly stopped while walking to school, work or the store learns that the police see him first as a suspect. That damages cooperation, and cooperation is essential to solving shootings, robberies and assaults. Witnesses must be willing to talk. Victims must be willing to call. Parents must believe officers are guardians, not occupiers. A policing strategy that reduces public trust may win a few encounters and lose the broader fight against violence.</p>
+      <p>None of this means that officers should be passive. A constitutional Terry stop based on a specific description, observed conduct or a credible report is a legitimate tool. So is concentrating officers in places where shootings and robberies cluster. But the question is not whether police may ever stop someone. It is whether New York’s mass stop-and-frisk regime lowers crime enough to justify its sweep, racial burden and constitutional risks.</p>
+      <p>The evidence for that proposition is weak. The evidence of harm is plain. New York can have assertive policing without turning reasonable suspicion into a citywide dragnet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Yes, stop-and-frisk can reduce crime, though only if one uses the phrase to mean lawful, supervised, targeted street policing rather than indiscriminate harassment. The distinction matters. New Yorkers remember, or should remember, what the city was like when illegal guns and open-air drug markets helped make ordinary life frightening in many neighborhoods. The police department’s shift toward proactive enforcement, CompStat accountability and deployment in high-crime areas coincided with an extraordinary improvement in public safety. It is implausible that policing had nothing to do with that.</p>
+      <p>A stop is not supposed to be a punishment. It is an investigative tool. When officers are sent to corners where robberies, shootings and gun complaints are concentrated, they will inevitably stop many people who are not arrested. Critics often point to the fact that the vast majority of stops do not produce contraband. But a Terry stop requires reasonable suspicion, not certainty. If arrests followed most stops, the standard would effectively be probable cause. Moreover, the most important effect of gun enforcement may be deterrence. A young man who might carry a pistol to settle a dispute may think twice if he believes police are actively looking for guns in that area.</p>
+      <p>The racial disparity is real and troubling, but it cannot be analyzed honestly without also discussing where violent crime is concentrated and who the victims are. Many black and Hispanic residents of high-crime neighborhoods ask for more police presence, not less, because they are the people most likely to be shot, robbed or intimidated. A policy that removes guns from those streets, or discourages gun carrying, protects them first.</p>
+      <p>That said, the current volume of stops in New York is too high to defend without better evidence and tighter rules. “Furtive movement” and “high-crime area” cannot become magic words that replace individualized suspicion. Supervisors should examine officers with unusually high stop numbers and low enforcement results. The department should record the basis for every stop in plain language, audit body language boilerplate, and punish officers who use stops to meet informal quotas. Data should be public enough to allow outside scrutiny by precinct, race, age, outcome and stated reason.</p>
+      <p>The solution is not to abandon proactive policing. A city that waits for a body on the pavement before acting has failed. But legitimacy is part of effectiveness. Stops must be concentrated on real crime patterns, not on young men as a category. They must be respectful, brief and legally justified.</p>
+      <p>So the answer is yes, a properly run stop-and-frisk strategy can lower crime, especially gun crime. But “properly run” is not a footnote. It is the condition that separates prevention from abuse.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The most honest answer is that the question is harder than both sides admit. “Does stop-and-frisk reduce crime?” sounds like a yes-or-no inquiry, but it bundles together many different practices: a stop of a man matching a robbery description minutes after the crime; a pat-down of someone seen adjusting a heavy object in his waistband; a quota-driven encounter with a teenager doing nothing more suspicious than standing on a corner. The first may prevent crime. The third may create it, indirectly, by corroding trust.</p>
+      <p>The empirical problem is the counterfactual. New York became much safer during the same era in which policing changed, the crack market receded, incarceration rose, demographics shifted, private security expanded, economic patterns changed, and crime fell nationally. Pointing to the crime decline does not isolate stop-and-frisk. Nor does pointing to the low rate of gun recovery fully disprove deterrence. If people carry guns less often because they fear being stopped, the police may find fewer guns precisely because the threat is working.</p>
+      <p>Still, the burden should fall on the government to show that a large-scale intrusion is worth its costs. On that score, New York has not made a convincing public case. Nearly 700,000 stops in one year is not a modest experiment. When roughly nine out of ten people stopped receive no summons or arrest, and when the burden falls overwhelmingly on young black and Latino men, the city needs more than anecdotes and crime charts. It needs evidence that marginal increases in stops produce marginal reductions in shootings or robberies, after accounting for neighborhood conditions, officer deployment and broader trends.</p>
+      <p>A better research question would compare similarly situated precincts over time: Did areas with increases in legally well-supported stops experience larger reductions in specific crimes than comparable areas without such increases? Did stops based on detailed descriptions perform differently from stops justified by vague categories like “furtive movements”? What happened to complaints, cooperation with investigations and clearance rates? Crime prevention is not just the absence of reported crime; it is also the presence of public confidence.</p>
+      <p>Until those questions are answered, policy should move toward precision. Keep constitutional stops. Use hot-spot patrols. Focus on shootings, robbery patterns and specific offenders. But do not measure productivity by the number of citizens stopped. In policing, volume can be the enemy of judgment.</p>
+      <p>Stop-and-frisk may reduce crime in some forms and settings. New York’s mass version has not been proven to do so at a level that justifies its human and constitutional costs.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The question “Does it work?” is important, but it is not the first question in a constitutional democracy. A curfew for all young men in certain neighborhoods might reduce crime. Random apartment searches might recover guns. That would not make them lawful or acceptable. The Fourth Amendment does not disappear when a tactic is administratively useful.</p>
+      <p>The Supreme Court’s decision in Terry v. Ohio gave officers limited authority to stop a person based on reasonable suspicion and to frisk when they have reason to believe the person is armed and dangerous. That standard is practical and serious. It recognizes the dangers officers face while insisting that police power be tied to facts. What is being challenged in New York is not the existence of Terry stops. It is whether hundreds of thousands of encounters have been justified by little more than geography, race, age and vague phrases like “furtive movement.”</p>
+      <p>If that is happening, then the policy is not merely controversial; it is an evasion of the rule of law. A right that protects only people in low-crime neighborhoods is not a right. The Constitution is tested precisely where fear is greatest and where the political influence of those searched is weakest.</p>
+      <p>Defenders argue that aggressive stops save lives in neighborhoods suffering from gun violence. That concern should not be dismissed. Residents of Brownsville, East New York or the South Bronx have the same right to safety as residents of Park Slope or the Upper West Side. But they also have the same right to walk to the store without being treated as presumptively criminal. Safety and liberty cannot be allocated by ZIP code.</p>
+      <p>There is also a practical reason to care about legality. Evidence-based suspicion forces police departments to sharpen their work: better descriptions, better intelligence, better supervision, better deployment. Dragnet tactics make officers less disciplined. They substitute friction for investigation. They may produce numbers for headquarters while weakening the relationship that solves serious crimes.</p>
+      <p>So does stop-and-frisk reduce crime? Lawful, individualized stops sometimes do. Unconstitutional mass stopping should not be defended even if it produces some short-term gains. The proper answer is not to tie officers’ hands, but to tie their authority to articulable facts. That is not anti-police. It is the bargain that allows policing to be both effective and legitimate.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The debate over stop-and-frisk often treats the people stopped as abstractions: data points, suspects, possible gun carriers. But the policy’s consequences are lived personally. Imagine being 16 years old and learning that walking with friends, wearing the wrong clothes, or taking the wrong route home may end with hands against a wall and pockets turned out. Imagine it happening not once, but repeatedly. Even when the officer is polite, the lesson is unmistakable: you are being watched because of who you are and where you live.</p>
+      <p>That lesson has consequences for crime. Police departments do not reduce violence alone. They need residents to report threats, identify shooters, testify in court and share information before retaliation escalates. A community that views the police as legitimate is a community more likely to cooperate. A community that sees officers as an occupying force is more likely to withdraw. The most serious crimes are not solved by random pat-downs; they are solved because someone trusts the authorities enough to talk.</p>
+      <p>The numbers make the legitimacy problem worse. Hundreds of thousands of stops, overwhelmingly of black and Hispanic men, produce relatively few weapons. Many end with no arrest or summons. To the person stopped, the city’s message is not “we are targeting gun violence.” It is “you are the target.” That resentment does not stay confined to the individual encounter. It spreads through families, schools, churches and blocks. Parents warn children about both criminals and cops. That is a terrible foundation for public safety.</p>
+      <p>Supporters are right that residents in high-crime neighborhoods want protection. It is condescending to suggest otherwise. The mothers who fear stray bullets are not asking for an academic seminar on civil liberties while their sons are in danger. But they are also not asking for their sons to be humiliated on the way home from basketball practice. The demand is for safety with respect.</p>
+      <p>There are better ways to get there: focused deterrence aimed at the small number of people driving shootings; more detectives solving gun cases; patrols in hot spots based on behavior and intelligence, not broad demographic suspicion; partnerships with probation, schools, clergy and neighborhood groups. These approaches recognize that violence is concentrated without treating an entire generation as suspicious.</p>
+      <p>Stop-and-frisk may prevent some crimes at the margins. But if the price is a deepening belief that the law is unfair, it becomes counterproductive over time. Public safety is not merely the absence of crime. It is the presence of trust. New York’s current approach spends that trust too freely.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The evidence from policing does not support a choice between mass stop-and-frisk and passive patrol. The better lesson is precision. Police can prevent crime when they focus on the people, places and behaviors most closely connected to violence. They lose both effectiveness and legitimacy when they expand that insight into a generalized power to stop hundreds of thousands of people.</p>
+      <p>Experiments and city experiences before 2012 point in the same direction. Hot-spots policing can reduce crime in small geographic areas without merely displacing it. Gun-focused patrols in very specific high-risk places have shown promise. Boston’s youth violence strategy in the 1990s, whatever one thinks of every detail, was built on identifying the relatively small networks driving shootings and combining clear consequences with community pressure and services. These examples are proactive. They are not soft on crime. But they are different from a citywide numbers game.</p>
+      <p>New York should ask what problem each stop is supposed to solve. If officers are responding to a robbery pattern, a witness description, a recent shooting, reliable intelligence about a gun, or observed conduct that reasonably suggests danger, a stop may be both constitutional and useful. If the justification is that a young man is in a “high-crime area” and makes an ambiguous movement, the tactic is too thin. The fact that a neighborhood has suffered violence cannot make everyone in it searchable.</p>
+      <p>The city’s enormous stop totals suggest a management failure. CompStat made commanders answer for crime. It should also make them answer for constitutional quality. How many stops led to gun recoveries, arrests for serious offenses, or useful intelligence? Which officers stop large numbers of people with very low results? Which precincts generate complaints? Are stops tied to specific crime conditions, or to vague productivity expectations? A department that can map robberies block by block can also audit street encounters with rigor.</p>
+      <p>Philadelphia’s consent decree points toward one possible future: fewer stops, better documented reasons, and outside scrutiny. New York should not wait for a court to impose common sense. Officers should receive training that rewards articulation and judgment, not volume. Supervisors should review paperwork for boilerplate. Residents should receive clear information about complaint processes. The department should publish data detailed enough for the public to see whether stops are targeted or merely numerous.</p>
+      <p>Do stop-and-frisk policies lower crime? Targeted, lawful stops can. Mass stop-and-frisk is a different policy, and a much harder one to defend. The city does not need to choose between safety and rights. It needs to replace breadth with accuracy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The evidence is not on the side of those who claim stop-and-frisk is a crime-reduction tool. What we have instead is a policy that harasses tens of thousands of innocent New Yorkers, disproportionately targets young men of color, and generates numbers that its defenders conflate with effectiveness but that do not actually demonstrate it.</p>
+      <p>The NYPD&#x27;s own data tell the story. In roughly nine out of ten stops, officers find nothing — no weapon, no drugs, no evidence of any crime. If this were a targeted, intelligence-driven tool, you would expect the hit rate to be substantially higher. Instead, what we see is a blunt instrument that sweeps up huge numbers of people who have committed no offense and are left with nothing but the message that the state views them as suspects by default.</p>
+      <p>More troubling still, the stops do not appear to correspond to a meaningful decline in crime driven specifically by that tactic. New York&#x27;s crime decline over the past two decades is real, but it mirrors national and even international trends in violent crime. Criminologists have consistently struggled to isolate stop-and-frisk as a causal factor. When you examine cities that used the tactic less aggressively and still saw crime fall, the narrative of indispensable effectiveness begins to collapse.</p>
+      <p>There is also a community-relations dimension that cannot be ignored. When young black and Hispanic men in certain neighborhoods learn that simply walking to the store carries a high probability of being stopped, questioned, and frisked, the relationship between police and the communities they serve deteriorates. Witnesses become reluctant to cooperate. Information dries up. The police lose the very thing they claim to be fighting for: community partnership in fighting crime.</p>
+      <p>The federal court&#x27;s decision to grant class-action status to the lawsuit is a signal that something has gone wrong with this policy. When judges across multiple jurisdictions — from Manhattan to Philadelphia — begin raising constitutional and fairness concerns, policymakers should take note. Reducing crime is a legitimate goal, but not at any cost, and certainly not through a strategy whose efficacy remains unproven and whose collateral damage falls heaviest on those least able to absorb it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>Stop-and-frisk works. Anyone looking honestly at the data should reach that conclusion, and the sustained decline in New York City&#x27;s crime rates over the past two decades owes a real debt to this tool.</p>
+      <p>The NYPD has been more transparent about its stop data than any other large department in the country. That very transparency has invited scrutiny, but what the numbers actually show is a department that is targeting its resources effectively. When you examine the relationship between stops and subsequent gun recoveries, the picture is compelling. The NYPD has recovered thousands of firearms through stops that began with reasonable suspicion. Those firearms, removed from the streets, did not then go on to be used in shootings. That is the point of the policy — it is preventive, not punitive.</p>
+      <p>Critics focus obsessively on the percentage of stops that yield no contraband, calling this a sign of failure. This gets the logic backwards. You do not need probable cause to conduct a stop — you need reasonable suspicion, a lower threshold that does not require certainty. Officers acting on observations of behavior, location, time of night, and prior knowledge of individuals do not need to be right every time. They need to be right enough, often enough, to interrupt cycles of violence before they occur.</p>
+      <p>The demographic composition of those stopped reflects the demographic reality of who commits street crime in New York. That is an uncomfortable fact, but it is not evidence of unconstitutionality — it is evidence of rational deployment of police resources. If you want to challenge a stop, the appropriate forum is a suppression hearing, not a campaign against the policy as a whole.</p>
+      <p>Philadelphia&#x27;s consent decree is instructive in the opposite direction that critics suggest. Philadelphia did not abandon stop-and-frisk — it reduced it. And what followed? A spike in homicides. This is not a controlled experiment, but it is a signal that abandoning the tool has consequences.</p>
+      <p>Crime control is not optional. New Yorkers have a right to walk their streets without fear, and the NYPD has an obligation to use every lawful tool available. Stop-and-frisk is lawful, effective, and essential.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The question of whether stop-and-frisk reduces crime is genuinely contested, and the honest answer is that the available evidence is mixed in ways that should give both proponents and critics pause.</p>
+      <p>On the one hand, there are plausible mechanisms by which increased stops could reduce crime. Visible police presence deters potential offenders. Removing firearms from people who would have carried them reduces the probability of shootings. And the overall crime decline in New York has been dramatic, coinciding with a period of expanded police activity. Defenders of stop-and-frisk are not wrong to point to this temporal correlation.</p>
+      <p>On the other hand, isolating stop-and-frisk specifically from the broader constellation of policing reforms — CompStat accountability, expanded foot patrols, community policing initiatives, broken-windows enforcement — is genuinely difficult. The city did many things at once. Attributing the crime decline to any one component is methodologically problematic. And the nine-out-of-ten figure for unproductive stops raises real questions about whether the strategy is efficiently targeted.</p>
+      <p>What the debate needs is better evidence rather than more rhetoric. The research literature to date does not provide the kind of causal identification we would need to say with confidence that stop-and-frisk, independent of other factors, drives crime reductions. That is not the same as saying it does not work — absence of proof is not proof of absence. But it means we should be cautious about either celebrating the policy as a proven success or dismissing it outright.</p>
+      <p>The constitutional concerns raised by the federal court are real and deserve serious engagement. But courts are not well positioned to make empirical judgments about crime control. What judges can do is assess whether individual stops meet constitutional standards — and on that question, the sheer volume of stops makes it inevitable that some were improper. The answer to that problem is better training, supervision, and accountability — not necessarily the abandonment of the tactic.</p>
+      <p>New York has achieved something remarkable in driving down crime. The question of which specific tools deserve credit is hard. The city should be honest about that difficulty rather than politicizing the data.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>What stop-and-frisk reveals is not primarily a question about crime statistics — it is a question about what kind of city New York wants to be. That is the deeper dimension of this debate, and it is the one that gets insufficient attention in discussions framed entirely around effectiveness.</p>
+      <p>The NYPD&#x27;s stops fall overwhelmingly on young black and Hispanic men. Not because of coincidence, and not simply because of crime patterns, but because the implicit logic of the policy treats certain categories of people as inherently suspect. When a young man walking down a Harlem street is stopped six times in a year and has done nothing wrong on any of those occasions, the cumulative message is that the state views his presence as itself a problem. That is not a minor inconvenience. That is a fundamental challenge to his dignity and his full citizenship.</p>
+      <p>We know from social science research that contact with the criminal justice system, even without conviction, affects subsequent behavior. People who are repeatedly stopped and searched — and find nothing — develop distrust not just of individual officers but of the institutions they represent. That distrust has downstream consequences for civic participation, for willingness to cooperate with investigations, for the willingness of communities to view the police as legitimate. In this sense, aggressive stop-and-frisk may be counterproductive in ways that do not show up in next year&#x27;s crime statistics but show up in the social fabric of neighborhoods over a generation.</p>
+      <p>The fact that a federal judge has found &quot;troubling questions&quot; about constitutionality is not a technicality. The Fourth Amendment&#x27;s prohibition on unreasonable searches and seizures is not an obstacle to effective policing — it is a foundational commitment to a particular vision of liberty. When we allow that commitment to be eroded in the name of convenience or statistical convenience, we change something important about the character of our republic.</p>
+      <p>Reducing crime is a genuine good. But so is maintaining a society in which the state does not treat its own citizens as objects of perpetual suspicion based on their race and age. Both values matter. The current trajectory of stop-and-frisk does not respect that balance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>The defenders of stop-and-frisk are right to push back against the assumption that the policy has been discredited. The critics are right to insist that its costs deserve scrutiny. The truth is that stop-and-frisk occupies a middle space: it has contributed to New York&#x27;s crime decline, but it has done so at a cost that is now unsustainable and, arguably, unnecessary.</p>
+      <p>The key shift that needs to happen is not the abandonment of proactive policing but its refinement. The NYPD should be able to articulate, with specificity, what it believes the mechanism of action is — how do stops translate into crime reduction? If the answer is primarily gun recovery, then the policy should be concentrated on the circumstances and locations where gun carrying is most likely. If the answer is general deterrence, then the stops should be visible enough to send a message without generating the alienation that comes from mass stops of uninvolved people.</p>
+      <p>The racial disparity in stops is the most serious challenge to the policy&#x27;s legitimacy, and it cannot be wished away with talk of crime statistics. Even if the underlying rates of criminal activity differ across demographic groups — and they do — the degree of disparity in stop rates appears to exceed what those differences would justify. That gap is where unconstitutional stops are most likely to occur.</p>
+      <p>Philadelphia&#x27;s experience is instructive not as a cautionary tale about reducing stops but as a signal that reduction without replacement is inadequate. The consent decree should be followed by investment in alternative approaches — community-based policing, targeted interventions in high-violence networks, improved relationships with neighborhood institutions. What Philadelphia shows is that the demand for public safety does not go away just because a specific tactic is removed.</p>
+      <p>New York should learn from both the successes and the failures of the current approach. Stop-and-frisk has been a part of the story of declining crime. It is also part of the story of strained community relations. Both facts are true. The responsible path is to keep what works, discard what does not, and invest in the harder work of building police-community trust.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>Let me offer a straightforward answer to the question: stop-and-frisk almost certainly reduces some types of crime, probably does not reduce other types, and may increase certain problems even as it decreases others. The policy is not a monolith, and treating it as such leads to bad policy on both sides.</p>
+      <p>The evidence that aggressive stops have contributed to New York&#x27;s decline in gun violence is reasonably strong. The mechanism is plausible: people who would otherwise carry firearms are stopped, the weapons are recovered, and those weapons are not used. This is not a marginal effect — shootings are a serious problem, and reducing them matters. If stop-and-frisk contributes to that reduction, that is a real benefit.</p>
+      <p>The evidence that stops meaningfully reduce drug crime, quality-of-life offenses, or other categories is weaker. And here is where the policy begins to generate costs that may exceed its benefits. When hundreds of thousands of mostly minority men are stopped for low-level infractions or no infractions at all, the system generates enormous friction with communities that are already skeptical of police. The resulting distrust makes solving serious crimes harder, not easier.</p>
+      <p>What the NYPD needs is a more surgical approach. Focus resources on gun violence — shootings, armed robberies, the situations where armed criminals are most likely to encounter officers or where stop-and-frisk can actually interrupt a chain of violence. Pull back from the mass stops of people who are doing nothing more than walking on the street.</p>
+      <p>This is not a radical proposal. It is a suggestion that effectiveness and fairness can be aligned rather than traded off. The current approach treats them as opposites because it uses a blunt instrument. A refined approach — informed by better data, stronger supervision, and honest evaluation — could achieve real crime reduction while restoring some measure of dignity to communities that have been treated as suspect pools rather than partners.</p>
+      <p>The federal lawsuit may be the catalyst for exactly that kind of rethinking. Courts sometimes force the institutional reflection that politics cannot.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

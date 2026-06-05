@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While transitioning requires mental effort and relearning di... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_is-veganism-good-for-everyone.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_is-veganism-good-for-everyone.html">Is Veganism Good for Everyone?</a> · Cluster 1 of 13</div>
+  <h1 class="arg-title">"While transitioning requires mental effort and relearning dietary habits, the human body is biologically designed to thrive on a plant-based diet rather than an omnivorous one."</h1>
+  <div class="arg-meta">4 human · 25 LLM · 29 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Brian Patton</span>
+        </div>
+        <p class="essay-quote">"While transitioning requires mental effort and relearning dietary habits, the human body is biologically designed to thrive on a plant-based diet rather than an omnivorous one."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/17/is-veganism-good-for-everyone/brian-patton" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Unlike true natural omnivores, humans lack the physical tools, such as sharp claws and teeth, necessary to hunt, kill, and digest raw animal flesh without falling ill.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">The human digestive system and physical anatomy are better suited for processing plants, which provide essential nutrients without the health risks of cholesterol and saturated fats found in meat.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">The primary obstacles to adopting veganism are psychological and cultural rather than biological, as our bodies are already suffering from the effects of consuming animal products.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Except for individuals with specific medical conditions or genetic deficiencies, the average person can achieve optimal health by correctly transitioning to a plant-centered diet.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Drew Ramsey</span>
+        </div>
+        <p class="essay-quote">"While a whole-food vegan diet is better than a processed diet, it is not ideal for everyone because the total exclusion of animal nutrients poses significant health risks and practical challenges."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/17/is-veganism-good-for-everyone/drew-ramsey" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Animal products are the only concentrated sources of essential nutrients like vitamin B12, omega-3 fats, and heme-iron that are vital for brain and heart health.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Clinical research indicates that vegans frequently suffer from nutritional deficiencies that can lead to serious conditions such as nerve damage and decreased brain volume.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Vulnerable populations, including pregnant women and the elderly, face heightened risks from veganism, such as stunted fetal brain development.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Synthetic supplements are often ineffective, expensive, and risky substitutes for the nutrients found in real animal-based foods.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">A more practical and healthy alternative to strict veganism is a modified diet that includes small amounts of high-quality animal nutrients.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Rhys Southan</span>
+        </div>
+        <p class="essay-quote">"Veganism may not be suitable for everyone due to individual health conditions, nutritional deficiencies, and a lack of long-term research on its effects."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/17/is-veganism-good-for-everyone/rhys-southan" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">The Academy of Nutrition and Dietetics&#x27; endorsement of veganism may be influenced by the personal dietary biases of its authors.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">There is a lack of scientific data regarding the long-term and generational health impacts of a lifelong vegan diet.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Specific medical conditions, such as hereditary fructose intolerance, epilepsy, and severe food allergies, can make a vegan diet physically impractical or dangerous.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">The restrictive nature of veganism can serve as a psychological trigger for individuals prone to eating disorders.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Variations in individual gut flora and the body&#x27;s ability to synthesize &#x27;inessential&#x27; nutrients found only in animal products can lead to undetected deficiencies and health failure.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While veganism can be healthy for most people, it is not a universal solution and requires careful planning, nutritional knowledge, and medical stability to be executed safely."</p>
+        <button class="essay-view-full" data-target="full-1-54534">View full essay</button>
+        <div class="essay-full" id="full-1-54534" style="display:none;">
+            <p>Veganism is not “good for everyone” in the simple sense that one diet can be lifted from a book and applied safely to every human being. But neither is it a diet reserved for a special body type. For most people, a vegan diet can be healthy if it is planned with more seriousness than simply subtracting meat, eggs and dairy from the plate. The key question is not whether a person has the “right” body, but whether the person has the knowledge, access, medical stability and willingness to replace what animal foods had been providing.</p>
+            <p>The strongest case for veganism is that many Americans eat far too much saturated fat, too few fruits and vegetables, and too many calorie-dense processed foods. A well-designed vegan diet built around beans, lentils, whole grains, vegetables, fruits, nuts and seeds can be high in fiber, low in saturated fat and helpful for cholesterol, blood pressure and weight control. Vegetarian and vegan populations often show lower rates of obesity and heart disease risk factors. For people motivated by animal welfare or environmental concerns, those ethical benefits are also real and not reducible to nutrition.</p>
+            <p>But “well-designed” is doing a lot of work. Vitamin B12 is the clearest example. It is not reliably supplied by unfortified plant foods, and deficiency can cause anemia and neurological damage. A vegan who refuses supplements or fortified foods is not being purer; he is taking an unnecessary risk. Vitamin D, calcium, iodine, iron, zinc and omega-3 fats also require attention. They are not impossible to get, but they do not take care of themselves. A diet of white pasta, fries, soda and vegan cookies is vegan, but it is not health food.</p>
+            <p>Life stage matters. The American Dietetic Association has said that appropriately planned vegetarian diets, including vegan diets, can be suitable during pregnancy, lactation, infancy, childhood and adolescence. That is an important corrective to the idea that veganism is inherently dangerous for children or pregnant women. Still, the phrase “appropriately planned” is especially important here. Infants and young children have small stomachs and high nutrient needs; they cannot simply eat bulky adult portions of beans and greens. Pregnant women need reliable B12, iron, iodine, calcium, vitamin D and adequate calories. A vegan pregnancy can be healthy, but casual improvisation is not enough.</p>
+            <p>Medical history can make veganism more complicated. Someone with a history of an eating disorder may find that a highly restrictive diet gives moral cover to dangerous restriction. A patient with inflammatory bowel disease, severe irritable bowel symptoms or recent gastrointestinal surgery may not tolerate the fiber load that many wholesome vegan diets depend on. People with multiple food allergies — for example to soy, nuts and wheat — may have a harder time meeting protein and calorie needs without monotony or expensive specialty foods. Those with kidney disease may need to monitor potassium, phosphorus and protein sources carefully. None of these situations makes veganism automatically impossible, but they argue for medical and dietetic supervision rather than slogans.</p>
+            <p>Economics cuts both ways. The cheapest foods in the supermarket include rice, beans, oats, potatoes, peanut butter and frozen vegetables. In that sense, vegan eating need not be elitist. But access is uneven. A person living in a food desert, working two jobs, without good cooking facilities, may find it much easier to obtain cheap fast food than dried lentils and fresh produce. Meanwhile, the fashionable version of veganism — artisanal nut cheeses, fake meats, imported superfoods — can be expensive and misleadingly presented as the norm.</p>
+            <p>So the honest answer is that veganism can be good for many people, perhaps most, but it is not automatically good for everyone under all circumstances. It is a dietary pattern with potential advantages and predictable pitfalls. The pitfalls are manageable for people who supplement B12, eat varied whole foods, get enough calories and seek guidance when medical issues are present. Veganism should not be dismissed as a fringe experiment, but neither should it be sold as a universal cure. The moral commitment may be simple; the nutritional execution is not.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">A well-designed vegan diet can improve cardiovascular health and reduce obesity by replacing saturated fats with fiber-rich whole plant foods.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Veganism requires deliberate supplementation and attention to specific nutrients like Vitamin B12, Vitamin D, and iron to avoid serious health risks.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">While suitable for all life stages, veganism requires specialized planning for infants and pregnant women to meet high nutrient demands within limited caloric or physical capacities.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Certain medical conditions, such as eating disorders, gastrointestinal issues, or severe food allergies, can make the restrictive nature of veganism physically or psychologically dangerous.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Economic and geographic barriers, such as living in food deserts or lacking cooking facilities, can make a healthy vegan diet inaccessible for some populations.</span></li>
+              <li class="src-v"><span class="num">06</span><span class="sub-text">The success of a vegan diet depends more on the individual&#x27;s access to resources and willingness to seek professional guidance than on having a specific body type.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Rip Esselstyn</span>
+        </div>
+        <p class="essay-quote">"A whole food, plant-based diet is the healthiest and most effective way for everyone to eat, regardless of age or physical activity level."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/17/is-veganism-good-for-everyone/rip-esselstyn" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">The difficulty of transitioning to veganism is a temporary result of food addiction and a learning curve rather than a permanent physical barrier.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Plant-based proteins and nutrients are superior to animal products because they provide essential nourishment without causing inflammation, bone loss, or cancer.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">A plant-based diet provides unique health benefits such as sustained energy from complex carbohydrates, fiber for digestion, and antioxidants to combat free radicals.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Eating nutrient-dense whole plants is the most effective method for weight loss because it limits calorie intake while maintaining health.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">The success of world-class athletes across various sports demonstrates that a vegan diet provides sufficient fuel for peak physical performance.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While veganism can be safe and beneficial for many, it is not a universal prescription because its success depends on careful planning, supplementation, and an individual&#x27;s specific physiological and socioeconomic circumstances."</p>
+        <button class="essay-view-full" data-target="full-1-89637">View full essay</button>
+        <div class="essay-full" id="full-1-89637" style="display:none;">
+            <p>Veganism, properly executed, is a viable diet for most healthy adults. But &quot;most&quot; is doing real work in that sentence. The question of whether a plant-only diet suits everyone is not primarily about willpower or grocery budgets — it is about physiology, life stage, and the often-underappreciated difficulty of replacing nutrients that animal foods deliver in dense, bioavailable forms.</p>
+            <p>The Academy of Nutrition and Dietetics has long held that well-planned vegan diets are appropriate for all stages of life, including pregnancy, infancy, and adolescence. That position is supported by large cohort studies — the Adventist Health Study and EPIC-Oxford among them — showing vegetarians and vegans tend to have lower rates of obesity, hypertension, type 2 diabetes, and ischemic heart disease. These are real benefits, and they are unlikely to be entirely explained by the fact that committed vegans also tend to exercise more and smoke less.</p>
+            <p>The catch is in the phrase &quot;well-planned.&quot; Vitamin B12 is not produced by plants in forms humans can use, and B12 deficiency — which can cause irreversible neurological damage — is documented at meaningful rates among long-term vegans who do not supplement. Iron from plants is non-heme and less readily absorbed, especially in the presence of phytates and tannins; zinc has similar issues. Omega-3 conversion from plant ALA to EPA and DHA is inefficient, and the efficiency varies genetically. Calcium, iodine, vitamin D, and choline all require deliberate attention. A vegan who eats kale and lentils on purpose will likely thrive; a vegan who lives on pasta and Oreos — which technically qualifies — will not.</p>
+            <p>Body type and medical history also shape the answer. People with iron-deficiency anemia, particularly menstruating women, may struggle more on a vegan diet without aggressive supplementation. Those with a history of disordered eating should approach any restrictive regime cautiously; the line between principled abstention and orthorexia can blur. Patients on certain medications, people with absorptive disorders like Crohn&#x27;s or celiac disease, and those who have had bariatric surgery face higher hurdles. Pregnant women and young children require especially careful planning because the costs of a B12 or DHA shortfall are not measured in fatigue but in development. None of this makes veganism impossible for these groups — it makes it harder, and it makes the supervision of a knowledgeable clinician or dietitian closer to a necessity than a luxury.</p>
+            <p>There is also a cultural caveat. Saying &quot;anyone can do this&quot; elides the reality that in food deserts, in some immigrant family contexts, and on tight budgets, the vegan diet that nutrition journals describe is not the vegan diet on offer.</p>
+            <p>So: is veganism good for everyone? It can be safe for almost everyone and beneficial for many. But &quot;good for everyone&quot; as a blanket prescription overstates what we know. The honest answer is that veganism is good for people who plan it well, supplement what plants cannot supply, and honestly assess their own bodies before committing.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Well-planned vegan diets are associated with lower rates of chronic conditions like obesity, hypertension, and type 2 diabetes.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The absence of naturally occurring B12 in plants and the low bioavailability of minerals like iron and zinc necessitate rigorous supplementation and dietary management.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Certain life stages, such as pregnancy and infancy, and medical conditions like anemia or malabsorption disorders, increase the nutritional risks and complexity of a vegan diet.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Individuals with a history of disordered eating may find the restrictive nature of veganism psychologically harmful.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Socioeconomic factors, including living in food deserts or having limited budgets, make the practical implementation of a nutritionally complete vegan diet difficult for many people.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"While veganism offers significant health benefits for many, it is not a universal prescription because individual biological variations, genetics, and medical histories determine whether the diet is nutritionally viable for a specific person."</p>
+        <button class="essay-view-full" data-target="full-1-49672">View full essay</button>
+        <div class="essay-full" id="full-1-49672" style="display:none;">
+            <p>The debate over whether veganism is uniformly beneficial often centers on willpower and economic access. Tara Parker-Pope is right to note the physical, social, and economic challenges, but the question of body type and medical history pushes deeper. A vegan diet can be nutritionally complete and is associated with lower risks of heart disease, hypertension, and certain cancers. However, the idea that discipline alone can guarantee good health for every person on a vegan diet misunderstands human biology. Individual variation in genetics, digestive function, and medical history means that veganism, while excellent for many, is not a universal prescription.</p>
+            <p>Advocates often point to the American Dietetic Association’s 2009 position that well-planned vegan diets are appropriate for all life stages. But the operative phrase is “well-planned,” and the planning required is not equally straightforward for everyone. The universal hurdle is vitamin B12, which must be obtained from fortified foods or supplements. Even then, some people have impaired absorption due to pernicious anemia or gastrointestinal conditions, and subclinical B12 deficiency can develop despite careful supplementation. Iron presents another hurdle. The non-heme iron in plants is absorbed less efficiently than heme iron from animals. For menstruating women or individuals with higher iron needs, maintaining adequate ferritin levels on a vegan diet can be a constant struggle, especially for those with undiagnosed absorption issues like celiac disease. Similarly, conversion of alpha-linolenic acid to the long-chain omega-3s EPA and DHA varies significantly; some people carry genetic variants that make this conversion extremely inefficient, potentially compromising brain and cardiovascular health if they rely solely on flax or walnuts.</p>
+            <p>Medical history matters acutely. For those with irritable bowel syndrome or inflammatory bowel disease, a diet high in legumes, whole grains, and certain fibrous vegetables can trigger painful bloating, gas, or flare-ups. These individuals may find that a vegan diet severely limits their tolerable food choices, making it difficult to meet calorie and protein needs without constant discomfort. A person with a history of eating disorders might also use veganism’s restrictive framework to mask orthorexia or anorexia, and the ethical purity of the diet can make it harder for clinicians to challenge. Furthermore, food allergies—soy, tree nuts, wheat—can carve away the protein and fat cornerstones of a vegan diet, leaving few whole-food alternatives that provide comparable amino acid profiles.</p>
+            <p>The life stage and physiological context further complicate the picture. During pregnancy and breastfeeding, nutritional demands for choline, iodine, and DHA rise dramatically. While these can theoretically be met with targeted supplementation and careful food selection, the margin for error shrinks, and not everyone has the nutritional literacy or access to the right supplements. Infants and young children raised vegan need meticulously planned diets to support rapid brain growth; a parent who simply eliminates animal products without expert guidance risks deficiencies that can have lasting consequences.</p>
+            <p>These caveats do not undermine veganism as an ethical or environmental choice, nor do they deny that millions thrive on plant-based diets. But the framing of the question—that discipline and means are the only prerequisites—ignores the messy reality of individual physiology. What is nourishing for one person can be debilitating for another. Veganism is not inherently good or bad, but its goodness is contingent on a person’s unique biological makeup and health status. A truly humane approach to diet must allow room for cases where including animal products is the more medically responsible path. One size never fits all.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Genetic variations and pre-existing medical conditions can impair the absorption of essential nutrients like Vitamin B12 and iron, making plant-based sources insufficient for some individuals.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Some people possess genetic variants that make the conversion of plant-based fatty acids into essential omega-3s extremely inefficient, potentially compromising long-term health.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Individuals with gastrointestinal disorders or severe food allergies may find that the high-fiber or restrictive nature of a vegan diet triggers symptoms or makes it impossible to meet caloric and protein needs.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The restrictive framework of veganism can be used to mask or exacerbate eating disorders, complicating clinical recovery.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The increased nutritional demands of specific life stages, such as pregnancy, infancy, and childhood, leave a dangerously small margin for error that not everyone has the resources or literacy to manage safely.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While veganism is nutritionally viable for most people with proper planning, it is not a universal prescription because individual health, genetics, and social circumstances dictate whether it is the optimal choice."</p>
+        <button class="essay-view-full" data-target="full-1-57302">View full essay</button>
+        <div class="essay-full" id="full-1-57302" style="display:none;">
+            <p>The question of whether veganism is universally appropriate ultimately depends on how we define &quot;good.&quot; If we mean nutritionally viable, then the answer is largely yes—most people with adequate access and planning can thrive on plant-based diets. Major health organizations have affirmed that appropriately planned vegan diets can meet nutritional needs across all life stages.</p>
+            <p>However, if we&#x27;re asking whether veganism represents the optimal choice for every individual, the answer becomes more complicated. Human beings exhibit considerable variation in metabolic function, digestive physiology, and nutritional requirements. Some individuals may have genetic factors affecting how they metabolize certain plant compounds or absorb particular nutrients. Those with a history of restrictive eating disorders may find that eliminating entire food groups triggers unhealthy patterns. Pregnant women, growing children, and athletes with extreme energy demands face heightened nutritional planning challenges.</p>
+            <p>The pragmatic barriers Parker-Pope identified—economic cost, social inconvenience, discipline requirements—also function as de facto health considerations. A vegan diet that&#x27;s nutritionally adequate in theory becomes problematic when it causes chronic stress over food choices or social isolation.</p>
+            <p>What strikes me most is the false binary embedded in the question. The framing assumes veganism is either universally good or universally appropriate, when in reality health is individually negotiated. The relevant question isn&#x27;t whether everyone should go vegan, but whether someone with the means, health status, and social support to do so thoughtfully can make it work. For many, yes. For some, perhaps not. That honest acknowledgment serves people better than universal prescriptions.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Major health organizations confirm that well-planned vegan diets can meet nutritional needs across all life stages.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Biological variations in metabolism, digestive physiology, and genetics mean that plant-based diets may not be optimal for every individual&#x27;s unique body.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">For individuals with a history of restrictive eating disorders, the elimination of entire food groups can trigger unhealthy psychological patterns.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The economic, social, and psychological burdens of maintaining a strict vegan diet can negatively impact an individual&#x27;s overall well-being.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Health is an individually negotiated status rather than a universal binary, making personal circumstances more important than general dietary rules.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"While plant-based eating offers significant health benefits, strict veganism is not a universal biological ideal because it fails to account for individual physiological, genetic, and socioeconomic differences."</p>
+        <button class="essay-view-full" data-target="full-1-20242">View full essay</button>
+        <div class="essay-full" id="full-1-20242" style="display:none;">
+            <p>While the ethical and environmental arguments for veganism are compelling, treating a strict plant-based diet as a universal biological ideal ignores the complex realities of human physiology. We are not a one-size-fits-all species, and a regimen that leaves one person feeling vibrant can leave another fatigued and malnourished.</p>
+            <p>The concept of bio-individuality is crucial here. Nutritional science heavily supports eating more plants; research consistently links high vegetable consumption to lower rates of heart disease and type 2 diabetes. However, obtaining adequate nutrients solely from plants requires highly efficient metabolic conversions that not all bodies perform equally well. For instance, plant-based sources of iron are significantly less bioavailable than the heme iron found in meat, making anemia a real risk for certain individuals. Similarly, while flaxseeds provide ALA omega-3 fatty acids, many people possess genetic variations that make them poor converters of ALA into the crucial EPA and DHA forms our brains require. A diet devoid of animal products also entirely lacks naturally occurring Vitamin B12, necessitating careful supplementation.</p>
+            <p>Beyond genetics, medical history and life stage heavily dictate dietary needs. Pregnant women, growing children, and individuals managing specific metabolic or autoimmune conditions often require dense, easily absorbed nutrients. For these populations, relying entirely on plant sources demands meticulous meal planning that borders on a full-time job.</p>
+            <p>Furthermore, this biological reality intersects with the socioeconomic privilege mentioned in the prompt. Outside affluent urban centers, acquiring a diverse, balanced vegan diet—complete with the necessary fortified foods and high-quality fresh produce—remains structurally difficult.</p>
+            <p>Ultimately, while reducing our reliance on industrial meat is an undeniably positive goal for public health, strict veganism is not metabolically or practically feasible for everyone. We should encourage plant-based eating without prescribing it as a universal mandate.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Variations in human genetics mean that not all individuals can efficiently convert plant-based nutrients into the essential forms required for optimal health.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Certain life stages and medical conditions create increased nutritional demands that are difficult to meet through plant sources alone without meticulous and complex planning.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The lack of naturally occurring Vitamin B12 in plant-based diets necessitates consistent supplementation that may not be accessible or practical for all people.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Socioeconomic barriers and geographic locations limit the availability of the diverse, fortified foods required to maintain a balanced and healthy vegan lifestyle.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally beneficial because individual health needs, life stages, and socioeconomic circumstances dictate whether a plant-based diet is safe or practical for a specific person."</p>
+        <button class="essay-view-full" data-target="full-1-93018">View full essay</button>
+        <div class="essay-full" id="full-1-93018" style="display:none;">
+            <p>“Good for everyone” is too sweeping. Veganism may be admirable, and for many adults it can be healthy, but the human population is not a controlled nutrition study. People bring to the dinner table pregnancies, medications, digestive disorders, poverty, food aversions, allergies, eating disorders and family obligations. A diet that works beautifully for one person can become risky or impractical for another.</p>
+            <p>The main problem is not protein, the usual target of debate. Most vegans who eat enough calories can get enough protein. The harder issues are micronutrients and absorption. Vitamin B12 must be supplemented or obtained from fortified foods. Vitamin D may be inadequate, especially in northern climates. Iron, zinc and calcium are available from plants but not always as bioavailable as in animal foods. Iodine can be missed if a vegan avoids iodized salt and seaweed. Long-chain omega-3 fatty acids are another question, particularly in pregnancy and infancy.</p>
+            <p>These concerns can be managed, but “can be managed” is not the same as “good for everyone.” Consider a pregnant woman with nausea who can tolerate only a narrow range of foods. Consider a child with soy and nut allergies whose parents are still learning how to cook. Consider an elderly person with poor appetite who needs dense, easily chewed sources of calories and protein. Consider someone with Crohn’s disease who cannot handle large amounts of legumes, raw vegetables or whole grains during flares. In each case, veganism may still be possible, but the margin for error narrows.</p>
+            <p>There is also a psychological dimension. For some people, veganism becomes a humane and thoughtful practice. For others, especially adolescents vulnerable to disordered eating, it can provide a socially approved language for restriction. Clinicians have seen patients who say they are avoiding animal cruelty when they are also avoiding fat, calories and meals. That does not indict veganism; it does mean we should be careful about prescribing it as universally beneficial.</p>
+            <p>The better answer is individualized. A well-planned vegan diet can reduce saturated fat and increase intake of fiber, fruits and vegetables. It may help people with high cholesterol, obesity or type 2 diabetes. It also aligns with ethical and environmental concerns that many people take seriously.</p>
+            <p>But nutrition advice should not be a purity test. Some people thrive as vegans. Some do better as vegetarians. Some may need fish, eggs, dairy or meat in modest amounts. The healthiest diet is not the one with the strictest label; it is the one that nourishes a real person over time.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The bioavailability of essential micronutrients like B12, iron, and zinc is lower in plant-based sources, making it difficult for certain populations to meet their nutritional requirements.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Specific medical conditions and life stages, such as pregnancy, elderly age, or digestive disorders like Crohn’s disease, narrow the margin for error and increase the risks associated with a strict vegan diet.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">For individuals vulnerable to disordered eating, the restrictive nature of veganism can serve as a socially acceptable mask for harmful dietary restriction.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Practical barriers such as food allergies, poverty, and family obligations can make the rigorous planning required for a healthy vegan diet unsustainable for many people.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A healthy diet should be individualized based on a person&#x27;s unique physiological and psychological needs rather than adhering to a strict, universal label.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Veganism is not a universal medical prescription, but rather a powerful health intervention that depends on the individual&#x27;s medical history, the quality of the foods chosen, and the person&#x27;s ability to maintain the lifestyle."</p>
+        <button class="essay-view-full" data-target="full-1-57000">View full essay</button>
+        <div class="essay-full" id="full-1-57000" style="display:none;">
+            <p>As a medical question, “Is veganism good for everyone?” should be answered the same way we answer questions about running marathons, taking statins or lowering carbohydrate intake: it depends on the patient, the execution and the goal.</p>
+            <p>A vegan diet is not automatically therapeutic. A person can be vegan on French fries, refined pasta, cookies and sweetened drinks. But a whole-food vegan diet — beans, vegetables, fruits, whole grains, nuts and seeds, with B12 — can be a powerful intervention for many of the conditions that fill doctors’ waiting rooms. It is typically high in fiber and low in saturated fat. It can help lower LDL cholesterol. It may help with weight control because plant foods are often less calorie dense. For patients with type 2 diabetes or hypertension, moving toward a plant-based diet can improve the overall pattern of eating, even when medication is still needed.</p>
+            <p>We have examples from research and clinical practice suggesting that intensive plant-based diets can benefit heart disease risk factors. But we should be honest: the health benefits come less from the word “vegan” than from the foods emphasized and the foods displaced. If giving up meat leads someone to eat lentils and greens, wonderful. If it leads to processed meat substitutes, sweets and white flour, the benefit shrinks.</p>
+            <p>The practical checklist is straightforward. A vegan needs a reliable source of vitamin B12. Many also need attention to vitamin D, calcium, iodine, iron, zinc and omega-3 fats. Pregnant women and children can be vegan, but they should not be casually vegan; they need planning and, ideally, professional guidance. People with kidney disease, gastrointestinal disorders, multiple food allergies or a history of eating disorders should talk with a clinician before making strict changes.</p>
+            <p>The social side is just as important. A diet that a patient cannot maintain is not good medicine. Some people feel liberated by veganism because the rules are clear and the ethical motivation is strong. Others feel deprived, isolated or anxious. The best diet is one that improves health and can be lived with at birthdays, holidays, travel and ordinary tired weeknights.</p>
+            <p>So I would not prescribe veganism for everyone. I would prescribe taking veganism seriously. It is not a fad that can be dismissed with jokes about protein. Nor is it a guarantee of purity or health. It is one possible version of a plant-centered diet, and for motivated people it can be excellent.</p>
+            <p>For the average patient, I might start with a less dramatic goal: beans most days, vegetables at every meal, fewer processed meats, smaller portions of animal foods, and perhaps one or two vegan meals a day. Some will go all the way. Others will not need to. The point is better health, not winning a dietary argument.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The health benefits of veganism are derived from the consumption of whole plant foods and the displacement of processed foods rather than the simple elimination of animal products.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A vegan diet requires careful nutritional planning and professional guidance to ensure adequate intake of essential nutrients like B12, especially for vulnerable populations like children and pregnant women.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The success of a vegan diet depends on its social and psychological sustainability for the individual, as a diet that causes feelings of isolation or deprivation is not effective medicine.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">For many patients, a flexible plant-centered approach that incorporates more whole plant foods without strict adherence to veganism may be a more practical and effective path to better health.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While veganism can be a healthy choice for informed adults, it is too restrictive and dependent on supplementation to be considered an optimal or universal diet for everyone."</p>
+        <button class="essay-view-full" data-target="full-1-55777">View full essay</button>
+        <div class="essay-full" id="full-1-55777" style="display:none;">
+            <p>The trouble with the current enthusiasm for veganism is that it confuses “survivable” with “optimal.” Yes, a careful vegan can assemble a diet that meets the major nutrient targets. But the amount of planning and supplementation required should make us pause before declaring veganism good for everyone.</p>
+            <p>Animal foods are nutritionally dense. Eggs, fish, meat and dairy provide complete protein, vitamin B12, iron, zinc, calcium, vitamin D in some foods, and long-chain omega-3 fats in forms the body can readily use. Plant foods are valuable and should make up a large share of the diet, but they often come with limitations: non-heme iron is less absorbable; zinc can be affected by phytates; plant omega-3s must be converted inefficiently to EPA and DHA; and B12 is essentially absent unless fortified or supplemented.</p>
+            <p>Vegan advocates often reply that supplements solve the problem. Sometimes they do. But a diet dependent on pills and fortified substitutes is not obviously the universal ideal. Supplementation requires knowledge, consistency and quality control. People forget. Children refuse foods. Teenagers experiment. Poor families run out of money. Elderly people lose appetite. In real life, nutrition is not designed by a dietitian and executed by a robot.</p>
+            <p>The most vulnerable groups deserve special caution. Pregnancy and early childhood are periods when deficiencies can have lasting consequences. A breastfeeding vegan mother who is B12 deficient may have an infant at risk. Adolescents, who already have high nutrient needs and erratic eating habits, may use veganism as a cloak for restriction. Older adults need enough protein and calories to maintain muscle; bulky high-fiber diets may not always help.</p>
+            <p>Nor should we pretend that all animal foods are the same. A diet built on processed meats, oversized steaks and sugary dairy desserts is plainly unhealthy. But that does not prove that modest amounts of fish, eggs, yogurt or lean meat are harmful. Traditional diets around the world have often combined grains, legumes and vegetables with small quantities of animal foods. That pattern may be more forgiving than strict veganism while still avoiding the excesses of the American diet.</p>
+            <p>Veganism can be a principled choice for informed adults. It may improve health when it replaces fast food and processed meat with beans, vegetables and whole grains. But as general advice, it is too restrictive and too dependent on supplementation to be called good for everyone.</p>
+            <p>A better public message would be less ideological: eat more plants, fewer processed foods, and smaller amounts of better-raised animal products. That recommendation will help far more people than insisting that the healthiest plate must contain no animal food at all.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Animal-based foods provide essential nutrients in more bioavailable and nutritionally dense forms than plant-based alternatives.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A diet that relies heavily on supplements and fortified foods is impractical for many people due to the consistency, knowledge, and financial resources required.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Vulnerable populations, such as children, pregnant women, and the elderly, face higher risks of lasting health consequences from the nutrient deficiencies common in strict veganism.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The health benefits of veganism often stem from the removal of processed foods rather than the total exclusion of animal products, which can be healthy in modest amounts.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A flexible diet emphasizing plants and high-quality animal products is a more sustainable and forgiving public health recommendation than strict veganism.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"A well-planned vegan diet is nutritionally adequate and beneficial for almost everyone, provided it is approached with discipline and proper supplementation."</p>
+        <button class="essay-view-full" data-target="full-1-68625">View full essay</button>
+        <div class="essay-full" id="full-1-68625" style="display:none;">
+            <p>The short answer is that a vegan diet can be good for almost everyone, but not if “vegan” is treated as a magic word rather than a way of eating that has to be planned.</p>
+            <p>By 2012, the basic nutrition question is not mysterious. The American Dietetic Association has stated that appropriately planned vegetarian and vegan diets are healthful and nutritionally adequate, including during pregnancy, lactation, infancy, childhood and adolescence. That does not mean every vegan diet is healthy. Potato chips, soda and white bread can be vegan. So can a diet too low in calories, calcium or protein. But the medical question is whether humans require animal foods. For most people, the answer is no.</p>
+            <p>The one nonnegotiable issue is vitamin B12. A vegan who does not take B12 in fortified foods or supplements is not practicing a nutritionally adequate diet. That is not a small caveat; B12 deficiency can cause anemia and neurological injury. But it is also not an argument against veganism any more than fluoridated water or iodized salt is an argument against modern diets. People already rely on fortification for iodine, vitamin D and folic acid.</p>
+            <p>Other nutrients require attention, not panic. Calcium can come from fortified plant milks, tofu set with calcium, greens and supplements if needed. Iron from plants is less readily absorbed than iron from meat, but beans, lentils and leafy greens, paired with vitamin C, can meet needs. Omega-3 fats are available from flax, chia and walnuts, though some people may choose algae-derived DHA. Protein is easy if a person eats enough legumes, grains, nuts and seeds.</p>
+            <p>The strongest case for veganism is not that it suits a special “body type.” It is that the standard American diet is so poor: too much saturated fat, processed meat, refined starch and excess calories. A well-designed vegan diet pushes people toward beans, vegetables, fruits, whole grains and nuts — the very foods public-health authorities keep urging Americans to eat more often.</p>
+            <p>There are exceptions. Someone recovering from an eating disorder may find strict rules dangerous. A person with multiple allergies, severe gastrointestinal disease or very limited food access may struggle. Children need attentive parents, not ideology.</p>
+            <p>But those are arguments for competent guidance, not for steak as a biological necessity. If a person has discipline, access to varied foods and willingness to take B12, veganism is not only possible. For many Americans, it would be a substantial improvement.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Major health organizations have confirmed that vegan diets can meet nutritional needs for all stages of life, from infancy to adulthood.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The necessity of vitamin B12 supplementation is a manageable requirement of modern nutrition rather than a fundamental flaw of veganism.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Essential nutrients like calcium, iron, and protein are readily available through plant-based sources and fortified foods.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A vegan diet promotes the consumption of whole foods like legumes and vegetables, which addresses the health risks associated with the standard American diet.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">While certain medical conditions or limited food access may present challenges, these cases require professional guidance rather than the consumption of animal products as a biological necessity.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"A well-planned vegan diet is nutritionally adequate and health-promoting for virtually everyone, regardless of their life stage, body type, or medical history."</p>
+        <button class="essay-view-full" data-target="full-1-91066">View full essay</button>
+        <div class="essay-full" id="full-1-91066" style="display:none;">
+            <p>Veganism is not only good for everyone—it’s the single dietary choice that aligns most fully with what we now know about long-term human health. The question implies that some people might be biologically unsuited to a plant-only diet, but the weight of nutritional science says otherwise. In 2009, the American Dietetic Association published a position paper concluding that well-planned vegan diets are appropriate for all stages of life, including pregnancy, infancy, and old age, and that they may reduce the risk of heart disease, type 2 diabetes, and certain cancers. There is no asterisk limiting that endorsement to people with a particular body type or medical history.</p>
+            <p>Skeptics often point to rare genetic conditions or gastrointestinal disorders as evidence that veganism isn’t universal. But these are edge cases. For the vast majority, the challenges Tara Parker-Pope describes—discipline, cost, social friction—are the real barriers, not some hidden biological incompatibility. Even those with irritable bowel syndrome or nickel allergies, which can complicate plant-heavy diets, often find relief through tailored vegan protocols under the guidance of a dietitian. The existence of a tiny fraction who need specialized care doesn’t undermine the general rule: a properly constructed vegan diet is health-promoting for essentially everyone.</p>
+            <p>Where critics get traction is when they conflate “veganism” with “veganism done poorly.” A person living on potato chips and soda is technically vegan but hardly healthy. But the same is true of any dietary pattern. The test is whether a thoughtfully implemented vegan diet can meet all nutritional needs, and the evidence from prospective cohort studies like the Adventist Health Study-2 confirms that it does—often with superior outcomes. Concerns about protein, iron, or omega-3s are easily addressed with legumes, seeds, and microalgae supplements.</p>
+            <p>The deeper point is that “good for everyone” should not be misread as “identically easy for everyone.” Vegan transition takes effort, but that’s a social and educational challenge, not a biological exclusion. By framing the issue around body type and medical history, the question risks implying that veganism is a niche lifestyle for the genetically lucky. That’s exactly backward. At the population level, shifting toward plant-based eating is one of the most universally beneficial changes we can make. Individual adaptations might be needed, but the core principle stands: veganism, when done with even minimal care, is good for you—whoever you are.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Major nutritional organizations have concluded that vegan diets are appropriate for all stages of life and can reduce the risk of chronic diseases.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Biological barriers to veganism are rare edge cases, and even individuals with specific medical conditions can often thrive on tailored plant-based protocols.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Nutritional deficiencies are a result of poor implementation rather than an inherent flaw in veganism, as all essential nutrients can be obtained through plant sources and supplements.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The primary obstacles to adopting a vegan diet are social, economic, and educational rather than biological or genetic.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally beneficial because individual biological differences and specific medical histories mean that a plant-based diet can be physically harmful for certain people."</p>
+        <button class="essay-view-full" data-target="full-1-37289">View full essay</button>
+        <div class="essay-full" id="full-1-37289" style="display:none;">
+            <p>I tried being vegan for nearly two years, and I want to push back against the cheerful consensus that anyone can do it if they just try hard enough. Bodies are different. Mine got worse.</p>
+            <p>I was an enthusiastic convert in my late twenties — read Peter Singer, watched the documentaries, threw out the leather belts. For the first six months I felt fantastic, the way anyone feels when they replace processed junk with vegetables. By month ten I was exhausted. By month eighteen my ferritin was in the basement, my periods had stopped, and my hair was coming out in the shower. I was eating lentils. I was taking B12. I was doing it right, by every checklist I could find. My doctor, who happens to be vegetarian herself, told me bluntly that some people don&#x27;t absorb plant iron well and that I needed to eat meat again. Within three months of reintroducing fish and eggs, I was myself again.</p>
+            <p>I tell this story because the public conversation about veganism has become weirdly absolutist. On one side, advocates insist the diet is optimal for every human being on earth, citing the ADA position paper as if it settled the question. On the other side, paleo and low-carb evangelists insist plants will kill you. Both camps are ideologues. The truth is messier: nutrition is individual. Genetic differences in iron metabolism, in the conversion of plant-based ALA to the long-chain omega-3s the brain needs, in B12 absorption, in vitamin A precursor conversion — these are real and well-documented. Some people thrive on plants alone. Some people struggle. Pretending otherwise does a disservice to anyone whose body sends warning signals.</p>
+            <p>Medical history matters too. People recovering from eating disorders are particularly vulnerable; veganism can become a socially sanctioned cover for restriction. Pregnant women, the elderly with already-compromised B12 absorption, kids with high caloric needs and small stomachs — all of these groups can do veganism well, but the margin for error shrinks dramatically.</p>
+            <p>None of this is an argument against veganism as a personal choice or as an ethical stance. The case against factory farming is serious, and I still eat mostly plants. But &quot;good for everyone&quot; is a marketing slogan, not a medical claim. The honest answer to the question is: good for most people who plan carefully, manageable for many others, and genuinely difficult — sometimes harmful — for a minority whose bodies don&#x27;t cooperate. We should be allowed to say that out loud without being accused of betraying the cause.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Genetic variations in how bodies metabolize iron, B12, and omega-3 fatty acids mean that some individuals cannot thrive on plant-based nutrients alone.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">For people with a history of eating disorders, veganism can serve as a dangerous, socially acceptable way to mask restrictive eating habits.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Specific demographic groups, such as pregnant women, the elderly, and children, have a much smaller margin for error when attempting to meet their nutritional needs through a vegan diet.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The public discourse on nutrition is often driven by ideological absolutism rather than the messy reality of individual biological needs.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Veganism can be beneficial for everyone, provided it is thoughtfully planned and supported by adequate nutritional knowledge and resource access."</p>
+        <button class="essay-view-full" data-target="full-1-95027">View full essay</button>
+        <div class="essay-full" id="full-1-95027" style="display:none;">
+            <p>Asking whether veganism is good for everyone is a bit like asking whether swimming is good for everyone. The answer depends far more on how you do it, where you do it, and what your alternatives are than on any absolute property of swimming itself. A well-planned vegan diet can be extraordinarily healthful, but it is not automatically so. The same is true of any diet, of course, but veganism deserves particular scrutiny because it eliminates entire food groups. Whether that elimination helps or harms an individual hinges on what replaces those foods and on qualities that have nothing to do with body type or medical history at all.</p>
+            <p>The first layer is nutritional literacy. A person who transitions to veganism by swapping beef for bean burritos, milk for fortified soy milk, and butter for olive oil will almost certainly see improvements in cholesterol and overall health. But someone who simply removes animal products and fills the gap with refined carbohydrates and processed vegan junk food may end up worse off. The difference isn’t genetics; it’s knowledge and food environment. In that sense, veganism is good for everyone only if we’re talking about a version that is thoughtfully executed.</p>
+            <p>The second layer is the social and economic context Parker-Pope pointed to. In a well-resourced urban setting with access to fresh produce, diverse legumes, and supplements, veganism is entirely viable. In a rural food desert where the only store stocks canned goods and cheap meat, it becomes vastly harder to practice veganism without nutritional shortfalls. That isn’t a flaw of veganism per se, but it does mean that “good for everyone” must account for the real-world conditions in which people eat, not just an idealized plate.</p>
+            <p>Finally, we should be careful not to medicalize the question unnecessarily. The prompt suggests that some may need a certain medical history to make veganism work. In truth, conditions like celiac disease or severe nut allergies can complicate any diet, vegan or otherwise. The presence of such conditions doesn’t single veganism out as uniquely dangerous; it simply reinforces the entirely mundane truth that dietary patterns must be individualized. There is no one-size-fits-all prescription, but there is also no good evidence that any entire category of people is biologically barred from thriving on a carefully planned, fully plant-based diet. The real gatekeepers are knowledge, access, and thoughtful implementation—not an inborn vegan compatibility gene.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The health outcomes of a vegan diet depend on whether animal products are replaced with nutrient-dense whole foods rather than processed junk foods.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The viability of veganism is heavily influenced by an individual&#x27;s social and economic environment, such as their proximity to fresh produce and supplements.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">There is no biological evidence that specific body types or medical histories prevent individuals from thriving on a plant-based diet.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Medical conditions like allergies complicate all dietary patterns and simply necessitate individualization rather than the exclusion of veganism.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"A well-planned vegan diet is nutritionally adequate and health-promoting for the vast majority of people, provided they have the nutritional literacy to manage specific nutrient needs."</p>
+        <button class="essay-view-full" data-target="full-1-35764">View full essay</button>
+        <div class="essay-full" id="full-1-35764" style="display:none;">
+            <p>Veganism is not a single diet but a sprawling family of dietary patterns united only by the absence of animal products. A vegan can subsist on french fries, soda, and white bread, or on lentils, leafy greens, walnuts, and tofu. To ask whether &quot;veganism&quot; is good for everyone is therefore a bit like asking whether &quot;omnivorism&quot; is good for everyone — the answer depends almost entirely on the particulars.</p>
+            <p>That said, a well-planned vegan diet is suitable for nearly every healthy adult and most children. The American Dietetic Association said as much in its 2009 position paper, concluding that appropriately planned vegetarian and vegan diets are nutritionally adequate and may provide health benefits in the prevention and treatment of certain diseases, including heart disease, type 2 diabetes, and some cancers. The qualifier &quot;appropriately planned&quot; is doing real work here. Vegans need a reliable source of vitamin B12 — usually a supplement or fortified foods — and should pay attention to iron, zinc, calcium, iodine, omega-3 fatty acids, and protein variety. None of this is exotic; it just requires a bit of literacy.</p>
+            <p>Does body type matter? Not really, in any meaningful biological sense. People with higher caloric needs — athletes, growing teenagers, pregnant women — must simply eat more, and may need to lean on calorie-dense plant foods like nuts, seeds, avocado, and legumes rather than filling up on salad. Medical history matters more. Someone with a history of disordered eating should approach any restrictive diet cautiously. People with certain malabsorption conditions, severe food allergies (soy, nuts, wheat) that knock out major plant protein sources, or specific metabolic disorders may find veganism harder to execute well. But &quot;harder&quot; is not &quot;impossible.&quot;</p>
+            <p>The bigger barriers are practical and cultural. Vegan eating is easier in Brooklyn than in rural Mississippi, easier with a Whole Foods salary than on SNAP, easier in a household that already shares the values than in one where you&#x27;re the lone holdout at Thanksgiving. Tara Parker-Pope is right that the social and economic challenges are real, but they are not medical contraindications.</p>
+            <p>So is veganism good for everyone? Almost. The honest answer is that a thoughtfully constructed vegan diet is compatible with excellent health for the overwhelming majority of people, but it does demand more attention to nutrition than the default Western diet — which, ironically, is itself good for almost no one. We should stop treating veganism as a fragile, suspect lifestyle requiring medical clearance and start treating it as what it is: one perfectly reasonable way to feed a human being.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Major health organizations have concluded that appropriately planned vegan diets can help prevent and treat chronic diseases like heart disease and diabetes.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Biological factors like body type and high caloric needs do not preclude veganism, as they can be managed by choosing calorie-dense plant foods.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">While certain medical conditions or severe allergies can make veganism more difficult to execute, they are rarely absolute barriers to the diet.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The primary obstacles to adopting veganism are social, economic, and practical rather than inherent medical or biological contraindications.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The necessity of careful nutritional planning for vegans should be viewed as a reasonable requirement for health rather than a sign that the diet is inherently fragile or suspect.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally beneficial because individual biological variations, such as genetics and gut health, determine whether a plant-based diet can meet a person&#x27;s nutritional needs."</p>
+        <button class="essay-view-full" data-target="full-1-62196">View full essay</button>
+        <div class="essay-full" id="full-1-62196" style="display:none;">
+            <p>The honest answer to whether veganism is good for everyone is no—and we do no one a service by pretending otherwise. Human beings are not uniform machines with identical fuel requirements. We vary enormously in our ability to convert plant precursors into the active forms our bodies need, in our gut microbiomes, and in the background conditions that make certain diets tolerable or disastrous. A diet that brings one person vibrant clarity can leave another malnourished and foggy, no matter how carefully it’s planned.</p>
+            <p>Consider the conversion of beta-carotene to vitamin A. A substantial minority of people carry polymorphisms in the BCMO1 gene that reduce conversion efficiency by up to 70 percent. For them, a vegan diet without direct animal sources of retinol can mean creeping deficiencies, even when they consume plenty of orange vegetables. Similarly, the long-chain omega-3 fatty acids DHA and EPA are poorly synthesized from ALA in many individuals, especially men. Algal supplements exist, but the fact that supplementation is necessary for some already concedes that whole-food veganism isn’t universally sufficient.</p>
+            <p>Then there’s the gut. A growing body of research in 2012 points to the microbiome as a frontier in personalized nutrition. Individuals with bacterial overgrowth or certain dysbiosis patterns can react badly to the high-FODMAP legumes and grains that are staples of vegan eating. For them, a plant-based diet can exacerbate bloating, pain, and malabsorption—not because the diet is ‘bad,’ but because their particular biology doesn’t match it. Some people feel markedly better when they reintroduce easily digestible animal proteins.</p>
+            <p>This is not an argument against veganism. For millions, it’s a health-giving, ethically coherent choice. But the idea that it’s good for everyone ignores the quiet evidence from clinical practice: the patients whose inflammatory markers paradoxically rise on a vegan diet, the women whose menstrual cycles disappear, the children who fail to thrive. These aren’t failures of will or planning. They are signals that a universal prescription misreads human diversity. Tara Parker-Pope was right to ask whether discipline alone is enough. It isn’t. Our biology has a say, and it doesn’t speak with one voice.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Genetic polymorphisms in some individuals significantly hinder the conversion of plant precursors into essential nutrients like vitamin A and long-chain omega-3 fatty acids.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Variations in gut microbiomes mean that the high-fiber and high-FODMAP staples of a vegan diet can cause severe digestive distress and malabsorption for certain people.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Clinical evidence shows that even well-planned vegan diets can lead to adverse health outcomes like inflammatory markers, hormonal disruptions, and failure to thrive in some individuals.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The necessity of supplementation for many people to maintain health on a vegan diet demonstrates that a whole-food plant-based diet is not naturally sufficient for every human biology.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While veganism offers significant ethical, environmental, and health benefits, it is not a universal solution due to individual biological variations and significant socio-economic barriers."</p>
+        <button class="essay-view-full" data-target="full-1-43766">View full essay</button>
+        <div class="essay-full" id="full-1-43766" style="display:none;">
+            <p>Whether veganism is good for everyone is the wrong question, or at least an incomplete one. &quot;Good for&quot; measured how? By blood panel? By carbon footprint? By the suffering of sentient beings? By the cohesion of a family at dinner? These dimensions don&#x27;t always align, and pretending they do is how the vegan debate gets stuck.</p>
+            <p>On strictly nutritional grounds, the evidence supports a moderate verdict: a thoughtfully composed vegan diet is adequate for most adults, requires supplementation (B12 at minimum) and attention to a handful of nutrients, and is associated with favorable outcomes on several cardiometabolic markers. It is not optimal for every individual body, and there is no diet that is. Some people genuinely feel better with some animal foods; others feel better without them. Individual variation is the rule.</p>
+            <p>On ethical grounds, the case for reducing or eliminating animal products is, in my view, strong and getting stronger. Industrial animal agriculture inflicts staggering amounts of suffering on creatures with nervous systems and social lives quite similar to those of the dogs we coddle. You don&#x27;t have to accept full Singerian utilitarianism to find this troubling.</p>
+            <p>On environmental grounds, livestock production is a major contributor to greenhouse gas emissions, deforestation, freshwater use, and ocean dead zones. The 2006 FAO report &quot;Livestock&#x27;s Long Shadow&quot; put the sector&#x27;s emissions at roughly 18 percent of the global total — higher than transportation. Subsequent analyses have quibbled with the number but not the order of magnitude.</p>
+            <p>On social and economic grounds, however, veganism is harder for some people than others. Food deserts, cultural cuisines built around animal foods, family pressure, the price of fresh produce relative to subsidized commodity calories — these are real barriers, and lecturing single mothers in the Bronx about almond milk is not a serious response to them.</p>
+            <p>So my answer to the question is layered. Biologically, veganism is fine for almost everyone who can plan a diet, and great for many. Ethically, it is a defensible and probably admirable choice. Environmentally, broad shifts toward plant-based eating would help. Practically, it remains harder for some people to access and sustain than for others, and that should temper our judgments of those who don&#x27;t.</p>
+            <p>What I resist is the all-or-nothing framing the question implicitly invites. The choice isn&#x27;t between strict veganism and the meat-heavy status quo. A society in which most people ate considerably less meat, sourced more carefully, would capture most of the ethical and environmental benefits without requiring everyone to clear the high bar of full veganism. That, more than universal conversion, is what&#x27;s actually within reach.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">A well-planned vegan diet is nutritionally adequate for most adults and linked to positive health markers, though individual biological responses to the diet vary.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Reducing or eliminating animal products is ethically justified by the need to decrease the immense suffering caused by industrial animal agriculture.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The livestock industry is a primary driver of global environmental degradation, including greenhouse gas emissions and resource depletion.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Socio-economic factors such as food deserts, cultural traditions, and the high cost of fresh produce make maintaining a vegan lifestyle significantly more difficult for certain populations.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A societal shift toward reduced meat consumption is a more practical and attainable goal than universal conversion to strict veganism.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While veganism requires logistical planning and nutritional knowledge, it is a biologically viable and health-promoting diet for people at all stages of life."</p>
+        <button class="essay-view-full" data-target="full-1-24987">View full essay</button>
+        <div class="essay-full" id="full-1-24987" style="display:none;">
+            <p>The question of whether veganism is good for everyone is ultimately a question about biology, and the honest answer is: it depends on the person, but for most, a well-planned plant-based diet is not just viable — it&#x27;s advantageous. The scientific literature available to us consistently shows that appropriately managed vegan diets rank among the healthiest eating patterns available. The American Dietetic Association has affirmed since 2009 that properly planned vegetarian and vegan diets are appropriate for all stages of the life cycle, including pregnancy, lactation, infancy, childhood, and adolescence. This is not a fringe opinion held by fringe organizations — it is the settled position of mainstream nutritional science.</p>
+            <p>The concern that veganism requires a &quot;certain body type&quot; or special medical history misunderstands what a well-designed plant-based diet actually looks like. The challenges Parker-Pope identifies — discipline, planning, social navigation — are real. But these are challenges of logistics and habit, not of biology. Every major nutrient found in animal products has plant-based equivalents that the human body absorbs and utilizes effectively, often with additional benefits. Iron from legumes and leafy greens, when consumed with vitamin C, rivals heme-iron bioavailability. B12 from supplements or fortified foods is indistinguishable in function from the animal-derived version. Calcium from tofu, bok choy, and fortified plant milks supports bone density just as effectively.</p>
+            <p>What veganism genuinely requires is attention. This is not a trivial point — attention is a resource that not everyone has in equal measure, and that asymmetry matters. But for a person with the capacity and means to plan meals thoughtfully, the health dividends are substantial. Lower rates of obesity, heart disease, type 2 diabetes, and certain cancers have been documented repeatedly in populations consuming predominantly plant-based diets. These are not speculative benefits — they are the product of decades of epidemiological and clinical research.</p>
+            <p>The framing of the question — &quot;does a person also need a certain body type and medical history?&quot; — subtly suggests that veganism is an outlier, an aberration from the biological norm. It is not. It is simply one way of eating, and for many people, it is the most protective way of eating available in a world where processed foods and animal-heavy Western diets have become a leading driver of chronic disease. The answer is not &quot;yes, you need special circumstances.&quot; The answer is that you need knowledge, and knowledge is widely accessible.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Mainstream nutritional science and organizations like the American Dietetic Association affirm that well-planned vegan diets are appropriate for everyone from infancy to old age.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The human body can effectively absorb and utilize all essential nutrients from plant-based sources or fortified foods as successfully as those from animal products.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Populations following plant-based diets show significantly lower rates of chronic conditions such as obesity, heart disease, and type 2 diabetes.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The primary barriers to a successful vegan diet are related to habit, logistics, and access to information rather than inherent biological limitations or specific body types.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While veganism offers significant health benefits, it is not a universally simple or risk-free choice because its success depends on individual circumstances and the specific knowledge required to manage nutritional risks."</p>
+        <button class="essay-view-full" data-target="full-1-82903">View full essay</button>
+        <div class="essay-full" id="full-1-82903" style="display:none;">
+            <p>The scientific evidence on vegan diets as of 2012 is extensive enough to support some clear conclusions, and nuanced enough to caution against the more sweeping claims made on behalf of plant-based eating. Let me try to be precise about what we actually know.</p>
+            <p>We know that populations consuming predominantly plant-based diets — Seventh-day Adventists in California, certain Buddhist communities in Asia, traditional Okinawan elders — show notably lower rates of cardiovascular disease, certain cancers, and metabolic syndrome compared to matched populations consuming conventional Western diets high in animal products and processed foods. This is robust, replicated, and broadly accepted.</p>
+            <p>We also know that vegan diets carry specific risks that are less discussed in popular advocacy: inadequate B12 status (which can cause neurological and hematological consequences), low omega-3 fatty acid levels unless algae-based supplements are used, reduced calcium intake without careful food selection, and challenges with protein quantity and completeness in populations with higher protein requirements, such as the elderly or the chronically ill. These risks are not insurmountable, but they are real, and the evidence suggests that they affect some demographics more than others.</p>
+            <p>What the research does not support is the idea that veganism is a simple, risk-free choice available to all without guidance. It also does not support the idea that it is categorically dangerous or unsuitable for most people. The honest synthesis is that it is a demanding but manageable eating pattern with specific benefits and specific risks, and the ratio of benefit to risk depends heavily on individual circumstances and on the quality of implementation.</p>
+            <p>The debate question asks if discipline, means, and a compatible body are all it takes. The evidence says: discipline and means are necessary but not sufficient. You also need knowledge — specifically, knowledge about the nutrients that require active attention on a vegan diet and about how to obtain them from the food supply. With that knowledge, most people can thrive. Without it, the risks are concentrated in proportion to the gaps. That is the evidence-based summary, and it is more useful than either blanket endorsement or reflexive skepticism.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Populations that consume predominantly plant-based diets show significantly lower rates of cardiovascular disease, metabolic syndrome, and certain cancers compared to those on conventional Western diets.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Vegan diets present specific nutritional risks, such as deficiencies in B12, omega-3 fatty acids, and calcium, which can have serious neurological and hematological consequences if not actively managed.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The suitability of a vegan diet varies across demographics, as certain groups like the elderly or the chronically ill face greater challenges in meeting protein and nutrient requirements.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Discipline and financial means are insufficient for a successful vegan diet without the specific nutritional knowledge necessary to bridge the gaps inherent in plant-based eating.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Veganism is a healthy and viable lifestyle for essentially everyone, and it should be viewed as a safer alternative to the standard American diet rather than an experimental intervention requiring special justification."</p>
+        <button class="essay-view-full" data-target="full-1-80203">View full essay</button>
+        <div class="essay-full" id="full-1-80203" style="display:none;">
+            <p>The question framing — does veganism require a particular body type or medical history? — quietly concedes too much. It treats veganism as an unusual intervention whose safety must be demonstrated, while the standard American diet, which is statistically implicated in the leading causes of death in this country, gets no such scrutiny. Nobody asks whether the cheeseburger-and-fries lifestyle is suitable for your medical history.</p>
+            <p>Reframe it, and the picture changes. Heart disease, the number one killer in the United States, is strongly correlated with diets high in saturated animal fat. Type 2 diabetes rates track closely with the consumption of processed meats and refined animal products. Colorectal cancer risk rises with red and processed meat intake; the epidemiology here has been consistent for decades. By contrast, populations eating predominantly plant-based diets — the Seventh-day Adventists studied at Loma Linda, traditional Okinawans, rural communities documented in Campbell&#x27;s China Study — show lower rates of these chronic illnesses and longer life expectancy.</p>
+            <p>That doesn&#x27;t mean every vegan is healthy or that veganism is a magic shield. Oreos are vegan. So is white pasta with marinara. The relevant comparison is a whole-food, plant-based diet against the standard Western diet, and on that comparison the evidence has been accumulating in one direction for forty years.</p>
+            <p>Are there people for whom veganism is harder? Yes. Infants who can&#x27;t be breastfed need careful formula choices. People with certain absorption disorders need closer monitoring. Athletes with very high caloric demands need to plan portions. But &quot;harder&quot; is not &quot;contraindicated.&quot; With B12 supplementation — which is trivially cheap and effective — the supposed deal-breaker of vegan nutrition disappears. The other oft-cited concerns (iron, calcium, protein) are largely manufactured controversies; protein deficiency in particular is essentially nonexistent among Americans eating enough calories of any kind.</p>
+            <p>The deeper issue is that we&#x27;ve inherited a cultural picture in which meat is the default, the strong choice, the normal food, and plant-based eating is the eccentric deviation requiring justification. That picture is the residue of marketing and tradition, not nutrition science. If we evaluated diets on a level playing field — what does the long-term evidence on chronic disease actually show? — the question wouldn&#x27;t be whether veganism is safe for the average person. It would be whether the average American diet is.</p>
+            <p>So yes, veganism is good for essentially everyone, with the trivial caveat that, like any diet, you have to actually eat food and not just abstain from it. The harder question is why we still need to ask.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The standard Western diet is more medically risky than veganism, as it is strongly linked to leading causes of death such as heart disease, type 2 diabetes, and colorectal cancer.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Epidemiological evidence from populations eating predominantly plant-based diets consistently shows lower rates of chronic illness and longer life expectancy.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Nutritional concerns often cited as barriers to veganism, such as B12 or protein deficiencies, are easily managed through simple supplementation or adequate caloric intake.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">While certain groups like athletes or those with absorption disorders may require more planning, veganism remains a safe and effective option rather than a medically contraindicated one.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The perception of veganism as an eccentric or risky choice is a result of cultural tradition and marketing rather than objective nutritional science.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally suitable for everyone because it carries significant health risks for specific populations and requires resources that are not accessible to all."</p>
+        <button class="essay-view-full" data-target="full-1-60397">View full essay</button>
+        <div class="essay-full" id="full-1-60397" style="display:none;">
+            <p>The enthusiasm surrounding veganism in certain circles has outpaced what the evidence actually supports, and the consequences of that enthusiasm can be serious. When we ask whether veganism is good for everyone, we need to be honest about the populations for whom it carries genuine risks — risks that are minimized when we frame the diet as universally accessible.</p>
+            <p>Consider pregnancy and early childhood. The nutritional demands of fetal development and infant growth are extraordinarily specific, and the margins for error are narrow. Deficiencies in folate, iron, B12, zinc, calcium, and omega-3 fatty acids during critical windows of development can produce outcomes — cognitive, developmental, physical — that may not be fully reversible. B12 deficiency in infants, for example, can cause irreversible neurological damage. The vegan-friendly counter here is that supplementation and careful planning can address these gaps, and this is true. But &quot;can address&quot; is not the same as &quot;universally does address,&quot; and the populations most likely to fall short on careful planning are often the ones with the least access to nutritional counseling.</p>
+            <p>Then there is the matter of genetic and metabolic variation. Some individuals metabolize certain plant compounds — oxalates in leafy greens, phytates in grains and legumes — in ways that complicate mineral absorption. Others have gut physiologies that make digesting the high-fiber demands of a vegan diet genuinely uncomfortable or medically problematic. These are not rare edge cases; they represent meaningful segments of the population for whom the standard vegan playbook requires significant modification.</p>
+            <p>The real problem with the question&#x27;s framing is that it positions veganism as a default that almost anyone can adopt with sufficient discipline, and this is simply not accurate as a universal statement. It is a demanding dietary pattern that works best for individuals with resources, genetic luck, and the capacity for meticulous planning. For those without those advantages — and there are many — the risks of inadequate planning are real, and the community discourse around veganism has been too quick to minimize them in its eagerness to promote the lifestyle.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The narrow margins for nutritional error during pregnancy and early childhood mean that veganism can lead to irreversible developmental and neurological damage.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Genetic and metabolic variations among individuals can make the high-fiber and plant-compound demands of a vegan diet medically problematic or difficult to digest.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The diet requires a level of meticulous planning, nutritional counseling, and economic means that many people do not possess.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Proponents of veganism often minimize the genuine risks and complexities of the diet by framing it as a universally accessible lifestyle choice.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally beneficial because human evolutionary history and individual physiological differences make a purely plant-based diet unsuitable for everyone."</p>
+        <button class="essay-view-full" data-target="full-1-27320">View full essay</button>
+        <div class="essay-full" id="full-1-27320" style="display:none;">
+            <p>The premise that veganism might require a certain body type isn’t just a modern curiosity—it taps into a deep evolutionary truth. For roughly two million years, the human lineage ate a varied omnivorous diet that included significant amounts of meat, marrow, and eventually cooked animal foods. That dietary history shaped our digestive physiology, brain development, and nutrient requirements in ways that a purely plant-based diet can’t always seamlessly replicate. While some individuals thrive on veganism, the idea that it is universally good ignores the mismatch between our ancestral template and a modern, post-agricultural vegan plate.</p>
+            <p>Consider vitamin B12, the classic vegan stumbling block. It’s not a trivial shortage; B12 is essential for neurological function, and no unfortified plant food contains it. Our pre-agricultural ancestors got it from animal flesh, insects, and fecally contaminated water. The fact that vegans must rely on fortified foods or supplements is a clear sign that a wholly plant-based diet is an ecological novelty for primates. Many bodies manage fine with supplements, but some people absorb B12 poorly regardless of source, and for them, the margin of safety is thinner on a vegan plan.</p>
+            <p>Beyond B12, there’s the question of iron. Heme iron from meat is far more bioavailable than non-heme iron from plants, and menstruating women, who lose iron monthly, can struggle to maintain stores on a vegan diet even with careful pairing of vitamin C. Likewise, the amino acid profile of plant proteins can require more deliberate combining to match the anabolic needs of growing children or highly active adults. These aren’t impossible hurdles, but they do mean that veganism demands a level of nutritional micromanagement that some physiologies tolerate better than others. Someone with naturally high stomach acid might absorb minerals efficiently; someone with low acid or a history of gastric bypass might not.</p>
+            <p>The body-type question also has a metabolic angle. Emerging research in 2012 suggests that some people may have a harder time maintaining stable blood sugar on high-carbohydrate diets, and vegan diets, even whole-food ones, tend to be higher in carbohydrates. For individuals with a genetic predisposition toward insulin resistance, the absence of satiating animal protein and fat can make weight management and glucose control more difficult, not less.</p>
+            <p>None of this indicates that veganism is inherently unhealthy. But it does suggest that our Pleistocene inheritance has left us with a species-wide dietary flexibility that makes one-size-fits-all pronouncements suspect. Some people’s bodies will hum on a vegan diet; others will sputter. To ask whether veganism is good for everyone is to forget that we are the product of a long, omnivorous past that didn’t select for a single optimal human diet. The answer, written in our genes and our history, is a quiet and persistent no.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The human digestive system and brain developed over millions of years based on an omnivorous diet, creating a biological mismatch with modern veganism.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The necessity of B12 supplementation proves that a plant-only diet is an ecological novelty that some bodies cannot safely navigate due to poor absorption rates.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Differences in iron bioavailability and amino acid profiles mean that certain demographics, such as menstruating women and growing children, may struggle to meet nutritional needs without animal products.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Variations in metabolic health and insulin sensitivity mean that the high-carbohydrate nature of many vegan diets can hinder weight management and blood sugar control for some individuals.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Individual differences in gastric health, such as stomach acid levels, affect the efficiency of mineral absorption from plant sources.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"A vegan diet is physically appropriate and healthful for everyone, provided it is properly planned and nutritionally balanced."</p>
+        <button class="essay-view-full" data-target="full-1-32856">View full essay</button>
+        <div class="essay-full" id="full-1-32856" style="display:none;">
+            <p>Is a vegan diet physically appropriate for everyone? From a purely nutritional standpoint, the answer from the major medical and dietetic associations is a resounding yes—but with a crucial caveat. Veganism is good for everyone only when it is properly planned.</p>
+            <p>In its most recent official position paper on vegetarian diets, published in 2009, the American Dietetic Association clearly stated that &quot;appropriately planned vegetarian diets, including total vegetarian or vegan diets, are healthful, nutritionally adequate, and may provide health benefits in the prevention and treatment of certain diseases.&quot; Crucially, the ADA notes that these diets are appropriate for individuals during all stages of the life cycle, including pregnancy, lactation, infancy, childhood, and adolescence, as well as for athletes.</p>
+            <p>The problem arises when people conflate &quot;vegan&quot; with &quot;healthy.&quot; Eliminating animal products does not automatically confer a nutritional halo. A diet of soda, potato chips, and white bread is technically vegan, but it will rapidly lead to severe health crises. The human body does not require meat or dairy, but it absolutely requires specific nutrients: vitamin B12, vitamin D, calcium, iodine, iron, zinc, and essential fatty acids.</p>
+            <p>When people fail on a vegan diet, reporting fatigue, hair loss, or weakness, they often blame their underlying biology. They claim their body &quot;needs meat.&quot; However, in almost all cases, what their body actually needs are the macronutrients and micronutrients they failed to replace when they removed animal products from their plates. Vitamin B12, for instance, must be supplemented or consumed through fortified foods, as it is not reliably found in plant sources.</p>
+            <p>Biology does not dictate that certain blood types or metabolic phenotypes require animal flesh. We are an adaptable, omnivorous species capable of thriving on a wide variety of fuel sources. The true barrier to universal veganism is not human biology, but nutritional literacy. If a person is willing to educate themselves on how to build a balanced plate centered around legumes, whole grains, nuts, seeds, and diverse vegetables, a vegan diet is an exceptionally healthy choice for any human body.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Major medical and dietetic associations affirm that well-planned vegan diets are nutritionally adequate for all stages of the life cycle and for athletes.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The healthfulness of a vegan diet depends on the consumption of essential nutrients rather than the mere absence of animal products.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Physical failures on a vegan diet are typically the result of nutritional deficiencies rather than an inherent biological need for meat.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Human biology is highly adaptable and does not require specific blood types or phenotypes to consume animal flesh to thrive.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The primary obstacle to successful universal veganism is a lack of nutritional literacy rather than biological incompatibility.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"A strict vegan diet is not suitable for everyone because human health is governed by biochemical individuality and genetic variations that make animal products a biological necessity for some people."</p>
+        <button class="essay-view-full" data-target="full-1-81421">View full essay</button>
+        <div class="essay-full" id="full-1-81421" style="display:none;">
+            <p>The recent surge in popularity of both the vegan diet and the meat-heavy &quot;Paleo&quot; diet highlights a fascinating paradox in modern nutrition: people are experiencing profound health transformations on diametrically opposed regimens. This points to a biological reality that dietary dogmatists often ignore: biochemical individuality. The idea that a strict vegan diet is optimal—or even safe—for everyone flies in the face of human evolutionary history and genetic diversity.</p>
+            <p>We are not cookie-cutter organisms. Over hundreds of thousands of years, different human populations adapted to wildly different food environments. While some populations thrived on high-carbohydrate, plant-heavy diets, others—like the Inuit—survived almost exclusively on animal fats and proteins. These ancestral adaptations left modern humans with varying capacities to synthesize, absorb, and utilize nutrients from plant foods.</p>
+            <p>Take, for example, essential fatty acids. Plant foods like flax and walnuts provide omega-3s in the form of ALA. However, the human brain and cardiovascular system require EPA and DHA, the forms found in fish and grass-fed meat. The human body must convert ALA to EPA and DHA, but genetic variations mean that some people are incredibly inefficient at this conversion. For these individuals, a vegan diet can lead to a gradual depletion of crucial brain fats, resulting in depression, brain fog, and systemic inflammation.</p>
+            <p>Similarly, iron from plants (non-heme iron) is much less bioavailable than iron from meat (heme iron). While a person with robust digestive fire and optimal genetics might maintain their iron levels on spinach and lentils, a menstruating woman with a predisposition to anemia may find it physically impossible to avoid deficiency without animal protein, no matter how carefully she plans her vegan meals.</p>
+            <p>Many former vegans report that despite doing everything &quot;right&quot;—taking supplements, soaking their grains, eating whole foods—their health deteriorated, only to rebound dramatically when they reintroduced meat or eggs. We must stop dismissing these experiences as failures of willpower or planning. For a significant portion of the population, animal products are not just a culinary preference; they are a biological necessity for optimal health.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Human populations have evolved different nutritional requirements based on their ancestral adaptations to diverse food environments.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Genetic variations mean that some individuals cannot efficiently convert plant-based ALA into the essential EPA and DHA fatty acids required for brain and cardiovascular health.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The lower bioavailability of non-heme iron in plants makes it physically impossible for certain individuals, such as those predisposed to anemia, to maintain healthy iron levels without animal protein.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The lived experiences of former vegans whose health only recovered after reintroducing animal products suggest that plant-based diets cannot meet the biological needs of all people.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While veganism is a viable and ethical choice for many, it is not a universal dietary requirement because human biology is naturally flexible and individual nutritional needs vary."</p>
+        <button class="essay-view-full" data-target="full-1-51580">View full essay</button>
+        <div class="essay-full" id="full-1-51580" style="display:none;">
+            <p>Human beings are dietary generalists. That is both the good news and the bad news for veganism. We can live on an astonishing range of diets, which means a vegan diet can work. But our flexibility also means that veganism is not the single diet nature designed for all of us.</p>
+            <p>The strongest case for veganism is ethical, not anatomical. We do not need to prove that humans are herbivores in order to object to factory farming or unnecessary animal suffering. We are not herbivores in any simple sense. Our species has eaten tubers, fruit, seeds, grains, fish, insects, meat, eggs and milk in different places and eras. Some traditional diets have been mostly plant-based; others have relied heavily on animal foods. Health has depended less on vegan purity than on adequacy, activity, food quality and the absence of excess.</p>
+            <p>That perspective should make both sides more modest. Meat eaters should stop saying veganism is impossible because of protein. It is not. A varied vegan diet can supply protein easily enough. Vegans should stop implying that anyone who struggles without animal foods is merely weak or misinformed. Individual variation is real. Some people absorb non-heme iron less efficiently. Some convert plant omega-3 fats to DHA and EPA less effectively. Some have digestive systems that rebel against large amounts of legumes or fiber. Some have medical conditions that make dietary restriction risky.</p>
+            <p>The environmental argument is also more complicated than slogans allow. Industrial feedlots are a disaster in many respects: grain use, waste, confinement, antibiotics and emissions. Eating less meat would be a major improvement for most Americans. But not all animal agriculture is identical. In some landscapes, grazing animals use land not suited to crops. Small amounts of animal food can provide dense nutrition. A sustainable food system may not look like the current meat-heavy American diet, but it may not require universal veganism either.</p>
+            <p>For ordinary health, the best advice is less dramatic: eat more whole plant foods, fewer processed foods, less sugar, and much less factory-farmed meat. If someone chooses veganism from compassion or conviction, that choice can be respected and supported. If another person eats mostly plants but includes yogurt, eggs or fish, that may also be a sound diet.</p>
+            <p>The question asks whether discipline and means are enough. Often, yes. But they do not settle the matter. Bodies differ, histories differ and values differ. Veganism is a legitimate path, not a universal law.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Human beings are dietary generalists who have historically thrived on a wide variety of both plant-based and animal-based diets.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Biological differences mean that some individuals struggle to absorb or convert essential nutrients like iron and omega-3 fats from plant sources alone.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Digestive sensitivities and specific medical conditions can make the high-fiber or restrictive nature of a vegan diet physically difficult or risky for some people.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A sustainable food system does not strictly require universal veganism, as certain landscapes are better suited for grazing animals than for crop production.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Health and environmental goals can be achieved through moderate approaches, such as reducing factory-farmed meat and eating more whole plants, without requiring total animal product elimination.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Veganism is a healthful and nutritionally adequate choice for most people, provided the diet is appropriately planned and supplemented to meet specific nutritional needs."</p>
+        <button class="essay-view-full" data-target="full-1-83574">View full essay</button>
+        <div class="essay-full" id="full-1-83574" style="display:none;">
+            <p>Veganism does not require a special “body type.” It requires a plan. That distinction matters, because much of the argument over vegan diets treats them either as miraculous or as inherently deficient. They are neither. A vegan diet can be healthful, even for children, pregnant women and athletes, but only if it is put together with the same care we ought to bring to any diet.</p>
+            <p>The strongest evidence-based answer is the one the American Dietetic Association gave in its 2009 position paper: appropriately planned vegetarian diets, including vegan diets, can be nutritionally adequate and may offer health benefits in preventing and treating some diseases. The phrase “appropriately planned” is not decoration. French fries, soda and white bread can be vegan. So can a diet based on lentils, vegetables, whole grains, nuts, fruit, tofu and fortified foods. The ethical label alone tells us little about nutritional quality.</p>
+            <p>There are a few nonnegotiables. Vitamin B12 must come from fortified foods or a supplement. This is not a trivial matter; B12 deficiency can damage nerves and blood cells. Vitamin D may require attention, especially in northern climates or for people with little sun exposure. Calcium, iodine, iron, zinc and omega-3 fats can all be obtained on a vegan diet, but they require some knowledge: fortified plant milks, calcium-set tofu, iodized salt, beans, greens, seeds, walnuts, flax and, for some people, algae-based DHA.</p>
+            <p>Protein is less frightening than people imagine. Beans, soy foods, grains, nuts and seeds can provide enough. The old anxiety about “complete protein” at every meal has been overstated; variety over the day is the key. Still, the needs of a toddler, a pregnant woman, an endurance athlete and a frail older adult are not identical.</p>
+            <p>Medical history matters more than body type. Someone with severe gastrointestinal disease, multiple food allergies, an eating disorder, advanced kidney disease or a history of nutrient deficiencies should not adopt a restrictive diet without medical guidance. But that is not an argument against veganism as such; it is an argument against treating any diet as a one-size-fits-all prescription.</p>
+            <p>For most healthy adults with access to varied foods, veganism is a reasonable choice. It may even make it easier to eat more fiber and less saturated fat. But discipline and money are not the whole story. Information, supplementation and follow-up matter too. The right question is not whether one has the correct body for veganism. It is whether one has the correct diet.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">A vegan diet can be nutritionally adequate for all stages of life, including childhood and pregnancy, if it is carefully constructed rather than just being an ethical label.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Essential nutrients like Vitamin B12, Vitamin D, and various minerals must be intentionally managed through fortified foods, supplements, or specific plant sources to avoid deficiencies.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Sufficient protein can be easily obtained through a variety of plant-based sources without the need for complex &#x27;protein combining&#x27; at every meal.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">While most people can thrive on a vegan diet, individuals with specific medical conditions or complex health histories require professional medical guidance before adopting restrictive eating patterns.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The success of a vegan diet depends on access to information and a variety of foods rather than an individual&#x27;s inherent body type.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Veganism is not universally suitable because dietary needs must be individualized based on a person&#x27;s specific medical history, physical condition, and life stage."</p>
+        <button class="essay-view-full" data-target="full-1-20432">View full essay</button>
+        <div class="essay-full" id="full-1-20432" style="display:none;">
+            <p>No diet is good for everyone, and veganism is no exception. That statement should not be confused with the claim that vegan diets are automatically dangerous. They are not. Many people eat vegan diets for years and do well. But the leap from “possible and often healthful” to “good for everyone” is too large.</p>
+            <p>The trouble begins when veganism is discussed as though the only obstacles are willpower and grocery money. In medicine, details matter. A person with inflammatory bowel disease who is in a flare may not tolerate the beans, raw vegetables, nuts and high-fiber grains that make many vegan diets nutritious. A patient with severe irritable bowel symptoms may find that lentils, onions, wheat and soy worsen bloating and pain. Someone with advanced kidney disease may have to watch potassium, phosphorus and protein in ways that make a standard bean-and-nut-based vegan diet difficult. These problems can sometimes be managed, but they cannot be waved away.</p>
+            <p>There are also practical nutritional constraints. People allergic to soy, nuts or wheat can still be vegan, but their choices narrow considerably. A teenager with a history of anorexia may use veganism as a socially acceptable way to restrict food. A frail older adult with poor appetite may need calorie-dense, easy-to-eat foods, and eliminating eggs, dairy and fish may make the task harder. Infants and young children can be raised vegan, but the margin for error is smaller; B12, calories, fat and minerals must be taken seriously.</p>
+            <p>The most worrying deficiencies are not exotic. Vitamin B12 is the obvious one, because it is absent from unsupplemented vegan diets. Iron deficiency can occur in omnivores as well, but plant iron is less readily absorbed than heme iron. Vitamin D is a common problem across the population, but vegans who avoid fortified dairy need another dependable source. Calcium and iodine are manageable, but only if someone knows to manage them.</p>
+            <p>Advocates often reply, correctly, that omnivorous diets are full of risks too: obesity, heart disease, high saturated fat intake, low fiber and too few vegetables. But that is an argument for improving the American diet, not for declaring one restrictive diet universally suitable.</p>
+            <p>The sensible position is individualized. For some patients, a vegan diet may improve cholesterol, weight and blood sugar. For others, it may introduce unnecessary complications. Ethical commitments deserve respect, and clinicians should help patients meet them safely. But veganism should not become a medical test of virtue. The question is not whether the patient is disciplined enough. The question is whether this diet fits this body, this history and this life.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Specific medical conditions, such as inflammatory bowel disease or advanced kidney disease, can make the high-fiber and mineral content of a vegan diet difficult to tolerate or manage.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Practical constraints like food allergies, histories of eating disorders, or the high caloric needs of frail elderly individuals can make the restrictive nature of veganism nutritionally risky.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The margin for nutritional error is smaller for infants and young children on a vegan diet, requiring strict management of B12, calories, and minerals.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Vegan diets lack naturally occurring Vitamin B12 and provide less absorbable forms of iron, necessitating careful supplementation and nutritional knowledge to avoid deficiencies.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">While veganism can offer health benefits for some, it should be viewed as an individualized clinical choice rather than a universal medical standard of virtue.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

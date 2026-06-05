@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Reform the Presidential Debates · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Politics · Open-ended</div>
+  <h1 class="debate-title">How to Reform the Presidential Debates</h1>
+  <div class="question-body"><p>Though some have argued that the crowded G.O.P. primary debates would improve if they were more, and not less, of a circus, many critics have lamented the lack of substantive policy discussion by presidential candidates. What changes could be made to the debate formats to make them more substantive?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=8</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_1.html">
+      <td class="arg-text">To prioritize substantive policy discussion over spectacle, presidential debates should be restructured to reward detailed explanation and serious governing approaches rather than soundbites and conflict.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_2.html">
+      <td class="arg-text">To make presidential debates more substantive, moderators must be empowered and willing to challenge candidates on the factual accuracy and substance of their arguments.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_3.html">
+      <td class="arg-text">To improve the quality of presidential debates, the current moderator-driven format should be replaced with a Lincoln-Douglas style structure that prioritizes direct candidate exchange over media-driven spectacle.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_4.html">
+      <td class="arg-text">To improve the quality and substance of presidential debates, the format should shift from elite-driven moderation to public forums where ordinary citizens and stakeholders directly question the candidates.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_5.html">
+      <td class="arg-text">The current presidential debate format should be replaced with a weeklong series of short, single-topic episodes to improve voter education and substantive policy discussion.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_6.html">
+      <td class="arg-text">To make presidential debates more substantive and educational, the format should be changed to a studio-based conversational model without a live audience.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_7.html">
+      <td class="arg-text">Instead of trying to force substantive policy discussion, we should accept presidential debates as valuable tests of a candidate&#x27;s temperament and performance under pressure.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_8.html">
+      <td class="arg-text">Reforming the debate format to increase substance is futile because the lack of policy discussion is a reflection of voter preference for entertainment rather than a flaw in the structure.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_9.html">
+      <td class="arg-text">To improve presidential debates, the format must be reformed to ensure candidates substantively address the unique crises and policy needs of urban America.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_10.html">
+      <td class="arg-text">Presidential debates should continue to be held on college campuses rather than in television studios to foster civic engagement among young voters.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_11.html">
+      <td class="arg-text">To make presidential debates more substantive and informative for voters, the control over topics and questions should be shifted away from moderators and shared with the candidates and the public.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_12.html">
+      <td class="arg-text">To ensure substantive presidential debates, the events must be removed from the control of commercial television networks and managed by an independent, noncommercial commission.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_13.html">
+      <td class="arg-text">To improve the substance of presidential debates, political parties must exert more control over primary formats while the Commission on Presidential Debates should lower entry barriers for third-party candidates in general elections.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_14.html">
+      <td class="arg-text">To improve the substance of presidential debates, the format should be restructured to tether candidate rhetoric to a public, standardized dossier of written policy commitments.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_15.html">
+      <td class="arg-text">To improve the substance of presidential debates, the format should be restructured to prioritize direct comparison between candidates through uniform questioning and structured conflict rather than academic lectures or media spectacles.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_16.html">
+      <td class="arg-text">To make presidential debates more substantive and deliberative, the number of participants must be significantly reduced by raising polling and fundraising thresholds for entry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_17.html">
+      <td class="arg-text">To prioritize substantive policy discussion over theatrical performance, presidential debates should be moved to a quiet studio setting and restructured to feature long-form, uninterrupted presentations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_18.html">
+      <td class="arg-text">The current presidential debate format should be replaced with an extended, small-group joint interview conducted by a single skilled moderator without a live audience.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_19.html">
+      <td class="arg-text">Presidential debates should implement a transparent, cumulative time-accounting system that penalizes interruptions and forces candidates to manage a fixed bank of speaking time.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_20.html">
+      <td class="arg-text">To make presidential debates more substantive, the role of moderators must be reformed through more transparent selection processes, stricter questioning guidelines, and post-debate accountability measures.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_21.html">
+      <td class="arg-text">To make presidential debates more substantive, the format must be reformed by reducing the number of participants, improving the specificity of questions, and extending response times.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_22.html">
+      <td class="arg-text">Substantive reform of presidential debates is best achieved through behavioral changes by candidates, campaigns, and the press rather than through structural changes to networks or debate commissions.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_23.html">
+      <td class="arg-text">The presidential debate system requires structural reform through the replacement of the Commission on Presidential Debates and the implementation of more inclusive participant selection and substantive formatting rules.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_24.html">
+      <td class="arg-text">To improve the quality of presidential primary debates, the current television-driven model should be replaced with a formal, resolution-based Oxford-style debate format.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_25.html">
+      <td class="arg-text">To improve the substance of presidential debates, party committees should replace polling-based entry criteria with a requirement that candidates submit detailed, publicly vetted policy papers to earn their spot on stage.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_26.html">
+      <td class="arg-text">To make presidential debates more substantive and informative, control of the process must be transferred from the bipartisan Commission on Presidential Debates to a genuinely nonpartisan, citizen-led organization.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_27.html">
+      <td class="arg-text">To foster substantive policy discussion, presidential debates should move away from a theatrical, sound-bite-driven format toward a structured, policy-focused environment with fewer participants and more flexible time limits.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_28.html">
+      <td class="arg-text">To make presidential debates more substantive, the format should shift from general policy positions to specific inquiries regarding the constitutional powers, legal limits, and governing choices of the office.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_29.html">
+      <td class="arg-text">To improve substantive policy discussion, we should lower our expectations for televised debates and instead require candidates to participate in long, issue-specific interviews.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_30.html">
+      <td class="arg-text">To ensure presidential primary debates prioritize substantive policy over entertainment, political parties must reclaim control of the debate process from television networks.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-to-reform-the-presidential-debates_arg_31.html">
+      <td class="arg-text">To improve the substance and fairness of presidential debates, the media should replace exclusionary polling thresholds with a rotating, lottery-based system that grants all qualified candidates equal access until actual voting begins.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Anita Dunn</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/anita-dunn" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Cenk Uygur</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/cenk-uygur" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Fredrick C. Harris</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/fredrick-c-harris" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">John A. Roush</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/john-a-roush" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jose Marichal</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/jose-marichal" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Joshua Rivera</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/joshua-rivera" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Keena Lipsitz</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/keena-lipsitz" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Lucas Graves</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/13/how-to-reform-the-presidential-debates/lucas-graves" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The current debate format rewards rehearsed zingers and punishes nuance. When ten candidates share a stage and each gets sixty seconds to address tax policy, the only rational strategy is to deliver a memorable slogan and move on. If we want substance, we have to redesign incentives, not just plead for civility.</p>
+      <p>First, shrink the field by topic, not by polling. Instead of two undercard-versus-primetime tiers based on horse-race numbers, hold a series of smaller debates organized around policy domains—one night on foreign policy with six candidates, another on economic policy with a different six. Candidates with genuine expertise in an area get oxygen; voters get depth. CNN&#x27;s three-hour cattle calls have shown that crowding everyone onto one stage produces noise, not information.</p>
+      <p>Second, replace the journalist-as-gladiator with a panel of subject-matter experts who can follow up. When Hugh Hewitt asked about the Quds Force or moderators press on Dodd-Frank, the value comes from the follow-up, not the gotcha. A retired general, an economist, and a constitutional scholar asking sequential questions—and empowered to say &quot;you didn&#x27;t answer&quot;—would do more than any rule change to surface actual positions.</p>
+      <p>Third, lengthen response times and eliminate the buzzer arms race. Give candidates three uninterrupted minutes to lay out a position, then two minutes of cross-examination from one rival of their choosing. The Lincoln-Douglas comparison is overused, but the principle holds: you cannot explain an Iran policy in thirty seconds, and pretending otherwise teaches voters that you shouldn&#x27;t have to.</p>
+      <p>Fourth, require candidates to engage with specifics before the cameras roll. The Commission on Presidential Debates—or the parties, for primaries—could publish a short list of factual premises (current deficit figures, treaty obligations, Supreme Court holdings) that moderators may reference, so candidates cannot simply invent their own reality without being called on it in real time.</p>
+      <p>None of this will eliminate the theatrical element; nor should it. But theater and substance are not opposites. The Kennedy-Nixon debates were riveting precisely because the stakes felt real. Restore the time, the expertise, and the follow-up, and substance returns on its own.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The 2016 Republican primary debates have delivered record ratings, but they’ve largely failed to elevate public understanding. To make these forums substantive rather than mere political theater, we need structural reforms that reward depth over zingers.</p>
+      <p>First, the number of participants must be cut. A stage with ten or more candidates precludes sustained discussion; answers become sound-bite sprints. Networks should set a higher polling threshold—say, five percent nationally—to winnow the field to serious contenders. For those left out, a separate “undercard” debate can still provide a platform, but the main event must allow time for genuine exchange.</p>
+      <p>Second, the format should resemble a focused policy discussion, not a game show. Instead of rapid-fire questions on a dozen topics, each debate could be devoted to a single issue area—foreign policy, the economy, health care—allowing candidates to articulate and defend their positions over 90 minutes. The Lincoln-Douglas model, where two leading candidates interrogate each other on a narrow subject, could be adapted for a smaller group of four or five, with moderators stepping back to let the contenders engage directly.</p>
+      <p>Finally, the audience’s role needs taming. Applause lines are the enemy of nuance. A studio audience instructed to remain silent, or limited to light applause only at the close, would reduce the incentive to play to the crowd. Combined with moderators empowered to press for specifics and follow up on evasions, these changes could transform the debates into an exercise in democratic deliberation rather than a reality-TV spectacle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The current 2016 Republican primary debates have devolved into a predictable spectacle. When networks cram ten or eleven candidates onto a single stage, the format inherently favors the loudest voices and the most inflammatory soundbites. To survive, candidates must pivot away from nuanced policy and deliver rehearsed zingers. If we want to rescue the debates from this circus-like atmosphere and return them to their substantive purpose, three major structural reforms are desperately needed.</p>
+      <p>First, we must abandon the &quot;main stage&quot; and &quot;undercard&quot; structure in favor of smaller, randomized groups. National polls this far out from the primaries are notoriously volatile and often have margins of error that make sorting candidates into tiers statistically meaningless. Instead, organizers should randomly divide a crowded field into two distinct, smaller debates, both broadcast in prime time on consecutive nights. Fewer candidates on stage means more time per candidate, allowing for complete thoughts rather than thirty-second rhetorical sprints.</p>
+      <p>Second, we need to rethink who is asking the questions. Currently, television anchors treat debates like reality shows, explicitly framing questions to bait candidates into attacking one another for viral moments. To elevate the discourse, networks should invite subject-matter experts—such as economists, former military leaders, or healthcare scholars—to moderate. Furthermore, instead of bouncing between five different topics in ten minutes, the format should feature dedicated, uninterrupted twenty-minute blocks focused on a single issue. This would force candidates to demonstrate a deep understanding of policy rather than relying on a quick pivot to their stump speech.</p>
+      <p>Finally, debate organizers must enforce time limits with strict technological controls. The simplest and most effective reform is the mute button. When a candidate’s allotted time expires, their microphone should be cut off. This would immediately end the shouting matches and strategic cross-talk that currently plague the broadcasts.</p>
+      <p>Presidential debates should be a public service designed to inform voters, not a gladiator match engineered to maximize cable television ratings. By reducing the number of candidates on stage at one time, utilizing expert moderators for deep-dive topics, and strictly enforcing time limits, we can ensure that substance finally outshines the spectacle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The problem with the 2015 Republican debates is not simply that there are too many candidates. It is that the format rewards interruption, insult and memorized one-liners while punishing explanation. A serious debate cannot be built around 60-second answers to questions designed to provoke conflict.</p>
+      <p>The first reform should be to separate debates by subject. One night should be devoted to foreign policy, another to taxes and the budget, another to health care, immigration and executive power. Candidates should know the broad topic in advance, but not the exact questions. That would make it harder to survive on slogans and easier for voters to compare actual governing approaches.</p>
+      <p>Second, time should be redistributed. Each candidate should get several longer answers over the course of the evening, rather than constant lightning-round exchanges. A moderator could ask a candidate to explain a proposal, then give another candidate two minutes to challenge it, followed by a brief rebuttal. This would preserve conflict but make it substantive.</p>
+      <p>Third, eligibility rules should not rely so heavily on national polling months before anyone votes. Polls at this stage measure name recognition as much as support. If the field is too large for one stage, candidates could be divided randomly into two equal debates, rather than a “main event” and an undercard that reinforces media judgments.</p>
+      <p>Finally, moderators should ask fewer “gotcha” questions and more follow-ups. If a candidate promises large tax cuts and a balanced budget, the next question should be: what spending would you cut? If a candidate opposes a foreign agreement, what is the alternative? Debates will never be seminars, but they can be designed to reward seriousness instead of spectacle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The presidential debate has always struggled to balance spectacle with substance, and the current format amplifies this tension rather than resolving it. To genuinely promote substantive policy discussion, we need structural changes that reframe what candidates are being asked to do.</p>
+      <p>First, the Commission on Presidential Debates should abolish its time-limited format entirely. Sixty-second sound bites leave no room for nuance. Instead, candidates should face extended questioning on single issues—five or ten minutes per topic—followed by genuine back-and-forth dialogue. This rewards depth over quick wit.</p>
+      <p>Second, panels of credentialed policy experts should replace journalists as questioners. Reporters are trained to pursue conflict and sound bites; policy specialists would ask the kind of technical questions that expose actual differences between candidates. The moderator&#x27;s role should shift from managing the show to facilitating substantive exchange.</p>
+      <p>Third, we need to separate the theatrical elements from the substantive ones. The traditional debate—combining town halls, opening statements, and closing remarks with policy questioning—dilutes everything. What if we had a two-hour policy segment with no audience, no opening statements, and no closing platitudes? The candidates would hate it. Americans would learn more.</p>
+      <p>Critics who argue for &quot;more circus&quot; misunderstand the fundamental purpose. These events are the rare moments when voters can directly assess judgment and reasoning, not just prepared lines. The question isn&#x27;t whether to make debates entertaining—it&#x27;s whether we care more about engagement than comprehension.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (48 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The simplest fix to the current debate format would be the most radical: get rid of the moderators. Or rather, demote them. The role of a moderator should be that of a timekeeper and traffic cop, not a co-star. What has made the early Republican debates feel less like policy seminars and more like reality television is not the candidates so much as the gotcha questions, the prosecutorial framing, and the moderators&#x27; obvious hunger to generate viral moments.</p>
+      <p>Replace this with a Lincoln-Douglas style format. Pair candidates off. Give each one ten minutes to lay out a position on a single issue — taxes, immigration, ISIS — and the opponent ten minutes to rebut. Then a free exchange. No bell, no buzzer, no anchor asking whether Donald Trump thinks Carly Fiorina has a pretty face.</p>
+      <p>Yes, this would be less entertaining. Ratings would fall. CNN and Fox would hate it. But the parties — not the networks — control whom they sanction as official debates, and there is no reason a serious party committed to governing should outsource its candidate selection process to a medium whose business model depends on conflict. If the RNC and DNC want substance, they have the leverage to demand it. So far, they have not used it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Everyone complains about the lack of substance, but I want to defend the circus a little. Presidential debates were never very substantive, and the nostalgia for some golden age of policy disquisition is misplaced. Kennedy and Nixon spent much of their first encounter talking about who looked more vigorous. Reagan demolished Carter with a quip. The 1988 Bush-Dukakis debate is remembered for a hypothetical about Kitty Dukakis being raped and murdered, not for any discussion of tax policy.</p>
+      <p>What debates actually test — and what they are reasonably good at testing — is temperament under pressure, quickness, the ability to take a punch and throw one, and the capacity to project authority on a stage with cameras and rivals and hostile questions. These are not trivial qualities in a president. They are arguably more relevant to the job than the ability to recite a fourteen-point plan that will never survive contact with Congress.</p>
+      <p>If voters want detailed policy, the campaigns publish white papers, candidates give policy speeches, and reporters write thousands of words on every position. The information is out there. What only the debate can provide is the unscripted moment — Rubio sweating, Perry forgetting the third agency, Trump refusing to pledge support to the eventual nominee. We should stop pretending we want something we don&#x27;t actually watch, and accept the debate for what it is: an audition in performance under fire.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The crowded Republican stage this cycle has exposed the absurdity of trying to conduct a serious conversation with ten or eleven candidates and ninety seconds per answer. The arithmetic alone defeats substance: in a two-hour debate, after commercials and moderator preambles, each candidate gets perhaps eight or nine minutes of total speaking time. You cannot explain how to reform the tax code in eight minutes while also attacking your rivals and delivering your zingers.</p>
+      <p>A few concrete reforms would help. First, raise the threshold for participation, and do so honestly. If the polling cutoff produces ten candidates, the threshold is too low. Five is a workable number for genuine exchange.</p>
+      <p>Second, lengthen response times dramatically. Two minutes minimum for an answer, with one-minute rebuttals. Fewer questions, deeper answers.</p>
+      <p>Third, organize debates by subject. Devote an entire two-hour debate to economic policy. Another to foreign affairs. Another to social issues. This forces candidates to prepare seriously on each domain rather than dabble across all of them.</p>
+      <p>Fourth, eliminate the live studio audience, or at least require it to remain silent. The applause lines and boos turn the debate into a pep rally, rewarding the candidate who can land a clean attack rather than the one who can think through a hard problem.</p>
+      <p>None of these are novel suggestions, and none would require an act of Congress. They would, however, require the parties and the networks to want substance more than they want ratings. That is the real obstacle. The debate format is a symptom; the disease is the incentive structure of a campaign-industrial complex that treats a presidential election as a contest of memorable moments.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Real-time fact-checking, displayed on screen, would transform debates overnight.</p>
+      <p>The technology exists. PolitiFact, FactCheck.org, and the Washington Post&#x27;s Fact Checker already produce post-debate analyses within hours. With a modest team of researchers working live during the broadcast, claims could be flagged on a chyron beneath the speaker — &quot;Misleading,&quot; &quot;Unsupported,&quot; &quot;False&quot; — with a citation that scrolls past for the curious. Candidates would know, in advance, that their assertions about Planned Parenthood videos, vaccine schedules, or the size of the federal workforce would be checked in real time, in front of millions.</p>
+      <p>The objection is that fact-checking is itself contestable. Sometimes it is. But most political falsehoods are not borderline; they are simply wrong, and the people watching deserve to know it. The current arrangement — where a candidate can say something demonstrably untrue, the moderator moves on, and a fact-check published the next morning is read by a few thousand wonks — rewards confident lying. Reverse the incentive, and the lies will diminish.</p>
+      <p>This single reform would do more to elevate substance than any reshuffling of speaking times.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>We should distinguish between the primary debates, which are party events, and the general election debates, which are run by the Commission on Presidential Debates. The reforms appropriate for each are different.</p>
+      <p>For primaries, the parties themselves bear responsibility. The RNC&#x27;s decision to sanction a smaller number of debates this cycle was a reasonable response to 2012&#x27;s chaos, but the format remains a free-for-all because the networks bid for the events and dictate the terms. Parties should write detailed format requirements into their sanctioning agreements: minimum response times, prohibitions on raise-your-hand gimmicks, mandatory single-topic segments. They have the leverage; they have simply not used it.</p>
+      <p>For general election debates, the problem is different and harder. The CPD, controlled jointly by the two major parties, has every incentive to exclude third-party candidates and to keep the format friendly to its principals. A genuine reform would open the stage to any candidate on enough state ballots to win the Electoral College — currently a threshold Gary Johnson and Jill Stein could plausibly clear — rather than the 15 percent polling requirement the CPD currently uses, which is designed precisely to keep them out.</p>
+      <p>A four-candidate general debate would inject real ideological diversity, force the major-party nominees to defend positions they currently take for granted, and make it harder for the two of them to collude on safe, vague answers. The duopoly will resist this fiercely. That is the strongest argument for it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Let the candidates question each other.</p>
+      <p>Strip out the moderator panel — or reduce it to one neutral timekeeper — and instead give each candidate, in turn, five minutes to question another candidate of their choosing. The questioner controls the topic. The respondent must answer. Then they switch.</p>
+      <p>This format would accomplish several things at once. It would surface the genuine policy disagreements within each party, which moderators often miss because they are looking for theatrical conflict rather than substantive difference. It would test the candidates&#x27; actual command of policy detail, because a rival who has spent months preparing on health care can ask sharper questions than a journalist with twenty other things to research. And it would expose evasion in real time: a candidate who refuses to answer a direct question from a peer cannot hide behind a moderator&#x27;s willingness to move on.</p>
+      <p>The Republican debates this year have produced their most illuminating moments when candidates have engaged each other directly — Christie scolding Paul on surveillance, Bush and Rubio over Senate attendance. These exchanges happened despite the format, not because of it. Build the format around them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The complaint that debates lack substance assumes that voters want substance. The evidence suggests otherwise. Ratings for the first two Republican debates broke records, driven entirely by Donald Trump and the prospect of conflict. The Democratic debate, which by all accounts will be more sober, will draw a fraction of the audience. If networks ran the substantive debate the critics demand, nobody would watch it, and the candidates would correctly conclude that there was no political reward for participating.</p>
+      <p>Any reform proposal has to grapple with this. The Lincoln-Douglas debates of 1858 — invoked endlessly by reformers — drew enormous crowds because there was no other entertainment in rural Illinois. Today the debate competes with everything on cable, the internet, and a phone in everyone&#x27;s pocket. A two-hour treatise on tax policy will lose to a cooking show.</p>
+      <p>So perhaps the better question is not how to make debates more substantive, but how to make substance more interesting. That is a harder problem and probably not one the debate format can solve. The candidates with genuine policy depth — a Kasich, a Sanders, a Jindal — have not been rewarded for it in this cycle. Trump&#x27;s poll numbers rise after every outrageous statement. Until that changes, no reshuffling of the format will rescue the conversation. The debates reflect the electorate, not the other way around.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>A modest proposal: do away with the formal debate and replace it with an extended joint interview.</p>
+      <p>Seat two or three candidates around a table with a single skilled interviewer — think Terry Gross, Charlie Rose, or someone of comparable temperament. No audience. No buzzer. Ninety minutes of conversation. The interviewer can follow up. The candidates can push back on each other. There is time to actually develop a thought.</p>
+      <p>The networks would howl, because this format is undramatic and would not generate the viral clips that drive promotion. But that is precisely the point. The current debate format is designed to produce moments, not understanding. Every structural feature — the studio audience, the time limits, the rapid-fire questions on disconnected topics, the multi-person stage — exists to manufacture conflict for television. Strip those features away and you might get something resembling the kind of conversation a voter would actually find useful.</p>
+      <p>This would not work for a ten-candidate primary field. Fine: hold a series of paired interviews leading up to a smaller debate among the survivors. By the general election, when there are only two candidates, the format is perfectly scaled.</p>
+      <p>The objection that nobody would watch is not entirely fair. PBS and NPR have audiences. C-SPAN has an audience. Long-form podcasts now draw millions of listeners for conversations that run two and three hours. The appetite for serious talk exists; the gatekeepers have simply assumed it does not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>If we genuinely want presidential debates to be deliberative rather than reality-show spectacles, we have to shrink the stage. The core obstacle in this year&#x27;s G.O.P. primary contests isn&#x27;t the moderators&#x27; questions or the length of answers — it&#x27;s that having ten or eleven candidates on one stage makes anything resembling serious policy discussion impossible. When every participant is fighting just to get a sound bite in before the clock runs out, nuance evaporates. No format tweak will fix that.</p>
+      <p>The reform is simple, though politically charged: raise the polling and fundraising thresholds for debate participation dramatically. Instead of the current system, where a candidate clinging to one percent in a handful of polls can earn a podium, the bar should be set at five percent nationally plus demonstrated viability in early states, or a comparable high bar. This would immediately produce a field of four or five candidates on stage. With fewer voices, each candidate could receive sustained questioning on tax plans, healthcare reform, foreign policy doctrines. A moderator could press for specifics without having to constantly pivot to the next person. Candidates could even be allowed to question one another directly, creating genuine intellectual clash rather than rehearsed one-liners.</p>
+      <p>Critics will say that narrowing the field early is undemocratic, that it gives the party establishment too much power. But the current cattle-call approach actually deprives voters of any useful information. They see performers, not prospective presidents. A smaller, more focused debate would force candidates to show whether they can govern, not just whether they can dominate a melee. That&#x27;s a debate worth watching.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>If we are serious about substance, moderators must stop being passive timekeepers and start acting as referees armed with facts. The most corrosive habit in modern debates is the unopposed lie or misleading claim — a candidate says something demonstrably false about their own record or an opponent&#x27;s position, and the moderator simply thanks them and moves on to the next person. Viewers are left with no way to know what&#x27;s true, and the candidate paid no price for the deception.</p>
+      <p>The solution is real-time fact-checking by moderators. When a candidate claims that their tax plan is revenue-neutral or that they never supported a particular policy, the moderator should be permitted — indeed, required — to state the factual record, citing agreed-upon nonpartisan sources like the Congressional Budget Office or the Tax Policy Center. This is not bias; it&#x27;s exactly the service journalists provide in every other setting. If a candidate says something that is contested, the moderator can explain both sides. But when an assertion is plainly contradicted by the public record, silence from the moderator is complicity in misinformation.</p>
+      <p>Skeptics will argue that this makes moderators arbiters of truth and invites accusations of partisanship. But we already trust moderators to choose questions and enforce time limits, which also requires judgment. The alternative is a format where the candidate with the boldest disregard for accuracy wins. A fact-checking moderator doesn&#x27;t silence the candidate — it forces them to engage with reality, and that is the first step toward a substantive debate.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>We should abandon the kitchen-sink approach to debate topics and instead dedicate each encounter to a single policy domain. A ninety-minute free-for-all that touches on ten different issues guarantees superficiality. Candidates learn to pivot to pre-scripted talking points no matter what is asked, and viewers never see a sustained clash over the trade-offs inherent in real governance.</p>
+      <p>Imagine instead a series of debates, each devoted entirely to one subject: a full evening on foreign policy and national security, another on economic growth and inequality, a third on healthcare and entitlement reform. With that kind of focus, the moderator can design a ladder of questioning that probes a candidate&#x27;s philosophy, their specific proposals, their past votes, and the internal contradictions in their positions. Follow-up becomes natural because the entire conversation is in the same territory. A candidate who tries to dodge a question about Medicare solvency by talking about job creation immediately looks evasive, and the audience can see it.</p>
+      <p>This single-topic model has historical precedent: the Lincoln-Douglas debates of 1858 were each structured around a central theme. It would also relieve the press of the temptation to judge debates purely on gaffes or “who won the evening.” By the end of a single-issue session, voters would have a much richer understanding of how each candidate thinks about a problem they will actually face in office.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The most radical and necessary reform is to strip the debates of their theatrical elements. As long as candidates can hear the roar of a live audience applauding their zingers, they will perform for that reaction, not for the citizens at home who are genuinely trying to decide whom to trust with the nuclear codes. Substance requires silence and time.</p>
+      <p>I propose holding debates in a quiet studio, with no live audience apart from a small panel of journalists or issue experts. Each candidate would get extended blocks of uninterrupted time — ten to fifteen minutes — to walk the public through a complex proposal, complete with the trade-offs, costs, and implementation challenges. These long-form answers would be followed by probing questions from the panel, not the frantic cross-talk that defines current encounters. The clock would be generous but firm; no candidate could filibuster beyond their allocation.</p>
+      <p>This format would be deadly dull for anyone seeking entertainment. But presidential judgment isn&#x27;t a game show. The current model, with its flashing lights and applause lines, rewards quick wit, not deep thought. A quiet, deliberate debate wouldn&#x27;t attract the same ratings, but it would give voters what they claim to want: a serious job interview for the most important office in the world. Networks might resist, but a public-service obligation could justify the experiment.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The real debate reform we need is a clean break from the bipartisan duopoly that now controls the process. The Commission on Presidential Debates, run by former party chairs, has turned what should be a civic ritual into a protective cartel. It locks out third-party voices, negotiates formats in secret with the major campaigns, and prioritizes the comfort of front-runners over the information needs of voters.</p>
+      <p>The solution is to return control of the general election debates to a genuinely nonpartisan, broad-based civic organization — the League of Women Voters, which sponsored the debates until 1988, or a newly constituted citizen-led commission. Such a body would have the independence to impose strict rules without candidate vetoes: equal speaking time, no pre-negotiated memoranda of understanding that gag moderators, and a meaningful opportunity for qualified third-party candidates to participate when they meet objective criteria.</p>
+      <p>When the campaigns themselves write the rules, the outcome is predetermined: predetermined topics, predetermined time limits that favor incumbents or front-runners, and a studied avoidance of any confrontation that might produce an unscripted moment. A citizen commission could insist that the debates belong to the public, not the parties. This alone would not magically produce an Oxford Union exchange, but it would smash the current system&#x27;s ironclad resistance to substance-enhancing changes like real follow-ups or fact-checking.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The lament over presidential debates is misplaced. The format isn&#x27;t the problem; the voters are. We talk endlessly about changing podiums and moderators because it feels easier than confronting an uncomfortable truth: a large segment of the electorate does not reward the kind of detailed, bookish, qualified candidate that the &quot;substantive debate&quot; fantasy demands. Politicians are rational actors. They avoid nuanced policy expositions because in focus groups and on Twitter, those expositions become gaffes when a single sentence is ripped out of context.</p>
+      <p>There is no magic format that will force a candidate to deliver a white paper if doing so is electorally dangerous. Put them in a silent room for an hour, and the skilled pol will still find a way to turn every question into a rehearsed narrative about leadership or grievance. The real reform, if any, must target the media environment and civic education that create the incentives to dumb things down. When voters consistently punish pandering and reward substance, the debates will follow. Until then, tinkering with the rules is just rearranging deck chairs.</p>
+      <p>This isn&#x27;t comfortable to hear, but it&#x27;s the only honest starting point. We can experiment with single-issue nights and no-audience halls, but after a few cycles the candidates will learn how to game those systems too, because their fundamental incentive — to win, not to educate — hasn&#x27;t changed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>To make debates more substantive, we must break the grip of insider journalists and hand the questioning directly to ordinary citizens. Too often, the press corps asks questions that reflect their own preoccupations — process stories, campaign horse-race narratives, hypothetical scandals — rather than the practical concerns that keep Americans up at night. No wonder candidates skate by with talking points.</p>
+      <p>What if, before each debate, a transparent, randomized process selected a panel of undecided voters from across the country, representing a cross-section of geography, income, and outlook? Those citizens would submit questions in advance, and on debate night, they would ask them directly — on video screen if logistics demand it. The moderator&#x27;s role would shrink to facilitating the conversation, ensuring each candidate has a chance to respond. Crucially, the citizen questioner would be allowed a brief rebuttal: “That didn’t answer my concern about the cost of prescription drugs.”</p>
+      <p>This idea borrows from the British “Question Time” model but goes further. It forces candidates to speak to real people, not to television panels. When a steelworker in Ohio asks about the trade deal that shuttered her plant, the candidate cannot hide behind pundit-speak. The authenticity of the exchange can’t be faked. And because the voters are uncommitted, their tolerance for evasion is low. That direct accountability is the surest path to substance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>We need a debate format that imposes personal discipline through a transparent, unforgiving time-accounting system. The endless interruptions and cross-talk we&#x27;ve seen in the early primary debates are not just rude — they destroy any possibility of a sustained argument. The solution is a cumulative speaking clock displayed on-screen, visible to the candidates and the audience, counting down each participant&#x27;s total allotted time for the evening.</p>
+      <p>Here is how it works: each candidate begins with a fixed bank of time, say twelve minutes total, to use over the course of the ninety-minute debate. When they speak, their clock runs. If they interrupt another candidate, both clocks run — and the interrupter&#x27;s clock runs at double speed, punishing the behavior directly. No time is added for rebuttals unless the moderator allocates a fresh block. When a candidate&#x27;s clock hits zero, their microphone cuts off and their podium light goes dark. The evening ends with everyone having had equal, uninterrupted opportunities to present their positions.</p>
+      <p>This mechanical approach eliminates moderator bias and the performative outrage over who got more questions. It transforms the debate into a resource-allocation problem: candidates must decide whether to use precious seconds on a flashy attack or on laying out a policy plan. The ones who bank their time for deep explanation will stand in stark contrast to those who squander theirs on empty rhetoric. The viewing public can see, in real time, who is serious about governing.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>If we want presidential primary debates to actually inform the electorate rather than simply entertain them, we must look to the classic Oxford-style debate format. The current television-driven model relies on journalists lobbing broad questions or provocative &quot;gotcha&quot; prompts at candidates, who then have sixty seconds to deliver a pre-packaged talking point. This encourages pivoting and grandstanding, not substantive policy discussion.</p>
+      <p>To fix this, the networks and parties should adopt a formal resolution-based debate structure. Instead of open-ended questions like &quot;How will you handle the economy?&quot;, a debate should center on a specific, debatable resolution, such as &quot;Resolved: The United States should implement a flat tax system.&quot;</p>
+      <p>Candidates would be divided into affirmative and negative positions based on their stated platforms. They would be given uninterrupted time—at least three to five minutes—to make an opening statement laying out their logical case. This would be followed by structured, timed rebuttals, where candidates directly address the arguments made by their opponents.</p>
+      <p>The Oxford style demands preparation, logical coherence, and a deep understanding of policy. It strips away the ability to coast on charisma and rehearsed one-liners. When a candidate is forced to defend a specific resolution for five uninterrupted minutes, their command of the facts—or lack thereof—becomes glaringly obvious to the viewing public.</p>
+      <p>Furthermore, this format respects the intelligence of the voters. Americans are perfectly capable of following a sustained, intellectual argument about the future of their country. By shifting the focus from the moderators&#x27; attempts to manufacture conflict to the candidates&#x27; ability to articulate and defend a worldview, Oxford-style debates would elevate our democratic process. The 2016 cycle has so far been defined by crowded stages and soundbites; introducing formal resolutions would finally allow us to hear what these potential presidents actually plan to do.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The quickest and most effective way to reform the presidential debates is to remove the live audience.</p>
+      <p>Currently, debates look and sound like sporting events or game shows. Candidates deliver a rehearsed zinger, pause, and wait for the thunderous applause or boos from the crowd in the arena. This dynamic fundamentally alters the nature of the event. It rewards candidates who prioritize applause lines, theatrical outrage, and witty comebacks over those who attempt to explain complex policy nuances.</p>
+      <p>When a candidate attempts to dive into the intricacies of healthcare reform or tax policy, the energy in the room dies. When they insult a rival or deliver a partisan platitude, the room erupts. Human nature and political strategy dictate that candidates will feed off that energy and give the crowd what it wants.</p>
+      <p>By placing the candidates in a television studio with only the moderators and the cameras, the incentive structure changes entirely. Without a crowd to play to, candidates cannot rely on cheers to validate their points or drown out their opponents. The silence of a studio forces a more conversational, serious tone. It compels the candidates to speak directly to the viewers at home, rather than performing for the partisans in the seats. If we want serious answers to serious problems, we need to stop treating debates like a circus, and the first step is removing the spectators from the tent.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The primary flaw in our current debate system is the impunity with which candidates can distort the truth. In the frantic pace of a multi-candidate debate, politicians routinely toss out exaggerated statistics, misrepresent their opponents’ voting records, and make sweeping claims that go entirely unchallenged. Moderators, constrained by time and the pressure to keep the show moving, rarely have the ability to push back effectively.</p>
+      <p>To make debates truly substantive, networks must integrate real-time fact-checking into the broadcast. We have the technology and the journalistic resources to do this right now. Networks should employ a dedicated panel of non-partisan researchers and policy experts operating backstage. When a candidate makes a factual claim about job growth, immigration numbers, or foreign policy, this team would immediately verify it.</p>
+      <p>If a candidate tells a blatant falsehood, the moderators should be alerted and empowered to pause the debate and correct the record on the spot. Alternatively, networks could use on-screen graphics—a subtle ticker or an overlay—to provide voters with context and corrections as the candidates are speaking.</p>
+      <p>Critics will argue that fact-checking is inherently biased and that this would give media corporations too much power. But we are not talking about ideological disputes; we are talking about basic empirical realities. Did a candidate vote for a specific bill or not? Has a particular economic metric gone up or down?</p>
+      <p>Knowing that their statements will be immediately verified and broadcast to millions of viewers would force candidates to be far more careful and precise with their rhetoric. It would elevate the discourse by ensuring that the debate is grounded in a shared reality, rather than a web of politically convenient fictions. Voters deserve to judge candidates on their actual records and policies, not on who can spin the most convincing lie on live television.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>We complain about the lack of substance in debates, but we ignore the root of the problem: the moderators. In their quest to create compelling television, media personalities dominate the stage, asking questions designed to trap candidates, provoke bickering, or generate viral clips for the next day&#x27;s news cycle. The candidates are merely reacting to the media&#x27;s agenda.</p>
+      <p>If we want a substantive exchange of ideas, we should get the journalists out of the way and let the candidates question each other.</p>
+      <p>Imagine a format where the first hour consists of a round-robin. Candidate A gets three minutes to ask a question of Candidate B and debate the response. Then Candidate B questions Candidate C, and so on.</p>
+      <p>This format would reveal far more about a candidate&#x27;s priorities and depth of knowledge than any journalist&#x27;s question could. What a candidate chooses to ask their opponent tells us what they believe is the most critical issue facing the nation. When forced to cross-examine a rival, candidates would have to rely on their own grasp of policy details, exposing who has done their homework and who is relying on superficial talking points.</p>
+      <p>Furthermore, this removes the &quot;media bias&quot; excuse that candidates frequently use to deflect difficult questions. If a conservative candidate is grilled by a fellow conservative on their tax plan, they cannot brush it off as a liberal media attack; they must answer the substance of the critique. True political leadership requires the ability to confront opponents directly, defend one&#x27;s record, and argue a case. Let the candidates run the debate, and we will finally see who is truly prepared for the Oval Office.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The sheer number of issues covered in a single two-hour debate guarantees that none of them will be discussed with any depth. Bouncing from ISIS to tax reform to criminal justice to education in the span of an hour reduces complex national crises to superficial soundbites.</p>
+      <p>To reform the debates, the parties should mandate issue-specific formats. Instead of general debates, we should have one debate dedicated entirely to the economy, another solely on foreign policy and national security, and another on domestic social issues.</p>
+      <p>Forcing candidates to spend two hours discussing only healthcare and domestic policy, for example, would exhaust their rehearsed talking points within the first twenty minutes. Once the platitudes run out, they would have no choice but to dive into the actual mechanics of their proposals. A single-issue focus prevents candidates from pivoting away from their weak spots. You cannot pivot to your strong stance on border security if the entire night is dedicated to the tax code. If we demand serious policy platforms, we must provide a format that gives candidates the time and space to explain them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The hand-wringing over the &quot;circus&quot; atmosphere of the current presidential debates completely misses the point of what a debate is meant to accomplish. Critics who long for dry, substantive policy lectures fundamentally misunderstand the nature of the presidency. We are not electing a think-tank scholar or a chief policy analyst; we are electing a leader, a communicator, and a commander-in-chief.</p>
+      <p>The current debate format—noisy, chaotic, crowded, and heavily moderated by journalists seeking conflict—is actually an excellent crucible for testing presidential mettle.</p>
+      <p>The presidency is a high-pressure, unpredictable job where crises emerge daily and political opponents attack relentlessly. When a candidate is forced to share a stage with ten rivals, field hostile questions, and fight for airtime, we get a very clear look at their character. How do they handle pressure? Do they maintain their composure when attacked? Can they command a room? Can they distill a complex idea into a message that resonates with the American public?</p>
+      <p>Detailed policy plans are, frankly, of limited value during a primary. No plan survives contact with Congress anyway. What matters is a candidate&#x27;s core philosophy and their political skill in fighting for it.</p>
+      <p>When Donald Trump dominates a stage, or when Carly Fiorina deftly shuts down an attack, or when Jeb Bush struggles to assert himself over the noise, voters are learning vital information about these individuals&#x27; leadership styles. A sterile, hyper-structured debate focused purely on policy minutiae would hide these essential character traits. The circus isn&#x27;t a distraction from the vetting process; the circus *is* the vetting process. It shows us who can survive the fire.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The primary reason our debates lack policy depth is that they are designed by media executives to maximize ratings, not to educate voters. Journalists often ask process questions—&quot;Why are you dropping in the polls?&quot;, &quot;How do you respond to what Candidate X said about you yesterday?&quot;—because it generates conflict.</p>
+      <p>To bring substance back to the forefront, we need to replace journalists with the people who actually have a stake in the policies being discussed: the voters. The town hall format should be the standard, not the exception.</p>
+      <p>But these shouldn&#x27;t be the heavily screened, sanitized town halls we are used to, where voters are handed pre-approved questions by network producers. We need authentic, unscripted questions from average citizens. Let a factory worker ask directly about trade policy. Let a public school teacher ask about education funding. Let a veteran ask about VA reform.</p>
+      <p>When a politician is face-to-face with a citizen whose life is directly impacted by their policies, the dynamic shifts. It is easy to brush off a journalist&#x27;s question with a slick pivot; it is much harder to look a struggling parent in the eye and deliver a meaningless platitude.</p>
+      <p>Citizen moderators force candidates to explain their policies in practical, real-world terms. It grounds the abstract policy debates in lived reality. Removing the media middlemen and allowing the American people to drive the questioning would strip away the insider political games and refocus the campaigns on the actual needs of the country.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The debate stage should be a privilege earned through rigorous policy work, not merely a reward for name recognition or a temporary bump in national polls. The current criteria for debate entry—relying entirely on polling averages—virtually guarantees a superficial debate because it incentivizes candidates to focus on outrage and stunts to grab headlines.</p>
+      <p>If the Republican and Democratic National Committees want substantive debates, they must change the price of admission.</p>
+      <p>To qualify for the debate stage, candidates should be required to submit comprehensive, detailed policy papers on key issues (e.g., a federal budget proposal, a healthcare plan, a foreign policy doctrine) to the party committee weeks in advance. These papers should be made public and reviewed by independent economic and policy analysts.</p>
+      <p>The debates themselves would then be structured around these submitted plans. Moderators would not ask vague questions about &quot;fixing the economy&quot;; they would ask specific questions about the math in Candidate X’s published tax plan.</p>
+      <p>If a candidate is unwilling or unable to produce a serious policy document, they have no business occupying space on a presidential debate stage. By tying debate access to actual policy generation, the parties would weed out the vanity campaigns and the reality-TV stars. It would force campaigns to hire policy experts early on and commit to a platform, elevating the entire discourse of the primary season.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The easiest way to make presidential debates more substantive is to stop pretending that every question can be answered in 60 seconds. The modern televised debate has inherited the rhythm of cable news: interruption, accusation, counter-accusation, pivot. Candidates learn, rationally, that a memorable jab is worth more than a careful answer. If the rules reward compression and theatricality, we should not be surprised when candidates perform rather than explain.</p>
+      <p>A better format would be a series of single-topic debates. One night on foreign policy, one on the economy, one on health care and entitlements, one on constitutional powers and governance. Each debate should have fewer questions, longer answer periods and guaranteed follow-up time. A candidate who says, “I will repeal Obamacare” or “I will destroy ISIS” should immediately be asked: with what legislation, what coalition, what cost, what risk, and what timetable?</p>
+      <p>Moderators should be chosen less for television celebrity than for subject-matter competence. A foreign policy debate moderated by journalists who know the Middle East and nuclear deterrence would be more useful than one moderated by anchors mainly looking for conflict. Likewise, an economic debate should include someone able to challenge fuzzy arithmetic in real time.</p>
+      <p>The crowded Republican field makes this harder, but not impossible. Networks could divide candidates randomly into equal groups rather than using poll rankings to create a “varsity” and “junior varsity” debate. That would reduce the perverse incentive to chase early name recognition and would give viewers a better chance to compare candidates in smaller settings.</p>
+      <p>Finally, debates should include written commitments before the event. Candidates could submit short policy memos on the evening’s topic, posted publicly in advance. The debate would then test those proposals rather than invite candidates to recite slogans. Viewers could see not only who speaks well, but who has thought seriously about governing.</p>
+      <p>Debates will never become graduate seminars, nor should they. Presidents must communicate under pressure. But the current format tests combativeness more than judgment. If we want substance, we have to design events in which substance is the path of least resistance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The complaint that debates lack substance is understandable, but it partly misses what debates are for. A presidential debate is not a white paper. It is a public stress test. Voters are watching for temperament, agility, command of facts, capacity to handle attack and ability to speak to a broad audience. Those are not trivial qualifications for the presidency.</p>
+      <p>That said, the current primary debates, especially in a crowded field, do a poor job even by that standard. When ten or eleven candidates stand onstage, no one gets enough time to develop an argument. The format becomes a lottery: one candidate is asked about tax reform, another about a past insult, another about a poll number. The result is not a debate but a televised obstacle course.</p>
+      <p>The reform I would favor is not to make debates more academic, but to make them more comparative. Every candidate should answer the same core questions. If the subject is immigration, all candidates should state whether they support a path to legal status for unauthorized immigrants, what they would do about border security, and how they would handle employers who hire illegally. If the subject is taxes, all should be asked which deductions they would eliminate and how they would prevent deficit increases.</p>
+      <p>The public learns more when differences are exposed side by side. It learns less when candidates are invited to deliver whatever stump speech they prefer. Moderators should interrupt evasions, but they should interrupt only for clarification, not to become performers themselves.</p>
+      <p>We should also resist the temptation to turn debates into fact-checking tribunals. False claims should be challenged, but a debate cannot become a courtroom proceeding after every disputed statistic. Better would be a publicly available transcript, annotated within 24 hours by a neutral research staff agreed upon by the sponsoring organization and the campaigns. Candidates who repeatedly mislead would then pay a reputational price.</p>
+      <p>Substance does not require draining politics of drama. The goal should be structured conflict: same questions, enough time, visible contrasts, and follow-up when candidates dodge. Voters do not need a circus, but they also do not need a civics lecture. They need a fair comparison of people asking for immense power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>If we want substantive presidential debates, we should take them away from commercial television networks. That is the reform from which most others follow.</p>
+      <p>The networks have incentives that are plainly at odds with the civic purpose of debates. They want ratings, clips, confrontation and brand enhancement. In a normal campaign this already distorts the event. In the 2016 Republican primary, with Donald Trump drawing enormous attention, the incentive is even more obvious: the debate becomes a spectacle designed to maximize audience rather than illuminate governing choices.</p>
+      <p>A better model would be a noncommercial debate commission for primary debates, not only general election debates. The parties could still have a role, but the format should be set by an independent body including journalists, scholars, former public officials and citizen representatives. The broadcast feed could be made available to all networks, public television, radio and online platforms. No single network should get to turn a presidential debate into its own prime-time entertainment product.</p>
+      <p>The commission should impose three basic rules. First, debates must be organized by topic. Second, questions must be written to require concrete commitments: numbers, legal authority, tradeoffs. Third, candidates must be given enough time to answer and to respond to one another. A debate on tax policy that never asks how much revenue a plan loses is not a debate. A debate on war powers that never asks what Congress must authorize is not a debate.</p>
+      <p>This would not eliminate evasion. Politicians evade because evasion works. But institutional design can make it harder. If the same question is asked of each candidate and follow-ups are mandatory, the evasive candidate stands out. If transcripts and policy summaries are published with the broadcast, viewers and journalists have a basis for comparison after the applause fades.</p>
+      <p>Some will say this is naïve: politics is entertainment now. But debates are among the few moments when millions of citizens pay attention at the same time. Precisely because they are rare, they should be treated as public infrastructure, not as reality television inventory. Commercial networks can analyze, spin and shout afterward. The debate itself should belong to the voters.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The best reform would be to make the candidates debate one another, not the moderators.</p>
+      <p>Much of the present format is built around the moderator as prosecutor. This produces some useful moments, but it also encourages candidates to complain about biased questions, to attack the press and to avoid sustained engagement with rivals. The moderator asks, the candidate pivots, the next candidate attacks, the moderator moves on. Nobody is forced to defend a claim for more than a few seconds.</p>
+      <p>A more substantive format would borrow from parliamentary debate. The evening would be divided into several motions: “The United States should provide a path to legal status for most undocumented immigrants”; “The next president should increase ground operations against ISIS”; “Tax reform should be revenue neutral”; “Social Security benefits should be reduced for future retirees.” Candidates would be assigned to speak for or against positions consistent with their stated views, and then they would cross-examine one another.</p>
+      <p>This would clarify real differences. Many candidates can say they favor “strong borders,” “growth,” “peace through strength” and “entitlement reform.” Those phrases conceal more than they reveal. A motion forces the question: yes or no? If a candidate rejects the wording, he or she must explain why. That explanation itself is substantive.</p>
+      <p>The moderator’s job would be narrower but more important: enforce time, require answers, and prevent filibustering. Instead of asking clever “gotcha” questions, the moderator would ensure that the exchange stays tied to the motion. Candidates would have opening statements, rebuttals and brief cross-examination periods.</p>
+      <p>This format is especially valuable in primaries, where the policy differences inside a party are often understated. Republican voters deserve to know which candidates favor a more interventionist foreign policy and which are more restrained; which would cut taxes even if deficits rise and which would not; which oppose any legalization of unauthorized immigrants and which allow exceptions. Democratic voters deserve the same kind of clarity in their debates.</p>
+      <p>Television producers may fear that structured argument is dull. They are wrong. Real disagreement is more compelling than rehearsed one-liners. The drama of politics should come from conflict over choices, not from who can produce the sharpest insult.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>No format will make presidential debates deeply substantive unless voters demand substance. Candidates behave as they do because campaigns are contests for attention. A detailed answer about Medicare reimbursement or the Syrian civil war rarely travels as far as a punch line. The problem is not merely the debate stage; it is the political culture surrounding it.</p>
+      <p>Still, formats can help. My preferred reform is to connect debates to a public “candidate dossier.” Before appearing, each campaign would have to submit answers to a standardized questionnaire on major issues: taxes, spending, immigration, health care, climate, abortion, guns, judicial appointments, foreign policy and executive power. These answers would be posted online, limited in length, and updated after each debate.</p>
+      <p>The debate itself would then begin from those written answers. “Governor, in your questionnaire you say your tax plan will increase growth enough to avoid adding to the deficit. Which independent estimate supports that?” “Senator, you say you would use military force against ISIS without a new authorization from Congress. What is your legal basis?” “Businessman, you say you will deport millions. What agency capacity and cost does that require?”</p>
+      <p>This approach has two advantages. First, it reduces the ability to hide behind generalities. Second, it gives citizens who want more detail a place to go. Not every voter will read the dossiers, but journalists, civic groups and rival campaigns will. That matters. Debate claims would be connected to a record.</p>
+      <p>We should also allow candidates to ask each other questions, but only after submitting them in broad topical categories to the moderator. This would prevent pure ambush while encouraging genuine contrast.</p>
+      <p>The danger in debate reform is designing for the fantasy voter: the citizen who watches two hours on monetary policy and then downloads spreadsheets. Most people are busy. They need clear, accessible events. The task is not to eliminate rhetoric but to tether rhetoric to commitments. A debate should be the visible tip of a larger structure of disclosure. Without that structure, even the best moderator is left trying to force substance out of candidates trained to escape it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>One simple reform would improve the debates immediately: get rid of the live audience.</p>
+      <p>The studio audience has become a participant. Candidates pause for applause, deliver lines to provoke laughter, and measure success by the room’s reaction. In primary debates, the audience is often filled with party activists, donors or campaign guests who are hardly representative of the electorate. Their cheers and boos shape the television experience for millions of viewers at home. That is absurd.</p>
+      <p>A presidential debate should not be a rally. It should be closer to a job interview. The candidates are applying for the most powerful office in the country. We would not evaluate a surgeon, general or university president by placing them before a cheering section and rewarding the best zinger.</p>
+      <p>Without an audience, the tempo would change. A candidate who insults a rival would have to sit in the silence after the insult. A candidate who gives a serious answer would not be drowned out by theatrical reaction. Moderators would be less tempted to produce dramatic confrontations for crowd response. Viewers could focus on the words rather than the atmosphere.</p>
+      <p>This reform should be paired with stricter time rules. Candidates should receive two minutes for initial answers and one minute for follow-up. If they fail to answer the question, the moderator should repeat it once: “That was not the question. The question was whether you would support a specific increase in the payroll tax cap.” If the candidate still evades, move on. The evasion will be obvious.</p>
+      <p>The audience ban will not solve every problem. Candidates will still posture. They will still use memorized lines. But removing the applause track would make substance more likely because it would reduce the immediate reward for theatrics. Television has enough shows built around performance. Presidential debates should be one of the few political events designed for listening.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The premise that the crowded Republican debates need to be made less of a circus is too neat. The circus has revealed something real. It has shown which candidates can command attention, which resent the media, which understand the anger of primary voters, and which cannot adapt when the campaign leaves the seminar room. That is political information, not just noise.</p>
+      <p>Calls for “substance” often conceal a preference for the kind of candidate who speaks fluently in policy language. But presidents do not govern by white paper. They set priorities, choose advisers, bargain, persuade and respond to crises. A candidate’s instincts, ego, humor, aggression and ability to connect with ordinary voters are all relevant. The debates have exposed those traits more effectively than a series of polite policy panels would.</p>
+      <p>The danger of over-reform is that it would empower gatekeepers. If experts choose the questions, if commissions decide the “serious” topics, if moderators insist on technocratic answers, then debates may become more substantive in form while becoming less democratic in spirit. Many voters care about immigration not as an administrative problem but as a question of national identity and fairness. They care about trade not only as economic efficiency but as community loss. A debate that treats those concerns as crude will miss the point.</p>
+      <p>That does not mean anything goes. Candidates should be challenged when they make impossible promises. If someone says Mexico will pay for a wall, or that a tax cut will painlessly pay for itself, follow-up is appropriate. But the goal should be accountability, not sterilization.</p>
+      <p>The best modest reforms are practical: smaller groups on stage, random assignment to avoid poll-driven caste systems, and more time for candidate-to-candidate exchanges. Let the conflict happen, but make it legible. A messy debate among people seeking power is not a failure simply because it is messy. Democracy is often loud, emotional and performative. The answer is not to drain the politics out of debates. It is to make sure the performance occasionally collides with facts.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>Presidential debates should be reformed around tradeoffs. Nearly every candidate is against waste, for growth, for security, for opportunity and for the middle class. That language tells voters almost nothing. Governing is choice under constraint. A useful debate would force candidates to identify what they would sacrifice.</p>
+      <p>For example: If you cut income tax rates, which deductions go away? If you increase defense spending, what domestic spending is reduced or what taxes rise? If you oppose the Iran nuclear agreement, what is your alternative if allies will not restore sanctions? If you promise to preserve Social Security and Medicare unchanged, what level of debt or taxation are you prepared to accept? If you support mass deportation, how many people per year, at what cost, and with what due process?</p>
+      <p>These questions need not be hostile. They are the ordinary questions of governing. The problem with many debates is that they ask about positions rather than consequences. Candidates can answer positions with slogans. Consequences require thought.</p>
+      <p>I would require each debate segment to include a “tradeoff round.” Candidates would receive a policy goal and a constraint. For instance: “Design an immigration policy that reduces illegal immigration but does not expand the federal enforcement budget by more than a specified amount.” Or: “Propose a tax plan that does not increase the deficit under conventional scoring.” The numbers could be broad, but the discipline would matter.</p>
+      <p>Some will object that this is too complicated for television. But voters routinely make tradeoffs in their own lives: mortgages, insurance, tuition, retirement, job choices. They understand that promises without costs are suspect. What they rarely get is a political format that respects that intelligence.</p>
+      <p>Debates should also include post-debate scorecards prepared by nonpartisan analysts, noting whether candidates answered the tradeoff questions and whether their claims were plausible. Such scorecards should not declare winners. They should illuminate evasions.</p>
+      <p>The presidency is not an essay contest, but neither is it a talk show. A candidate who cannot explain tradeoffs on a debate stage is unlikely to be honest about them in office. The first reform is to ask questions that make fantasy harder.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The most important reform is not a more clever question. It is a less frantic structure. When ten or eleven candidates stand on a stage, and each is given 60 seconds to define a health care plan, explain Iran, or describe tax reform, the format guarantees slogans. The candidates are not failing an exam; they are responding rationally to a bad test.</p>
+      <p>Primary debates should be divided by subject and by smaller, randomly assigned groups. If a party has 15 plausible candidates, hold two debates on consecutive nights, with the groups chosen by lottery rather than by a crude “top tier” and “kids’ table” poll ranking. Early national polls mostly measure name recognition and media exposure, not democratic seriousness. Random assignment would also prevent networks from building the whole evening around one celebrity candidate.</p>
+      <p>Each debate should have a announced policy focus: one night on the economy and taxes, another on foreign policy, another on health care and entitlements, another on constitutional powers and appointments. The questions need not be released in advance, but the subject should be. Voters learn more when candidates must go beyond “I’ll cut waste” or “I’ll be tough.”</p>
+      <p>The time rules should change as well. Give each candidate a bank of time, perhaps eight or ten minutes total, to use across the debate. A moderator can press for specifics, but the candidate decides when an issue deserves more than a sound bite. If a candidate wants to spend three minutes explaining how to replace the Affordable Care Act, let him or her do it. If another candidate wants to use all the time on attacks, voters can judge that too.</p>
+      <p>Finally, the studio audience should be silent. Applause turns debates into rallies and rewards the best line rather than the best answer. A debate is not a convention speech. It should be a job interview for the most powerful office in the country.</p>
+      <p>These changes would not magically make campaigns noble. Candidates will still evade, exaggerate and posture. But the current format practically begs them to do so. A more substantive debate requires fewer people onstage at once, more time per answer, topic discipline and less theatrical production.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>The mistake is assuming that “substantive” means “orderly.” Some of the most revealing moments in presidential debates occur when the format breaks open: when one candidate challenges another’s record, when a rehearsed talking point meets a hostile question, when a politician must decide whether to interrupt, concede or counterpunch.</p>
+      <p>So I would not try to turn the primary debates into graduate seminars. I would make them more genuinely adversarial. Moderators should ask fewer questions, not more. Give each candidate a set amount of time to question rivals directly. A governor who claims executive experience should be pressed by a senator who thinks the record is inflated. A hawk on Iran should be challenged by a noninterventionist. A tax-cutter should have to answer another Republican who asks which deductions will disappear.</p>
+      <p>The current “circus” is unsatisfying partly because it is a fake circus: crowded, noisy, but still tightly stage-managed by television producers looking for viral moments. A better circus would force actual conflict over ideas. Not “raise your hand if you will support the nominee.” Not “say something nice about the person next to you.” Instead: “You have accused Senator X of supporting amnesty. Ask him your question.” Then let the answer and rebuttal run long enough for viewers to see whether there is anything behind the accusation.</p>
+      <p>This approach has risks. Candidates may grandstand. The loudest personality may dominate. But those things already happen. At least in a more open format, the grandstanding would be tested by rivals who know the weaknesses in one another’s records.</p>
+      <p>Voters do not need candidates to recite white papers. They need to see how candidates think under pressure, whether they understand the consequences of their own proposals, and whether they can defend their beliefs against serious opposition. Politics is conflict. A debate that hides that fact in the name of decorum is not more substantive; it is merely duller.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>The networks should not be allowed to design presidential primary debates as if they were sweeps-week entertainment specials. Their incentives are obvious: conflict, suspense, ratings, and memorable clips. The parties’ incentive, at least in theory, should be different: to help voters choose a nominee capable of governing. Reform should begin with the parties taking back control.</p>
+      <p>The Republican National Committee has already tried to limit the number of debates after the long 2012 primary season, but quantity is only one issue. The more important question is who sets the rules. A party-sponsored debate commission for the primaries could license the broadcast feed to any network willing to carry it under common conditions. That would mean no network-specific gimmicks, no arbitrary “main debate” designed around early polling, no emphasis on dramatic camera shots and audience reaction.</p>
+      <p>The rules should be public before the campaign begins. Qualification standards should combine several measures: polling, fundraising from small donors, ballot access, prior elected office or demonstrated campaign organization. No formula will be perfect, but it should not be invented by television executives a few weeks before the event.</p>
+      <p>The format should be built around accountability. If a candidate says he will cut taxes by trillions and balance the budget, the next question should be: which programs shrink, and by how much? If a candidate promises to defeat the Islamic State, the follow-up should ask whether that means ground troops, a no-fly zone, cooperation with local forces, or something else. Moderators should be chosen for subject expertise, not just celebrity.</p>
+      <p>There is a tradeoff. A quieter, more structured debate may attract fewer casual viewers. But the purpose of a primary debate is not merely to maximize audience size. Parties are private associations performing a public function. They owe their voters more than spectacle.</p>
+      <p>The candidates also benefit from clearer rules. A serious contender should want the chance to explain a governing program. If he cannot do that in a format designed for substance, voters have learned something important.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>To make debates more substantive, stop making journalists the only gatekeepers of what counts as a good question. Political reporters are skilled at exposing contradictions and chasing news, but they often ask questions from inside the campaign conversation: Who is up? Who attacked whom? How will you respond to this quote? Ordinary voters tend to ask questions from life: Can I afford medicine? Will my son be sent to war? Why are my wages flat? What happens if my factory closes?</p>
+      <p>A better debate would be built around citizens’ panels. Not the usual town hall in which campaigns plant supporters or networks select the most telegenic undecided voter, but a carefully assembled group reflecting the electorate of the state or region hosting the debate. Before the debate, these citizens could meet with nonpartisan policy experts who help them sharpen questions without scripting their views. Then they would question the candidates directly.</p>
+      <p>The key is follow-up. A voter asking about college debt should be allowed to say, “That does not answer how you would pay for it.” A veteran asking about the Department of Veterans Affairs should be able to ask whether a candidate’s proposal requires new spending, privatization, or administrative reform. Moderators would still keep time and prevent chaos, but they would not monopolize the conversation.</p>
+      <p>This would change the emotional chemistry of debates. It is easy to dodge a television anchor with a slogan about “American leadership” or “middle-class values.” It is harder to dodge a parent, nurse, small-business owner, student or police officer who asks for practical consequences.</p>
+      <p>Citizens’ panels would also broaden the agenda. Cable debates gravitate toward the controversies already dominating cable news. Voters might ask about child care, addiction, public transportation, rural hospitals, veterans’ benefits, mental health, crop insurance, or local water systems. These issues are not always glamorous, but they are the stuff of government.</p>
+      <p>The objection is that ordinary citizens may ask long, emotional or poorly framed questions. So do journalists. The answer is preparation, not exclusion. Democracy is not improved when the public is reduced to applause and instant polling. A presidential debate should let voters do more than watch professionals talk about them. It should let them demand answers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-36">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-36" style="display:none;">
+      <p>One modest but useful reform would be to treat facts as part of the debate rather than as an after-the-fact clean-up operation. Candidates routinely cite budget numbers, crime statistics, immigration figures, unemployment rates and foreign policy claims that most viewers cannot evaluate in real time. By the next morning, fact-checkers may have sorted some of it out, but the impression has already been made.</p>
+      <p>Debates should include a nonpartisan fact desk operating under rules announced in advance. The goal should not be to interrupt every exaggeration or settle every ideological dispute. Many political claims involve predictions or values, not simple facts. But when a candidate says a bill did something it plainly did not do, or attributes a number to an official source that says the opposite, moderators should be able to ask an immediate follow-up: “Our fact desk notes that the Congressional Budget Office estimated a different figure. Can you explain your number?”</p>
+      <p>This would improve the incentives before the debate even begins. Campaigns would know that unsupported statistics might be challenged in front of millions of viewers. They would prepare more carefully. Viewers would learn not only who has the best line but who can defend the basis for a claim.</p>
+      <p>There should also be a fully annotated transcript released quickly after the debate, with links or citations to the major claims. Campaigns could be invited to submit supporting evidence for assertions made onstage. If they cannot support them, that too is useful information.</p>
+      <p>The danger is turning fact-checkers into unelected referees of politics. That is why the system must be limited to verifiable claims and rely on agreed public sources where possible: government data, official votes, enacted laws, budget offices, court decisions. A debate should still be about judgment, priorities and philosophy. But judgment improves when candidates cannot build their answers on sand.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-37">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-37" style="display:none;">
+      <p>Many proposed reforms begin with the premise that there are simply too many candidates. That is understandable, but it can lead to a cure worse than the disease. Early in a presidential primary, voters benefit from seeing a wide field. The problem is not that lesser-known candidates are allowed onstage. The problem is that the media uses crude polling thresholds to divide candidates into winners and embarrassments before any voter has cast a ballot.</p>
+      <p>National polls in the summer before Iowa and New Hampshire are a terrible measure of seriousness. They reward celebrity, wealth and prior name recognition. They punish governors, senators and outsiders who may have real constituencies but have not yet become television brands. Calling one event the “main debate” and another the “undercard” tells viewers what to think before the candidates speak.</p>
+      <p>A more democratic system would use rotating, mixed panels. If 14 candidates qualify by reasonable standards—ballot access efforts, campaign organization, fundraising breadth, previous public support—divide them by lottery into two debates of seven candidates each. Use the same general topics and comparable questions. Broadcast both in prime time, on consecutive nights or in the same week. Do not pretend that a candidate polling at 3 percent is categorically more legitimate than one polling at 2 percent.</p>
+      <p>As the primary season advances and voters actually vote, thresholds can become stricter. After Iowa, New Hampshire, South Carolina and Nevada, there is a defensible basis for narrowing the stage. Before then, the system should not let television executives winnow the field.</p>
+      <p>Substance is not produced by exclusion alone. A five-candidate debate can be shallow, and a ten-candidate debate can be revealing if organized well. The reforms that matter are equal time, serious topics, follow-up questions and silence from the audience. But equal access matters too. Presidential campaigns are one of the few moments when a party argues with itself in public. Voters deserve to hear the argument before insiders decide which voices are inconvenient.</p>
+      <p>The point is not to indulge vanity campaigns forever. It is to recognize that democracy is messy at the beginning. A substantive debate should discipline candidates with questions, not disappear them with polls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-38">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-38" style="display:none;">
+      <p>No debate format will make presidential candidates truly candid if the surrounding campaign rewards evasion. A candidate who gives a detailed answer about entitlement reform may be punished by attack ads the next day. A candidate who offers a fantasy tax plan may be rewarded for sounding bold. That is not a formatting problem; it is a political problem.</p>
+      <p>So the best reform is to reduce our expectations for debates and supplement them with better forums. Keep televised debates for comparison, conflict and character. But require candidates who participate in party-sanctioned debates to also sit for long, issue-specific interviews: one hour on the economy, one on foreign policy, one on health care, one on constitutional powers. Put them on public television, C-SPAN, radio and online. Let a knowledgeable interviewer ask the same question three times if the candidate dodges.</p>
+      <p>The presidency is not a quiz show, and debates encourage quiz-show behavior. The red light blinks, the crowd reacts, the candidate reaches for the safest memorized line. Long interviews are harder to package into a viral clip, but they are better suited to discovering whether a politician understands his own proposals.</p>
+      <p>This would also reduce the temptation to overload debates with policy detail they cannot bear. A debate with ten people cannot produce a serious discussion of Medicare financing. But a one-hour interview can reveal whether a candidate has thought beyond slogans.</p>
+      <p>Reform the debates, yes: fewer gimmicks, quieter audiences, better follow-ups. But do not ask them to do all the work of democratic scrutiny. They are only one instrument, and not the best one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-39">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-39" style="display:none;">
+      <p>The missing subject in presidential debates is often the presidency itself. Candidates are asked what they think about taxes, immigration, war, schools and the Supreme Court. They are less often asked how, specifically, they would use the office they seek. A more substantive format would focus on powers, limits and governing choices.</p>
+      <p>For example: “Congress refuses to pass your immigration plan. What executive action, if any, do you take, and where is the legal boundary?” Or: “An ally requests military support for an operation that risks conflict with Russia or Iran. What process do you use before deciding?” Or: “Name one campaign promise you could not accomplish without Congress.” These questions force candidates to distinguish aspiration from authority.</p>
+      <p>The modern presidency tempts candidates in both parties to promise too much. They speak as if a president can order economic growth, rewrite health care, fix schools, command cultural unity and defeat enemies without tradeoffs. The debate format often encourages this by asking what candidates “will do” rather than what the Constitution, Congress, courts, agencies, states and foreign actors will allow them to do.</p>
+      <p>A reformed debate should include scenarios. Not trick questions, but governing simulations. A recession begins six months into the term. A Supreme Court vacancy opens during a divided Senate. A cyberattack is traced ambiguously to a foreign power. A hurricane overwhelms state capacity. What information would the candidate seek? Whom would he or she consult? What principles decide the response? What mistakes from past administrations should be avoided?</p>
+      <p>This format would reveal temperament and knowledge at the same time. It would also make empty promises more visible. If a candidate says every problem will be solved by “leadership,” the moderator can ask what legal authority that leadership uses. If a candidate says he will “bring people together,” the follow-up can ask what happens when the other side refuses.</p>
+      <p>The moderators should include people who understand governing: perhaps a constitutional scholar, a former budget official, a retired military officer or diplomat, alongside a journalist. The goal is not to create an oral exam for specialists. It is to remind viewers that electing a president is not the same as choosing a national spokesperson.</p>
+      <p>Substance does not mean more statistics in every answer. It means connecting promises to power, constraints and consequences. A debate that did that would be far more useful than one more exchange of slogans.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-40">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-40" style="display:none;">
+      <p>The presidential debate format has become increasingly theater than deliberation, and the remedy lies in restructuring both the physical setup and the temporal constraints of these events. The current format—which gives candidates roughly sixty seconds to address complex policy questions—virtually guarantees superficiality. A reformed approach would feature longer question windows, where candidates receive three to five minutes to fully develop their positions on given topics before moving to the next subject.</p>
+      <p>The town hall format, first popularized in 1992, demonstrated that direct voter interaction produces more organic and substantive exchanges than panel-style questioning. The Commission on Presidential Debates should mandate that at least two of the general election debates follow this format, allowing candidates to address concerns posed by ordinary citizens rather than media professionals whose questions sometimes veer toward gotcha journalism.</p>
+      <p>Furthermore, the current two-minute response and thirty-second rebuttal structure should be abandoned. It creates an environment where soundbite production takes precedence over genuine explanation. Candidates should receive identical question banks in advance, enabling them to prepare substantive responses rather than scrambling for ad hoc reactions. This does not eliminate spontaneity—candidates still choose how to address the question and can be challenged by follow-ups. The pre-announced topics would simply replace chaos with the possibility of depth.</p>
+      <p>The real obstacle is not candidate willingness to discuss substance, but format design that makes substance nearly impossible. Elected officials spend years mastering policy detail; a reformed structure would give them room to demonstrate that mastery.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-41">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-41" style="display:none;">
+      <p>Reforming presidential debates requires rethinking the role of moderators entirely. The current system places enormous power in the hands of individuals who are largely unaccountable for their questioning choices, time allocation, and follow-up decisions. The result often resembles an interrogation rather than a democratic exchange.</p>
+      <p>Moderators should be selected through a more transparent process that includes input from both parties, academic experts in journalism and democratic theory, and civic organizations focused on voter education. This does not mean eliminating journalistic independence—rather, it means ensuring that those chosen understand their role as facilitators of democratic deliberation rather than combatants in a political contest.</p>
+      <p>The questions themselves need reform. Moderators should provide comprehensive briefings on each policy area and develop questions that require specific answers rather than general positioning. Follow-up questions should be mandatory when candidates dodge or deflect; the current system, where moderators often fail to press on evasive answers, rewards that behavior.</p>
+      <p>Perhaps most importantly, moderators should be evaluated post-debate by a nonpartisan panel that assesses whether they enabled substantive exchange or inadvertently (or intentionally) tilted the evening toward entertainment at democracy&#x27;s expense. This accountability structure would create incentives for future moderators to prioritize depth over drama.</p>
+      <p>The 2016 primary debates have already demonstrated the costs of moderators who either lose control of the stage or actively seek confrontation over comprehension. Better selection and clearer guidelines for moderators would address both problems.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-42">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-42" style="display:none;">
+      <p>Those calling for debate reform often make the same mistake: they assume the current format accidentally produces bad debates. The reality is more troubling—the format is functioning exactly as designed. The Commission on Presidential Debates, the networks, and the campaigns all have interests that align against substantive discourse.</p>
+      <p>Networks want ratings. Entertainment drives ratings. A two-hour block featuring policy discussion between two aging politicians offers less dramatic potential than conflict, interruption, and memorable moments that become next-day social media content. The networks have learned this lesson well, and their moderators are selected, at least implicitly, with entertainment value in mind.</p>
+      <p>The CPD&#x27;s gatekeeping role similarly serves established political interests. Minor candidates who might offer genuinely different perspectives are excluded by thresholds designed to favor those with existing name recognition and fundraising capacity. The threshold requirements—15% in polling designated by the CPD—effectively freeze the field.</p>
+      <p>Reformers should acknowledge that meaningful change requires confronting these structural interests directly. Options include: pushing for federal funding of debates with format requirements that prioritize substance; creating parallel debate opportunities organized by civic organizations that operate outside commercial incentives; or developing alternative formats like written responses, extended policy papers, or online deliberative sessions that could supplement or eventually replace the televised spectacle.</p>
+      <p>The current debates are a product of political and commercial calculations that have little to do with helping voters make informed choices. Until reformers recognize this, proposed technical changes to question structure or timing will remain cosmetic.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-43">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-43" style="display:none;">
+      <p>The most practical path to more substantive presidential debates begins with reducing the number of participants in primary contests and extending the time allocated for responses. The current Republican primary debates feature double-digit candidates, making genuine policy discussion impossible when each candidate receives only minutes of total speaking time.</p>
+      <p>A tiered debate structure, where candidates must reach higher thresholds of polling support and fundraising to participate in later, more prominent debates, would solve this problem. Early debates could include all serious candidates, but the nationally televised events should feature only those with demonstrated viable support. This is not anti-democratic—voters in early states still see all candidates; national audiences deserve a more manageable format.</p>
+      <p>Beyond structural changes, the questions themselves need reform. The Commission should develop question banks in consultation with policy experts from diverse perspectives. Questions should be specific enough that evasive answers are obvious—a candidate who cannot clearly explain their tax plan when asked specifically about capital gains rates should be seen as failing to address the question, not succeeding in playing the game.</p>
+      <p>Finally, the thirty-second rebuttal format should be abandoned. It creates an adversarial atmosphere that rewards attack over explanation. Longer response windows would allow candidates to develop arguments rather than simply counterprogram against their opponent&#x27;s claims.</p>
+      <p>These changes are achievable because they address concrete problems without requiring ideological consensus. Democrats and Republicans might disagree about tax policy, but both should prefer a debate format that allows actual explanation of those positions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-44">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-44" style="display:none;">
+      <p>The presidential debate format has drifted so far from democratic purpose that reform requires reconceiving what these events are for. We should stop pretending the debates are primarily informational and acknowledge that they serve a legitimating function—signaling to the public that the democratic transition of power is proceeding normally. Once we accept this function, we can design debates that actually serve democratic needs.</p>
+      <p>First, debates should be broken into multiple segments, each focused on a single policy domain. Rather than jumping between foreign policy and healthcare in a single hour, candidates should have extended discussions of each topic. This would allow viewers to compare positions systematically and reduce the whiplash that makes substantive engagement difficult.</p>
+      <p>Second, candidates should be provided with statistical briefings in advance and required to justify claims with reference to specific data. When candidates make false or misleading claims, the fact-check should happen immediately, not three days later when the claim has already been broadcast millions of times. A panel of nonpartisan experts should be visible on screen during the debate, offering immediate assessment of factual claims.</p>
+      <p>Third, the debates should include a mechanism for voter input. Either through live polling or through questions submitted via digital platforms, ordinary citizens should be able to shape the agenda and question selection. This is not radical—it simply acknowledges that debates exist to serve voters, not networks&#x27; ratings needs or candidates&#x27; strategic calculations.</p>
+      <p>A democracy should expect more from its most prominent political rituals than the current debates provide. These reforms would begin to align debate structure with democratic purpose.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-45">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-45" style="display:none;">
+      <p>The call for more substantive presidential debates often misses the fundamental problem: the debates are designed to be watched, not learned from. Networks profit from attention, and attention is captured by conflict, not complexity. Until this incentive structure changes, calls for reform will produce only cosmetic adjustments.</p>
+      <p>The more productive approach focuses on what candidates themselves can control. Political professionals who want to distinguish themselves on substance should commit publicly to specific behaviors during debates: no personal attacks, complete answers to questions asked, and willingness to acknowledge uncertainty or complexity rather than offering false precision. Such commitments would create peer pressure among candidates to elevate discourse, since violating them would be clearly visible and politically costly.</p>
+      <p>Additionally, campaigns should invest in policy communication infrastructure—their debate prep should emphasize substantive content, not just attack lines and deflection techniques. Party organizations could establish policy advisory teams available to candidates for debate preparation, ensuring that even candidates with thin policy organizations can present detailed positions.</p>
+      <p>The press also bears responsibility. Post-debate coverage that focuses on memorable moments and winners/losers rankings reinforces the theatrical nature of debates. Coverage that systematically analyzes which candidate offered the clearest, most detailed, and most honest policy positions would create incentives for candidates to prioritize substance in future debates.</p>
+      <p>Reform from within the political process may be more achievable than structural changes to the CPD or networks. If campaigns and journalists changed their behavior, the debates would change automatically.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-46">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-46" style="display:none;">
+      <p>Those lamenting the lack of substance in presidential debates should recognize that debate reform is not merely a technical question but a philosophical one about what democracy requires of its citizens and leaders. The current format implicitly assumes voters want entertainment and candidates want to provide it—this assumption deserves challenge.</p>
+      <p>A more demanding format would assume that citizens can handle complexity and that candidates should be expected to demonstrate policy competence. This would mean questions that require specific numerical responses, candidate statements that commit them to particular positions rather than general philosophies, and follow-up questions that probe the reasoning behind stated positions.</p>
+      <p>The objection that such a format would reduce viewership ignores evidence that audiences hunger for substantive content when it is offered. The 2012 Republican primary featured extended policy discussions on healthcare that generated significant viewer interest. The 2008 Democratic primary debates were notable for their substantive engagement with healthcare, financial regulation, and foreign policy.</p>
+      <p>What voters actually want, when given the choice, is often different from what they are given. Networks and campaigns have concluded that audiences prefer conflict and simplicity, but this may be a self-fulfilling prophecy—audiences may have adapted to low-quality content because higher-quality content has not been offered.</p>
+      <p>Reformers should design debate formats for the audience they want to create, not the audience that currently exists. Over time, expectations would shift, and candidates would adapt. The alternative is continuing to provide content that citizens increasingly recognize as inadequate to their democratic responsibilities.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-47">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-47" style="display:none;">
+      <p>The presidential debate system needs structural reform that addresses both the selection of participants and the format of questioning. The Commission on Presidential Debates should be replaced with a more accountable institution that includes broader stakeholder representation, including voting rights advocates, election administration experts, and civic education professionals, not just representatives of the two major parties.</p>
+      <p>More specifically, the polling thresholds used to determine which candidates participate in nationally televised debates should be modified to include alternative indicators of public interest, such as grassroots fundraising totals and endorsements from a broader range of elected officials. The current threshold system effectively privileges name recognition over policy substance or organizational strength.</p>
+      <p>The debate format itself should include a mandatory fact-checking component. When candidates make false factual claims, a nonpartisan panel should provide immediate correction, and these corrections should receive equal prominence with the original false claims. This would reduce the incentive to make claims that will later be quietly corrected after having served their political purpose.</p>
+      <p>Finally, debates should be shorter—ninety minutes rather than two hours. Shorter formats require more careful time allocation, reducing the ability of moderators to control the narrative through selective questioning. Candidates would have more time per response, creating space for substantive discussion within a format that maintains audience engagement.</p>
+      <p>These structural changes would not eliminate conflict or spontaneity from debates. They would simply shift the framework within which conflict occurs, creating more opportunities for policy substance to emerge as candidates compete for voter attention.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

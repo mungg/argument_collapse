@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Implementing a military draft is an ineffective and inapprop... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_would-a-draft-reduce-the-number-of-post-traumatic-stress-cases.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_would-a-draft-reduce-the-number-of-post-traumatic-stress-cases.html">Would a Draft Reduce the Number of Post-Traumatic Stress Cases?</a> · Cluster 3 of 12</div>
+  <h1 class="arg-title">"Implementing a military draft is an ineffective and inappropriate solution for reducing post-traumatic stress because the focus should be on aligning national military commitments with the capacity of a professional volunteer force."</h1>
+  <div class="arg-meta">0 human · 2 LLM · 2 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Implementing a military draft is an ineffective and inappropriate solution for reducing post-traumatic stress because the focus should be on aligning national military commitments with the capacity of a professional volunteer force."</p>
+        <button class="essay-view-full" data-target="full-3-00109">View full essay</button>
+        <div class="essay-full" id="full-3-00109" style="display:none;">
+            <p>The call for a draft has a nostalgic appeal: if everyone served, the burden would be shared, wars would be shorter, and soldiers would not be ground down by fourth and fifth deployments. But nostalgia should not substitute for policy. The draft America remembers was never as fair as its defenders suggest. During Vietnam, deferments, education and influence shaped who served and who did not. There is little reason to think a new draft would be immune from similar pressures.</p>
+            <p>It is also not clear that a conscript army is what today’s military needs. The wars in Iraq and Afghanistan have relied on small-unit judgment, cultural knowledge, advanced communications, coordination with air power, and complicated legal and ethical decisions under stress. Professionalism does not prevent atrocities or breakdowns, but it matters. A force of reluctant short-term draftees could be larger while being less prepared. If the goal is to reduce psychological injury, sending less prepared people into ambiguous counterinsurgency environments seems perverse.</p>
+            <p>The fairest criticism of the volunteer force is not that it is unprofessional, but that it has been overused. That is a civilian failure. Civilian leaders chose to invade Iraq, expand commitments, pursue nation-building, and sustain a long Afghan campaign with limited public mobilization. They chose to fund wars while cutting taxes and asking most Americans for no sacrifice beyond airport rituals and bumper stickers. A draft might expose that hypocrisy, but exposure is not correction.</p>
+            <p>There is a more honest alternative: match commitments to the force we are willing to maintain without coercion. If Afghanistan cannot be prosecuted without repeated deployments that damage troops and families, then the mission should be narrowed or ended. If the nation believes a war is necessary, it should pay for enough active-duty personnel, equipment, rest cycles and veteran care to fight it responsibly. If the nation does not believe that, it should not hide its doubt by cycling the same soldiers through danger.</p>
+            <p>Post-traumatic stress is not an accounting problem solved by increasing the denominator. It is a human response to fear, loss, guilt and prolonged strain. Reducing repeat deployments would help, but a draft is neither the only nor the best way to do that. The central question is not whether more Americans should be made available for war. It is whether America should continue wars it is unwilling to fully own.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Historical evidence suggests that a draft would likely be plagued by unfairness and socioeconomic loopholes rather than creating a truly shared national burden.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A conscript army of reluctant, short-term draftees would lack the specialized professionalism and preparation required for the complex ethical and tactical demands of modern counterinsurgency.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Sending less prepared individuals into combat environments would likely increase rather than decrease the risk of psychological injury.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The overuse of the volunteer force is a failure of civilian leadership that should be corrected by narrowing mission scopes or increasing funding for professional personnel rather than through coercion.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Post-traumatic stress is a fundamental human response to the horrors of war that cannot be solved simply by increasing the number of available bodies through a draft.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Implementing a military draft would not effectively reduce post-traumatic stress cases because it focuses on increasing the supply of soldiers rather than addressing the underlying issue of unsustainable and prolonged combat missions."</p>
+        <button class="essay-view-full" data-target="full-3-56375">View full essay</button>
+        <div class="essay-full" id="full-3-56375" style="display:none;">
+            <p>A draft would answer the wrong question. The moral problem is not that too few Americans are available to fight in Afghanistan. The problem is that the country has tried to sustain a long, ambiguous war while keeping most citizens insulated from its consequences. Conscription might expose that evasion, but it could also give policymakers a larger supply of young people to send into harm’s way. That would not necessarily reduce post-traumatic stress; it might simply manufacture more of it.</p>
+            <p>The all-volunteer force is often caricatured as poor people fighting rich people’s wars. That is too simple. Many service members come from military families, small towns, suburbs and a wide range of backgrounds, and they choose service for reasons that deserve respect. Still, the burden is not broadly shared. The same families attend the send-offs, manage the homecomings, watch for nightmares and endure the next set of orders. The rest of the country can praise them at airports without changing its own life.</p>
+            <p>A draft appears to solve that inequity, but history warns otherwise. Unless it is universal and nearly exemption-free, the privileged will find exits. If it is universal, it raises another question: why should an unwilling 20-year-old be sent to patrol an Afghan village in order to preserve a mission the nation has not been willing to support honestly? Using conscription to make an unsustainable policy sustainable is not justice.</p>
+            <p>There is room for a broader civic obligation. A national service program—military, disaster relief, conservation, elder care, tutoring, public health—could reconnect citizenship with duty. It could also bring civilians into closer contact with veterans and the costs of war. But that is different from drafting people into combat.</p>
+            <p>To reduce PTSD cases, reduce the amount of combat. Set strict limits on repeat deployments. Count future veterans’ care as part of the cost of war before voting for war. Require Congress to revisit authorizations when missions change. Above all, ask whether continued combat in Afghanistan is worth the additional human damage it will predictably create.</p>
+            <p>If the Afghan mission depends on fourth tours from the same soldiers, the honest answer is not to find a fourth tour’s worth of draftees. The honest answer is to make the mission smaller, faster.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Conscription could provide policymakers with a larger pool of personnel, potentially leading to more people being exposed to trauma rather than fewer.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Historical evidence suggests that unless a draft is universal and exemption-free, it fails to solve the inequity of the combat burden as the privileged find ways to avoid service.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Forcing unwilling citizens into combat to sustain a mission the public does not honestly support is an unjust solution to a policy failure.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The most effective way to reduce PTSD is to limit repeat deployments and reduce the overall amount of combat by scaling back missions.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A national service program for various civic duties would be a better way to reconnect citizenship with duty than drafting people into combat.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While effective altruism correctly emphasizes the importance... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_effective_altruism.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_effective_altruism.html">The Logic of Effective Altruism</a> · Cluster 3 of 47</div>
+  <h1 class="arg-title">"While effective altruism correctly emphasizes the importance of evaluating charitable impact, its reliance on measurable metrics creates a narrow and potentially flawed hierarchy of what constitutes &#x27;doing the most good.&#x27;"</h1>
+  <div class="arg-meta">0 human · 2 LLM · 2 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While effective altruism correctly emphasizes the importance of evaluating charitable impact, its reliance on measurable metrics creates a narrow and potentially flawed hierarchy of what constitutes &#x27;doing the most good.&#x27;"</p>
+        <button class="essay-view-full" data-target="full-3-16519">View full essay</button>
+        <div class="essay-full" id="full-3-16519" style="display:none;">
+            <p>**The Bed Net Is Not Enough**</p>
+            <p>Peter Singer&#x27;s case for effective altruism rests on a vivid moral image: a young man on Wall Street who, by donating half his salary to the Against Malaria Foundation, will save more lives than a firefighter could pull from a burning building. It&#x27;s a powerful picture, and like all powerful pictures it deserves scrutiny. As someone who has spent years in development work, my worry about effective altruism is not its altruism but its theory of what makes interventions effective.</p>
+            <p>The bed net is the movement&#x27;s totem because GiveWell can put a price on a life saved with reasonable confidence. But the very features that make bed nets evaluable — discreteness, short causal chains, easily counted outputs — also mark out a narrow slice of what actually drives human development. The dramatic reductions in child mortality over the past forty years owe more to broad processes: rising incomes, female education, urbanization, vaccine programs run by national health ministries, and the slow grind of state capacity building. None of these would have scored well on a 2007 GiveWell scorecard. Indeed, programs like oral rehydration therapy, which has saved tens of millions, looked unimpressive in pilot RCTs before national systems took them up.</p>
+            <p>Singer concedes that effective altruists debate cause prioritization, and he gestures toward &quot;systemic change&quot; being part of the conversation. But the movement&#x27;s epistemology has a built-in tilt. When the test for a good intervention is &quot;evidence and reason&quot; operationalized as randomized trials and cost-per-DALY calculations, you end up favoring whatever can be measured cleanly over what cannot. Funding a malaria net is measurable. Funding a campaign to reform a country&#x27;s tax-collection capacity, or to support a journalists&#x27; union, or to push rich-country governments to change agricultural subsidies that depress African farm incomes, is not. The latter may matter more. We don&#x27;t know — and that is precisely the problem. &quot;Don&#x27;t know&quot; gets coded as &quot;don&#x27;t fund.&quot;</p>
+            <p>There is a deeper issue. Singer presents the choice as Make-A-Wish versus the Against Malaria Foundation, framed so that any reasonable person must pick AMF. But the truly contested comparison in global poverty is not Batkid versus bed nets; it is bed nets versus, say, GiveDirectly&#x27;s cash transfers, or versus advocacy for migration liberalization (which Michael Clemens has estimated could generate trillions in welfare gains), or versus investment in long-run scientific research. On these comparisons, effective altruism&#x27;s confident hierarchies fray fast. A movement that markets itself on the certainty of &quot;doing the most good&quot; is forced, in practice, to admit it is making bets under deep uncertainty — bets shaped as much by what is legible to spreadsheets as by what is actually consequential.</p>
+            <p>I also want to register a worry about the &quot;earning to give&quot; pathway that Matt Wage embodies. Singer treats it as a near-miraculous arbitrage: take a high-paying job, donate the surplus, multiply your impact. The argument assumes the financial-sector job is morally neutral — that Wage&#x27;s arbitrage trading itself does no harm and displaces no good. But finance is not a neutral conduit. Some activity in those firms is socially valuable; some is rent extraction; some, as we saw in 2008, can metastasize into systemic harm. If we are being rigorous about consequences, we have to count the expected impact of the work itself, not just the donations it funds. The fact that effective altruists rarely run those numbers suggests the framework&#x27;s quantification has limits it doesn&#x27;t acknowledge.</p>
+            <p>None of this is a reason to dismiss effective altruism. Singer is right that the average American giver donates emotionally, that charity is under-evaluated, that GiveWell has done real work in pulling tens of millions of dollars toward demonstrably effective programs. A movement of young people willing to give 10 or 50 percent of their income is a genuinely heartening development in a culture that more often celebrates conspicuous consumption.</p>
+            <p>But the movement would be stronger if it were humbler. The right slogan is not &quot;do the most good you can&quot; — a phrase that promises an optimization most of us cannot perform — but something closer to &quot;give more, give thoughtfully, and stay open to evidence that the leaderboard is wrong.&quot; The danger of Singer&#x27;s framing is that it converts ethics into a problem of execution rather than of judgment. Real moral life, including real philanthropy, requires judgment in the face of irreducible uncertainty about what helps and what hurts. Bed nets are good. They are not the whole of doing good.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The movement&#x27;s preference for interventions with short, measurable causal chains, like bed nets, overlooks the complex, systemic processes that historically drive long-term human development.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The methodology of effective altruism creates an epistemological bias that favors easily quantifiable programs over unmeasurable but potentially more impactful systemic reforms.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The &#x27;earning to give&#x27; model fails to account for the potential social harms or negative externalities caused by the high-paying careers chosen to fund donations.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Effective altruism&#x27;s promise of moral certainty through optimization ignores the reality that philanthropy requires judgment under conditions of deep and irreducible uncertainty.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The movement should shift its focus from a rigid &#x27;leaderboard&#x27; of effectiveness toward a humbler approach of giving thoughtfully while remaining open to diverse forms of impact.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While effective altruism correctly identifies the need for accountability in giving, its over-reliance on measurable metrics creates a &#x27;quiet tyranny&#x27; that devalues essential but hard-to-quantify philanthropic work."</p>
+        <button class="essay-view-full" data-target="full-3-45214">View full essay</button>
+        <div class="essay-full" id="full-3-45214" style="display:none;">
+            <p>**The Quiet Tyranny of the Measurable**</p>
+            <p>I run a small foundation. We have, over the past fifteen years, supported journalism in countries with weak press freedoms, legal aid for migrant workers, voter registration drives, and a handful of advocacy campaigns around criminal justice reform. None of our grantees can tell you how many lives they have saved per dollar spent. Several of them have, in the past few years, had to defend their existence against board members who have read Peter Singer and arrived at the meeting convinced that we should be wiring the endowment to the Against Malaria Foundation. I have come to think of this as one of effective altruism&#x27;s more underappreciated effects: the quiet pressure it places on philanthropy to retreat into the measurable.</p>
+            <p>Singer would protest that nothing in his framework requires this. Effective altruists can support hard-to-evaluate work, he might say, if they have good reason to believe it does more good than the easily evaluated alternatives. In principle, this is true. In practice, the movement&#x27;s center of gravity sits exactly where the evidence is cleanest — bed nets, deworming, cash transfers — and its rhetoric trains donors to feel that anything which cannot produce a comparable evidence base is somehow soft, sentimental, or unrigorous. The result is a slow tilt of the philanthropic field toward whatever can be measured in a controlled trial, regardless of whether what can be measured corresponds to what most matters.</p>
+            <p>Consider what tends to fall outside the well-measured zone. Independent journalism. Human rights advocacy. Legal aid. Civic organizing. The arts. Support for unpopular dissidents. Long-shot scientific research. Most institution-building, of any kind, anywhere. Most policy work. These activities share a structural feature: their effects, when they have effects, are mediated through long causal chains involving political and social change, and they often produce nothing measurable at all for years, and then suddenly produce a great deal. A grant to a small Brazilian human rights group in 1980 might have looked like a waste in 1985 and a quiet contribution to the end of a dictatorship by 1990. No randomized trial could have caught this in advance. Few will catch the next one.</p>
+            <p>Effective altruism is not unaware of this problem. The smarter writers in the movement have begun to talk about &quot;hits-based giving,&quot; about the value of supporting work with high variance and high expected value even when individual outcomes are hard to verify. Open Philanthropy has explicitly made this part of its strategy. Good for them. But the movement&#x27;s public face — including Singer&#x27;s essay here — still leads with the bed net, still scolds the Make-A-Wish donor, still tells David Geffen he was wrong. The implicit message to ordinary donors is: when in doubt, trust the spreadsheet. And the spreadsheet has a worldview.</p>
+            <p>The worldview, in brief, is that the morally serious goods are those that can be counted in lives saved or DALYs averted, on relatively short time horizons, with relatively clean attribution. This worldview will systematically underweight: the value of healthy institutions, which are difficult to attribute; the value of freedom and democratic accountability, which are hard to monetize; the value of cultural and scientific inheritance, which pays out across generations; and the value of empowering the people one is supposedly helping to determine their own futures, which is messy and often goes badly before it goes well. None of these omissions is intentional. All are predictable consequences of the framework.</p>
+            <p>I want to be fair. There are donors who should not be funding journalism or advocacy because they would do so badly; there are foundations whose marginal grant really is better spent on bed nets; there is enormous waste in the parts of philanthropy that have insulated themselves from evaluation. A movement pushing back against that waste is doing something useful. The problem comes when the push becomes a default — when every philanthropic question is reframed as a question of measurable cost-effectiveness, and everything that resists this reframing is treated as suspect.</p>
+            <p>Singer&#x27;s essay is brilliant at the recruiting work it is doing. It is much weaker at acknowledging what is lost when its framework wins. The hardest, most consequential philanthropic work I know of has been work that could not have justified itself to a GiveWell evaluator at the time the grants were made. We should be careful, in our enthusiasm for effective altruism, not to build a giving culture in which that kind of work can no longer find a home. The measurable is good. The measurable is not all.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The movement&#x27;s focus on clean evidence like randomized controlled trials causes a &#x27;slow tilt&#x27; in philanthropy toward easily measured interventions at the expense of complex social change.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Crucial activities such as independent journalism, human rights advocacy, and institution-building are systematically underweighted because their impact is mediated through long, unquantifiable causal chains.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The spreadsheet-driven worldview of effective altruism fails to account for long-term values like democratic accountability, cultural inheritance, and the messy process of community empowerment.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The public rhetoric of effective altruism trains donors to view any cause that cannot produce a comparable evidence base to bed nets as sentimental or unrigorous.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A giving culture dominated by effective altruism risks defunding the most consequential work that cannot justify itself through short-term, cost-effective metrics.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

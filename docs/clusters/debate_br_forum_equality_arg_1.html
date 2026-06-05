@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While Sypnowich correctly identifies the insufficiency of eq... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_equality.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_equality.html">Is Equal Opportunity Enough?</a> · Cluster 1 of 41</div>
+  <h1 class="arg-title">"While Sypnowich correctly identifies the insufficiency of equal opportunity, her focus on promoting &#x27;better choices&#x27; for flourishing fails to address the structural nature of inequality and risks reinforcing paternalistic or punitive social frameworks."</h1>
+  <div class="arg-meta">4 human · 6 LLM · 10 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Anne Phillips</span>
+        </div>
+        <p class="essay-quote">"While Sypnowich correctly identifies the insufficiency of equal opportunity, her focus on promoting &#x27;better choices&#x27; for flourishing fails to address the structural nature of inequality and risks reinforcing paternalistic or punitive social frameworks."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/beyond-choice/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">The emphasis on individual choice, even when framed as &#x27;better choosing,&#x27; obscures the fact that outcomes are primarily determined by structural starting points rather than personal decisions.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Focusing on the quality of choices inadvertently aligns with the logic of punitive welfare regimes that use the language of &#x27;incentivizing&#x27; better behavior to trap people in low-wage labor.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">The proposal to promote &#x27;valuable pursuits&#x27; raises troubling questions about who has the power to define value in a society already marked by class, race, and gender hierarchies.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Achieving equal flourishing depends more on the political resistance and agency of marginalized groups claiming equal status and resources than on government efforts to nudge individuals toward better lifestyles.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">John Roemer</span>
+        </div>
+        <p class="essay-quote">"Equal opportunity theory (EOp) is a flexible and effective framework that can achieve radical egalitarian outcomes by adjusting the definition of unchosen circumstances to reflect a society&#x27;s specific distributive goals."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/designing-for-outcomes/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Equal opportunity theory is not inherently right-wing; it is a malleable tool that can prescribe significant redistribution depending on how many social and biological factors are categorized as circumstances.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">The EOp model can account for poor decision-making by treating the propensity to make bad choices as a circumstance of a specific &#x27;type&#x27; of person, thereby compensating rather than punishing them.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">As the set of circumstances addressed by policy becomes more comprehensive, equality of opportunity naturally converges toward equality of outcomes.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Unlike abstract philosophical ideals, the EOp approach is practically useful because it can be calibrated with empirical data to calculate and implement actual social policies.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">The EOp framework allows a society to level the playing field by maximizing the average value of an objective—such as flourishing—for the most disadvantaged groups.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Zofia Stemplowska</span>
+        </div>
+        <p class="essay-quote">"The ideal of equal flourishing cannot be achieved without the framework of liberal equality, which protects individual freedom and ensures fairness in the distribution of resources."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/no-equality-without-liberal-equality/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">A focus on outcomes alone risks majoritarian domination, whereas liberal equality allows individuals to decide which ends to pursue without being ruled by the preferences of others.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Liberal egalitarianism does not necessitate a punitive approach to personal responsibility; rather, the weight given to choice can be calibrated to guarantee essential goods like healthcare and housing regardless of individual decisions.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Attributing agency to individuals does not require a simplistic sociological view that ignores social context, but rather recognizes that people can be authors of their lives within their circumstances.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Relying on a state-defined version of flourishing is impractical and potentially unfair because it fails to account for how different life paths compete for limited collective resources.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Liberal equality provides necessary independence between citizens, ensuring that one person&#x27;s pursuit of a specific lifestyle does not unfairly diminish the resources available for another person&#x27;s different conception of the good life.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Gina Schouten</span>
+        </div>
+        <p class="essay-quote">"Egalitarians should retain equal opportunity as their fundamental moral goal because, when properly understood and applied to sociological realities, it necessitates the same radical outcome equality that critics desire."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/why-inequality-is-unjust/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Equal opportunity is a distributive rule that can and should be conjoined with a flourishing metric of justice to ensure everyone has an equal chance to live a good life.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Because social factors and deterministic influences make fully responsible choice exceedingly rare, a commitment to equal opportunity rarely justifies unequal outcomes in practice.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Substantial outcome equality is a necessary prerequisite for maintaining equal developmental opportunities across generations, as economic advantage inevitably translates into unfair developmental leads for children.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">The framework of equal opportunity provides a necessary moral basis for prioritizing resource distribution in cases where individuals have already received significant social subsidies for failed life paths.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Equal opportunity serves as a powerful and widely accepted premise for public political deliberation that can help build a democratic constituency for socialist reforms.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"The responding essay argues that liberal egalitarianism, when properly understood rather than caricatured, is a radical and demanding doctrine that offers a more robust framework for justice than the author&#x27;s proposed flourishing-based socialism."</p>
+        <button class="essay-view-full" data-target="full-1-99983">View full essay</button>
+        <div class="essay-full" id="full-1-99983" style="display:none;">
+            <p>**The Radical Promise of Liberal Egalitarianism**</p>
+            <p>Christine Sypnowich&#x27;s case for an outcome-focused, flourishing-based egalitarianism is bracing, but it rests on a caricature of the tradition it sets out to displace. Read generously, liberal egalitarianism is not a thin doctrine of removing barriers and stepping back; it is a demanding theory whose implementation would transform the economic and social structures of contemporary capitalism beyond recognition. Sypnowich&#x27;s argument lands only if we accept her relatively impoverished portrait of what Rawls, Dworkin, and their successors have actually been arguing about.</p>
+            <p>Consider Rawls. His two principles do not amount to a program of equal opportunity in the colloquial sense. Fair equality of opportunity is the *second* principle&#x27;s first clause, and it is itself qualified by the difference principle. The first principle, lexically prior, guarantees a set of basic liberties whose fair value must be maintained — meaning that wealth cannot be permitted to corrupt political equality. Taken seriously, Rawls&#x27;s framework rules out private financing of elections, requires very substantial limits on inheritance, and probably requires what he later called a &quot;property-owning democracy&quot; or liberal socialism. The difference principle itself demands that inequalities benefit the worst-off; in a world where, as Sypnowich rightly observes, vast disparities of wealth coexist with stagnant mobility, a Rawlsian audit of existing institutions would call for enormous redistribution. The fact that Rawls &quot;permits&quot; inequalities in principle does not mean his theory permits the inequalities we actually have. It almost certainly does not.</p>
+            <p>The same applies to Dworkin. The hypothetical insurance market that grounds his equality of resources is a thought experiment whose policy implications include something like a universal basic capital endowment, robust public provision against disability and unemployment, and steeply progressive taxation. Dworkin is not a defender of laissez-faire markets; he is a defender of *counterfactual* markets corrected for the unequal starting points and unchosen contingencies that real markets enshrine.</p>
+            <p>Sypnowich treats these positions as compatible with significant inequality and therefore as wanting. But &quot;significant inequality&quot; relative to a fully-implemented Rawlsian or Dworkinian society would mean differences in resources and opportunities so much smaller than current ones that the political distance between liberal egalitarianism and her preferred socialism is considerably narrower than her essay suggests. The disagreement is real, but it is not the disagreement between a complacent liberalism that washes its hands and a radical egalitarianism that gets serious about outcomes.</p>
+            <p>A second concern is that Sypnowich underestimates the moral significance of what she calls &quot;neutrality.&quot; Liberal egalitarians did not arrive at neutrality through carelessness about flourishing; they arrived at it through hard reflection on what happens when states get into the business of ranking ways of life. The track record is grim. States that have undertaken to promote &quot;flourishing&quot; have promoted particular sectarian, class, and gender visions of it. They have done so with confidence that they were liberating their citizens from &quot;cultures of fatalism, low expectations, self-abnegation, or limited horizons&quot; — phrases that, with all due respect, could have been lifted from any number of paternalist tracts of the past two centuries directed at the poor, at women, at colonized peoples, at religious minorities. Sypnowich gives us a footnote to the worry, conceding plurality, but does not seriously engage with the historical sociology of perfectionist government.</p>
+            <p>Her example — compulsory music education — is revealing precisely because it is so charming and so seemingly innocuous. Of course music is valuable. But who decides which music? The Western art tradition that European education ministries have historically promoted? The &quot;great works&quot; that, as it happens, correlate with bourgeois cultural capital and were used as a sorting mechanism for educational and occupational stratification? The flourishing view at this level is no longer simply about equality; it is about authorizing a community to identify and embed substantive ideals of the good in coercive institutions. We may be willing to accept that authorization in some cases — public health is the obvious one — but we ought to be vigilant about extending it, and the appeal to &quot;transparent and democratic&quot; methods is not, by itself, a sufficient safeguard. Democracies promote bad conceptions of flourishing all the time.</p>
+            <p>Third, Sypnowich&#x27;s repudiation of luck egalitarianism is too quick. The point of distinguishing choice from circumstance is not to underwrite a sink-or-swim ethic; it is to identify what egalitarian justice *requires* as distinct from what humanitarianism, solidarity, or community spirit also support. Dworkin and Cohen were not denying that we should care about people who suffer because of their own choices. They were saying that there is a particular kind of unfairness — being worse off through no fault of one&#x27;s own — that justice in the strict sense addresses, and that other kinds of suffering are addressed by other moral resources. Collapsing these distinctions does not give us more equality; it gives us a less articulated moral vocabulary. We need to be able to say both that a person who has gambled away her savings is owed something by her community *and* that this is not the same kind of claim as that of a person born with a debilitating illness.</p>
+            <p>Fourth, the flourishing framework as Sypnowich describes it is curiously thin where it should be thick. We are told that the egalitarian community will be &quot;proactive,&quot; using &quot;incentives and supporting institutions,&quot; that it will &quot;revisit our policies&quot; when outcomes diverge, that it will involve &quot;compulsory arts and music education, of the right kind.&quot; But the hardest questions in political philosophy are: which institutions, on what authority, accountable to whom, and what happens when citizens, exercising their democratic agency, reject the community&#x27;s verdicts about what flourishing requires? Liberal egalitarianism&#x27;s commitment to neutrality is not a refusal to think about these questions; it is a considered answer to them. One can disagree with that answer — many do — but it cannot be set aside by gesturing at solidarity and Marx.</p>
+            <p>Finally, I want to register a methodological complaint. Sypnowich invokes Marx, Tawney, Morris, and the socialist tradition as the source of a more generous egalitarian vision. But the strongest socialist arguments against liberal egalitarianism have generally targeted its *structural* assumptions — the persistence of wage labor, the commodification of labor power, the political domination of capital — rather than its *attitudinal* failure to insist on outcome equality. G. A. Cohen&#x27;s late work is a case in point: his critique of Rawls is largely about the difference principle&#x27;s complicity with incentive-driven inequality, not about its agnosticism regarding flourishing. There is a robust socialist argument to be made against contemporary liberal egalitarianism, but it is principally an argument about political economy. By relocating the disagreement to the terrain of opportunity-versus-outcome and neutrality-versus-perfectionism, Sypnowich obscures rather than illuminates what is really at stake.</p>
+            <p>None of this is to defend the cramped, mobility-talk version of equal opportunity that pervades centrist political rhetoric. Sypnowich is entirely right that Bernstein&#x27;s and Trudeau&#x27;s invocations of opportunity are anemic, and that they often serve to license the inequalities they purport to address. But the answer is not to abandon opportunity as a category; it is to take the more demanding versions of equal opportunity seriously, push their institutional implications all the way down, and recognize that doing so requires confronting the structural inequalities of capitalist economies. Liberal egalitarianism, fully realized, is a far more radical doctrine than its critics — and, frankly, many of its defenders — have allowed. We should not leave its radical potential on the table.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The core principles of thinkers like Rawls and Dworkin, such as the difference principle and the fair value of political liberties, would require a total transformation of contemporary capitalism and massive redistribution of wealth.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The liberal commitment to &#x27;neutrality&#x27; is a necessary safeguard against the historical tendency of states to impose paternalistic, sectarian, or class-based visions of &#x27;flourishing&#x27; on their citizens.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Distinguishing between choice and circumstance is essential for a precise moral vocabulary that identifies the specific requirements of justice as distinct from general humanitarianism or solidarity.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The flourishing framework fails to provide a clear account of political authority or explain how to handle democratic disagreement regarding what constitutes a good life.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The most effective socialist critique of liberal egalitarianism should focus on structural political economy—such as wage labor and capital domination—rather than the philosophical debate over opportunity versus outcomes.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"While the shift from opportunity to flourishing is a valuable corrective to thin liberal ideals, a state-led focus on outcomes risks harmful perfectionism and overlooks the existing radical potential within the liberal egalitarian tradition."</p>
+        <button class="essay-view-full" data-target="full-1-74079">View full essay</button>
+        <div class="essay-full" id="full-1-74079" style="display:none;">
+            <p>Sypnowich is right to be impatient with the slogan of &quot;equal opportunity.&quot; In its thinnest form — the non-discrimination version invoked by politicians from Biden to Trudeau — it has become a kind of alibi, allowing societies with grotesque disparities in wealth and life expectancy to congratulate themselves on their fairness. And she is right that even the more demanding philosophical versions, from Rawlsian fair equality of opportunity to Dworkinian equality of resources, are compatible with inequalities most of us would find indefensible if we encountered them in the flesh. The move from opportunity to outcomes — or, in her preferred vocabulary, flourishing — is a corrective worth taking seriously.</p>
+            <p>But I want to push back on two features of her argument. The first concerns whether &quot;flourishing&quot; can really do the work she asks of it without smuggling in the perfectionist commitments liberal egalitarians have been right to worry about. The second concerns whether her diagnosis of liberal egalitarianism is fair, or whether she has set up an unnecessarily sharp opposition between opportunity and outcomes.</p>
+            <p>Begin with the perfectionism worry. Sypnowich is admirably candid: she wants the state to &quot;take a stand on how people should live,&quot; to disincentivize some pursuits, and even to impose compulsory arts education &quot;of the right kind.&quot; She insists this is not coercion in any objectionable sense, since every polity already shapes preferences through education and incentives. That much is true — Rawlsian neutrality has always been neutrality of justification, not of effect — but her examples actually understate the worry. The state&#x27;s encouragement of literacy or its discouragement of smoking proceeds from claims about which there is broad reflective convergence: that being able to read is a prerequisite for almost any conception of the good, that lung cancer is bad. Compulsory music education &quot;of the right kind&quot; is a different beast. Whose right kind? Decided how? Sypnowich gestures toward &quot;legitimate, democratic debate about what counts as flourishing,&quot; but democratic majorities have historically been quite enthusiastic about enforcing their views of the good life on dissenting minorities — religious nonconformists, sexual minorities, the irreligious, the avant-garde. The liberal egalitarian&#x27;s neutralism is not a piece of bad sociology, as she suggests; it is a response to the historical record of what happens when polities decide they know what flourishing looks like.</p>
+            <p>She anticipates this with the reassurance that flourishing &quot;comes in many forms.&quot; But once we add this pluralism back in, the distance from sophisticated equality-of-opportunity views shrinks considerably. Nussbaum&#x27;s capabilities approach already tries to identify a plural list of substantive functionings while leaving people free to function or not; Sen&#x27;s framework foregrounds substantive freedoms; Rawls&#x27;s primary goods are designed precisely to be the conditions of pursuing diverse conceptions of the good. If Sypnowich&#x27;s flourishing must accommodate plural valuable lives and must not be imposed by force, then the apparatus she rejects — capabilities, primary goods, opportunity sets — starts to look like the practical machinery any flourishing-oriented state would need to deploy. The disagreement becomes one of emphasis and policy ambition, not of fundamental commitment.</p>
+            <p>Now to the second worry. Sypnowich treats luck egalitarianism as paradigmatic of liberal egalitarian thought, and Dworkin&#x27;s option-luck framework as its emblem. But this overstates the consensus. Anderson&#x27;s &quot;What Is the Point of Equality?&quot; — to which Sypnowich nods — already mounts a devastating relational critique of luck egalitarianism from within the liberal egalitarian camp, arguing that equality concerns the standing of persons in relations of mutual respect, not the metaphysics of choice. Scheffler, Wolff, and others have piled on. The &quot;relational egalitarian&quot; tradition, which insists that equality is about how people stand to one another rather than the distributive shape of a final pattern, is hardly less concerned with community, solidarity, and the dignity of the worst-off than Sypnowich&#x27;s socialism is. To collapse contemporary liberal egalitarianism into its Dworkinian wing is to fight the battles of 1990 rather than 2023.</p>
+            <p>This matters because Sypnowich&#x27;s most powerful arguments — that choice is shaped by circumstance all the way down, that &quot;from each according to ability, to each according to need&quot; cannot be reconstructed in luck-egalitarian terms, that solidarity is constitutive of the egalitarian ideal — are widely shared on the liberal left. They do not by themselves vindicate the leap from opportunity to flourishing as the operative metric of justice. One can accept all of her sociology of choice and still think that the appropriate political response is to expand and equalize the substantive conditions under which people exercise agency, rather than to evaluate the agency-exercises themselves and intervene when their outcomes diverge.</p>
+            <p>There is also a strategic point worth raising. At a moment when egalitarians face well-funded opposition that already caricatures progressive politics as paternalistic and culturally domineering, a public-facing case for equality framed around &quot;the egalitarian community taking a stand on how people should live&quot; hands ammunition to opponents that the opportunity framing, for all its limitations, withholds. This is not a knockdown objection — sometimes the truth is politically inconvenient — but it suggests that the rhetorical case for outcome-talk should be made with more caution than Sypnowich allows.</p>
+            <p>The flourishing horizon is the right one. But getting there will require more of the liberal egalitarian toolkit, and less confidence in the state&#x27;s capacity to identify the valuable, than her essay suggests.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The proposal for the state to &#x27;take a stand&#x27; on how people should live risks empowering majorities to enforce their specific views of the good life on dissenting minorities.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Once flourishing is defined broadly enough to accommodate pluralism, it becomes functionally indistinguishable from the sophisticated opportunity-based frameworks like capabilities or primary goods.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The essay unfairly collapses all liberal egalitarianism into &#x27;luck egalitarianism,&#x27; ignoring the relational egalitarian tradition that already prioritizes community, solidarity, and mutual respect.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">One can accept that choice is shaped by circumstance without concluding that the state should evaluate and intervene in the specific outcomes of individual agency.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Framing egalitarianism as a paternalistic project that dictates how people should live provides political ammunition to opponents who characterize progressive politics as culturally domineering.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"The responding essay argues that liberal egalitarianism, properly understood, already provides a robust framework for addressing inequality and social well-being without the paternalistic and illiberal risks inherent in a state-mandated &#x27;equal flourishing&#x27; model."</p>
+        <button class="essay-view-full" data-target="full-1-08361">View full essay</button>
+        <div class="essay-full" id="full-1-08361" style="display:none;">
+            <p>Christine Sypnowich’s provocative lead essay argues that equality of opportunity, in its many guises, is insufficient for genuine egalitarianism, and that we must instead aim for equal flourishing. Her critique of liberal egalitarianism is sweeping, but it rests on a caricature of that tradition. Properly understood, the most influential liberal egalitarian theories not only accommodate but actually require a deep concern with outcomes; they do not wash their hands of how people live. Sypnowich’s call to abandon opportunity for outright outcomes is both theoretically misguided and politically perilous, for the liberal tradition already contains the resources to address her concerns while respecting individual freedom and pluralism.</p>
+            <p>Sypnowich’s central charge is that liberal egalitarians, from Rawls to Dworkin to Sen, focus on opportunity and thereby tolerate massive inequalities of outcome. She laments that “liberal egalitarians do not even aim for equality per se” and that the luck egalitarian distinction between choice and circumstance leads to a “sink-or-swim” mentality. But this ignores the full architecture of Rawls’s justice as fairness. Rawls’s first principle guarantees equal basic liberties, but his second principle contains two parts: fair equality of opportunity and the difference principle. The latter explicitly requires that social and economic inequalities be arranged so that they are to the greatest benefit of the least advantaged. This is not a mere opportunity floor; it is an ongoing outcome-sensitive criterion that governs the basic structure of society. Under the difference principle, if the worst-off group is not doing well—if they lack adequate income, wealth, access to meaningful work, and the social bases of self-respect—the society is unjust, regardless of whether they had an “equal start.”</p>
+            <p>Moreover, Rawls’s vision of a property-owning democracy (or liberal socialism) involves dispersing wealth and capital widely, so that over time, the fair value of political liberties and fair equality of opportunity are preserved. These institutional arrangements are designed to prevent the kind of dynastic inequality and social sclerosis that Sypnowich rightly condemns. The “washing of hands” is nowhere to be found: the basic structure continuously corrects for the cumulative effects of the market and family background. As for Dworkin’s equality of resources, his hypothetical insurance scheme is explicitly outcome-oriented: it asks what level of insurance rational people would buy behind a veil of ignorance against the risk of low talents or disability. The resulting social minimum would be substantial and would guarantee a dignified life. Sypnowich complains that Dworkin allows inequalities to persist, but only those that result from genuine choice, and after compensation for bad brute luck. This is not indifference to outcomes; it is a principled limit on when inequalities are unjust—a limit that any plausible egalitarian theory must draw.</p>
+            <p>Sypnowich’s objection that the choice-circumstance distinction is impossible to draw cleanly is well-taken. But it does not warrant throwing out the distinction altogether. The progressive luck egalitarians she mentions, such as Cohen and Roemer, were well aware that social conditions shape choices, and they spent decades refining the notion of “advantage” and the conditions under which choices could be considered genuinely free. Cohen’s “On the Currency of Egalitarian Justice” argued that we should compensate for any disadvantage not traceable to a genuine choice, but he also noted that extensive redistribution and a socialist ethos would be required to make choices truly voluntary. In that light, liberal egalitarianism can—and should—support robust social insurance, universal basic services, and a job guarantee, precisely to ensure that the background conditions for responsible choice are met. That is an outcome-oriented agenda if there ever was one.</p>
+            <p>Even Sypnowich’s claim that opportunity talk neglects community and solidarity is overstated. Rawls’s difference principle expresses a conception of society as a system of fair cooperation for mutual advantage; it embodies the idea of fraternity, as he explicitly stated. The property-owning democracy would reshape not just material distribution but also workplace democracy and the character of social relations. The liberal tradition, far from ignoring the social bases of self-respect, makes them a primary good. To be sure, Sypnowich is calling for something even thicker: an “egalitarian ethos” of generosity and mutual care. That is a noble aspiration, but it cannot be mandated by the state without risking the core liberal value of personal freedom. As Samuel Scheffler has argued, the liberal egalitarian project does not require perfect altruism; it relies on institutions to do the work of justice, leaving individuals free to pursue their own conceptions of the good within those just institutions.</p>
+            <p>Which brings us to the most significant threat posed by Sypnowich’s proposal: its perfectionism. She wants the state to actively guide people toward valuable pursuits and away from harmful ones, using incentives, education, and institutional design. While her music education example is superficially benign, the principle is deeply troubling. Who gets to define what is valuable? Sypnowich says there are many forms of flourishing, but she also suggests that some ways of life “do not warrant social support.” This opens the door to a state-appointed cultural elite deciding which lifestyles, careers, and relationships are acceptable. The liberal commitment to neutrality, as interpreted by Jonathan Quong and others, exists precisely to stop the state from becoming the final arbiter of the good life. Citizens must be treated as capable of forming and revising their own conceptions of the good. Sypnowich’s dismissal of this concern as “poor sociology” underestimates the danger of majoritarian moralism.</p>
+            <p>A liberal egalitarian society can support a wide range of pursuits and address non-material shortfalls—loneliness, alienation, mental health—through public goods like community centers, parks, libraries, and a robust mental health care system, all of which can be justified on neutral grounds of providing resources that individuals can use as they see fit. It does not need to stamp some ways of life as inferior to accomplish this. The socialist tradition Sypnowich invokes has a long and tragic history of defining “flourishing” in ways that crushed dissent. Liberal egalitarianism, with its insistence on basic liberties and the separation of justice from comprehensive doctrines, remains the better safeguard against such oppression.</p>
+            <p>Finally, Sypnowich’s call for “equal flourishing” as an outcome is a mirage. Even in an ideal society, people will have different temperaments, desires, and metabolisms, and no amount of redistribution can ensure that everyone experiences the same level of “flourishing.” As Sen noted, converting resources into well-being varies from person to person. A just society should ensure that everyone has a fair share of resources and opportunities to live a life they have reason to value, but it cannot promise identical outcomes in happiness or fulfillment. That would be to overpromise and invite the very leveling down she rightly rejects.</p>
+            <p>In sum, Sypnowich’s critique is a useful corrective against anemic versions of equal opportunity that stop at antidiscrimination law. But the robust liberal egalitarian tradition already points beyond that, to a society where inequalities must lift the worst off, where brute luck is compensated, and where the background conditions of genuine choice are secured. We do not need to abandon opportunity for outcomes; we need to realize the full implications of fair equality of opportunity and the difference principle. That would be radical enough.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Major liberal egalitarian theories like Rawls’s difference principle are inherently outcome-sensitive and require that social structures continuously benefit the least advantaged.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The distinction between choice and circumstance is a necessary principled limit for any plausible theory of justice to respect individual agency.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Liberal institutions can foster community and solidarity through the &#x27;social bases of self-respect&#x27; without requiring the state to mandate a specific egalitarian ethos.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Sypnowich’s &#x27;equal flourishing&#x27; model is dangerously perfectionist, as it empowers the state to judge and steer the private lives and values of its citizens.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A liberal state can address non-material issues like loneliness and mental health by providing neutral public goods rather than imposing a specific vision of the good life.</span></li>
+              <li class="src-d"><span class="num">06</span><span class="sub-text">The goal of identical flourishing outcomes is an impossible mirage because individuals have different temperaments and capacities for converting resources into well-being.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"While the critique of &#x27;equal opportunity&#x27; is valid, the proposed alternative of &#x27;equal flourishing&#x27; is philosophically overambitious and politically hazardous, suggesting instead that we should radicalize liberal egalitarianism rather than abandon it for state-led perfectionism."</p>
+        <button class="essay-view-full" data-target="full-1-09325">View full essay</button>
+        <div class="essay-full" id="full-1-09325" style="display:none;">
+            <p>Christine Sypnowich’s lead essay is a powerful indictment of the thin gruel that passes for egalitarianism in much contemporary political discourse. She is right that the rhetoric of “equal opportunity” too often serves as a fig leaf for staggering inequalities of income, wealth, and power, and that the dominant liberal egalitarian philosophies have been unduly preoccupied with personal responsibility and the formal availability of chances. Yet her recommended alternative—a politics of “equal flourishing” that abandons liberal neutrality and embraces socialism—is both philosophically overambitious and politically hazardous. A reformed and deepened liberal egalitarianism, rather than a leap beyond it, is the more plausible and liberatory path.</p>
+            <p>Sypnowich’s critique of the opportunity paradigm is most persuasive when she shows how the distinction between choice and circumstance is blurred to the point of uselessness. As she notes, choices are always made in a social context; disadvantage shapes decision-making, and one bad choice can foreclose future options. The luck egalitarian insistence that those who suffer from their own poor decisions have no claim of justice can indeed seem “soulless,” as Jonathan Wolff has argued. But Sypnowich understates the extent to which liberal egalitarians themselves have moved beyond a crude responsibility–cut. John Rawls’s difference principle, which requires inequalities to work to the benefit of the least well-off, is an outcome-focused constraint. Amartya Sen’s capability approach, though officially concerned with capabilities rather than functionings, is driven by a moral urgency to ensure that people are actually well-nourished, sheltered, and educated. In practice, even liberal egalitarians endorse policies that secure outcomes, not just opportunities, for these basic goods. The line Sypnowich draws between a supposedly opportunity-obsessed liberalism and her own outcome-focused radicalism is, therefore, overdrawn.</p>
+            <p>More worrying is Sypnowich’s positive vision. She calls for an egalitarian state that actively promotes valuable ways of life and disincentivizes others, with the aim of equalizing human flourishing. This is an unabashed perfectionism. Sypnowich preempts the charge of coercion by arguing that all states inevitably shape values, so the only question is whether we do so transparently and democratically. But there is a vast difference between a state that funds public libraries and one that takes responsibility for ensuring that each citizen actually achieves a certain level of flourishing in multiple dimensions. Once the state is held accountable for equal outcomes in subjective well-being, the pressure to override dissenting individual choices—through compulsory education in the arts, for example, or the stigmatization of non-approved lifestyles—becomes difficult to resist. Sypnowich insists that flourishing takes many forms and that the state should be open to revising its conception of the good. Yet in a pluralistic society, deep disagreements about what constitutes a valuable life are inevitable. Entrusting the state with the task of equalizing flourishing gives it a license to impose a particular, however contested, vision of the good. The historical experience of twentieth-century socialism, much of which devolved into authoritarian attempts to engineer the “new man,” should give us pause.</p>
+            <p>Sypnowich’s emphasis on community and solidarity is welcome and echoes the best of the socialist tradition. But she too quickly identifies these values with the abolition of markets and the supersession of liberal rights. One can cultivate an egalitarian ethos without dismantling the institutional architecture of liberal democracy. The Nordic countries, for all their imperfections, demonstrate that generous universal welfare states, strong collective bargaining, and high levels of social trust can coexist with market economies and robust civil liberties. They have not eliminated inequality of outcome, but they have dramatically reduced the kind of poverty, insecurity, and status hierarchies that most undermine human flourishing. That seems a more tangible and defensible goal than equal flourishing per se.</p>
+            <p>Finally, Sypnowich’s near-total rejection of personal responsibility risks infantilizing citizens. While it is true that social conditions constrain agency, an emancipatory politics should aim to expand people’s capacity to make meaningful choices and to take ownership of their lives, not to relieve them of accountability altogether. An egalitarian society should provide a generous floor below which no one is allowed to fall, regardless of the reasons for their misfortune. But it need not guarantee that everyone ends up equally happy or fulfilled—an aim that is both unattainable and, in a free society, undesirable.</p>
+            <p>Sypnowich’s essay performs a vital service by exposing the poverty of opportunity talk and reminding us that equality is, at bottom, about how people actually live. Yet the proper response is not to abandon liberal egalitarianism but to radicalize it: to demand, as the late Erik Olin Wright urged, “real utopias” that equalize power and resources while preserving individual freedom. That means fighting for universal basic services, a job guarantee, a progressive wealth tax, and deep democratic reform—measures that bring outcomes much closer to equal without requiring the state to dictate what it means to flourish. Equality of opportunity may not be enough, but the pursuit of equal flourishing must be tempered by a liberal respect for the plurality of human goods.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The distinction between liberal egalitarianism and the flourishing approach is overdrawn, as thinkers like Rawls and Sen already incorporate outcome-focused constraints and moral urgency regarding actual well-being.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">An unabashed perfectionist state that promotes specific ways of life risks authoritarianism and the imposition of a contested vision of the good upon a pluralistic society.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The goal of equalizing flourishing is practically unattainable and potentially infantilizing, as it risks relieving citizens of personal accountability and the capacity to make meaningful, independent choices.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Socialist values like solidarity and community can be achieved through &#x27;real utopias&#x27;—such as universal basic services and wealth taxes—within a liberal framework that preserves market economies and individual rights.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The pursuit of equality should focus on providing a generous social floor and equalizing power and resources rather than attempting to guarantee equal subjective outcomes in happiness or fulfillment.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"While the critique of superficial &#x27;equality of opportunity&#x27; is valid, abandoning state neutrality in favor of mandated &#x27;equal flourishing&#x27; leads to a paternalistic and potentially authoritarian vision that threatens individual agency and pluralism."</p>
+        <button class="essay-view-full" data-target="full-1-32430">View full essay</button>
+        <div class="essay-full" id="full-1-32430" style="display:none;">
+            <p>Christine Sypnowich offers a provocative and timely critique of the contemporary political obsession with “equality of opportunity.” She rightly points out that in the rhetoric of many modern politicians, opportunity talk frequently functions as a convenient alibi. It allows leaders to accept staggering wealth gaps and systemic deprivation, so long as they can point to a theoretically open starting line. Furthermore, Sypnowich’s diagnosis of “luck egalitarianism” hits its mark: a political philosophy that leaves individuals to suffer the catastrophic consequences of their “bad choices” ignores the reality that choices are invariably shaped by unjust social structures.</p>
+            <p>However, in her rush to discard the opportunity framework altogether, Sypnowich embraces an alternative that carries its own profound risks. By arguing that egalitarianism must abandon state neutrality and actively engineer “equal flourishing” and equal outcomes, she advocates a paternalistic vision of the state that threatens the pluralism at the heart of free societies. Liberal egalitarianism’s commitment to choice and neutrality is not, as Sypnowich suggests, merely a concession to right-wing market logic. Rather, it is a crucial safeguard against the authoritarian potential of a state empowered to dictate the definition of a good life.</p>
+            <p>The most troubling aspect of Sypnowich’s argument is her dismissal of liberal neutrality—the idea that the state should not rank or impose specific conceptions of how to live. She argues that because individuals are already influenced by unaccountable market forces, the state should step in to purposefully “encourage people to see the value of one choice over another.” To illustrate this, she uses the highly benign example of mandatory music lessons. But the power to define what constitutes a &quot;flourishing&quot; life rarely stops at the arts.</p>
+            <p>Historically, when governments have abandoned neutrality to promote substantive visions of the good life, the results have frequently oppressed those who deviate from the majority’s norms. Conceptions of flourishing are inherently subjective and culturally bound. What looks like &quot;flourishing&quot; to a dominant cultural group might look like forced assimilation to an Indigenous community, or compulsory heteronormativity to LGBTQ+ individuals. When the state takes it upon itself to correct “cultures of fatalism” or “limited horizons,” it too often pathologizes minority lifestyles, neurodivergence, and unconventional family structures. Liberal egalitarianism insists on neutrality precisely to protect individuals from a majority that might otherwise impose its own moral or cultural preferences under the guise of egalitarian care.</p>
+            <p>Furthermore, Sypnowich severely underestimates the radical redistributive potential already present within the liberal egalitarian tradition. She claims that liberal philosophy &quot;washes its hands of how people are actually faring.&quot; But this is a mischaracterization of thinkers like John Rawls and Amartya Sen. Rawls’s “difference principle” is entirely concerned with outcomes: it dictates that social and economic inequalities are only justified if they maximize the absolute position of the worst-off members of society. This is not a philosophy that abandons people to the market; it is one that demands continuous, structural redistribution.</p>
+            <p>Similarly, Sen and Martha Nussbaum’s capability approach was specifically developed to bridge the gap between abstract opportunity and actual well-being. Sypnowich criticizes Nussbaum for focusing on the &quot;capability to function, not functioning per se.&quot; Yet this distinction is vital. The state should ensure that every citizen is fully nourished, educated, and housed—providing the absolute capability to participate in society. But if a citizen chooses to fast for religious reasons, the state should not force-feed them to ensure the “outcome” of equal nourishment. Ensuring the *capability* to flourish is a matter of profound material justice; mandating the *act* of flourishing is a violation of human agency.</p>
+            <p>Sypnowich is certainly correct that the line between choice and circumstance is deeply blurred. Our tastes, ambitions, and even our mistakes are molded by our environments. But entirely absorbing choice into circumstance, as she suggests, effectively strips individuals of their agency. If we assume that bad choices are merely symptoms of a diseased social environment, we risk treating citizens as passive patients to be cured by the state, rather than as autonomous agents to be respected. The proper liberal egalitarian response to the blurred line between choice and circumstance is not to abandon personal responsibility, but to ensure a robust, unconditional social safety net. We can believe that people are responsible for their choices while simultaneously believing that no choice, no matter how imprudent, should result in homelessness, starvation, or a lack of medical care.</p>
+            <p>Finally, Sypnowich points to non-material deficits, such as alienation and loneliness, as outcomes that the egalitarian state must rectify. While it is true that modern capitalism exacerbates social isolation, positioning friendship and love as matters of state-enforced egalitarian justice invites an alarming level of government intrusion into intimate life. A society can foster community by building public parks, funding community centers, and shortening the workweek, but it cannot and should not attempt to equalize human relationships.</p>
+            <p>Ultimately, Sypnowich is right that superficial &quot;equality of opportunity&quot;—the mere removal of legal discrimination—is drastically insufficient. The playing field is not level, and the gates of opportunity remain closed to millions. But the solution to this crisis is to demand that opportunity be made truly structural, material, and fair, rather than discarding the concept entirely. By ensuring unconditional basic needs, aggressively redistributing wealth, and protecting democratic pluralism, we can provide everyone with the genuine capability to flourish, while still trusting them with the freedom to decide what that flourishing looks like.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Abandoning liberal neutrality allows the state to impose subjective, culturally-bound definitions of a &#x27;good life&#x27; that can oppress minority groups and unconventional lifestyles.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Liberal egalitarianism, through frameworks like Rawls’s difference principle and the capability approach, already possesses radical redistributive potential to address outcomes without violating human agency.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The distinction between having the capability to function and the act of functioning is vital for protecting citizens&#x27; rights to make their own life choices, such as religious fasting.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Treating all &#x27;bad choices&#x27; as mere products of social circumstance strips individuals of their agency and risks treating citizens as passive patients rather than autonomous actors.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Positioning non-material outcomes like friendship and loneliness as matters of state-enforced justice invites an alarming and inappropriate level of government intrusion into private, intimate life.</span></li>
+              <li class="src-v"><span class="num">06</span><span class="sub-text">The solution to inequality is to make opportunity structural and material through wealth redistribution and unconditional safety nets, rather than discarding the framework of choice and freedom.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While Sypnowich correctly identifies the limitations of opportunity-focused egalitarianism, her proposed &#x27;flourishing&#x27; framework requires more rigorous specification regarding democratic deliberation, the definition of responsibility, and institutional design to avoid paternalism."</p>
+        <button class="essay-view-full" data-target="full-1-32232">View full essay</button>
+        <div class="essay-full" id="full-1-32232" style="display:none;">
+            <p>Sypnowich&#x27;s essay effectively diagnoses why opportunity-focused egalitarianism falls short. Her critique of luck egalitarianism&#x27;s sharp distinction between choice and circumstance is compelling: if our preferences, dispositions, and even what we take to be our authentic choices are shaped by social conditions, then the idea that individuals should bear full responsibility for their outcomes becomes difficult to defend. The flourishing perspective she advocates offers a more humane measure of equality—one that asks not whether people had formal chances but whether they actually live well.</p>
+            <p>Yet her argument requires greater specification in at least two respects. First, the flourishing approach must clarify what genuine equal flourishing actually demands. Sypnowich rightly insists that flourishing comes in many forms and need not be imposed coercively. But she also argues that we should &quot;not be squeamish about an outcomes approach that takes a stand on how people should live.&quot; The tension here needs resolution: if flourishing is pluralistic yet we nonetheless take stands on how people should live, who determines where to draw the line? The danger is not necessarily强制 but rather a subtle creeping toward a conception of flourishing shaped by particular class or cultural assumptions—what counts as a valuable pursuit may reflect the preferences of those who write the social policies. An account of flourishing-based equality needs robust mechanisms for democratic deliberation that genuinely incorporate diverse perspectives rather than simply importing elite assumptions about the good life.</p>
+            <p>Second, Sypnowich gestures toward cultivating responsibility and encouraging people to become &quot;better choosers,&quot; yet if choices are thoroughly shaped by social context, the meaning of responsibility becomes elusive. The essay would benefit from distinguishing among different senses of responsibility—moral, practical, and political—rather than conflating them. We might reasonably hold people to commitments they actually make while still recognizing that those commitments arise from social circumstances we can and should address. This would provide a more defensible foundation for the responsibility-attention that Sypnowich rightly retrieves from the luck egalitarian tradition without endorsing its harshness.</p>
+            <p>Sypnowich&#x27;s emphasis on solidarity offers the most promising path forward. Her observation that opportunity-talk sidesteps &quot;the responsibility members of an egalitarian society may have to their fellows&quot; names a genuine gap in liberal egalitarianism. The Rawlsian framework, for all its sophistication, tends to treat justice as a matter of institutions rather than relationships. Yet moving from the recognition that we are social beings to the claim that &quot;the egalitarian ideal requires socialism&quot; requires more argument than the essay provides. One can accept that equality involves community and solidarity without concluding that these require the abolition of private property or the central planning associated with historical socialism. Democratic socialism, market socialism, and robust welfare state approaches all incorporate solidarity while differing on institutional design. The flourishing ideal would benefit from engaging more directly with these institutional questions rather than treating socialism as a conclusion reached once we reject opportunity-talk.</p>
+            <p>Finally, the flourishing approach raises questions about political strategy. Sypnowich is surely right that a polity committed to genuine equality cannot simply present people with options and wash its hands of what follows. But the history of progressive reform suggests that such commitments often prove vulnerable to capture by expert administrators who define flourishing in technocratic terms disconnected from democratic contestation. A flourishing-based egalitarianism needs to specify not merely that people should flourish but who gets to decide what flourishing means and through what democratic processes those determinations can be revised. Without such mechanisms, the flourishing ideal risks becoming another guise for expert-driven paternalism, however benevolently intended.</p>
+            <p>In the end, Sypnowich is right that equal opportunity is insufficient. Her essay should prompt further inquiry into what an equality of flourishing would actually require—including difficult questions about pluralism, responsibility, institutional design, and democratic accountability that the flourishing perspective must address if it is to replace rather than merely supplement opportunity-focused egalitarianism.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">A flourishing-based approach must establish robust democratic mechanisms to ensure that definitions of &#x27;living well&#x27; are not merely reflections of elite or class-specific cultural assumptions.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The essay needs to clarify the concept of personal responsibility by distinguishing between moral, practical, and political senses of the term if choices are seen as socially determined.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The claim that the egalitarian ideal necessitates socialism requires further justification, as solidarity and community can be realized through various institutional models beyond traditional socialism.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">A focus on outcomes rather than opportunities risks being co-opted by technocratic experts unless it specifies how flourishing is defined and revised through democratic contestation.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

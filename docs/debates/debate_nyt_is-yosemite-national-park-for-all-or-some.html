@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is Yosemite National Park for All or Some? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Environment · Binary</div>
+  <h1 class="debate-title">Is Yosemite National Park for All or Some?</h1>
+  <div class="question-body"><p>A National Park Service plan to remake Yosemite National Park aims to restore meadows, reduce traffic congestion and scale back human activity. But it is igniting a fierce debate among environmentalists, campers and state officials about whether these lands are meant to be nature preserves, tourist destinations or both.</p><p>Is the plan a good one? Should other national parks take similar steps?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>the Yosemite restoration plan is not a good one</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>the Yosemite restoration plan is a good one</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 40%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 40%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 40%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 60%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 37%;"></div>
+        <div class="seg wo" style="width: 3%;"></div>
+        <div class="seg n"  style="width: 13%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 27%;"></div>
+      </div>
+      <span class="bar-num">n=30</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_1.html">
+      <td class="arg-text">The National Park Service&#x27;s plan for Yosemite is a necessary and appropriate response to the legal mandates that require the agency to balance preservation with public enjoyment.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_2.html">
+      <td class="arg-text">The National Park Service’s Merced River Plan is a flawed proposal that unfairly restricts affordable, auto-based camping access for families, the elderly, and the disabled.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_3.html">
+      <td class="arg-text">The National Park Service plan for Yosemite is a positive step toward prioritizing ecological health over commercial convenience, provided it ensures the park remains accessible to the general public rather than becoming an exclusive destination.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_4.html">
+      <td class="arg-text">The National Park Service should reject the Merced River Plan and instead seek to amend the Wild and Scenic Rivers Act to restore traditional management authority over Yosemite.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_5.html">
+      <td class="arg-text">The National Park Service’s Merced River Plan is a positive step because it balances ecological restoration with a deeper appreciation for the park&#x27;s complex cultural and historical heritage.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_6.html">
+      <td class="arg-text">The National Park Service&#x27;s plan for Yosemite should prioritize reducing the impact of private automobiles and managing demand through better infrastructure rather than simply limiting the number of visitors.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_7.html">
+      <td class="arg-text">The Yosemite National Park plan should prioritize transportation reform and measurable ecological restoration over the removal of popular visitor amenities that offer little environmental benefit.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_8.html">
+      <td class="arg-text">Yosemite and other national parks should transition to a management model that balances ecological restoration with historical honesty regarding Indigenous displacement and proactive measures to ensure social accessibility for underrepresented communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_9.html">
+      <td class="arg-text">The National Park Service&#x27;s plan for Yosemite is flawed because it prioritizes conservation at the expense of the economic survival of surrounding gateway communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_10.html">
+      <td class="arg-text">The controversy over the Yosemite National Park plan highlights a fundamental lack of a clear, unified governing philosophy regarding the primary purpose of national parks.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_11.html">
+      <td class="arg-text">While the Yosemite restoration plan is an imperfect solution to complex challenges, its model of transparent, science-based planning should be adopted by other national parks to address ecological degradation and visitor access.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_12.html">
+      <td class="arg-text">The National Park Service should ban private automobiles in Yosemite Valley and replace them with a mass transit system to protect the environment without restricting visitor access.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_13.html">
+      <td class="arg-text">The National Park Service&#x27;s Merced River Plan is an instance of bureaucratic overreach that unnecessarily eliminates historic, low-impact recreational activities under the guise of environmental protection.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_is-yosemite-national-park-for-all-or-some_arg_14.html">
+      <td class="arg-text">The Yosemite National Park plan is only viable if it shifts from a restrictive, isolated approach to a regional strategy based on partnerships and improved transit infrastructure.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Brian H. Ouzounian</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/08/01/is-yosemite-national-park-for-all-or-some/brian-h-ouzounian" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Peter T. Hoss</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/08/01/is-yosemite-national-park-for-all-or-some/peter-t-hoss" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Rachel DeMotts</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/08/01/is-yosemite-national-park-for-all-or-some/rachel-demotts" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ryan Sharp</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/08/01/is-yosemite-national-park-for-all-or-some/ryan-sharp" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Yu-Fai Leung</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/08/01/is-yosemite-national-park-for-all-or-some/yu-fai-leung" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The dichotomy framing this debate — nature preserve versus tourist destination — misreads the founding charge of the National Park Service. The 1916 Organic Act directs the agency to conserve scenery and wildlife &quot;unimpaired for the enjoyment of future generations.&quot; Both halves of that sentence matter, and when they conflict, the statute and a century of jurisprudence give priority to the resource. The Merced River Plan, which would remove the ice rink, swimming pool, horse rentals and some bike and raft concessions from the riverbank while restoring meadows, is a reasonable application of that priority.</p>
+      <p>Critics calling this elitist have a point worth taking seriously: Yosemite Valley is one of the few iconic landscapes accessible to families who cannot backpack into the Sierra, and amenities like bike rentals actually broaden access. But the plan does not close the valley; it caps day-use at roughly current peak levels and shifts some commercial services away from the river&#x27;s most fragile banks. Anyone who has crawled through a Memorial Day traffic jam in the valley or seen the trampled bare ground along the Merced knows the status quo is itself a barrier to enjoyment. Congestion is its own form of exclusion.</p>
+      <p>The harder question is whether the Park Service has the tools to manage demand fairly. A daily-visitor cap without a thoughtful reservation system risks favoring those with flexible schedules and fast internet — the affluent retirees and Bay Area weekenders — over working families driving up from the Central Valley. NPS should pair the Merced plan with a reservation lottery that holds back same-day and walk-in slots, and with expanded YARTS bus service from gateway towns.</p>
+      <p>Other crown-jewel parks — Zion, Arches, Acadia, Rocky Mountain — face the same overcrowding spiral and should watch Yosemite closely. The right model is not Disneyland and not wilderness; it is a working compromise that protects the resource first and then distributes access deliberately.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The tension at the heart of Yosemite’s proposed management plan is as old as the National Park idea itself: are these lands museum pieces to be locked away, or playgrounds for the masses? The plan, which seeks to restore meadows, curb traffic, and dial back intensive human use, is not merely a good one—it is an essential correction that reclaims the original, often forgotten, balance embedded in the National Park Service’s 1916 Organic Act. The law famously mandates that parks be conserved “unimpaired for the enjoyment of future generations.” That “unimpaired” is not a suggestion; it is the precondition of enjoyment. Yosemite Valley has become a testament to what happens when that precondition is ignored. On a summer weekend, the valley floor is a gridlocked city of idling cars, the air thick with exhaust, its famed meadows trampled into dust by sheer volume. The wild solace that John Muir described is replaced by a theme-park atmosphere that cheapens the very experience millions seek. The current plan is not about barring the public; it is about recalibrating access so that Yosemite can remain a place of wonder rather than crowds.</p>
+      <p>Critics who cry elitism miss the point of the management shift. Reducing vehicle congestion and scaling back commercial infrastructure—like the ice rink and raft rentals proposed for removal—does not mean returning the valley to an exclusive wilderness club. It means prioritizing passive, dispersed recreation over industrial tourism. A restored meadow, with boardwalks and limited tram stops for those with mobility challenges, can serve far more people in a meaningful, sustainable way than a parking lot that chokes the Merced River with runoff. The plan wisely channels growth toward gateway communities and enhanced shuttle systems, which can actually broaden access for those who cannot or prefer not to hike long distances, while protecting the ecological heart of the park.</p>
+      <p>This is not a novel philosophy; it is the same refrain heard since the battle over the Hetch Hetchy dam a century ago, when preservationists lost a valley to a reservoir for short-term utility. Today’s proposed changes are a belated fulfillment of that preservationist spirit, adapted to modern demands. Other iconic parks—from Yellowstone to the Great Smoky Mountains—face identical pressures of peak-season overcrowding, crumbling infrastructure, and compromised wildlife habitat. They should absolutely take similar steps. The National Park Service’s mission is not a popularity contest measured by gate counts alone. It is a trust, and the Yosemite plan finally recognizes that loving a place to death is no love at all. True democratization of these landscapes means ensuring they remain wild enough to inspire, not just to photograph from a traffic jam, for generations to come.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Since the creation of the National Park Service in 1916, a fundamental tension has rested at the heart of its mandate: to conserve the natural scenery while simultaneously providing for public enjoyment. The current debate over the plan to remake Yosemite National Park’s Merced River corridor is the latest, and perhaps most contentious, manifestation of this dual mission.</p>
+      <p>For decades, Yosemite Valley has been loved nearly to death. Summer traffic jams rival those of major metropolitan areas, and the sprawling footprint of commercial amenities has encroached on fragile meadow and river ecosystems. From an ecological standpoint, the National Park Service’s plan to reduce congestion, remove commercial facilities like ice rinks and horse rentals, and restore natural hydrology is not just good policy; it is an urgent necessity. If the park is to remain a pristine natural wonder rather than an outdoor amusement park, scaling back the human footprint is essential to comply with the Wild and Scenic Rivers Act.</p>
+      <p>However, critics raise valid concerns about equity and public access. National parks belong to the American people, and restricting infrastructure risks making the valley less accessible to the elderly, the disabled, and families who rely on affordable amenities. The parks rely on the enduring support of the public, a relationship forged through direct experience. If Yosemite becomes an exclusive preserve tailored only for the rugged or the wealthy, it risks alienating the very constituency needed to protect it.</p>
+      <p>Ultimately, the Yosemite plan represents a necessary, if painful, recalibration toward preservation. As flagship parks like Zion and Yellowstone face similar overcrowding crises, they must look to Yosemite as a test case. Preserving these landscapes for future generations requires accepting that not every modern convenience belongs in the wild.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Yosemite is for all, but “all” must include people who will arrive in 2050, children who will never hire a lawyer to defend a meadow, and the nonhuman life the park was created to protect. The National Park Service’s legal bargain has always been double: provide for public enjoyment while leaving resources “unimpaired.” In Yosemite Valley, where cars idle under cliffs, riverbanks are trampled and meadows have been treated as scenery rather than living systems, that bargain has been out of balance.</p>
+      <p>So the plan’s basic direction is right. Restoring meadows, protecting the Merced River corridor and reducing traffic are not elitist acts; they are the conditions that make mass visitation sustainable. A park that becomes a congested resort is not more democratic because more cars can squeeze in. It is simply degraded for everyone.</p>
+      <p>But the Park Service must be careful about how it limits use. If “less human activity” mainly means fewer affordable campsites, fewer family options and more scarcity captured by the wealthy and well-connected, then Yosemite will become less public even as it becomes more pristine. Restrictions should be paired with better shuttle service, regional transit from gateway communities, clear reservation systems, affordable camping and serious attention to visitors who lack money, flexible schedules or wilderness expertise. The goal should be fewer impacts, not a narrower public.</p>
+      <p>Other national parks should learn from Yosemite, not copy it mechanically. Each park has different ecological limits and visitor patterns. But the principle applies broadly: access is not measured only by the number of parking spaces or concession stands. Sometimes the most public-minded act is to say no to a use that damages the very place people came to see. Yosemite can be both preserve and destination, but only if destination does not always win.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Yosemite&#x27;s restoration plan represents a necessary course correction after decades of visitor growth that has fundamentally altered the park&#x27;s ecosystems. The plan correctly prioritizes ecological recovery—meadows have been degraded, wildlife corridors disrupted, and the very natural experiences visitors seek are diminished by congestion and development. This isn&#x27;t about excluding people but about ensuring the park remains a place worth visiting.</p>
+      <p>The tension between preservation and access is genuine, but it presents a false binary. A park choked with traffic and stripped of meadows offers a hollow experience. Meanwhile, the plan still accommodates millions of visitors through improved transit, better distribution, and enhanced campgrounds away from sensitive areas.</p>
+      <p>California&#x27;s state officials and some local communities have legitimate concerns about economic impacts and access restrictions, but these can be addressed without abandoning the plan&#x27;s core goals. Other parks facing similar pressures— Zion, Grand Canyon, Glacier—should look carefully at Yosemite&#x27;s approach and consider adapted versions for their own contexts. The alternative—continued degradation—serves no one.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The Park Service&#x27;s Merced River Plan is, on balance, a sensible course correction—and one that other parks should study closely. Yosemite Valley is barely seven miles long and less than a mile wide, yet it absorbs the bulk of the park&#x27;s four million annual visitors. Meadows have been trampled, the Merced&#x27;s banks are eroding, and on a July weekend the valley floor more closely resembles a suburban strip than a wilderness cathedral. Removing some of the rental bike stands, ice rinks, and swimming pools is not a war on families; it is an honest acknowledgment that the carrying capacity of the place has limits.</p>
+      <p>Critics frame this as elitism, as if scaling back commercial concessions amounts to locking the gates against ordinary Americans. That gets the equation backwards. What threatens public access is not a restored meadow but a degraded river, a gridlocked road, and a meadow loved to death. The 1964 Wilderness Act and the Park Service&#x27;s own 1916 Organic Act both require the agency to leave these landscapes &quot;unimpaired for the enjoyment of future generations.&quot; Future generations are part of &quot;the public&quot; too.</p>
+      <p>Other crown-jewel parks face the same pressures. Zion has already moved to mandatory shuttles in its main canyon, and the experience there is better for it—quieter, cleaner, with wildlife visible again along the road. Grand Canyon, Acadia, and Arches could all benefit from similar regimes. The model is not exclusion but rationing through good design: shuttles instead of private cars, timed entries at chokepoints, concessions sized to ecological reality rather than concessionaire revenue.</p>
+      <p>Yosemite belongs to all Americans, which is precisely why it cannot belong to all of us at once, on the same Saturday, parked along the same two-lane road. The plan recognizes that truth. We should be grateful someone in Washington is finally willing to say it out loud.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>There is a strain of environmental thinking that treats human beings as contaminants in their own national parks, and the new Yosemite plan carries more than a whiff of it. Strip away the technical language about meadow restoration and riparian buffers, and what you find is a quiet campaign to dismantle precisely the amenities that have made Yosemite Valley accessible to working-class families for a century: the bike rentals, the rafting concession, the horseback rides, the snack bars, the ice rink at Curry Village.</p>
+      <p>These are not luxury indulgences. They are the things that let a family from Modesto or Fresno who cannot afford a backcountry outfitter actually enjoy a day in the park. The backpacker with a thousand dollars of Patagonia gear will not be inconvenienced by any of the proposed cuts. The single mother with three kids and a cooler will be.</p>
+      <p>John Muir&#x27;s name gets invoked a lot in these debates, but it is worth remembering that the Park Service was created with a dual mandate—to preserve *and* to provide for public enjoyment. The 1916 Organic Act is explicit on both counts. Tilting hard toward preservation at the expense of enjoyment is not a neutral, scientific decision; it is a values choice, and one that disproportionately serves a particular demographic of visitor.</p>
+      <p>By all means restore the meadows where they have been genuinely damaged. Manage traffic with shuttles. But do not pretend that closing a swimming pool restores wilderness in a valley that hosts a four-lane road and a Delaware North hotel. That is theater, not ecology.</p>
+      <p>National parks exist because Americans, in their full and rowdy diversity, decided these places belonged to everyone. Plans that subtly redefine &quot;everyone&quot; to mean &quot;people like us&quot; deserve more skepticism than they have received.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The frame of the debate—preservation versus tourism—is a false binary that has dogged the Park Service since Stephen Mather&#x27;s day. The honest answer is that Yosemite is for both, and the harder question is *how* to be for both in a valley that geology made small and popularity has made crowded.</p>
+      <p>On that question, the current plan gets some things right and other things wrong. The traffic and parking reforms are overdue. Anyone who has crawled along Northside Drive in August knows that the private automobile, not the snack bar, is what is destroying the valley experience. Expanded shuttles, better transit from gateway communities, and tighter limits on day-use vehicles would do more for both ecology and visitor enjoyment than any number of concession closures.</p>
+      <p>Where the plan stumbles is in conflating amenity reduction with ecological restoration. Removing the ice rink at Curry Village will not bring back a single trout. Closing the raft rental will not lower the Merced&#x27;s summer temperatures. These changes have symbolic weight—they signal a posture toward human use—but their actual environmental payoff is small, and their cost in public goodwill is real.</p>
+      <p>A better plan would distinguish sharply between two kinds of intervention: those grounded in measurable ecological benefit (riverbank restoration, meadow boardwalks, vehicle limits) and those grounded in aesthetic preferences about what a park *should feel like*. The first category deserves vigorous pursuit. The second deserves public debate, not administrative fiat.</p>
+      <p>Other parks watching Yosemite should take the lesson. Transportation reform travels well; cultural reform does not. Zion&#x27;s shuttle is admired across the system. A hypothetical Zion plan to close its lodge restaurant would not be. Know which battle you are fighting before you pick it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Yosemite was set aside in 1864 under a federal grant signed by Abraham Lincoln in the middle of a civil war. That detail matters. Even amid existential crisis, the country thought it worth declaring that some landscapes were too important to be left to private exploitation, and that they belonged, in some meaningful sense, to the whole nation. Any plan for Yosemite has to begin from that democratic premise.</p>
+      <p>By that standard, the new plan is mostly defensible. Restoring meadows along the Merced is not an act of exclusion; it is an act of stewardship for citizens not yet born. Reducing traffic congestion does not make the park less accessible; it makes the time spent inside it actually worth the trip. The complaints from concessionaires and from state officials worried about gateway-town revenues are not illegitimate, but they should not be confused with the public interest.</p>
+      <p>That said, the Park Service has a credibility problem it must address. For decades the agency has tolerated, even encouraged, a level of commercial development in the valley that no honest reading of its mandate could justify. To pivot now and ask the public to accept cuts requires transparency about what is being cut and why. The science behind each proposed change should be public, peer-reviewed, and contestable. &quot;Trust us&quot; is not enough.</p>
+      <p>Should other parks follow? Yes, but selectively. The Yosemite problem—a tiny iconic valley swamped by visitors—is shared by Zion, by Arches, by parts of Acadia and Rocky Mountain. The solutions will look similar: transit, timed entry, restored riparian zones. The parks where this model does not fit—vast, lightly visited landscapes like Big Bend or the North Cascades—need different tools.</p>
+      <p>One size never fit all the parks. But the principle behind Yosemite&#x27;s plan—that long-term preservation is itself a form of public access—is sound.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Ask the wrong question, get the wrong answer. &quot;Preserve or enjoy?&quot; assumes the two are in tension. In a properly managed park, they reinforce each other: the reason anyone enjoys Yosemite is that it has been preserved, and the reason it gets preserved is that enough people enjoy it to defend its budget in Congress.</p>
+      <p>The Merced plan is a reasonable attempt to recalibrate after decades of drift toward overdevelopment in the valley. It deserves support. But supporters should be honest that this is iterative management, not a final settlement. Climate change, shifting demographics of visitors, and the ongoing infrastructure deficit across the park system will all force further adjustments within a decade. Treating this plan as the last word would be a mistake.</p>
+      <p>Other parks should absolutely watch and learn—particularly the shuttle and meadow-restoration components, which have analogues almost everywhere. What they should not import is the political mess: a planning process that took years, generated lawsuits from both preservationists and recreation advocates, and left nearly everyone feeling unheard. Better public engagement upstream would have produced a tougher, more durable plan with fewer enemies.</p>
+      <p>Yosemite is for all. The plan, properly understood, is how we keep it that way.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Yosemite National Park is not Disneyland, and the Park Service’s latest plan finally acknowledges that painful truth. For decades, we have treated the Yosemite Valley like a drive-by photo op, transforming its meadows into parking lots and its trails into human traffic jams. This plan — which caps daily visitors, removes commercial intrusions such as the ice rink and bike rentals, and commits to large-scale meadow restoration — is not an assault on public access. It is an overdue act of stewardship, mandated by the very legislation that created the National Park System.</p>
+      <p>The Organic Act of 1916 instructs the Park Service to “conserve the scenery and the natural and historic objects and the wild life therein” and to leave them “unimpaired for the enjoyment of future generations.” When traffic congestion chokes the Valley floor and trampled meadows turn to dust, that core mission is being violated. The enjoyment of future generations depends on our willingness to accept limits today. No one is proposing to lock the gates; the plan merely manages the flood of humanity to a level the landscape can actually sustain. Far from diminishing the visitor experience, fewer crowds and restored meadows will make a trip to the Valley richer and more awe-inspiring — closer, in fact, to what John Muir fell in love with.</p>
+      <p>Opponents who cry “elitism” miss the point. The current free-for-all is what truly excludes, because it leaves behind those seeking solitude, wildlife, and the serenity that a great cathedral of nature is meant to provide. This plan is a courageous model for other iconic parks, from Yellowstone to the Grand Canyon, all of which face similar threats of being loved to death. To argue that Yosemite is for “all” is to acknowledge that for it to remain for anyone, it must first be allowed to heal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The National Park Service plan for Yosemite is a quiet betrayal of the park’s founding promise. Our national parks were created as democratic spaces, set aside for the “benefit and enjoyment of the people” — all people, not just the wealthy, the super-fit, or those who can afford luxury lodges. Yet this plan, by capping daily visitation and stripping away family-friendly amenities like the bike rentals and the ice rink, effectively slams the door on the very families who have built generations of memories in the Valley.</p>
+      <p>Consider what the removal of such services means. Not every visitor is a backcountry hiker; millions are parents with small children, elderly travelers, or working-class families who rely on a rented bike for a gentle afternoon along the river loop. Take those away, and you don’t reduce love for the park — you simply exclude those who cannot physically or financially access it any other way. The plan’s rhetoric of “restoration” dresses up a vision of the park as an exclusive wilderness preserve, open only to an elite who can navigate a permit lottery and then trek in on foot.</p>
+      <p>This is a dangerous precedent. If other parks follow suit, we risk transforming a national birthright into a gated landscape for the privileged few. By all means, restore meadows and manage traffic; but do it by investing in better public transit from gateway towns, not by shrinking the park’s capacity to serve ordinary Americans. The Yosemite plan gets the balance wrong, and it should be rejected before it turns “for all” into “for some.”</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The Yosemite plan gets the diagnosis right but prescribes the wrong medicine. No one who has sat in an hour of exhaust-choked traffic below El Capitan can deny the Valley is overwhelmed. The impulse to restore trampled meadows and cut back on pavement is laudable. But the Park Service’s heavy-handed approach — capping visitor numbers and eliminating popular amenities like bike rentals and the ice rink — risks turning a legitimate conservation effort into a public-relations disaster that ultimately undermines support for the park system.</p>
+      <p>The plan’s central flaw is that it limits without redirecting. Rather than simply capping day-use numbers, the Park Service should have prioritized a comprehensive transit solution: more frequent and affordable shuttle buses from gateway communities, perhaps even a mandatory remote parking system with dedicated lanes, modeled on what Zion National Park has already done with success. Such an approach would reduce valley congestion while maintaining — or even increasing — overall access for families who cannot afford to stay in pricey in-park lodgings. Similarly, instead of removing the bike concession, why not relocate it to a less sensitive area and use the rental income to fund meadow restoration?</p>
+      <p>Yosemite can and should be a laboratory for the entire park system. But if the plan is perceived as a bureaucratic imposition that values meadows over motor-coach tours, it will ignite a backlash that could weaken the Park Service politically just when it needs public allies the most. A wiser path is to phase in restoration steps, keep genuine family-friendly offerings intact, and prove that ecological health and broad public enjoyment are not enemies but partners. Other parks should study Yosemite carefully — not just for its ecological ambitions, but for its political missteps.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The Yosemite plan’s true cost won’t be felt by the granite cliffs or the black oaks; it will be felt in the cash registers of Mariposa, Tuolumne, and Madera counties. For the gateway communities that surround the park, tourism is not a luxury — it is the economy. Thousands of jobs depend on motels, restaurants, guide services, and gas stations that serve the roughly four million annual visitors. By capping daily attendance and making a spontaneous trip to the Valley a bureaucratic obstacle course, the Park Service is sending a clear message: conservation will be pursued at the expense of rural livelihoods.</p>
+      <p>Proponents argue that the Valley is being loved to death, but they overlook the fact that economic vitality and environmental stewardship are not inherently at odds. A better plan would have involved local officials from the start, seeking creative solutions such as off-peak visitor incentives, expanded shoulder-season marketing, or park-funded investments in community infrastructure to handle overflow. Instead, the agency’s unilateral approach treats gateway towns as collateral damage in a righteous crusade.</p>
+      <p>Other parks watching Yosemite should learn a hard lesson. The mission of the National Park Service includes both preservation and public enjoyment, and that public includes the families living in the park’s shadow. Unless the plan is modified to mitigate economic harm, it will rightly face fierce resistance from those who understand that a park cannot thrive if the communities around it wither.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The uproar over Yosemite’s plan is nothing new. It is merely the latest chapter in a century-old argument embedded in the Park Service’s founding document: the tension between preserving parks “unimpaired” and providing for their “enjoyment.” This dual mandate is not a design flaw; it is a deliberate compromise that has always required recalibration. The current plan, for the first time in decades, shifts that balance decisively back toward preservation — and legally, it is on solid ground. Federal courts have repeatedly held that when resource impairment and public use conflict, the Organic Act gives primacy to conservation.</p>
+      <p>What critics often miss is that preservation and enjoyment are not zero-sum in Yosemite. Allowing meadows to recover and reducing the daily traffic snarl ultimately enhances the quality of the visitor experience, even if it reduces the quantity of visitors. The plan’s restoration of the Merced River corridor, for example, will replace dusty overflow parking with wildflowers and clear water — a benefit to everyone who comes. This does not mean the plan is flawless. Its implementation must be sensitive to concerns about equitable access, and the Park Service should be transparent about how visitor caps will be managed so that they don’t become a de facto barrier for those without the time or tech savvy to navigate a reservation system.</p>
+      <p>Nevertheless, the fundamental direction is correct. If we insist that a park be “for all” in an unlimited sense, we guarantee it will be left for none in its natural glory. Other parks should boldly follow Yosemite’s lead, but they must also learn from its experience: the legal mandate to preserve must be paired with a moral commitment to keep the parks a place where every American, not just a privileged few, can find renewal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Yosemite Valley is, without question, one of the most spectacular natural cathedrals on earth. Yet for decades, we have treated it like a suburban strip mall. On any given summer weekend, the Valley is choked with thousands of idling cars, sprawling parking lots, and smog that obscures the very granite cliffs visitors came to see. The National Park Service’s plan to scale back commercial human activity and restore the Merced River corridor is not just a good idea; it is a vital, overdue rescue mission.</p>
+      <p>The mandate of the National Park Service, established by the Organic Act of 1916, is to conserve the scenery and wildlife &quot;unimpaired for the enjoyment of future generations.&quot; We have failed the &quot;unimpaired&quot; test. By accommodating every conceivable tourist demand—from commercial swimming pools to ice-skating rinks and sprawling concession stands—we have prioritized temporary amusement over ecological integrity.</p>
+      <p>Yosemite is not a theme park. It is a wilderness preserve that happens to allow visitors. Removing commercialized recreation and restoring the fragile meadows does not &quot;lock the public out.&quot; Instead, it invites the public to experience the park as it was meant to be experienced: as a sanctuary of wild nature. Backpackers, day-hikers, and nature enthusiasts will still have ample access to the park&#x27;s wonders.</p>
+      <p>If we lack the courage to roll back the pavement in Yosemite Valley, the crown jewel of our park system, we set a dangerous precedent for all other national parks. We must accept that loving our parks sometimes means stepping back, reducing our footprint, and letting nature reclaim its space.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The National Park Service’s current push to &quot;restore&quot; Yosemite by eliminating accessible recreational amenities represents a troubling strain of elitism within the modern environmental movement. By seeking to remove bicycle rentals, horseback riding, and family-friendly camping facilities, the NPS is quietly redefining who national parks are for. The implicit message is clear: Yosemite is for the young, the physically fit, and the rugged backcountry backpacker.</p>
+      <p>National parks are public lands, funded by taxpayer dollars, and they belong to everyone. For a working-class family from the Central Valley, a weekend trip to a drive-in campsite in Yosemite Valley, complete with a rented raft to float down the Merced River, is a cherished tradition. It is an affordable vacation that connects them to the outdoors. If the park eliminates these accessible options, replacing them with fewer, more expensive lodges or forcing visitors into arduous wilderness hikes, it effectively shuts out the elderly, the disabled, families with young children, and lower-income Americans.</p>
+      <p>Preservation is important, but the Organic Act requires a dual mandate: preserving the land *and* providing for public enjoyment. Environmentalists often argue that Yosemite is being &quot;loved to death,&quot; but we should be far more concerned about a future where the park is not loved at all because the average American has been priced out or regulated away from visiting it. The solution to crowding is better management and perhaps staggered entry, not the systematic dismantling of the very amenities that make the park welcoming to the broader democratic public.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The debate over Yosemite’s future is currently trapped in a false dichotomy: we either pave the valley for tourists or lock it up for nature. But the problem in Yosemite Valley has never been the presence of human beings; it is the presence of the private automobile.</p>
+      <p>If the National Park Service truly wants to restore meadows and reduce congestion, it does not need to declare war on tourists or eliminate family recreation. It simply needs to ban private cars in the Valley.</p>
+      <p>We already have a successful model for this within the park system. In 2000, Zion National Park faced a very similar crisis of crippling traffic and ecological degradation. Their solution was to prohibit private vehicles in Zion Canyon during peak season, implementing a highly efficient, free shuttle system. The result was transformative: noise pollution plummeted, wildlife returned, and visitors actually reported higher satisfaction because they were no longer fighting for parking spots.</p>
+      <p>Yosemite should adopt this approach aggressively. Mandate that visitors park outside the most sensitive areas and ride zero-emission mass transit into the Valley. We can easily accommodate millions of visitors a year without destroying the environment if those visitors are walking, biking, or riding a shuttle. Instead of scaling back human access, let’s scale back the asphalt.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The controversy surrounding the Merced River Plan in Yosemite is a classic example of bureaucratic overreach masquerading as environmental stewardship. In an attempt to comply with the Wild and Scenic Rivers Act, the National Park Service is targeting the wrong enemies, threatening to eliminate low-impact, historic recreational activities that have defined the Yosemite experience for generations.</p>
+      <p>Consider the activities on the chopping block: bicycle rentals, commercial horseback riding, and family raft rentals. These are not heavy, polluting industries. They are quiet, human-powered modes of recreation that allow visitors to intimately connect with the landscape. Gliding through the Valley on a bicycle or floating slowly down the Merced River provides a far more environmentally friendly and spiritually rewarding experience than driving a car loop.</p>
+      <p>Yet, under the guise of &quot;meadow restoration,&quot; the NPS plan treats these benign activities as ecological threats. This is a profound misinterpretation of what makes a river &quot;wild and scenic.&quot; The human history of Yosemite is inextricably linked to these forms of recreation. Erasing them does not return the park to some pristine, pre-human state—it merely sanitizes the park of its cultural heritage.</p>
+      <p>Furthermore, forcing visitors to bring their own bikes or rafts rather than renting them on-site creates logistical nightmares and favors those with the resources to transport large gear. The park service must pivot back to a balanced approach. Yosemite is both a nature preserve and a world-class tourist destination. We can protect the riverbanks and meadows through targeted boardwalks, better trail maintenance, and localized restoration efforts without unnecessarily banning the historic recreational activities that allow people to fall in love with the park.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>We only protect what we know, and we only know what we are allowed to experience. As the National Park Service looks to remake Yosemite, it must tread very carefully to avoid severing the emotional bond between the American public and the wilderness.</p>
+      <p>Scaling back human activity sounds like a noble ecological goal on paper. But conservation does not exist in a vacuum; it requires political will and public support. The millions of tourists who buy an ice cream cone, snap a photo of Half Dome, and marvel at Yosemite Falls are the very constituents who vote to fund the Department of the Interior.</p>
+      <p>If we restrict access too tightly, or make the park a sterile environment reserved only for hardcore purists, we risk raising a generation of Americans who have no personal connection to Yosemite. When the next major environmental fight arrives, a public that has been alienated from its national parks will not stand up to defend them. Yosemite must remain a welcoming place for all, because mass visitation is the ultimate guarantor of long-term preservation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Yosemite should be for everyone, but “everyone” cannot mean every car, every concession, and every recreational preference at every moment. The National Park Service has a legal and moral obligation to leave Yosemite “unimpaired” for future generations. If meadow restoration, traffic limits and reduced commercial activity are necessary to protect the Merced River corridor and the valley floor, then the plan is not elitist; it is the price of keeping the park real.</p>
+      <p>Anyone who has sat in Yosemite Valley traffic on a summer afternoon knows that unlimited access is an illusion. Gridlock does not democratize nature. It turns one of the most extraordinary landscapes on earth into a parking problem. Meadows trampled into dust, riverbanks widened by foot traffic, and bears habituated by human food are not signs that the park belongs to the people. They are signs that the people are consuming the park faster than it can recover.</p>
+      <p>The National Parks were never meant to be amusement parks with better scenery. Camping, rafting, lodging and dining all have a place, but they must be subordinate to the landscape, not the other way around. Removing or reducing some facilities may inconvenience visitors, but inconvenience is not the same as exclusion. A well-run shuttle system, better regional transit, advance reservations and more information can make visits more orderly without turning Yosemite into a preserve for the wealthy.</p>
+      <p>Other parks should take similar steps, but not mechanically. Each park has its own ecology, visitor patterns and history. Still, the principle should travel: when popularity begins to destroy the thing people came to see, managers must manage. The alternative is to pretend that access and preservation are never in tension. Yosemite proves they are. Choosing preservation is not choosing “some” over “all.” It is choosing all generations over this summer’s crowd.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The Yosemite plan may be well intentioned, but it risks redefining a national park as a place ordinary Americans can admire only from a distance, if they can get in at all. We should be wary when “restoration” becomes a polite word for reducing the number of campsites, removing familiar facilities, limiting low-cost recreation and making spontaneous visits harder.</p>
+      <p>National parks are not wilderness areas in the strict sense. Yosemite Valley has been a public destination for generations. Families have learned to camp there, children have seen their first waterfall there, older visitors and people with disabilities have relied on roads, parking and developed amenities to experience a landscape they could not reach by backpacking. If the answer to congestion is simply to scale back human presence, the burdens will not fall evenly. Wealthier visitors will adapt with reservations, private tours, off-season flexibility and lodging outside the park. Working families who plan around school calendars and limited vacation time may be squeezed out.</p>
+      <p>There is also a cultural arrogance in treating every tennis court, swimming pool, raft rental or parking lot as an affront to nature. Some facilities are excessive, but others are part of how the public forms attachments to the park. People do not defend places they never get to know. The preservation movement needs popular love, not just legal victory.</p>
+      <p>Yosemite’s traffic problems are real. Meadows and riverbanks should be protected. But the first tools should be better shuttles, remote parking, congestion pricing that protects lower-income visitors, clearer trail design and restoration projects targeted at actual damage. A sweeping retreat from visitor services should be a last resort, not a badge of virtue.</p>
+      <p>Other parks should not copy this approach unless they have exhausted less exclusionary alternatives. The parks belong to the public. That means more than protecting scenery; it means preserving a democratic experience of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The question is often framed as preservation versus access, but Yosemite’s real problem is mismanaged demand. Too many people try to enter the same narrow valley, in the same season, by the same means: private automobiles. The result is bad for visitors and bad for the park. A serious plan must therefore reduce the dominance of cars while preserving the broadest possible public access.</p>
+      <p>The National Park Service is right to restore damaged meadows and riverbanks. It is also right to reconsider whether every legacy use in Yosemite Valley deserves to remain forever. The fact that a facility has existed for decades does not mean it belongs in a protected river corridor. But the Park Service should be careful not to confuse ecological restoration with a general preference for fewer people. The goal should be fewer impacts, not necessarily fewer citizens.</p>
+      <p>That points to a practical compromise. Limit cars before limiting people. Build stronger connections from gateway communities, expand shuttle service, create remote parking that actually works, and make reservations transparent rather than mysterious. If day-use limits become necessary, they should be paired with measures that prevent the system from favoring those with fast Internet, flexible schedules and disposable income. A portion of entries could be reserved for short-notice visitors; fees could vary by income or vehicle occupancy; buses could receive priority.</p>
+      <p>Yosemite has always been both a shrine and a public resort. Those roles are uneasy, but not impossible. The valley can accommodate visitors if the park stops treating the automobile as the default unit of access. Restoration should proceed, and some activities should move or shrink. But the plan’s legitimacy will depend on whether a schoolchild from Fresno, a retiree from Ohio and a first-time immigrant family from Los Angeles can still imagine Yosemite as theirs.</p>
+      <p>Other national parks should learn from Yosemite, especially those overwhelmed by cars. They should not imitate every cut, but they should adopt the central lesson: unmanaged popularity is not democracy. It is slow-motion degradation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Yosemite is not facing a philosophical crisis so much as a legal one. Congress and the courts have already made clear that the Merced River is not merely a backdrop for recreation; it is a protected Wild and Scenic River. The National Park Service must identify and safeguard the values that made it worthy of that designation. If that requires limiting development in Yosemite Valley, then the agency is doing its job.</p>
+      <p>Opponents speak as though the Park Service suddenly decided to become hostile to visitors. In fact, Yosemite has been shaped by a century and a half of roads, hotels, campgrounds, employee housing, parking lots and concessions crowded into a valley only seven miles long. The pressure is intensified because most visitors want the same iconic experience: El Capitan, Half Dome, Yosemite Falls and the Merced. There is no management plan that can give unlimited access to a finite place without changing the place.</p>
+      <p>A national park is a tourist destination, but it is not only that. Its tourism depends on restraint. If the river corridor becomes a zone of convenience, if meadows become overflow sidewalks, if traffic noise replaces the sounds of water and wind, then the public has lost something more important than a campsite or a swimming pool.</p>
+      <p>That said, the Park Service must explain its choices plainly. People become suspicious when decisions look like bureaucratic abstractions. Which meadows are damaged? Which facilities cause the most harm? How will visitors without money or mobility still experience the valley? The plan should be judged not just by acres restored, but by whether it maintains a meaningful public encounter with Yosemite.</p>
+      <p>Other parks should take similar steps where law and ecology demand them. The lesson is not that every park should reduce use. It is that the first duty of a park is to the resource. Without that, all talk of access becomes hollow.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>“Is Yosemite for all or some?” is a necessary question, but it is incomplete. Yosemite was never simply empty nature waiting for tourists or preservationists to decide its purpose. It is also a homeland from which Native people were violently displaced, and a landscape whose meaning was narrowed when Americans began treating it as scenery.</p>
+      <p>That history matters for the current plan. Restoring meadows and reducing traffic may be good policy, but the debate should not be limited to environmental groups, campers, concessionaires and state officials. If the park is to be “for all,” then tribal voices should have a central role in deciding what restoration means. Ecological health is not only the absence of tourists. It may include cultural burning, traditional plant gathering, interpretation that tells the harder parts of Yosemite’s story, and employment or co-management arrangements that respect long-standing relationships to the land.</p>
+      <p>The same point applies to visitors. A park can be overrun and still not be democratic. If the people most able to enjoy Yosemite are those with cars, leisure time, camping know-how and money for lodging, then simply preserving the valley from crowds will not solve the access problem. The Park Service should pair environmental limits with outreach, affordable transportation, multilingual education and programs that welcome communities historically underrepresented in the parks.</p>
+      <p>So, yes, Yosemite should reduce activities that damage the Merced River, meadows and wildlife. It should not be managed as a theme park. But neither should it become a museum of pristine nature curated mainly for affluent hikers and photographers. The better model is a living public landscape: ecologically repaired, historically honest and socially accessible.</p>
+      <p>Other national parks should follow that broader lesson. Protection is essential, but protection alone is not justice. The parks are at their best when they preserve land, tell the truth about it and invite a wider public into responsibility for its future.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Yosemite is for all, but “all” cannot mean unlimited automobile access to every fragile acre at the same hour in July. The National Park Service is right to treat restoration and crowding as central problems rather than nuisances to be endured.</p>
+      <p>The legal and moral purpose of a national park is not the same as that of a resort. The 1916 Organic Act tells the Park Service to conserve scenery, wildlife and natural objects “unimpaired” for future generations while providing for enjoyment. In Yosemite Valley, those duties collide every summer: traffic jams, trampled meadows, riverbank erosion and infrastructure packed into one of the most ecologically and visually important places in the country.</p>
+      <p>A plan that restores meadows, removes or relocates intrusive facilities, reduces private-car congestion and places real limits on peak use is not anti-public. It is pro-public in the deeper sense. A meadow kept alive is available to millions over generations; a meadow converted into overflow parking is available briefly to a few thousand drivers.</p>
+      <p>The fair criticism is that limits must be administered fairly. Reservation systems and shuttle requirements can become obstacles for people with less money, less flexible work schedules or less knowledge of the park bureaucracy. So access reforms must include affordable camping, clear information, robust public transit from gateway communities and accommodations for older visitors and people with disabilities.</p>
+      <p>Other parks should not copy Yosemite mechanically. A remote Alaskan park and Yosemite Valley do not need the same policy. But the principle should spread: where visitation is degrading the resource and the experience, managers should be willing to say “not here,” “not by car,” or “not all at once.” That is not locking people out. It is keeping the national parks worthy of visiting.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The Yosemite plan risks turning a democratic landscape into a curated experience for those with the time, money and sophistication to navigate restrictions. That should worry anyone who believes national parks are not merely ecological preserves, but common property.</p>
+      <p>It is easy to mock traffic in Yosemite Valley. It is harder to remember who is in those cars: families on one annual trip, older visitors who cannot backpack, immigrants introducing children to the Sierra, Californians who can afford a day trip but not a week at a lodge. If parking is removed, campgrounds are reduced and access depends on reservations made far in advance, the practical result may be fewer ordinary visitors and more well-off visitors who can plan, pay and wait.</p>
+      <p>Yes, Yosemite needs restoration. Meadows should not be sacrificed to convenience, and the Merced River corridor deserves protection. But “reduce human activity” is too blunt a phrase. The problem is not people; it is bad infrastructure and overdependence on private cars. A more public-minded plan would expand low-cost camping where it can be done responsibly, create large satellite parking areas outside the Valley, run frequent free buses, improve regional transit and manage the worst peak days without making spontaneity impossible.</p>
+      <p>The national park ideal has always contained tension: preservation and enjoyment, solitude and crowds, wilderness and family vacation. We should not resolve that tension by quietly redefining parks as places best experienced by the already privileged. Yosemite’s grandeur has converted generations of casual tourists into conservationists. The child who first sees El Capitan from the back seat of a car may become tomorrow’s defender of wild places.</p>
+      <p>Other parks should learn from Yosemite’s congestion, but they should not adopt a preservation-first vocabulary that treats visitors as contaminants. Restore damaged places, yes. Limit cars where necessary, yes. But expand genuinely affordable access at the same time. A national park that is saved from the public has failed part of its mission.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The question should not be whether Yosemite is a nature preserve or a tourist destination. It is plainly both. The better question is which activities belong in which places, at what scale, and under what rules.</p>
+      <p>Yosemite Valley is not interchangeable with the park’s high country or wilderness areas. It is a world-famous scenic corridor, a transportation hub, a campground, a classroom and a fragile ecosystem. Pretending it can be managed like untouched wilderness is unrealistic. Pretending every existing road, parking lot, concession and recreational habit has a permanent right to remain is equally unrealistic.</p>
+      <p>The Park Service should use a zoning approach. Put intensive visitor services where the land can handle them. Restore meadows and riverbanks where science shows damage. Keep affordable campgrounds, but not necessarily in the most sensitive locations. Use shuttles and remote parking to make arrival less chaotic. Set visitor-use standards based on meadow health, water quality, wildlife disturbance and the quality of the visitor experience, then adjust when the evidence changes.</p>
+      <p>This would be better than debating symbols. A swimming pool or parking lot is not democracy. A closure sign is not automatically elitism. What matters is whether the system as a whole protects Yosemite while allowing a broad public to experience it.</p>
+      <p>Other national parks should take similar steps only in this sense: they should identify their own carrying capacities and manage accordingly. Zion, Yellowstone, Acadia, Grand Canyon and Yosemite face different pressures. The common lesson is that hope is not a plan. If managers wait until congestion and ecological decline are intolerable, the choices will become harsher and less fair.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>Yosemite’s plan is defensible only if it is regional, not merely restrictive. Cutting parking in the Valley may help a meadow, but if visitors are left confused at the gates or pushed into expensive last-minute lodging, the policy will look like exclusion and will damage gateway communities.</p>
+      <p>The park is not an island. Mariposa, El Portal, Groveland, Oakhurst, Merced and other communities absorb the consequences of federal decisions. Their workers serve the visitors, maintain the hotels, drive the buses and staff the restaurants. If Washington wants fewer cars in Yosemite Valley, it should help provide more reliable ways to get there: park-and-ride lots, frequent buses, clear reservation systems, through-ticketing with rail where possible, and honest communication before families begin the drive.</p>
+      <p>State officials are wrong if they suggest that every existing use must be preserved forever. But they are right to ask who pays for the transition. A conservation plan that strands visitors at the boundary is bad politics and bad management.</p>
+      <p>Other parks should follow Yosemite’s ecological seriousness, but not a go-it-alone model. The future of crowded parks lies in partnerships: federal land managers, tribes, counties, transit agencies, concessioners and gateway towns planning together.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>Before deciding whether Yosemite is “for all or some,” we should ask what version of Yosemite we are defending. The Valley is often described as if it were pure nature recently invaded by tourists. That is not its history. Native people lived in and shaped the region long before it became an icon of American wilderness; they were later displaced as the park ideal and tourist economy took hold. Roads, hotels, campgrounds and concession amenities are also part of Yosemite’s story, though not always a noble part.</p>
+      <p>That history argues for humility. Restoring meadows is not a return to an untouched Eden. It is a choice about the future of a heavily loved and politically contested place. The right goal is not to remove people from Yosemite, but to change the kind of presence we encourage.</p>
+      <p>On that score, the Park Service plan sounds broadly right. Meadows and riverbanks should matter more than parking convenience. The Merced River should not be treated as a backdrop for endless consumption. Some facilities that made sense in another era may no longer belong in the Valley. A national park does not need to imitate a commercial resort.</p>
+      <p>But the plan should be judged by whether it reduces commercialization, not merely head counts. If ordinary campers and day visitors are squeezed while high-end lodging and exclusive experiences remain protected, the park will become less public, not more ecological. Tribal voices should have a stronger role in interpretation and stewardship. Visitors should encounter not only cliffs and waterfalls, but also the human history of dispossession, management and preservation.</p>
+      <p>Other parks should take the same lesson: protect the land, question the commercial footprint and broaden the story being told. National parks are public trusts, not theme parks and not empty museums. Their future depends on welcoming people in ways that do not destroy what they came to see.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The Yosemite plan represents exactly the kind of thoughtful stewardship our national parks desperately need. For too long, we&#x27;ve treated these wild spaces as theme parks—squeezing in more parking lots, more lodging, more cars churning through fragile ecosystems. The science is clear: human congestion degrades meadows, disrupts wildlife corridors, and fundamentally alters the landscapes that inspired the preservation movement in the first place.</p>
+      <p>This plan doesn&#x27;t exclude anyone. It redirects foot traffic, not people. Shuttle systems can move visitors efficiently. Educational programming can deepen the experience of Yosemite rather than diminishing it. The goal isn&#x27;t to wall off wilderness for elite enjoyment—it&#x27;s to ensure that 100 years from now, there IS a Yosemite worth visiting.</p>
+      <p>What strikes me most is the false choice embedded in the debate. Critics frame this as &quot;nature preserve versus tourist destination,&quot; as if these are mutually exclusive. They aren&#x27;t. The most successful parks balance access with ecological responsibility. The plan recognizes that some areas need restoration and relief from visitor pressure, while maintaining—and even enhancing—opportunities for people to experience the park&#x27;s grandeur.</p>
+      <p>Other parks should absolutely take note. Yellowstone, Grand Canyon, Zion—they all struggle with similar pressures. Yosemite&#x27;s willingness to have this difficult conversation, to prioritize long-term health over short-term convenience, sets an important precedent. These lands belong to all Americans, including those who haven&#x27;t been born yet. We owe them more than a crowded, degraded version of what we inherited.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>There&#x27;s something troubling about this plan that its supporters won&#x27;t acknowledge: it effectively decides that certain Americans—those who can&#x27;t hike deep into the backcountry or who need vehicle access—are unwelcome in America&#x27;s shared spaces.</p>
+      <p>Yosemite belongs to everyone. That includes families with young children, elderly visitors, and people with disabilities who rely on accessible infrastructure to experience our natural heritage. The meadow restoration goals sound lovely in theory, but they often mean removing the conveniences that make the park usable for average Americans.</p>
+      <p>I understand the ecological arguments. But parks aren&#x27;t laboratory preserves—they&#x27;re living demonstrations of humanity&#x27;s relationship with nature. We shouldn&#x27;t be engineering them into something that only serious hikers and environmental purists can enjoy. The tourists snapping photos at Tunnel View, the kids roasting marshmallers at Camp 4, the families picnicking by the river—they&#x27;re not contaminating Yosemite. They&#x27;re living the promise that these lands exist for all of us.</p>
+      <p>The plan overreaches. A more modest approach—targeted restoration in the most degraded areas, traffic management that doesn&#x27;t restrict access—could address legitimate concerns without gatekeeping who gets to experience our national treasures.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The Yosemite controversy reveals a deeper question we haven&#x27;t resolved: who gets to decide how these lands are managed, and according to what values?</p>
+      <p>Environmental advocates point to ecological science showing degradation from visitor pressure. State officials worry about economic impacts on gateway communities. Campers resist losing established sites. Each stakeholder speaks a different language, appeals to different authorities, and defines &quot;success&quot; differently. The Park Service is trying to broker a resolution, but the underlying tension—that we haven&#x27;t agreed on what national parks are FOR—remains.</p>
+      <p>What strikes me is that this debate happens at every park, over and over, because we lack a clear governing philosophy. Is the primary purpose ecological preservation? Public recreation? Scientific study? Educational access? Historical preservation? We want parks to do everything and serve everyone, then wonder why every plan becomes a battleground.</p>
+      <p>The Yosemite plan may be good or bad on its merits. But we shouldn&#x27;t pretend that better science or more stakeholder meetings will resolve conflicts rooted in fundamental disagreements about purpose. We need an honest national conversation about what we expect from our parks—not another administrative process that papers over irreconcilable differences with technical language.</p>
+      <p>Until we decide what national parks are, plans like this will continue generating fierce but ultimately unresolvable debates.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>This plan is a mistake.</p>
+      <p>National parks exist because Americans demanded access to wild places, not their closure. When Congress created Yosemite as one of the first national parks in 1890, the whole point was that ordinary people—not just wealthy landowners—should be able to experience mountain valleys and giant sequoias. This plan reverses that founding vision.</p>
+      <p>&quot;Restore meadows, reduce traffic, scale back human activity&quot;—these aren&#x27;t neutral goals. They mean fewer people, fewer experiences, fewer connections between Americans and the natural world. Every restriction makes the park less of a democratic commons and more of a managed exhibit.</p>
+      <p>Environmentalism has strayed dangerously far from its roots when it starts treating human presence as the enemy. People ARE part of nature. Our appreciation, our wonder, our millions of footsteps through valleys—these are what make preservation meaningful. A park with no one to appreciate it isn&#x27;t a park; it&#x27;s a laboratory or a private retreat.</p>
+      <p>The Park Service should be expanding access, not contracting it. Build better infrastructure, improve transportation, create more camping options, make Yosemite easier for more Americans to experience. That&#x27;s what our parks are for.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The Yosemite plan isn&#x27;t perfect, but it tackles real problems that deserve serious attention. I think critics on both sides would benefit from acknowledging the legitimate concerns driving this proposal.</p>
+      <p>On the environmental side, the science is solid: popular areas have suffered measurable degradation. Meadows that once supported diverse plant communities have become compacted dirt. Wildlife behavior has shifted in response to human presence patterns. Restoration isn&#x27;t overkill—it&#x27;s necessary maintenance of landscapes that inspire millions.</p>
+      <p>On the access side, critics are right that restrictions require careful implementation. Park management shouldn&#x27;t quietly price out families or visitors with mobility limitations through indirect means. Any restoration plan needs explicit commitments to maintaining diverse access options.</p>
+      <p>The broader question—whether other parks should follow suit—is more complex than supporters might like. Yosemite&#x27;s challenges are intense because of its popularity, but other parks face different pressures and have different ecological thresholds. Blanket approaches rarely work.</p>
+      <p>What other parks SHOULD do is engage in the kind of transparent planning process that produced this proposal. Public input, scientific assessment, explicit consideration of competing values—these aren&#x27;t bureaucratic exercises. They&#x27;re how we make difficult tradeoffs in a democratic society. The specific outcomes will vary, but the process model is worth replicating.</p>
+      <p>Yosemite&#x27;s plan imperfectly navigates a genuinely hard question. That&#x27;s more than we can say for avoiding the question altogether.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

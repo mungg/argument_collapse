@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Should the News Media Cover Mass Shooters? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Culture · Open-ended</div>
+  <h1 class="debate-title">How Should the News Media Cover Mass Shooters?</h1>
+  <div class="question-body"><p>Sheriff John Hanlin of Douglas County, Ore., tried unsuccessfully to get the news media to not name the shooter in the recent mass killings at the Oregon community college last week. His approach was part of a “Don’t Name Them” campaign that seeks to combat the glorification by some of murderers and the contagion factor.</p><p>How should the news media deal with the murderers in these mass killings and the possible effect the coverage could have on copycat crimes?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=3</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-should-the-news-media-cover-mass-shooters_arg_1.html">
+      <td class="arg-text">The news media should continue to provide detailed coverage of mass shooters because suppressing their identities and backgrounds is a misguided approach that lacks empirical justification.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-should-the-news-media-cover-mass-shooters_arg_2.html">
+      <td class="arg-text">News organizations should move beyond the debate over naming shooters and instead reform the entire media script to treat mass shootings as public health emergencies rather than sensationalized spectacles.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-should-the-news-media-cover-mass-shooters_arg_3.html">
+      <td class="arg-text">The news media should stop using ritualized labels like &#x27;lone wolf,&#x27; &#x27;thug,&#x27; or &#x27;terrorist&#x27; to describe mass shooters because these terms reinforce racial biases and prevent an honest dialogue about gun violence.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-should-the-news-media-cover-mass-shooters_arg_4.html">
+      <td class="arg-text">The news media should shift its focus from the superficial debate over naming shooters to a relentless investigation of the policy failures and structural issues that enable mass violence.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_how-should-the-news-media-cover-mass-shooters_arg_5.html">
+      <td class="arg-text">The news media should shift from sensationalist narratives that center the killer as a protagonist to a public health reporting model that prioritizes factual proportion, victim dignity, and the identification of preventable systemic risks.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Anthea Butler</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/09/how-should-the-news-media-cover-mass-shooters/anthea-butler" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jim Warren</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/09/how-should-the-news-media-cover-mass-shooters/jim-warren" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Mark Follman</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/10/09/how-should-the-news-media-cover-mass-shooters/mark-follman" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Sheriff Hanlin&#x27;s instinct is understandable, and the contagion concern is not fanciful. Researchers like Sherry Towers have produced statistical evidence suggesting mass shootings cluster in time, much as suicides do after high-profile coverage—the so-called Werther effect that has long shaped responsible reporting guidelines on suicide. Several recent killers, from Newtown to Isla Vista to Roseburg, left manifestos or online trails indicating they studied their predecessors and craved the notoriety they saw conferred. If fame is part of the motive, the press is part of the incentive structure.</p>
+      <p>But a blanket &quot;Don&#x27;t Name Them&quot; rule asks journalism to do something it cannot honestly do: pretend a central fact of a public event does not exist. Names matter for accountability—for understanding how a killer obtained weapons, slipped past mental health systems, or signaled intent online. Suppression also breeds rumor and conspiracy, and it sets a precedent that police can dictate which facts citizens are allowed to know. That is a precedent worth resisting even when the sheriff&#x27;s motives are sympathetic.</p>
+      <p>The workable path lies between saturation and silence. Outlets can name the perpetrator once, sparingly, and refuse to run the trophy photos, GoPro footage, or manifesto excerpts that killers curate for posterity. They can decline the wall-to-wall biographical treatment—the yearbook montages, the bedroom tours—that converts a murderer into a dark celebrity. They can foreground victims, first responders, and the policy questions the shooting raises. Anderson Cooper&#x27;s stated practice of avoiding the Newtown shooter&#x27;s name, and the AP&#x27;s tightened guidelines on suicide coverage, show such restraint is feasible without censorship.</p>
+      <p>In short: report the who, but stop auditioning killers for the antihero role they are seeking.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The sheriff’s plea not to name the Oregon shooter taps into a growing unease: does our ritualized coverage of mass murderers transform them into anti-heroes for the next disturbed individual? By 2015, research makes that fear hard to dismiss. Studies show that many rampage shooters explicitly seek notoriety, and criminologists warn of a contagion effect — saturation coverage of one attack significantly raises the probability of another within weeks. The “Don’t Name Them” campaign is built on a straightforward premise: deny the killer the posthumous celebrity he craved, and you remove a lethal incentive.</p>
+      <p>Yet a blanket ban on naming a perpetrator oversimplifies both journalism and public safety. Journalism’s core duty is to provide an accurate account, and that includes the “who.” Without the name, we cannot reliably investigate warning signs, radicalization patterns, or the pathways to weapons — knowledge crucial for prevention. Additionally, suppressing a name can fuel conspiracy theories and corrode trust in reporting precisely when communities need clarity.</p>
+      <p>The challenge, then, is not to erase the shooter but to de-center him. A trauma-informed media would make a deliberate shift in framing. Rather than leading broadcasts with the killer’s self-styled manifesto photos or repeating his name dozens of times, outlets should prioritize the faces and stories of the victims, the heroism of first responders, and the community’s recovery. The public does need to learn the name, but they do not need it emblazoned in headlines or isolated from the devastation it caused. Coverage should quickly pivot to systemic context — mental health failures, domestic violence red flags, access to firearms — without mythologizing the perpetrator as an enigmatic monster. Language matters: terms like “evil genius” not only mislead but inadvertently glorify.</p>
+      <p>Ethical coverage treats the shooter as a footnote in a much larger story about human loss and societal failure. He gets named, factually, several paragraphs down — a bureaucratic detail, not a brand. The spotlight stays on the lives we lost and the urgent changes we owe them. That balance honors the public’s right to know while refusing to provide a script for the next attack.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The instinct of journalism is to illuminate every corner of a tragedy, providing names, motives, and backgrounds. But in the wake of the devastating Umpqua Community College shooting and Sheriff John Hanlin’s refusal to name the gunman, the media must confront an uncomfortable reality: its standard operating procedure is inadvertently fueling a deadly epidemic.</p>
+      <p>Criminologists and sociologists have increasingly documented a &quot;contagion effect&quot; tied to mass shootings. Many of these perpetrators are deeply isolated, aggrieved young men who view mass murder not just as an act of revenge, but as an audition for infamy. They study previous killers—from Columbine to Isla Vista—and leave behind manifestos, calculating that the media will broadcast their faces and air their grievances to a global audience. When news networks oblige, providing wall-to-wall coverage of the killer&#x27;s background and psychological unraveling, they give these murderers exactly the posthumous fame they sought. More dangerously, they provide a blueprint and an incentive for the next deeply disturbed individual seeking a way to be remembered.</p>
+      <p>This does not mean the press should scrub a shooter’s identity from the public record. An informed citizenry needs to know who committed the crime to hold institutions accountable. However, the media must adopt a standard of minimal notoriety. A killer’s name and photograph can be reported once for factual accuracy, but they should not become the dominant graphics on our television screens or the obsessive focus of cable news panels.</p>
+      <p>Decades ago, the news media adopted strict guidelines for covering suicides to prevent copycat tragedies. It is time to apply a similar ethical framework to mass shootings. By centering our reporting on the victims, the systemic failures that allowed the tragedy, and the community&#x27;s recovery, we can inform the public without acting as the public relations wing for mass murderers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The press should not pretend a mass murderer is anonymous in a public event of enormous consequence. Names matter for accuracy, for investigating warning signs, for examining failures by institutions, and for preventing rumors that can wrongly implicate others. But naming is not the same as branding. The media can report identity once, when confirmed, without turning the killer into the protagonist of the story.</p>
+      <p>There is enough evidence to justify restraint. Suicide researchers have long warned that sensational coverage can encourage imitation; guidelines urge avoiding romanticized descriptions, repeated images and step-by-step accounts. Mass shootings are not identical to suicides, but many perpetrators are suicidal, grievance-driven and hungry for recognition. Columbine has become a template for some later attackers. The Virginia Tech gunman mailed photos and video to NBC precisely because he wanted a stage. When news organizations loop such images, publish manifestoes at length, or reduce the crime to a killer’s “dark genius,” they may be helping deliver the reward.</p>
+      <p>A responsible standard would be: identify the shooter after official confirmation; use no glamour photographs; avoid publishing manifestoes except for brief excerpts needed to establish motive; do not dwell on weaponry, tactics or body counts in a competitive scoreboard style; and stop using the killer’s name in headlines unless there is a clear news reason. Profiles should be careful and unsentimental, emphasizing patterns that help the public understand risk without offering mythology.</p>
+      <p>This restraint should be voluntary, not imposed by sheriffs or legislators. Government officials have their own incentives to suppress facts, and the public needs independent reporting on police response, gun access, mental health systems, campus security and missed warnings. The answer is not silence but proportion.</p>
+      <p>The victims, survivors and community should receive more attention than the killer. Journalism cannot eliminate copycats, but it can refuse to make infamy the most visible prize.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The question of whether to name mass shooters touches on one of journalism&#x27;s most difficult ethical calculations: balancing the public&#x27;s legitimate need for information against the demonstrable risk that certain forms of coverage may inspire future violence. The research on media contagion, while still evolving in 2015, had established enough that responsible outlets should take the concern seriously rather than dismiss it as paternalistic meddling.</p>
+      <p>Sheriff Hanlin&#x27;s position, despite its clumsy attempt at censorship, reflected a genuine understanding that perpetrators of mass shootings often seek notoriety as a primary motivation. When coverage elevates shooters to infamous prominence, it potentially rewards exactly the behavior we most want to discourage. This isn&#x27;t about suppressing news—it&#x27;s about how we frame that news.</p>
+      <p>The media should cover these tragedies thoroughly, including basic facts about perpetrators for identification purposes. But coverage that centers the shooter&#x27;s biography, philosophy, or grievances in ways that read as promotional risks crossing an ethical line. Journalists should focus instead on victims, survivors, community response, and policy implications—the subjects that actually serve the public interest.</p>
+      <p>Critics will argue that restricting any detail amounts to caving to killers&#x27; demands. But journalism has always involved editorial judgment about framing and emphasis. We already decide not to publish certain information that might endanger lives or violate privacy. The question is whether the contagion evidence is strong enough to warrant similar restraint regarding notoriety-whoring coverage.</p>
+      <p>By 2015, the pattern was clear enough to warrant serious attention. The news media can fulfill its essential function without becoming an unwitting propaganda arm for those seeking infamy.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (18 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Sheriff Hanlin&#x27;s instinct is understandable, and his grief is real, but the &quot;Don&#x27;t Name Them&quot; campaign asks the press to do something it cannot ethically do: withhold central facts about a public event from the public. The identity of a mass killer is not a salacious detail. It is the linchpin of accountability journalism. Without names, we cannot examine whether the FBI missed warning signs, whether a gun dealer ignored red flags, whether a school counselor saw something and said nothing, whether family members enabled stockpiling, whether previous arrests should have triggered a background-check denial. Every one of those questions — the questions that might actually lead to policy change — requires naming the shooter.</p>
+      <p>Consider what we learned only because reporters dug into named individuals: that Adam Lanza&#x27;s mother bought him the rifle she was killed with; that Seung-Hui Cho had been adjudicated mentally ill in a way that should have barred a purchase; that Dylann Roof exploited a loophole in the background-check system that the FBI itself later acknowledged. These were not tabloid revelations. They reshaped debates about guns, mental health, and law enforcement procedures. A nameless killer is a cipher onto which the public projects its prejudices. A named killer is a person whose path to violence can be traced and, perhaps, interrupted in the next case.</p>
+      <p>The contagion concern deserves a serious response, but the right response is editorial judgment, not informational blackout. Journalists can — and increasingly do — decline to run the killer&#x27;s &quot;manifesto&quot; video in full, refuse to plaster his face across the homepage for a week, avoid the cinematic framing that turns a pathetic loser into an antihero. The Columbia Journalism Review and groups like No Notoriety have offered sensible guidelines: report the name, but don&#x27;t fetishize it; cover the act, but center the victims; resist the wall-to-wall coverage that converts a crime into a brand.</p>
+      <p>That distinction matters because the &quot;contagion&quot; research, while suggestive, is far from conclusive. Sociologists like Sherry Towers have found statistical clustering of shootings, but the mechanism is murky and the policy implication — total name suppression — is far more drastic than the evidence supports. We would be trading a clear public good (accountability and understanding) for a speculative one (deterrence of imitators who, the evidence suggests, are motivated by a tangle of grievances far deeper than seeing a name on CNN).</p>
+      <p>Cover them. Name them. Just stop making them famous.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>The press should adopt the &quot;Don&#x27;t Name Them&quot; protocol — not as a legal rule, but as a binding professional norm, the way newsrooms already decline to name rape victims or juvenile defendants. The evidence that media attention drives copycat shootings has become too strong to brush off as speculation, and the journalistic interest served by repeating the killer&#x27;s name on a loop is too thin to justify the cost.</p>
+      <p>Start with what we know. Arizona State researchers analyzing shootings from 2006 to 2013 found a measurable contagion window of roughly thirteen days following a high-profile attack. The FBI&#x27;s own study of active-shooter incidents documented a sharp uptick after 2000, coinciding with the era of saturation cable coverage and viral social media. Shooters themselves have left a trail of confessions: the Sandy Hook killer kept a spreadsheet of previous mass murderers; the Isla Vista killer studied Columbine; the Oregon shooter, in writings reported after the attack, explicitly admired a previous gunman and noted how famous he had become. These men are not abstract data points. They are telling us, in their own words, that the prospect of posthumous celebrity is part of what motivates them.</p>
+      <p>Now weigh the counterargument: that naming is essential for accountability. It isn&#x27;t. Journalists can — and do — investigate background-check failures, mental-health system breakdowns, and law-enforcement lapses without converting the perpetrator into a household name. The Bath School disaster of 1927, still the deadliest school attack in U.S. history, is meticulously documented in the historical record; almost no American can name the bomber. That is precisely the model we should aim for: the act remembered, the victims honored, the investigation complete, the killer relegated to a footnote.</p>
+      <p>What would a &quot;Don&#x27;t Name Them&quot; practice actually look like? Report the name once, in the initial story, for the record. Do not repeat it in headlines, chyrons, or follow-up segments. Do not air the manifesto. Do not run the staged photographs. Treat the killer the way responsible outlets treat suicide victims — soberly, briefly, without melodrama, in accordance with established guidelines like those of the World Health Organization on suicide reporting, which have demonstrably reduced suicide contagion.</p>
+      <p>The First Amendment does not require newsrooms to be reckless. It permits them to be wise. When an industry&#x27;s own product is plausibly implicated in a body count — and when the fix is a modest editorial discipline rather than censorship — refusing to change is not principle. It is inertia dressed up as principle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>Most of the debate over naming mass shooters treats the question as binary: name them or don&#x27;t. That framing flatters both sides and clarifies nothing. The real problem with mass-shooting coverage isn&#x27;t the appearance of a name in a news report — it&#x27;s the entire ecosystem of attention that American media, social platforms, and audiences have built around these events. Fix only the name, and you&#x27;ve fixed almost nothing.</p>
+      <p>Think about what saturation coverage of a mass shooting actually looks like in 2015. Within an hour, cable networks have cleared their schedules. Within three, an aerial shot of the scene is on a permanent split-screen. By evening, the killer&#x27;s social media is being read aloud, his selfies blown up to fill a 60-inch monitor, his motives speculated upon by a rotating cast of pundits with no special knowledge. By the next morning, his face is on the cover of every news magazine, and a thousand Twitter accounts are debating whether he was a terrorist, a lunatic, or a victim. The name is the least of it. The spectacle is the problem.</p>
+      <p>This is why I find both Sheriff Hanlin&#x27;s request and the standard journalistic rebuttal somewhat beside the point. Suppressing the name while running everything else changes the wrapper, not the package. What needs to change is the disproportion between the rarity of these events (statistically vanishing compared to ordinary gun homicide, which kills far more Americans and gets a tiny fraction of the coverage) and the cultural oxygen they consume.</p>
+      <p>A more honest reform agenda would address all of it: shorter coverage cycles, no live-airing of manifestos or &quot;martyrdom&quot; videos, no leaderboards comparing body counts, no breathless ranking of &quot;worst shootings in U.S. history,&quot; no photographs of the killer in tactical poses. It would also mean covering the unsexy stories — the daily drumbeat of domestic-violence shootings, the suicides that account for two-thirds of gun deaths, the toddlers who find unsecured weapons — with a fraction of the energy currently lavished on the spectacular outlier.</p>
+      <p>If we did all that, the question of whether to print the name would answer itself. In a sober, proportionate coverage environment, a name is just a name — a fact among facts. It&#x27;s only in our current carnival that the name becomes a trophy. The &quot;Don&#x27;t Name Them&quot; campaign is treating a symptom. The disease is the carnival itself, and journalists, audiences, and platforms all own a piece of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Sheriff John Hanlin got it right. When he refused to utter the name of the Umpqua Community College shooter, he was doing more than making a symbolic gesture—he was embracing what a growing body of evidence tells us: naming mass murderers fuels the contagion. The news media must follow his lead and adopt a strict “Don’t Name Them” policy. This is not censorship; it is responsible journalism that recognizes how coverage itself can become a vector for violence.</p>
+      <p>Research on suicide clusters has long shown that prominent, detailed media portrayals of suicides lead to copycat deaths. The same mechanism now appears to operate in mass shootings. A 2015 analysis by Arizona State University researchers found that mass shootings that receive national media attention, particularly when the killer’s identity is central to the story, are followed by a temporary spike in the probability of another mass shooting. Many of these perpetrators are driven by a toxic desire for notoriety. They leave behind manifestos and video messages specifically designed for posthumous fame. When newsrooms splash the shooter’s name, photo, and grievances across every front page and broadcast, they grant exactly what the killer craved—and in doing so, they hand a blueprint and a promise of celebrity to the next troubled individual.</p>
+      <p>Critics warn of a slippery slope toward censorship, but editorial guidelines are nothing new. News organizations routinely withhold the names of sexual assault victims and juvenile offenders, not because the public has no right to know, but because the social cost of disclosure outweighs the news value. The same calculus applies here. The public can be fully informed about a mass shooting—what happened, where, how many died, what failures in mental health or law enforcement may have contributed—without converting the murderer into a household name. The details that matter for public safety do not require a name and a staring mugshot.</p>
+      <p>Of course, online discussion and law enforcement records will often reveal the identity anyway. But a decision by major media to starve the killer of institutional amplification still matters enormously. It signals that our collective focus belongs on the victims, the heroes like Chris Mintz, and the policy debates that might prevent the next tragedy. Draining the swamp of notoriety may not stop every would-be shooter, but it removes one powerful accelerant. The press should stop being an unwitting accomplice to mass murder aspiration.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The “Don’t Name Them” campaign has emotional appeal, but it represents a misguided paternalism that misunderstands both the role of journalism and the nature of the contagion effect. Mass shooters should be named—not to glorify them, but because complete, transparent reporting is the foundation of an informed public. When news organizations purposely shield a killer’s identity, they create an information void that breeds rumor and conspiracy, while doing little to halt the real drivers of copycat violence.</p>
+      <p>The public has a legitimate interest in knowing who commits atrocities in its midst. A name is the starting point for investigative journalism: it allows reporters to trace a shooter’s background, examine his online radicalization, identify missed warning signs, and hold institutions accountable for failures that might otherwise be swept under the rug. After the Sandy Hook shooting, for example, detailed reporting on Adam Lanza’s mental health history and access to weapons provided crucial insights for policymakers and mental health professionals. That scrutiny cannot happen if the name is taboo. Withholding the name infantilizes the public, assuming we cannot distinguish between dry factual reporting and the sensationalism that actually feeds copycat behavior.</p>
+      <p>The real culprit is not the name; it is the packaging. When cable news runs the same menacing photograph on a loop for seventy-two hours, broadcasts a killer’s grievances verbatim, and pushes victim stories to the margins, it creates a dangerous spectacle. But these are editorial choices that can be reformed without banning the name entirely. Many newsrooms have already begun publishing a shooter’s name only once, avoiding gratuitous images, and leading instead with profiles of the victims and first responders. That approach starves the virus of sensationalism while preserving the rigor of full accounting.</p>
+      <p>Moreover, the contagion research often cited by the “Don’t Name Them” campaign remains thinner for mass shootings than for suicides. The causal link between naming a perpetrator and the next incident is plausible but not yet confirmed with the strength that would justify sweeping editorial prohibitions. In an age of social media, the name will spread regardless; what legacy news organizations can uniquely do is contextualize it and direct public attention toward the systemic questions—gun access, mental health care, ideological radicalization—that truly demand answers. Responsible coverage, not name-omission, should be the goal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The furious debate over whether to name mass shooters is a convenient distraction, one that lets politicians, law enforcement, and even the news media itself avoid the uncomfortable heart of the problem. The issue isn’t what we call the killer; it’s why so many young men in the United States can easily obtain military-style weapons and why our mental health system remains a patchwork failure. Journalists should stop agonizing over the name and start covering mass shootings as what they are: a policy catastrophe.</p>
+      <p>Sheriff John Hanlin’s campaign is a case study in misplaced priorities. Hanlin has been an outspoken opponent of stricter gun laws, even sending a letter to Vice President Biden in 2013 insisting he would refuse to enforce any federal gun restrictions he deemed unconstitutional. His sudden concern about the “glorification” of shooters serves to redirect outrage from the tools of massacre to the media’s storytelling choices. It is a politically convenient move—one that news outlets should not enable. By framing the story as a question of naming policy, editors play into a narrative that absolves lawmakers of responsibility.</p>
+      <p>In reality, even if every legacy newsroom scrubbed the shooter’s name from its output, the name would still ricochet across Twitter, 4chan, and Reddit within minutes. The contagion problem is not primarily a product of traditional journalism; it is embedded in a digital ecosystem that celebrates nihilistic infamy. What traditional media can uniquely do is drive a sustained, evidence-based conversation about the structural conditions that set the United States apart from other wealthy nations in rates of mass shootings. That means dedicating serious airtime and column inches to comparative gun policy research, to the role of high-capacity magazines, to the gaps in background check systems, and to the chronic underfunding of community mental health services.</p>
+      <p>The public needs journalists to be relentless in asking why nothing changes after each massacre. That goes far beyond the cosmetic decision of whether to repeat a name. The most irresponsible coverage is not the article that includes the shooter’s identity; it is the coverage that treats the tragedy as an isolated act of evil, then pivots to memorials and heroism without ever asking hard questions about the interests blocking reform. Let’s stop debating the name and start demanding accountability from those with the power to prevent the next heartbreak.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>Sheriff John Hanlin’s plea to the media following the horrific tragedy at Umpqua Community College was not a request for censorship; it was an appeal to public safety. The news media must fundamentally change how it covers mass shootings, recognizing that the current model of sensationalized, wall-to-wall coverage is actively contributing to the rising body count. It is time for news organizations to adopt strict guidelines that deny mass shooters the fame they so desperately crave.</p>
+      <p>Forensic psychiatrists and criminologists have been warning us for years about the &quot;contagion effect.&quot; Much like a virus, the idea of committing a spectacular act of violence spreads through exposure. Many of these killers are deeply isolated, aggrieved individuals who feel invisible. They study past shooters, recognizing that committing a mass atrocity is a guaranteed ticket to international recognition. When the media splashes the killer’s face across the front page, endlessly dissects their childhood, and reads their rambling manifestos on the air, they are effectively acting as the public relations wing for a murderer.</p>
+      <p>We have a precedent for changing journalistic practices in the name of public health. Decades ago, after researchers established a clear link between sensationalized reporting of suicides and subsequent &quot;copycat&quot; suicides, the media established voluntary guidelines to minimize contagion. They stopped putting suicides on the front page, stopped detailing the methods, and stripped the romance from the act. We need a similar standard for mass shooters today.</p>
+      <p>The &quot;No Notoriety&quot; campaign, started by the parents of a victim of the Aurora theater shooting, offers a perfect blueprint. The media should release the name of the shooter once for the public record, and then relegate it to the background. Stop showing their self-stylized photos holding weapons. Stop turning their grievances into national talking points. By denying them the spotlight, we strip away the primary incentive for the next deeply disturbed young man who wants to go out in a blaze of media glory.</p>
+      <p>Our current approach elevates murderers into dark anti-heroes. If we truly want to honor the victims in Oregon, Charleston, and Sandy Hook, the media must take responsibility for its role in this grim cycle and turn the cameras away from the killers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The emotional impulse behind the &quot;Don’t Name Them&quot; campaign is entirely understandable. In the wake of an agonizing tragedy like the shooting in Douglas County, Oregon, the desire to erase the perpetrator from history is a natural human reaction. However, adopting a policy of enforced anonymity would be a disastrous abdication of the news media’s core responsibility to the public.</p>
+      <p>A functioning democracy requires an informed citizenry, and information is the only weapon we have to understand and prevent future violence. When a mass shooting occurs, the public has a fundamental right to know who committed the act. Knowing the identity of the shooter is the only way independent journalists, researchers, and citizens can hold institutions accountable. If the media refuses to name the killer, how can we investigate whether law enforcement missed critical warning signs? How can we determine if the background check system failed? How can we know if the shooter was radicalized by a specific online community or hate group?</p>
+      <p>Hiding the names of shooters does not make the danger go away; it merely obscures the root causes of the epidemic. Furthermore, in the digital age, the idea that mainstream media can successfully suppress a killer’s identity is remarkably naive. If reputable news organizations refuse to report the facts, the void will instantly be filled by social media, Reddit threads, and fringe websites. We have already seen the dangerous consequences of crowdsourced internet vigilantism during the Boston Marathon bombing, where innocent people were falsely identified as terrorists, leading to harassment and ruined lives. Mainstream journalism must act as the arbiter of verified truth, not a shield of intentional ignorance.</p>
+      <p>Sheriff John Hanlin’s attempt to dictate what the press can and cannot report is particularly troubling. While his grief is palpable, it is deeply dangerous for government officials—especially law enforcement—to decide what information the public is allowed to consume. Law enforcement failures frequently precede these tragedies, and allowing the police to control the narrative by withholding the perpetrator&#x27;s identity prevents crucial public oversight.</p>
+      <p>The media’s job is not to manage the public’s emotions, nor is it to test psychological theories of copycat contagion. The media’s job is to report the unvarnished truth. Erasing the names of mass murderers from the news leaves us in the dark, making it harder, not easier, to stop the next one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The debate over whether the news media should name mass shooters often falls into a false binary: either we plaster the killer’s face across every screen in America, or we pretend they don&#x27;t exist in a well-meaning but ultimately futile attempt at censorship. The solution to the contagion effect does not lie in withholding the killer’s identity entirely. Rather, it requires a complete overhaul of the *manner* and *tone* of the coverage. The media must learn to report on mass shooters with clinical, sterile precision, stripping away the cinematic narratives that turn these killers into household names.</p>
+      <p>When a tragedy like the recent shooting at Umpqua Community College occurs, the media absolutely must report the basic facts, including the suspect&#x27;s name. It is a matter of public record and historical fact. However, acknowledging a name does not require elevating the killer to the status of a protagonist.</p>
+      <p>The primary issue is the grotesque sensationalism that dominates the 24-hour news cycle. Cable news networks treat mass shootings like blockbuster movie releases. They use ominous graphics, looping footage of police tape, and extensive deep dives into the killer’s psyche. They publish the sprawling, narcissistic manifestos that shooters leave behind, effectively broadcasting the killer’s intended message to millions. This is what breeds the copycat effect. Prospective shooters see the endless analysis of the killer&#x27;s motives and realize that extreme violence is the quickest way to force the world to listen to their grievances.</p>
+      <p>To combat this, newsrooms must adopt strict, standardized guidelines for minimizing notoriety. A shooter’s name should be used only as necessary to convey the facts of the investigation, not repeated incessantly as a hook for viewers. The media must refuse to broadcast the stylized, intimidating photographs the killers take of themselves, using only neutral, unglamorous booking photos or ID pictures if a visual is necessary at all. Manifestos and video rants should be summarized briefly by reporters, not published in full or quoted at length.</p>
+      <p>We can inform the public without acting as a megaphone for a murderer’s ideology. By shifting the spotlight relentlessly toward the lives of the victims, the heroism of first responders, and the broader systemic issues of gun access and mental healthcare, the media can starve future shooters of the glamorous infamy they seek, while still fulfilling its journalistic duty to report the truth.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The press should name mass shooters once, briefly, and then move on. That is not censorship; it is editorial judgment. News organizations make decisions every day about what to emphasize, what to repeat and what to leave in the background. The question is whether the killer’s desired identity — his photograph, biography, grievances and last words — should become the centerpiece of the story. Too often it does.</p>
+      <p>Sheriff John Hanlin’s refusal to name the Oregon community college shooter was imperfect, but the instinct behind it was sound. Many mass killers study one another. Some leave behind manifestoes, videos or online posts that all but beg for publication. Others explicitly compare body counts or seek a place in the grim pantheon that includes Columbine, Virginia Tech, Aurora, Newtown and Charleston. Even if the copycat effect cannot be measured with mathematical precision, it is plausible enough, and the stakes are high enough, that editors should treat notoriety as a public safety issue.</p>
+      <p>We have a model for this. Responsible newsrooms have long handled suicides with restraint, because evidence suggests that sensational or romanticized coverage can contribute to imitation. That does not mean suicides are never reported. It means the reporting avoids lurid detail, avoids presenting the death as a grand statement and includes context. Mass shootings deserve a similar ethic.</p>
+      <p>A useful rule would be: identify the shooter when necessary for accuracy and accountability, but do not turn him into a character in a national drama. Do not publish glamour-style photos, childhood retrospectives, rankings of deadliest killers or extended excerpts from manifestoes. Do not make the murderer’s name the headline unless there is a compelling reason. Do not let a killer’s self-justifying narrative define the event. If his ideology matters — as with racist, anti-government, misogynistic or extremist violence — report the ideology without serving as its billboard.</p>
+      <p>The victims should not be reduced to symbols either. But if airtime and column inches are limited, the dead and wounded, the first responders, the institutional failures, the weapons used, the warning signs missed and the communities affected are more deserving subjects than the killer’s quest for infamy.</p>
+      <p>The public has a right to know who committed a massacre. It does not have a right to have his name chanted for days across television screens. The press cannot prevent every copycat crime. But it can refuse to become the last accomplice in a murderer’s publicity plan.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The “Don’t Name Them” campaign is emotionally understandable and editorially dangerous. In the aftermath of mass murder, it is natural to want to deny the killer the fame he may have sought. But journalism’s first obligation is not to punish the dead perpetrator. It is to inform the living public.</p>
+      <p>Names matter. They allow citizens to evaluate the work of law enforcement, the courts, schools, families, gun sellers, mental health systems and government agencies. Without a name, reporters cannot reconstruct how someone acquired weapons, whether there were previous threats, whether restraining orders or criminal records existed, whether officials missed warning signs, or whether early police statements are accurate. “The shooter” is an abstraction. A named person has a history that can be investigated.</p>
+      <p>There is also a troubling selectivity to anonymity. We name terrorists. We name serial killers. We name corrupt officials and police officers who shoot civilians. We name suspects in ordinary murders long before trial. Why should mass shooters alone receive enforced anonymity? If the answer is that they want attention, then the rule depends on our guess about motive. Some killers want fame; others want revenge, martyrdom, ideological impact or simply death. A blanket rule risks turning a complicated act into a media ritual.</p>
+      <p>The better answer is not silence but rigor. The press should name the perpetrator, verify facts, and then resist melodrama. It should not run his photograph every hour. It should not recite his manifesto as though it were a sacred text. It should not produce breathless packages about his favorite songs, wardrobe, dating life or supposed genius. It should not rank him in a league table of mass murderers. But it should tell the truth about who he was, what he did, what he believed and how he was able to do it.</p>
+      <p>There is another reason to be careful about not naming: rumors fill vacuums. In the first hours after massacres, social media often misidentifies innocent people. Conspiracy theories flourish. If reputable outlets retreat from basic identification, less responsible voices will not. They will publish names, photos and fantasies anyway, and the public will be left to sort fact from hoax.</p>
+      <p>The press should not glorify killers, but neither should it make them mysterious monsters. Demystification is useful. Most mass shooters are not masterminds. They are often angry, isolated, entitled, suicidal or ideologically poisoned men with access to deadly weapons. Naming them, in context and without theatricality, can strip away the myth.</p>
+      <p>The goal should be proportion, not erasure. Journalism can be humane without being evasive.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The debate over naming mass shooters is important, but too narrow. The real problem is the entire script through which mass killings are covered: breaking-news panic, endless speculation, repeated images of grieving families, obsessive attention to the killer, political shouting, and then a gradual fade until the next atrocity. Whether the name is spoken ten times or not at all, that script can still produce fear, fame and confusion.</p>
+      <p>News organizations should treat mass shootings less like spectacle and more like a public health emergency. That begins with disciplined early coverage. In the first hours, many facts are wrong: number of shooters, motives, weapons, identities, even casualty counts. Anchors should say less, not more. “We do not know yet” is better journalism than filling airtime with retired profilers and shaky social media claims.</p>
+      <p>Second, coverage should be proportional. The killer’s name may be reported, but it should not dominate. His writings should be summarized only when they are genuinely newsworthy. If he sought racial terror, misogynistic revenge, anti-religious violence or some other ideological message, the public should know that. But there is no public interest in broadcasting a manifesto line by line or turning a Facebook page into a personality profile.</p>
+      <p>Third, the press should broaden the frame. Every mass shooting raises several questions at once: How did the shooter obtain his guns? Were there missed warnings? Did institutions have authority to intervene? What patterns exist among prior attacks? What measures have reduced casualties in other settings? How do survivors recover? Which claims about mental illness are accurate, and which merely stigmatize millions of nonviolent people? These questions are harder than displaying a mug shot, but they are more useful.</p>
+      <p>Fourth, media outlets should avoid creating a scoreboard. Phrases like “the deadliest since…” may be factually relevant, but they also invite comparison. When repeated constantly, they can imply that mass murder is a competition. The same goes for dramatic music, countdown timelines, childhood-to-killer documentaries and full-screen portraits that make the perpetrator the star of his own production.</p>
+      <p>Finally, editors should distinguish accountability from amplification. Sometimes naming is necessary. Sometimes a photograph helps establish identity or correct false reports. Sometimes a killer’s ideology must be examined. But repetition is a choice. Placement is a choice. Tone is a choice. The news media cannot control whether disturbed or hateful people imitate violence, and it should not pretend otherwise. But it can reduce the rewards of notoriety while increasing the supply of verified, practical information.</p>
+      <p>The question is not simply “name or don’t name.” It is whether coverage helps the public understand and prevent violence, or whether it merely performs the killer’s drama on a larger stage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The news media should adopt a simple presumption: identify a mass killer only to the extent necessary to establish the facts, and then stop making him famous.</p>
+      <p>That is not censorship. It is editorial judgment. Newspapers routinely decide not to publish the names of sexual assault victims, not to show the most graphic images from war zones, and not to repeat every slur in a racist manifesto. The question is not whether the public has a right to know that a crime occurred. Of course it does. The question is whether the killer’s name, face, favorite poses, grievances and self-dramatizing writings deserve the saturation treatment that often follows these massacres.</p>
+      <p>They do not.</p>
+      <p>Many of these killers are not merely seeking to murder; they are seeking to be seen. The Columbine killers became reference points for later attackers. The Virginia Tech gunman mailed photographs and videos to NBC because he understood television. The Aurora theater killer’s hair and courtroom demeanor became part of a grotesque visual brand. Some perpetrators leave behind manifestos meant to be published, not understood. When news organizations repeatedly display those materials, they risk becoming the final instrument of the crime.</p>
+      <p>The contagion concern is not imaginary. We have long known from suicide research that certain kinds of coverage can contribute to imitation. Recent research on mass killings and school shootings has also suggested clustering effects, even if the mechanisms are hard to prove. No one can say that a particular headline causes a particular attack. But journalism often operates under uncertainty. If there is a plausible risk that naming and displaying killers helps inspire the next one, newsrooms should reduce that risk.</p>
+      <p>The rule should be practical, not absolute. If a suspect is at large, name him. If there is a question about accomplices, networks, ideology, police mistakes or warning signs, report it. If the killer’s background is necessary to understand the crime, describe it carefully. But do not put his portrait on the front page for days. Do not publish his videos. Do not turn his body count into a ranking. Do not quote his manifesto at length. Do not give him a nickname.</p>
+      <p>Instead, spend the time on the dead, the wounded, the survivors, the first responders and the failures that may have allowed the attack to happen. Explain how the weapons were obtained. Examine missed warnings. Report on campus security, mental health care, domestic violence, extremism and gun laws without reducing the story to the killer’s fantasy of himself.</p>
+      <p>Sheriff John Hanlin’s request was emotionally understandable and morally sound, even if no official should dictate coverage. The press should not be ordered into silence. But it should voluntarily refuse to become a murderer’s publicity department.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The impulse behind “Don’t Name Them” is humane, but as a rule for journalism it is too blunt. The public should not be protected from the identity of a mass murderer. It should be protected from sensationalism.</p>
+      <p>A mass killing is not only a private tragedy. It is a public event involving law enforcement, weapons, institutions, warning signs, political arguments and sometimes ideology. The first question citizens ask is “Who did this?” That question is legitimate. If journalists refuse to answer it, rumor will answer it instead. In the hours after major attacks, social media has repeatedly misidentified innocent people. A news blackout on the killer’s name would not create solemnity; it could create a vacuum filled by conspiracy theories, partisanship and amateur sleuthing.</p>
+      <p>Naming also enables accountability. When journalists identify the killer, they can investigate whether he had a history of threats, whether authorities missed signals, how he obtained guns, whether he was motivated by racism, misogyny, anti-government extremism or personal grievance. Consider how much public understanding of recent attacks has depended on careful reporting about the attacker’s background and writings. In Charleston, for example, the killer’s racist worldview was not incidental; it was central. To avoid naming or examining perpetrators in such cases can make the violence seem random when it is not.</p>
+      <p>The concern about copycats should still shape coverage. There is evidence from suicide reporting that publicity can encourage imitation, and some mass killers clearly study their predecessors. But that argues for discipline, not erasure. The press should name the perpetrator once the identification is confirmed, then avoid turning him into a character in a national drama. Use a small photo if one is necessary, not a menacing glamour shot or a self-selected image. Do not publish manifestos in full. Do not endlessly repeat body-count comparisons. Do not describe the attack in tactical detail useful to the next killer. Do not invite cable panels to speculate for hours about his “genius,” “madness” or “message.”</p>
+      <p>The best model is not “Don’t Name Them.” It is “Name them accurately, then report beyond them.” A serious newsroom should put the killer’s name in the story, not the headline every day. It should spend more space on victims, survivors and policy questions than on the murderer’s biography. It should resist the theatrical conventions of breaking-news television: the music, the looping images, the countdowns, the obsession with the shooter’s bedroom and online postings.</p>
+      <p>Sheriff Hanlin was right to worry about notoriety. But police officials should not set the terms of public knowledge, especially when their own agencies may later deserve scrutiny. The answer to irresponsible coverage is not less journalism. It is better journalism: factual, restrained, unsentimental and unafraid to tell the public who committed a public atrocity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The debate over whether to name mass shooters is important, but it can become a way for the media to avoid the harder question: what story are we telling?</p>
+      <p>Too often the story is built around the killer’s desired plot. He is presented as a dark mystery, a broken genius, a monster, a loner, a symbol of evil. His photograph appears everywhere. His grievances are dissected. His final posts are treated as clues in a national puzzle. The victims become a list, the community becomes a backdrop, and the murderer becomes the protagonist.</p>
+      <p>That structure is the real problem. Newsrooms should make mass shooters small, but not invisible. A responsible standard would be: confirm and publish the name when it is genuinely newsworthy; avoid prominent repetition; do not broadcast self-produced propaganda; do not use dramatic portraits; and do not frame the killing as a competition with past massacres. The killer should be an object of investigation, not fascination.</p>
+      <p>At the same time, coverage should not pretend that these events are inexplicable eruptions. Mass shootings differ from one another. Some involve domestic violence. Some involve racist or ideological hatred. Some involve workplace rage, suicidal despair, misogyny, or a desire for infamy. Many involve legally obtained firearms. Some reveal failures in threat assessment, mental health treatment, school security or law enforcement follow-up. If journalists reduce every attack to “another disturbed loner,” they will miss patterns. If they reduce every attacker to “evil,” they will miss preventable risks.</p>
+      <p>The media should also be careful about mental illness. Many people with mental illness are not violent; they are more often vulnerable than dangerous. After a massacre, loose speculation about diagnosis can stigmatize millions while explaining little. Report what is known. Distinguish evidence from rumor. Do not invite instant psychiatric profiles from people who never examined the shooter.</p>
+      <p>A better approach would look more like public health reporting. In the first hours: verify facts, correct rumors, avoid speculation, limit images of the killer. In the following days: tell the lives of the dead fully, not as sentimental props; examine the attacker only insofar as it illuminates motive, missed warnings and policy; compare the event to data rather than mythology; ask what interventions might have mattered. Later: return to the community after the cameras leave and report on trauma, recovery and institutional change.</p>
+      <p>There is no perfect formula. A determined imitator can find names and manifestos online even if newspapers behave responsibly. But mainstream coverage still sets the tone. It can amplify the killer’s fantasy or deny him the starring role. The goal should be neither secrecy nor spectacle, but proportion: enough information for democracy, not enough glory for the next would-be murderer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The case for restraint is compelling. Sheriff Hanlin&#x27;s effort to prevent media glorification of mass shooters reflects a growing consensus among psychologists and criminologists that notoriety functions as a reward for perpetrators. The research is unambiguous: media coverage that extensively profiles killers, displays their images, and recounts their manifestos demonstrably increases the probability of future attacks. This isn&#x27;t speculation—researchers have documented contagion effects in school shootings following intensive coverage, and the phenomenon extends to other forms of mass violence.</p>
+      <p>The news media&#x27;s instinct toward comprehensive coverage serves the public&#x27;s hunger for information, but it comes at a terrible cost. When shooters receive extensive coverage, they become role models for disturbed individuals seeking infamy. The &quot;Don&#x27;t Name Them&quot; campaign isn&#x27;t asking journalists to suppress essential information; it&#x27;s asking them to deny killers the currency they seek. We can report the facts—who was killed, what happened, how authorities responded—while refusing to provide a platform for the perpetrator&#x27;s narrative.</p>
+      <p>Critics will object that restricting coverage impinges on press freedom and public knowledge. But no one proposes censorship. The public has a legitimate interest in understanding these events, and that interest can be fully served without treating killers as celebrity antiheroes. Coverage can focus extensively on victims, survivors, community response, and the policy implications without making the perpetrator the star of the story. Indeed, this approach produces better journalism—coverage that serves community understanding rather than满足了某种病态的 fascination.</p>
+      <p>The news media should voluntarily adopt practices that deny shooters what they want while fulfilling journalism&#x27;s obligation to inform. This means minimizing perpetrator profiles, declining to broadcast manifestos in full, and redirecting coverage toward victims and solutions. Some outlets have already moved in this direction, and their leadership should be commended. The alternative—continuing current practices while knowing they contribute to future killings—represents a journalistic failure of moral imagination.</p>
+      <p>The question is not whether we can report on these tragedies; we must. The question is how we report in ways that honor the dead without inadvertently empowering their killers. A media industry that takes seriously its responsibility to serve the public interest will find ways to inform without glorifying.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The Oregon sheriff&#x27;s &quot;Don&#x27;t Name Them&quot; campaign represents an understandable impulse but oversimplifies a genuinely complex journalistic challenge. Mass shootings are newsworthy events that the public legitimately wants to understand, and the news media serves essential democratic functions when it provides comprehensive coverage. The question is not whether to cover these events but how to do so responsibly.</p>
+      <p>Research on copycat effects remains contested. While some studies suggest contagion effects from intensive coverage, the evidence is not sufficiently clear to mandate specific journalistic practices. We should be cautious about adopting policies based on incomplete social science, especially when those policies impinge on press freedom and public access to information. The relationship between media coverage and future violence involves multiple factors—mental health access, firearm availability, security measures—and reducing it to a simple coverage formula risks ignoring deeper structural problems.</p>
+      <p>A more nuanced approach would recognize that different coverage framings carry different risks. Extensive profiling of the shooter&#x27;s background, psychological state, and motivations may indeed serve primarily to provide a template for future attackers. Broadcasting manifestos in full, particularly those explicitly designed to attract following, seems most problematic. But complete suppression of information about perpetrators makes it difficult for the public and policymakers to understand these events.</p>
+      <p>Perhaps the answer lies not in blanket policies but in thoughtful journalistic judgment applied to each situation. Reporters might ask: does this specific piece of information serve public understanding, or does it primarily satisfy morbid curiosity and potentially inspire future killers? Does this framing illuminate systemic issues or grant undue attention to individual perpetrators?</p>
+      <p>The news media should engage in genuine self-reflection about coverage practices, not because outside pressure demands it, but because responsible journalism requires continuous assessment of whether practices serve the public interest. That reflection might lead some outlets toward greater restraint while allowing others flexibility to make case-by-case judgments. What matters most is that journalists think carefully about the consequences of their choices rather than simply defaulting to maximum coverage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The &quot;Don&#x27;t Name Them&quot; campaign misdiagnoses the problem and offers a solution that would do little good while doing genuine harm to press freedom and public understanding. Mass shootings are matters of intense public concern, and the news media&#x27;s role is to inform the public about events that shape their lives and communities. Restricting coverage of who shooters are and what they said would cripple our ability to understand these tragedies.</p>
+      <p>The contagion hypothesis, while intuitively appealing, remains inadequately proven. Studies on copycat effects have significant methodological limitations, and the research cannot confidently establish that media coverage causes future shootings rather than simply correlating with situations that would occur anyway. Basing significant restrictions on uncertain science risks creating policy that fails to achieve its goals while imposing real costs on press freedom.</p>
+      <p>More fundamentally, the campaign wrongly treats shooters as the primary subjects of coverage rather than the symptoms of deeper problems. When journalists cannot adequately profile perpetrators, the attention naturally shifts to policy debates—but often in ways that are oversimplified or detached from the actual complexities of the situation. Understanding a shooter—who they were, what motivated them, whether warning signs existed—can illuminate broader questions about mental health systems, community violence prevention, and the factors that lead individuals toward mass murder.</p>
+      <p>The focus should be on ensuring comprehensive victim-centered coverage and rigorous investigation of systemic factors. The news media could do far more good by extensively covering survivors, victims&#x27; families, and the communities disrupted by these events, and by rigorously examining policy failures that may have contributed to particular tragedies.</p>
+      <p>Rather than restricting information about perpetrators, we should demand more sophisticated journalism that places individual events in broader context. The problem isn&#x27;t that we know too much about mass shooters; it&#x27;s that our coverage often fails to provide the analytical depth that would help prevent future tragedies. The answer to bad journalism is better journalism, not less of it.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

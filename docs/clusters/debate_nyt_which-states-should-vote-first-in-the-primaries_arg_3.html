@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The current system of sequential state primaries should be r... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_which-states-should-vote-first-in-the-primaries.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_which-states-should-vote-first-in-the-primaries.html">Which States Should Vote First in the Primaries?</a> · Cluster 3 of 33</div>
+  <h1 class="arg-title">"The current system of sequential state primaries should be replaced by a single national primary day to ensure electoral equality and force candidates to build broad, national coalitions."</h1>
+  <div class="arg-meta">0 human · 4 LLM · 4 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"The current system of sequential state primaries should be replaced by a single national primary day to ensure electoral equality and force candidates to build broad, national coalitions."</p>
+        <button class="essay-view-full" data-target="full-3-88279">View full essay</button>
+        <div class="essay-full" id="full-3-88279" style="display:none;">
+            <p>No state “deserves” to vote first. That premise is the problem. Iowa and New Hampshire defend their privileges by pointing to tradition, civic engagement and the alleged wisdom of their voters. But in a democracy, one citizen’s vote should not matter more because she lives in a state with good political branding.</p>
+            <p>The first contests are not symbolic. They decide who gets press coverage, money and credibility. Candidates who perform poorly in Iowa or New Hampshire are often declared finished before most Americans have had a chance to participate. That means millions of voters in large, diverse states are effectively ratifying a choice narrowed by two small states. The parties would never allocate congressional seats this way; they should not select presidential nominees this way either.</p>
+            <p>The cleanest solution is a national primary day. Every voter in every state should vote at the same time. Objections about cost and scale are overstated. General elections are national events; campaigns manage them. A national primary would force candidates to build broad coalitions from the start rather than pandering sequentially to corn growers, New Hampshire independents, South Carolina evangelicals or Nevada casino workers. It would also end the bizarre spectacle of state parties and legislatures competing to jump the line.</p>
+            <p>Critics say a national primary would favor the richest and most famous candidates. That is partly true. But the current system also favors candidates with enough money to camp out in early states for years, hire local operatives and court activists who are far more ideological than average voters. It rewards a different kind of insider politics. Moreover, campaign finance and debate rules can be reformed separately. We should not preserve electoral inequality because we fear television advertising.</p>
+            <p>If a single national primary seems too abrupt, the parties could at least create a national primary with ranked-choice voting, allowing voters to express preferences among several candidates and reducing the pressure to vote strategically. But the principle should be simple: no state should have permanent first-class status. The presidency belongs to the nation, and the nation should begin choosing nominees together.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The outsize influence of early-voting states effectively disenfranchises millions of voters in larger, more diverse states by narrowing the field before they can participate.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A national primary would eliminate the inefficient and competitive &#x27;front-loading&#x27; where states constantly scramble to move their primary dates earlier.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A simultaneous national vote would compel candidates to appeal to a broad cross-section of the American electorate rather than pandering to the specific interests of small, early-voting states.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">While critics argue a national primary favors wealthy candidates, the current system already unfairly rewards those with the resources to maintain long-term, localized campaigns in early states.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The presidency is a national office, and the selection process should reflect this by allowing all citizens to vote at the same time rather than granting certain states permanent first-class status.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"The United States should replace the sequential primary system with a single national primary day to ensure democratic equality for all voters."</p>
+        <button class="essay-view-full" data-target="full-3-52674">View full essay</button>
+        <div class="essay-full" id="full-3-52674" style="display:none;">
+            <p>The entire debate over which state should vote first is a misguided attempt to fix an undemocratic relic. The solution isn’t to anoint a different slice of the country with the privilege of going first; it’s to abolish the sequential primary altogether in favor of a single national primary day. Every American should have an equal say in selecting the nominees for president, regardless of where they live. The current system violates that principle and cannot be repaired by tinkering with the calendar.</p>
+            <p>Proponents of the current order argue that sequential contests allow for voter deliberation, giving lesser-known candidates a chance to break through via retail politics in small states. But this romanticism ignores how modern campaigns actually work. National media, social networks, and televised debates now create a shared, simultaneous conversation from the very start. A candidate like Bernie Sanders or Donald Trump in this cycle proved capable of building grassroots fervor without stumbling through Iowa diners for a year. A national primary, perhaps coupled with ranked-choice voting or a runoff if no candidate clears a threshold, would reward those who can assemble the broadest coalition from day one—exactly the skill a president needs.</p>
+            <p>A national primary also eliminates the grotesque distortions of the early-state calendar: the ethanol mandates born of Iowa pandering, the disproportionate influence of a few thousand caucus-goers who do not represent even their own states fully. It puts black voters in South Carolina, Latino voters in Texas, and suburban parents in Ohio on the same footing as a dairy farmer in New Hampshire. The objection that only the rich could compete is falsified by the current reality, where wealth and name recognition already dominate. A single day would actually reduce the need for the grueling, multi-year money chase that the current calendar demands. True democratic equality begins with one person, one vote, and one day.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">A national primary ensures that every American has an equal say in the nomination process regardless of their geographic location.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Modern media and social networks have rendered the &#x27;retail politics&#x27; of small, early states unnecessary for building candidate momentum.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A single-day primary would force candidates to build broad national coalitions rather than pandering to the specific interests of a few unrepresentative states.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Moving to a national primary would reduce the need for the prolonged and expensive multi-year fundraising cycle required by the current calendar.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The current sequential system creates grotesque policy distortions by giving disproportionate influence to a small number of voters in early states.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The United States should replace its staggered, state-by-state primary system with a single, nationwide primary day to ensure democratic equality."</p>
+        <button class="essay-view-full" data-target="full-3-80343">View full essay</button>
+        <div class="essay-full" id="full-3-80343" style="display:none;">
+            <p>The debate over which state should vote first misses the fundamental absurdity of our staggered primary system. No state should vote first. The United States is the only major democracy in the world that selects its party leaders through a grueling, six-month-long state-by-state marathon that arbitrarily weighs the votes of some citizens more than others. It is time to implement a single, nationwide primary day.</p>
+            <p>The concept of &quot;momentum&quot; is inherently anti-democratic. Why should a voter in California or Pennsylvania have their choices artificially narrowed by the time their primary rolls around in April or June, simply because voters in Iowa or South Carolina decided they didn&#x27;t like certain candidates in February? By the time the primary process reaches the later states, the race is often functionally over, effectively disenfranchising millions of Americans.</p>
+            <p>Proponents of the staggered system argue that a national primary would be too expensive, allowing only well-funded frontrunners to compete. But the current system is already awash in Super PAC money. A national primary would shift the focus away from regional pandering and force candidates to campaign on a truly national platform. Voters across the country would go to the polls on the same day in late spring or early summer to choose their party&#x27;s nominees, ensuring that every vote carries the exact same weight. If no candidate reaches a majority, a national runoff could be held a month later.</p>
+            <p>True equality means one person, one vote. Our primary system should reflect that basic democratic principle.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The current system&#x27;s reliance on momentum is anti-democratic because it allows early-voting states to narrow the field and effectively disenfranchise voters in later states.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A national primary would force candidates to focus on a national platform rather than engaging in regional pandering to specific early-voting states.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A single-day primary ensures that every citizen&#x27;s vote carries the exact same weight, upholding the principle of one person, one vote.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The implementation of a national runoff system could resolve instances where no candidate achieves a majority on the initial primary day.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"The United States should replace the sequential state-by-state primary system with a single national primary to ensure all citizens have equal influence in the presidential nomination process."</p>
+        <button class="essay-view-full" data-target="full-3-08132">View full essay</button>
+        <div class="essay-full" id="full-3-08132" style="display:none;">
+            <p>The only state representative enough to vote first is the United States. Every other answer is an exercise in rationalization. Iowa is too white and caucus-driven. New Hampshire is too small and idiosyncratic. Nevada is more diverse but hardly a national mirror. South Carolina is important but regional. Ohio, Florida or California would introduce their own distortions. The unfairness comes from the premise that some Americans should vote before others and thereby shape the choices left to everyone else.</p>
+            <p>A national primary would end that inequality. On one day, voters in every state would choose among the same candidates. No farmer in Iowa, retiree in New Hampshire or hotel worker in Las Vegas would have more influence simply because of geography. Candidates would have to speak nationally from the start, and campaigns could no longer survive by pandering to a tiny electorate while pretending it represents the country.</p>
+            <p>The usual objection is that a national primary would favor the rich and famous. That concern is real, but the current system also favors candidates who can attract obsessive media attention, raise enough money to camp in early states for a year, and appeal to unusually ideological voters. A national system could be paired with debates, public financing, free airtime requirements, and a runoff between the top candidates if nobody wins a meaningful share. Ranked-choice voting would be another way to avoid a nominee winning with a narrow plurality in a crowded field.</p>
+            <p>Early-state defenders romanticize town halls and living rooms. Those have value, but they are not worth giving a few states veto power over the field. Most Americans never get to see the candidates in person. They see them through debates, interviews, records and campaign coverage. Their votes should count when the decision is still open.</p>
+            <p>No state deserves to vote first. All states do.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">No individual state is sufficiently representative of the entire country to justify having the outsized power of voting first.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A national primary would eliminate the geographic inequality that allows voters in early states to narrow the field of choices for the rest of the country.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A national system would force candidates to develop broad national platforms rather than pandering to the specific interests of a few small, idiosyncratic electorates.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The logistical and financial advantages of the current system for lesser-known candidates are outweighed by the undemocratic nature of giving a few states veto power over the field.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Modern technology and media mean that most voters evaluate candidates through national platforms anyway, making the supposed benefits of small-scale retail politics obsolete.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

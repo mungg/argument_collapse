@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evgeny Morozov’s proposal for a more democratic AI based on ... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_we_deserve.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_we_deserve.html">The AI We Deserve</a> · Cluster 45 of 49</div>
+  <h1 class="arg-title">"Evgeny Morozov’s proposal for a more democratic AI based on &#x27;ecological reason&#x27; and Deweyan pragmatism fails to recognize that Heideggerian philosophy already offers a more radical and necessary critique of the instrumental, goal-oriented nature of technology."</h1>
+  <div class="arg-meta">0 human · 1 LLM · 1 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Evgeny Morozov’s proposal for a more democratic AI based on &#x27;ecological reason&#x27; and Deweyan pragmatism fails to recognize that Heideggerian philosophy already offers a more radical and necessary critique of the instrumental, goal-oriented nature of technology."</p>
+        <button class="essay-view-full" data-target="full-45-41585">View full essay</button>
+        <div class="essay-full" id="full-45-41585" style="display:none;">
+            <p>Heidegger Was the Wrong Target</p>
+            <p>I want to register a philosophical disagreement with Morozov that is more than terminological. He proposes that the AI tradition would have benefited from John Dewey instead of Martin Heidegger as its critic, and he reads Heidegger&#x27;s hammer analysis, via Dreyfus, as failing to break with the &quot;teleological ethos&quot; of goal-directed reason. This is, I think, a serious misreading of Heidegger and, by extension, a misreading of what was actually at stake in Dreyfus&#x27;s critique of AI.</p>
+            <p>Heidegger&#x27;s analysis of equipment (Zeug) in Being and Time is not, as Morozov suggests, fundamentally an analysis of how we hammer nails efficiently. The famous passages about the hammer are part of a much larger project to expose the inadequacy of the &quot;present-at-hand&quot; (vorhanden) understanding of being—the understanding that treats entities as discrete objects with determinate properties, available for theoretical contemplation or technical manipulation. Heidegger argues that this picture is derivative; primary engagement with the world is &quot;ready-to-hand&quot; (zuhanden), embedded in webs of significance and reference (Verweisungszusammenhänge) that cannot be reduced to explicit rules. When the hammer breaks, what becomes visible is not just a failed instrumental relation but the entire referential whole that had been silently sustaining the activity.</p>
+            <p>This is a much more radical critique of instrumental reason than Morozov credits. Heidegger is not saying that we sometimes act for goals and sometimes get bored; he is saying that the very framework of &quot;agent + goal + means&quot; is a derivative philosophical construction that misses what is most fundamental about human existence. The famous boredom analysis in The Fundamental Concepts of Metaphysics goes further still, arguing that profound boredom (tiefe Langeweile) reveals the groundlessness of all our purposive projects. This is precisely a critique of teleology, not (as Morozov implies) a critique that fails to make it.</p>
+            <p>Why, then, did Dreyfus&#x27;s reception of Heidegger produce, in Winograd&#x27;s Coordinator, a tool that remained captured by instrumental reason? Not because Heidegger lacked the resources for a deeper critique, but because Dreyfus selectively translated those resources for an American philosophical audience that wanted concrete arguments against specific AI programs. Dreyfus&#x27;s job was to explain why expert systems would fail at chess, medical diagnosis, and natural language understanding—and he did that job magnificently, drawing on Heidegger&#x27;s account of skilled coping. But the larger metaphysical critique of teleology was bracketed for tactical reasons, not because Heidegger had not made it.</p>
+            <p>Morozov&#x27;s preferred alternative, John Dewey, is in many ways less hostile to instrumental reason than Heidegger is, not more. Dewey&#x27;s pragmatism is famously a philosophy of inquiry, problem-solving, and adaptive intelligence. Dewey criticizes the means-end dualism, yes, but his criticism is that means and ends are continuous, not that ends should be displaced from the picture. The Deweyan agent is constantly engaged in problem-solving; what Dewey rejects is the rigid separation of contemplation from action and the false separation of fact from value. This is closer to the spirit of contemporary AI&#x27;s &quot;agent&quot; frameworks than Morozov seems to realize. Dewey would not have built ChatGPT, but he might well have built Winograd&#x27;s Coordinator, with some modifications.</p>
+            <p>Heidegger, by contrast, is genuinely unfriendly to the entire project of computational intelligence. His later writings on technology (Die Frage nach der Technik) argue that the essence of modern technology is &quot;Ge-stell&quot; (enframing), a mode of revealing that discloses everything as standing-reserve (Bestand)—as resource available for manipulation. This is not a complaint about specific technologies; it is a complaint about the metaphysical orientation in which technologies show up as solutions to problems. From this perspective, both ChatGPT and Cybersyn would be expressions of the same enframing, differing only in their ownership structures.</p>
+            <p>I raise this not to score philosophical points but because it matters for Morozov&#x27;s political project. He wants to recover an &quot;ecological reason&quot; that resists instrumentalization while still being &quot;technologized&quot;—still operating through computational tools. Heidegger would have been suspicious of this very ambition. He would have asked whether the gesture of building tools to &quot;amplify&quot; non-instrumental intelligence does not itself capture that intelligence in the instrumental frame, treating it as something to be enhanced and optimized. The eolithic flâneur, on Heidegger&#x27;s account, would lose his eolithic character the moment he started using ChatGPT as an &quot;experimental workshop.&quot; Morozov&#x27;s appropriation of Storm risks doing exactly what he accuses Negroponte&#x27;s MIT Media Lab of doing: repackaging playfulness as &quot;interactivity&quot; and selling it back to us in a more sophisticated form.</p>
+            <p>If we want a genuinely non-instrumental engagement with computing, we may need to be more austere than Morozov is willing to be. We might need to ask whether some applications should not be technologized at all, whether some forms of human cognition are degraded rather than enhanced by computational assistance. Sherry Turkle&#x27;s recent work on conversational AI and the erosion of human empathy points in this direction. So does Carissa Véliz&#x27;s work on privacy as a precondition for selfhood. So does the long tradition of conservative humanism that Morozov, with his pragmatist commitments, tends to dismiss.</p>
+            <p>There is also a question about what kind of cognitive style is actually required for democratic citizenship. Morozov&#x27;s &quot;ecological reason&quot; is appealing in the abstract, but democracy also requires the capacity for sustained argument, evidence-weighing, and collective decision under uncertainty—all of which are highly teleological activities. The boredom-stricken flâneur is a poor citizen; he is in fact a figure of withdrawal from public engagement, closer to Heidegger&#x27;s Black Forest hut than to the Athenian agora. We should not romanticize this. The Latin American examples Morozov admires—Cybersyn, the Bariloche models—are notable precisely for their commitment to deliberate, structured, goal-oriented planning, not for their eolithic improvisation. Allende&#x27;s project was about workers managing industries effectively; &quot;messing about&quot; would not have built socialism in Chile, and it will not build democratic AI now.</p>
+            <p>So I find myself in the curious position of being more sympathetic to the philosophical critique Morozov gestures toward than to the alternative he offers. The deep problem with AI is not that it embodies instrumental reason; it is that it embodies a particular metaphysical orientation in which everything must show up as available, calculable, and optimizable. Resisting this orientation is much harder than reading more Dewey. It may require modes of life that look unproductive, untechnologized, and irrelevant to the questions of the day. It may, in the end, require some refusals that even Morozov is not prepared to make. The &quot;AI we deserve&quot; might, on careful examination, be considerably less AI than we currently have.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Morozov misinterprets Heidegger’s hammer analysis, which actually exposes the inadequacy of treating the world as a set of discrete objects for technical manipulation.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Heidegger’s analysis of boredom and &#x27;enframing&#x27; provides a deeper critique of teleology than Morozov acknowledges, suggesting that the very framework of problem-solving is the issue.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">John Dewey’s pragmatism is actually more aligned with the spirit of contemporary AI and instrumental reason than Heidegger’s philosophy, making Dewey a poor foundation for a radical alternative.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Morozov’s &#x27;ecological reason&#x27; risks repeating the mistakes of the MIT Media Lab by repackaging non-instrumental play as a new form of technological optimization.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The &#x27;eolithic flâneur&#x27; is a poor model for democratic citizenship, as democracy requires the very type of sustained, goal-oriented deliberation that Morozov seeks to move beyond.</span></li>
+              <li class="src-d"><span class="num">06</span><span class="sub-text">A genuine resistance to the calculable orientation of AI may require a more austere refusal of technology altogether rather than just a shift in its design or ownership.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abortion: Whose Right? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">Boston Review · Health · Lead-essay</div>
+  <h1 class="debate-title">Abortion: Whose Right?</h1>
+  <div class="lead-box">
+    <div class="lead-head">Lead essay · Philip L. Quinn</div>
+    <div class="lead-title">Abortion: Whose Right?</div>
+    <a class="lead-link" href="https://www.google.com/search?q=%22Philip%20L.%20Quinn%22%20%22Abortion%3A%20Whose%20Right%3F%22%20site%3Abostonreview.net" target="_blank" rel="noopener">Read original on Boston Review ↗</a>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_1.html">
+      <td class="arg-text">Judith Thomson’s attempt to defend abortion rights by appealing to the &#x27;reasonableness&#x27; of denying fetal rights fails because it cannot bypass the underlying moral and epistemological disagreement over whether the fetus actually has a right to life.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_2.html">
+      <td class="arg-text">While the lead essay correctly identifies that women are not unreasonable for rejecting the claim that a fetus has a right to life, its central political principle—that liberty cannot be constrained by reasons the constrained can reasonably reject—is flawed.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_3.html">
+      <td class="arg-text">The right to abortion must be protected because denying it devalues women as free and equal persons and violates their fundamental right to bodily and psychic integrity.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_4.html">
+      <td class="arg-text">A formal legal right to abortion is insufficient if it is not supported by the material resources, safety, and social conditions necessary for all women to exercise that right equally.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_5.html">
+      <td class="arg-text">While the moral case for abortion rights is persuasive, relying on judicial supremacy to secure those rights is politically and constitutionally problematic compared to democratic settlement.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_6.html">
+      <td class="arg-text">Judith Jarvis Thomson’s shift from a bodily autonomy defense to a procedural argument based on philosophical uncertainty is a strategic mistake that weakens the pro-choice position.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_7.html">
+      <td class="arg-text">While judicial victories like Roe v. Wade are important, the pro-choice movement must secure the abortion right through moral and democratic persuasion to overcome the political instability and violence caused by judicial fiat.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_8.html">
+      <td class="arg-text">The abortion debate should shift from abstract philosophical and metaphysical arguments about rights toward practical social policies that support women&#x27;s real-world needs and reduce the necessity of abortion.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_9.html">
+      <td class="arg-text">The question of abortion access should be settled through the democratic legislative process rather than judicial decree because it involves a moral disagreement among reasonable citizens that requires democratic legitimacy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_10.html">
+      <td class="arg-text">A morally defensible legal framework for abortion must move beyond the absolute poles of the debate to recognize both the fundamental liberty of women and the increasing moral significance of the fetus as it develops.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_11.html">
+      <td class="arg-text">The state cannot legitimately ban abortion because it lacks a public justification strong enough to override a woman&#x27;s autonomy, as the claim that a fetus is a person from conception is not a reason that all reasonable citizens are compelled to accept.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_12.html">
+      <td class="arg-text">Thomson’s procedural argument for abortion rights fails because it relies on a biased framing of &#x27;public reason&#x27; that unfairly dismisses substantive moral claims as unreasonable while treating its own liberal premises as self-evident.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_13.html">
+      <td class="arg-text">Judith Jarvis Thomson’s argument for abortion rights fails because it relies on a flawed political principle regarding the imposition of contested moral views and ignores the moral necessity of erring on the side of protecting potential human life.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_14.html">
+      <td class="arg-text">The author argues that Thomson is wrong to claim there is a &#x27;gap&#x27; in the reasoning that links the possession of rights to the possession of interests, asserting instead that rights cannot exist without interests to protect.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_15.html">
+      <td class="arg-text">While Thomson’s defense of abortion rights is powerful, her reliance on an epistemic principle regarding &#x27;reasonable disagreement&#x27; is insufficient to justify the liberty and must be supplemented by an argument for bodily integrity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_16.html">
+      <td class="arg-text">The law must protect prenatal human life because the biological and moral evidence demonstrates that a fertilized egg is a human being with an inherent right to life from the moment of conception.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_17.html">
+      <td class="arg-text">Judith Jarvis Thomson’s cautious, minimalist defense of abortion rights is insufficient because it relies on the philosophical undecidability of fetal personhood rather than asserting a woman&#x27;s absolute right to bodily autonomy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_18.html">
+      <td class="arg-text">Judith Jarvis Thomson’s dismissal of the embryo&#x27;s personhood is based on a narrow, empiricist view of reason that fails to account for the coherent natural law tradition grounding rights in the inherent nature of a human being.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_19.html">
+      <td class="arg-text">While the legal right to abortion must be defended on the grounds of bodily liberty and equal citizenship, a persuasive defense should acknowledge the moral gravity of fetal development rather than relying solely on the rejection of fetal personhood.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_20.html">
+      <td class="arg-text">While the state should not criminalize abortion in a pluralistic society, we must reject the reductionist view that a fetus lacks moral significance and instead recognize the tragedy of abortion within a broader framework of human solidarity and social justice.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_21.html">
+      <td class="arg-text">The state is justified in restricting abortion based on the moral claim that a fetus has a right to life, even if that claim is reasonably disputed by some citizens.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_22.html">
+      <td class="arg-text">While Thomson’s defense of abortion rights is valuable, her focus on individual rights-holders overlooks the structural social, economic, and political conditions that make abortion a pressing necessity for women.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_23.html">
+      <td class="arg-text">Judith Jarvis Thomson’s critique of Ronald Dworkin is flawed because she relies on the Pope’s absolutist rhetoric rather than the actual, more nuanced moral intuitions of the American public.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_24.html">
+      <td class="arg-text">The judicial imposition of abortion rights via the Supreme Court is a shortsighted strategy that undermines political legitimacy and fuels radicalization by bypassing the democratic process.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_25.html">
+      <td class="arg-text">Thomson’s procedural argument for abortion rights fails because it relies on a false asymmetry between force and freedom that assumes the fetus lacks moral standing rather than proving it.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_26.html">
+      <td class="arg-text">While the asymmetry between liberty and its constraint is a powerful concept, it does not automatically favor abortion rights because the moral uncertainty regarding fetal rights imposes a burden of justification on both those who would seek an abortion and those who would restrict it.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_27.html">
+      <td class="arg-text">Judith Jarvis Thomson’s defense of abortion rights fails because the state cannot justify defaulting to maternal liberty when the core of the dispute is the very definition of who belongs to the moral community and possesses rights.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_thomson_abortion_arg_28.html">
+      <td class="arg-text">Judith Jarvis Thomson’s critique of the anti-abortion position fails to provide a genuinely charitable engagement because she unfairly characterizes the protection of fetal life as an irrational exercise of force and persecution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Donald H. Regan</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/donald-h-regan-abortion-whose-right/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Douglas Laycock</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/douglas-laycock-abortion-whose-right/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Drucilla Cornell</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/drucilla-cornell-abortion-whose-right/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Peter de Marneffe</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/peter-de-marneffe-abortion-whose-right/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Philip L. Quinn</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/philip-l-quinn-moral-case-abortion-response/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Thomson&#x27;s central move — shifting the burden of justification onto those who would constrain a deeply valued liberty — is powerful, but it proves more than she may want. The standard she articulates (&quot;severe constraints on liberty may not be imposed in the name of considerations that the constrained are not unreasonable in rejecting&quot;) is doing enormous work, and it is worth asking whether it can bear the weight.</p>
+      <p>Consider an analogue. Many people are not unreasonable in rejecting the claim that nonhuman animals have morally significant interests, or that distant strangers have welfare claims on us comparable to our neighbors&#x27;. Does it follow that laws restricting cruelty or mandating foreign aid contributions impermissibly &quot;exercise force&quot; against dissenters? Thomson&#x27;s principle threatens to dissolve any moral legislation about which reasonable disagreement persists.</p>
+      <p>What Thomson needs, and only gestures toward, is an asymmetry argument: that pregnancy uniquely burdens women&#x27;s bodies and life prospects in ways that distinguish abortion regulation from ordinary contested moral legislation. Her closing appeal to equality hints at this, but it is precisely the argument she made famous in 1971 — bodily non-conscription — that does the real work, not the epistemic claim about reasonable disagreement.</p>
+      <p>I share her conclusion. But conceding, as she does, that fertilized eggs may have a right to life cannot then be neutralized by an epistemic principle alone. The bodily-integrity argument remains indispensable.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>Judith Jarvis Thomson’s essay is an important contribution to a debate in which nuance too often gives way to slogan. She rightly insists that violence against clinics is indefensible, that abortion restrictions impose real burdens on women, and that much anti‑abortion rhetoric oversimplifies the moral landscape. Yet her central argument against restrictive abortion laws—that they cannot be justified because the claim that the fetus has a right to life from conception is not one that women are unreasonable in rejecting—is less secure than she suggests. By setting the justificatory bar so high, Thomson makes it virtually impossible for any democratic polity to legislate on deeply contested moral questions, and she overlooks the more modulated reasoning that has shaped American abortion law since *Planned Parenthood v. Casey*.</p>
+      <p>Thomson’s case rests on three claims: that restrictive regulation severely constrains women’s liberty; that severe constraints on liberty may not be imposed in the name of considerations the constrained are not unreasonable in rejecting; and that women who reject the doctrine of fetal personhood from conception are not unreasonable. She concludes that laws restricting abortion amount to nothing but an exercise of force, because the ground offered—the fetus’s right to life—cannot justify the constraint to those who reasonably withhold assent.</p>
+      <p>The first and third premises are largely persuasive. Few would deny that abortion restrictions limit women’s freedom, often grievously. And Thomson is on firm ground when she argues that the proposition “a fertilized human egg has a right to life from the moment of conception” is not rationally compelled. Reasonable people can and do reach divergent conclusions about the moral status of the early embryo. But the second premise—the claim that a liberty may not be constrained on grounds the constrained are reasonable to reject—is far more radical than Thomson acknowledges, and it cannot bear the weight she places upon it.</p>
+      <p>If we apply that principle consistently, much of contemporary law would become suspect. Animal‑cruelty statutes, for instance, severely constrain the liberty of those who wish to use animals in ways the law forbids. Many people who oppose such restrictions do so on the ground that nonhuman animals lack the moral standing the law ascribes to them. Are they unreasonable? A utilitarian who thinks that only sentience matters and that the aggregate benefits of certain animal uses outweigh the suffering might reasonably reject the animal‑rights view. Yet no one suggests that animal‑welfare laws are therefore an unjust imposition of force. The reason is that democratic societies regularly balance liberty against other values, including the majority’s considered judgment about the moral status of certain beings or practices, even when that judgment is not immune to rational challenge.</p>
+      <p>The same holds for abortion. Under *Casey* (1992), the Supreme Court affirmed the “essential holding” of *Roe v. Wade*—that a woman has a constitutional right to choose an abortion before viability—but it also recognized that the state has legitimate interests from the outset of pregnancy in protecting the potentiality of human life. The joint opinion in *Casey* explicitly states: “The State has legitimate interests from the outset of the pregnancy in protecting the health of the woman and the life of the fetus that may become a child.” This interest exists even if one does not accept the strong claim that the fetus is a full rights‑bearing person from conception. It is an interest grounded in what the Court called the “profound” and “moral” concern for fetal life, a concern that is not unreasonable simply because some citizens reject it.</p>
+      <p>Thomson’s argument, by contrast, seems to require that any restriction on abortion be justified solely by the full personhood of the fetus—a ground she shows is not rationally mandatory. But the actual legal framework does not demand such a stringent showing. *Casey* permits regulations that express respect for prenatal life so long as they do not impose an “undue burden” on a woman’s right to choose. A 24‑hour waiting period, for example, may be constitutionally permissible because it does not place a substantial obstacle in the path of a woman seeking an abortion, even if it is adopted in part out of a belief that the fetus has moral significance that is not yet equivalent to a right to life. Thomson dismisses such measures as “forced contemplation,” but a legislature that believes the decision to end a potential human life deserves a period of reflection is not necessarily imposing an unreasonable view; it is acting on a moral intuition that many people—including some who are pro‑choice—find coherent: that as pregnancy progresses, the moral gravity of abortion increases.</p>
+      <p>Thomson might reply that even if the state’s interest in fetal life is legitimate, the crucial question is whether the constrained are unreasonable in rejecting the particular ground on which a restriction is based. She insists that a woman who gives no weight whatever to the fetus’s claim at conception is not unreasonable. But in a pluralist polity, laws are rarely justified to every citizen’s satisfaction. What matters is whether the state can offer a public reason that is not itself unreasonable. The *Casey* Court did just that: it grounded the state’s interest not in a sectarian religious doctrine about ensoulment at conception, but in a broadly accessible concern for the developing human organism. One can disagree with that concern—many do—but it is not irrational to hold that a human embryo, though not yet a person, has a value that society may seek to protect through incremental regulation. If that were irrational, then a great deal of environmental law, which protects species or ecosystems for their own sake, would also fall.</p>
+      <p>Thomson avoids this difficulty by focusing entirely on the “right to life from conception” claim and treating any weaker form of fetal valuation as a concession that would make most abortions permissible. But that move sidesteps the more common anti‑abortion position in the political arena: namely, that the fetus’s moral status grows over time, and that the state may accordingly limit abortion in ways that reflect that growing status. Indeed, the data Thomson herself cites—that half of U.S. abortions occur within the first eight weeks—suggests that a regime permitting early abortion while restricting later ones (as *Casey* allows) might be a practical compromise. Her insistence that the real debate must be about the all‑or‑nothing claim from conception may be philosophically clarifying, but it does not engage the legislative realities that have shaped the post‑*Roe* landscape.</p>
+      <p>In the end, Thomson’s principle—that a liberty may not be constrained on grounds the constrained are reasonable to reject—would, if taken seriously, rule out much democratic lawmaking. It would require that every statute imposing a severe burden on anyone be justifiable to that person in terms she cannot rationally reject. That is an impossibly high standard, one that would paralyze government in a society marked by deep moral pluralism. It is also a standard that the Supreme Court, in *Casey*, notably did not adopt. Instead, the Court sought a workable accommodation between competing values, recognizing that the Constitution protects individual liberty while allowing the community to express its moral concern for fetal life. Thomson’s essay is a powerful reminder of what is at stake for women, but it does not offer a persuasive reason to abandon that fragile accommodation. A democracy that cannot legislate on the basis of moral convictions that are widely held yet not universally shared is a democracy that has ceded its capacity for moral judgment altogether.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Judith Jarvis Thomson makes an elegant pivot in her defense of abortion rights, shifting the burden of proof from the metaphysical status of the fetus to a principle of political justification. She argues that because the claim of fetal personhood from conception can be reasonably rejected, the state cannot use it as a justification to severely constrain women’s fundamental liberty and equality. By framing the issue this way, she attempts to bypass the intractable biological and theological stalemates surrounding conception.</p>
+      <p>However, Thomson’s standard for state coercion falters when applied to the foundational question of who belongs to the moral community. Her argument relies on a social contract framework: the state may only impose severe constraints on liberty based on reasons that the governed cannot reasonably reject. But the fetus is precisely the entity whose status as a member of the governed—a rights-holder—is the very subject of the debate. If a society genuinely disagrees over whether a certain class of beings possesses human rights, the state cannot resolve that dilemma simply by defaulting to the liberty of the undisputed rights-holders. Doing so does not remain neutral; it functionally decides the moral question against the contested class.</p>
+      <p>Furthermore, Thomson argues that it is not contrary to reason to deny rights to a fertilized egg because it lacks psychological “interests”—specifically wants, hopes, and fears. Yet this cognitive criterion for rights is itself highly contestable. If rights require conscious psychological desires, what logically protects the severely cognitively impaired or even the newborn infant? An infant in its earliest days operates largely on reflex and instinct, arguably lacking the complex psychological states Thomson identifies as the prerequisite for being wronged. If society secures rights for the newborn based on its inherent human nature or its continuous trajectory toward conscious life, it is certainly not unreasonable for opponents of abortion to trace that same biological continuity back to its genetic origin.</p>
+      <p>In the wake of the Supreme Court’s 1992 decision in *Planned Parenthood v. Casey*, our legal regime has settled into a tenuous compromise, balancing maternal liberty with the state&#x27;s interest in potential life. But we should not pretend this compromise resolves the philosophical tension. When opponents of abortion assert that a fetus is a rights-bearing person, they are making a claim about basic justice. Dismissing this claim merely because it is &quot;reasonable to reject&quot; misunderstands the dispute; it is a profound disagreement about who gets to count in the calculus of justice in the first place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Judith Jarvis Thomson is right to insist that the abortion debate cannot be conducted as if the interests of women were incidental. Pregnancy is not a minor inconvenience, and compulsory pregnancy is not simply a refusal to subsidize a choice. It is the use of law to require one person’s body to sustain developing life, at serious physical, emotional, social, and economic cost. Any honest moral argument about abortion must begin there. It must also begin, as Thomson does, by condemning the campaign of murder, threats, arson, and humiliation directed at clinics, physicians, staff, and patients. A movement that calls itself “pro-life” cannot treat terror as a regrettable excess at its margins while continuing to speak as though doctors are executioners and women their accomplices.</p>
+      <p>But Thomson’s argument is strongest when she is criticizing the claim that reason compels belief in fetal personhood from conception; it is weaker when she suggests that, because that claim is reasonably rejectable, it cannot justify legal restriction. Many laws rest on moral premises that reasonable citizens reject. Pacifists may reasonably reject the justice of a war and still be taxed to support it. Libertarians may reasonably reject redistributive taxation and still be compelled to pay. Religious citizens may reasonably reject divorce and still live under laws that permit it; secular citizens may reasonably reject certain obscenity laws and still be subject to them. The fact that a moral premise is disputed, even reasonably disputed, cannot by itself remove it from democratic consideration.</p>
+      <p>Still, abortion is not like every other contested question. Thomson’s emphasis on liberty has special force because the liberty at stake is bodily liberty. The state may ask much of citizens, but it ordinarily does not compel one person to place her internal organs, blood, health, and future at the disposal of another. Even when a child will die without a kidney, the law does not force a parent to donate one. We may think the refusal cruel; we do not call in the sheriff. That fact does not settle every abortion question, but it does show why the burden on those who would criminalize abortion is unusually heavy. They are not merely protecting what they regard as life; they are conscripting women’s bodies in that protection.</p>
+      <p>For that reason, the most persuasive defense of abortion rights need not deny all moral significance to fetal life. Thomson focuses on the fertilized egg because the strongest anti-abortion argument begins there. She is right that a fertilized egg cannot simply be declared a rights-bearing person by invoking its genetic code. A skin cell has human DNA; a frozen embryo has potential; neither fact alone establishes moral equality with a newborn child. Yet many people who reject personhood at conception also believe that fetal development matters morally. A pregnancy at seven weeks, at twenty weeks, and at the edge of birth are not morally identical merely because none is a born child. Consciousness, sentience, viability, bodily form, and the woman’s own deepening relation to the pregnancy may all matter, even if none supplies the simple answer that combatants desire.</p>
+      <p>That is why the framework preserved in Planned Parenthood v. Casey remains morally attractive despite its imperfections. Before viability, the woman’s liberty must be paramount; after viability, the state may give greater legal weight to potential life, while preserving exceptions for the woman’s life and health. This compromise will not satisfy those who believe abortion is always murder, nor those who believe the fetus has no independent moral standing until birth. But constitutional law often works by refusing absolutism. Casey’s “undue burden” standard is admittedly imprecise, and some states will use that imprecision to harass rather than inform. Waiting periods, biased counseling, and parental-consent rules can become instruments of obstruction, especially for poor women and rural women. But the basic structure—strong protection early, increasing state authority later—reflects the moral reality better than either total prohibition or total indifference.</p>
+      <p>Thomson is also right to challenge the rhetoric of certainty. The encyclical’s claim that abortion is murder from conception is not merely a private devotional statement; it is a public accusation. If accepted, it brands millions of women as killers and physicians as assassins. Those who make that accusation cannot be surprised when some unstable adherent concludes that lethal force is justified to stop lethal force. This does not mean that every opponent of abortion is responsible for every act of violence, and it would be unjust to say so. But public language has foreseeable effects. To call abortion murder while insisting that murderers must not be stopped by violence requires a moral discipline that the current climate plainly lacks.</p>
+      <p>At the same time, defenders of abortion rights should avoid their own evasions. It is too easy to speak as though abortion were only a medical procedure, no different from removing a cyst. That language may protect women from stigma, but it can also sound like a refusal to acknowledge loss, ambiguity, and moral seriousness. Many women experience abortion as a grave decision even when they are confident it is the right one. A humane pro-choice politics should make room for that gravity without surrendering liberty.</p>
+      <p>The better response to the present crisis is therefore not simply to assert a right, but to build the conditions in which fewer women face desperate choices: real sex education, contraception, prenatal care, child care, health insurance, income support, protection against rape and domestic violence, and respect for women’s work and autonomy. Those measures will not end the abortion conflict, because the deepest disagreement is about moral status. But they would expose a great deal of anti-abortion politics as punitive rather than protective. A society that criminalizes abortion while neglecting poor mothers, battered women, and unwanted children is not reverencing life. It is enforcing pregnancy.</p>
+      <p>The legal right to abortion should be defended, especially in early pregnancy, because the case for coercing women is not strong enough to overcome their bodily liberty and equal citizenship. But that defense should be candid: abortion is sometimes tragic, often serious, and always bound up with responsibilities that men and institutions too often escape. Thomson has done a service by showing that the charge of murder cannot simply be assumed. The next task is to defend women’s freedom in a language that recognizes both the moral weight of pregnancy and the greater moral danger of forced motherhood.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Thomson&#x27;s essay offers a sophisticated defense of abortion rights, but several of its central arguments rest on questionable premises that deserve scrutiny.</p>
+      <p>Thomson argues that the asymmetry between those who want to impose severe constraints on liberty and those who want to exercise it gives the latter an advantage in moral and legal debates. This asymmetry argument is compelling in the abstract, but it depends entirely on whether the constrained party has a legitimate claim that warrants respect. If anti-abortion advocates genuinely believe that fetuses have rights, then their position is not simply an imposition of preferences but an attempt to protect what they take to be the rights of an innocent party. The asymmetry argument assumes that fetal rights claims are unreasonable, but that is precisely what is contested. Thomson acknowledges this at several points, but her argument cannot simultaneously assume that fetal personhood is an open question and that those who assert it are therefore the ones who bear the burden of justification.</p>
+      <p>Thomson is right that reason does not compel acceptance of the claim that fetuses have rights from conception, and she is right to challenge the encyclical&#x27;s assertion that this doctrine is written in every human heart. But her treatment of this point is incomplete. The fact that a moral claim is not compelled by reason does not mean it is groundless or that reasonable people must reject it. Thomson herself notes that there is no conclusive reason for denying that fertilized eggs have rights, which means that reasonable people could accept the claim. If reasonable people can accept it, then the asymmetry argument becomes less powerful: those who would restrict abortion might be appealing to considerations that, while not demonstrably true, are not unreasonable. The practical upshot is that democratic deliberation might be the appropriate forum for resolving this dispute rather than judicial fiat.</p>
+      <p>This brings me to Thomson&#x27;s defense of judicial review in the abortion context. She argues that vindicating fundamental liberties is exactly what courts are supposed to do, and that there can be no principled objection to the settlement of the abortion issue by the judicial branch rather than the legislative. This is too quick. The question of what counts as a fundamental liberty is itself a contested one, and in a democracy, the allocation of decision-making authority between courts and legislatures is a structural matter that cannot be resolved simply by noting that courts sometimes protect rights. Thomson acknowledges that had Roe v. Wade not been decided, access to abortion would likely be more restricted than it is, and she seems to think this justifies the Court&#x27;s intervention. But this utilitarian calculation about outcomes does not address the principled objection that unelected judges should not override democratic majorities on contested moral questions. Thomson gestures toward a rights-based conception of judicial review, but she does not adequately address how we determine which rights claims are sufficiently established to warrant judicial enforcement against democratic majorities.</p>
+      <p>Thomson&#x27;s critique of the claim that anti-abortion advocates really believe only that killing fetuses is intrinsically bad rather than a rights violation is strong. Her reading of the papal encyclical as genuinely asserting that fetuses have rights is persuasive, and her critique of Dworkin&#x27;s interpretation exposes a real weakness in that approach. But her positive account of the metaphysics of rights is less secure. She argues that having rights might not presuppose having interests after all, and that even if it does, this does not show that fetuses lack rights. This is philosophically interesting, but it amounts to saying that the question is open. If the question is genuinely open whether fetuses have rights, then Thomson cannot use the premise that they lack rights to justify unrestricted abortion access. What she can argue is that because the question is open, those who would restrict liberty must meet a high justificatory burden—and she does make this argument effectively.</p>
+      <p>Her most compelling point is that severe constraints on liberty may not be imposed on grounds that the constrained are unreasonable in rejecting. This is a powerful constraint on legal policy in a pluralistic society. But even here, there is work to be done. Thomson assumes that women who reject the claim that fetuses have rights are not unreasonable in doing so, which she has argued, but she has not argued that women who accept the claim that fetuses have rights are unreasonable in doing so. If both positions are reasonable, then the question of how to structure legal policy in a way that respects both sets of reasonable convictions becomes more complex than her argument suggests. A regime that permits early abortion while restricting later abortion, or that permits abortion in certain circumstances but not others, might be the appropriate way to respect both fetal rights claims and maternal autonomy, rather than either unrestricted access or complete prohibition.</p>
+      <p>Thomson&#x27;s essay is most persuasive when she reminds us that women who seek abortions typically do so for weighty reasons, that anti-abortion rhetoric has contributed to real violence, and that those who reject the fetus-has-rights claim cannot be dismissed as morally deficient. These observations are important for maintaining moral seriousness in the debate. But they do not settle the question of what legal policy is appropriate in a society where reasonable people disagree about the moral status of the fetus. Thomson&#x27;s argument points toward a strong presumption against restricting abortion, but the strength of that presumption depends on assessments of reasonableness that her argument does not fully vindicate.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (25 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**The Asymmetry Argument Cuts Both Ways**</p>
+      <p>Professor Thomson&#x27;s essay is, as always, lucid and forceful. Her central move is ingenious: rather than try to refute the claim that fertilized eggs have a right to life, she concedes she cannot refute it, and then argues that this doesn&#x27;t matter. What matters, she says, is that those who deny the claim are not unreasonable in doing so, and severe constraints on cherished liberties cannot be imposed on grounds the constrained can reasonably reject. The supporter of restriction wants to &quot;impose force&quot;; the denier merely wants to be &quot;free of it.&quot; The burden lies entirely on the side seeking restriction.</p>
+      <p>This is elegant. It is also, I think, too quick. The asymmetry Thomson invokes—force versus freedom—is doing enormous work, and once we examine it, we find it does not align as neatly with the abortion question as she suggests.</p>
+      <p>Consider how the argument generalizes. Whenever person A wishes to do something that person B claims harms a third party C, A can describe the situation as &quot;I want to be free; B wants to impose force on me.&quot; But whether this description is apt depends on whether C exists as a being with moral standing—which is exactly the contested question. If C does have standing, then A is not merely seeking freedom; A is seeking license to harm C, and B&#x27;s &quot;imposition of force&quot; is in fact protection of C. Thomson&#x27;s framing simply assumes the answer to the contested question in order to allocate the burden of proof.</p>
+      <p>Take an analogous case. Suppose some citizens sincerely believe that newborns lack the cognitive sophistication required for moral standing, and that infanticide in the first month is therefore permissible. Suppose, further, that we cannot give a knockdown philosophical argument against them—and indeed, philosophers like Michael Tooley have made sophisticated cases that border on this view. Would Thomson then say: the would-be infanticidal parents seek freedom, the protectors seek to impose force; therefore the burden lies with the protectors? Surely not. The asymmetry between &quot;force&quot; and &quot;freedom&quot; only generates the conclusion she wants if we have already settled that no rights-bearing third party is at stake.</p>
+      <p>Thomson might reply that her argument requires only that the denier be &quot;not unreasonable.&quot; But this standard is suspiciously weak. Many positions on contested moral questions are &quot;not unreasonable&quot; in the sense that intelligent people hold them and cannot be refuted by pure logic. If &quot;not unreasonable&quot; disagreement suffices to defeat any restriction on a &quot;deeply valued liberty,&quot; then a great deal of our moral and legal life dissolves. The cruelty of certain treatments of animals, the permissibility of dueling, the obligations we owe future generations—on all these matters reasonable people disagree, yet we do not infer that no restrictions may be imposed.</p>
+      <p>There is something else worth noting. Thomson grants—remarkably—that she has no conclusive reason for denying that fertilized eggs have a right to life. She grants that the opponent&#x27;s view &quot;makes perfectly good sense&quot; and &quot;cannot be bypassed as nonsense.&quot; Having conceded this, she nonetheless concludes that the law must proceed as if the opposing view has no purchase at all in framing legislation. But if the question is genuinely open, oughtn&#x27;t the law reflect that openness? A more honest conclusion of Thomson&#x27;s premises might be: we should regulate abortion the way societies regulate other genuinely contested moral questions—through democratic compromise, with attention to the gravity of what may be at stake.</p>
+      <p>This, in fact, is roughly what Casey attempts, with its undue-burden framework and its allowance of state interest in potential life. The framework is messy, but its messiness reflects the real moral situation Thomson herself has described: a question we cannot definitively resolve, with serious interests on both sides. Thomson&#x27;s &quot;asymmetry&quot; argument, by contrast, lets us pretend the question is closed when she has just told us it is not.</p>
+      <p>I share Thomson&#x27;s conviction that the right to abortion should be protected, especially in early pregnancy. But the protection cannot rest on the rhetorical trick of treating contested moral claims as equivalent to no claim at all. It must rest on a substantive moral argument about the developing fetus, the bodily integrity of women, and the distinctive burdens of pregnancy. Thomson herself supplied such an argument, brilliantly, twenty-four years ago in &quot;A Defense of Abortion.&quot; It is striking that in this essay she has retreated from substantive moral argument to a procedural one about the allocation of burdens. The retreat, I suspect, weakens rather than strengthens the case for abortion rights.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**What the Encyclical Actually Says**</p>
+      <p>Thomson&#x27;s essay deserves a response from someone who actually accepts the teaching of *Evangelium Vitae*, since most of what will be written about her piece will come from those who share her starting assumptions. I am a Catholic, and I believe what John Paul II writes: that the deliberate killing of an innocent human being from conception onward is gravely wrong. Let me try to say why Thomson&#x27;s argument, for all its sophistication, does not move me—and why I think it should not move my fellow citizens either.</p>
+      <p>First, the matter of Dworkin. Thomson is right that Dworkin badly misreads opponents of abortion when he says we don&#x27;t really mean what we say. We do mean it. The encyclical means it. When the Holy Father writes that procured abortion is &quot;the deliberate killing of an innocent human being,&quot; he is not employing pious hyperbole that secretly amounts to &quot;intrinsically regrettable.&quot; He is making a claim about what is happening on the operating table. I am grateful to Thomson for taking this seriously, even as she denies the claim. It is a more honest engagement than we usually receive.</p>
+      <p>Second, Thomson&#x27;s argument about &quot;rights presupposing interests&quot; turns out, as she herself concedes, to be inconclusive. She knows of &quot;no conclusive reason for denying that fertilized eggs have a right to life.&quot; Note what this concession costs her. She has built her entire political conclusion on the supposed reasonableness of denying fetal personhood, but her own analysis cannot establish that the denial is correct, only that it is not unreasonable. Yet she then claims that her opponents&#x27; position can be set aside in framing law. This is a remarkable maneuver: a view she cannot refute philosophically becomes one that may be disregarded politically.</p>
+      <p>Third, and most importantly, I want to challenge Thomson&#x27;s central political principle: that &quot;severe constraints on liberty may not be imposed in the name of considerations that the constrained are not unreasonable in rejecting.&quot; Stated this way, the principle sounds modest. But consider what it implies. Slavery was once defended on grounds that abolitionists rejected; were abolitionists therefore forbidden from &quot;imposing&quot; emancipation? Child labor was permitted on grounds reformers rejected; were reformers forbidden from &quot;imposing&quot; labor laws? The protection of the weak against the powerful has always required law to act on contested moral premises. Indeed, the entire civil rights tradition that Thomson presumably honors required the federal government to impose, on Southern whites who genuinely disagreed, a moral vision they regarded as alien. The &quot;constrained&quot; can almost always claim that they are not unreasonable in rejecting the premise of the constraint.</p>
+      <p>What Thomson really needs is not the procedural principle she states, but a substantive one: that *when* a class of beings is contested as to its moral standing, the burden of proof falls on those who would protect it. But why? In every other domain we proceed precisely the opposite way. When in doubt about whether a creature can suffer, the humane person errs on the side of protection. When in doubt about whether a structure contains people, the demolition crew waits. When in doubt about whether a patient can hear us, we speak to her. The encyclical&#x27;s principle—that &quot;the mere probability that a human person is involved would suffice to justify&quot; protection—is not some peculiarly Catholic dogma. It is the principle of caution that any decent moral agent applies whenever stakes are high and certainty is unavailable.</p>
+      <p>Fourth, Thomson dramatically understates the relevant biology. A fertilized egg is not &quot;a piece of human tissue&quot; like a thumb cell. A thumb cell will never become anything other than a thumb cell. A zygote, left to develop, becomes you and me. This is not a future-oriented fiction; it is a description of what the organism, *right now*, is doing. To be a developing human organism is to be a human organism at a particular stage of development. Thomson is too good a philosopher not to see this distinction, and her quick dismissal of the encyclical&#x27;s continuity argument is the weakest passage in her essay.</p>
+      <p>Finally, on the violence. Of course the murders at Brookline were monstrous, and every serious opponent of abortion has condemned them. But Thomson&#x27;s suggestion that strong pro-life rhetoric incites such violence is itself an argument that, applied consistently, would silence all serious moral discourse. If the truth is that abortion takes innocent human life on a scale of one and a half million per year in this country, then this is the most urgent moral fact of our generation, and saying so cannot be off-limits because some unbalanced person might respond criminally. The same logic would have silenced the abolitionists after John Brown.</p>
+      <p>Thomson&#x27;s essay is generous in tone and admirably willing to engage opposing arguments on their merits. But its political conclusion does not follow from its philosophical premises. If we genuinely cannot rule out that the unborn child is one of us, then the burden of proof lies, as it always lies in such matters, with those who would proceed regardless.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**The Missing Argument from Bodily Autonomy**</p>
+      <p>Reading Judith Jarvis Thomson on abortion in 1995 is a strange experience, because one keeps waiting for the argument she made famous in 1971—and it never comes. In &quot;A Defense of Abortion,&quot; Thomson argued that even if we grant the fetus a full right to life, abortion can still be permissible, because the right to life does not include the right to use another person&#x27;s body. The violinist thought experiment has shaped a quarter-century of debate. Yet in this essay, Thomson sets that argument almost entirely aside (with one footnote nod toward Frances Kamm&#x27;s recent work) and instead pursues a different strategy: a quasi-political argument about the burden of justification in pluralistic democracies.</p>
+      <p>I want to suggest that this shift is a mistake, and that Thomson&#x27;s earlier argument is precisely the resource the pro-choice movement most needs at this moment.</p>
+      <p>Consider the political situation Thomson herself describes. The right to abortion is under siege. Clinics are being firebombed; doctors are being murdered; states are erecting waiting periods, parental consent rules, and TRAP regulations designed to make access disappear de facto where it cannot be eliminated de jure. The Christian Coalition is a political force, and *Evangelium Vitae* has just given the anti-abortion movement an articulate, philosophically sophisticated standard-bearer in the Pope.</p>
+      <p>In this environment, what does the pro-choice movement need? It needs an argument that can hold its ground even if the fetus is conceded to be a person. Because the deepest intuition driving abortion opponents—the intuition that a tiny, vulnerable being is being destroyed—is not going to be argued away. It can be qualified, contextualized, and weighed against other considerations, but it cannot be dissolved through analytic philosophy. The Thomson of 1971 understood this. She granted the personhood premise *for the sake of argument* and showed that the conclusion still did not follow.</p>
+      <p>The Thomson of 1995 takes a different path. She argues, in essence: since we cannot conclusively settle whether the fetus has a right to life, and since reasonable people disagree, the law should not constrain women&#x27;s liberty on such a contested ground. This is fine as far as it goes. But it surrenders too much. It accepts that *if* the fetus did have a right to life, the case against abortion would be more or less complete. (&quot;If killing the fetus were murder, the woman would have to carry it to term, despite the burden on her of doing so.&quot;) This concession is the very one Thomson herself once refused to make, and refused to make for good reason.</p>
+      <p>The bodily autonomy argument matters because it grounds the abortion right in something more robust than philosophical uncertainty. It locates the right in a positive moral truth: that no person may be conscripted to sustain another&#x27;s life through use of her body, however valuable that other life may be. We do not require living donors to give kidneys, even to save certain identifiable persons. We do not require parents to give bone marrow to their own dying children. We do not even take organs from corpses without consent. The principle that bodily integrity cannot be commandeered for the benefit of another is one of the deepest principles of our moral and legal tradition. Pregnancy is, among other things, the most demanding possible use of one person&#x27;s body for another&#x27;s sake. To require it by law is to single out women for a form of bodily conscription we impose on no one else.</p>
+      <p>This argument has a further virtue Thomson&#x27;s procedural argument lacks: it offers a principled answer to abortion opponents on their own moral terrain. It doesn&#x27;t tell them their convictions about fetal life are unreasonable. It says: even granting your convictions, you may not require this of women. That is a much harder argument to demonize as callous or as denying the humanity of the unborn.</p>
+      <p>Thomson&#x27;s procedural argument, by contrast, will seem to many opponents to be ducking the central question. And in a way, it is. It says: because we can&#x27;t agree about whether fetuses have rights, let&#x27;s proceed as if they don&#x27;t. To someone who sincerely believes fetuses do have rights, this looks like a sleight of hand. Whereas the bodily autonomy argument says: even if they do have rights, here is why women may still choose.</p>
+      <p>I should note one place where Thomson&#x27;s current essay is genuinely powerful: her insistence that the encyclical&#x27;s claim to be &quot;knowable by reason itself&quot; must be rejected. The Pope&#x27;s claim that reason alone establishes the personhood of the zygote is indeed unsupported, and Thomson is right to call this out. But this critique should be a supplement to the deeper moral argument, not a substitute for it.</p>
+      <p>In short: I admire Thomson&#x27;s essay, but I wish she had given us another version of the argument she gave us in 1971. The current political moment requires the stronger argument, not the more cautious one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>**Reason, Religion, and the Public Square**</p>
+      <p>Thomson disclaims any reliance on the separation of church and state. Her objection to abortion restrictions, she insists, is not that they would be religious in character but that they would constrain a deeply valued liberty on grounds the constrained are not unreasonable in rejecting. I want to suggest that despite this disclaimer, her argument is in fact deeply tied to a particular vision of public reason—and that this vision, while attractive, has costs she does not fully reckon with.</p>
+      <p>The argument runs roughly as follows. Severe constraints on liberty require justifications that the constrained cannot reasonably reject. The claim that fertilized eggs have a right to life is one that opponents of abortion restrictions can reasonably reject. Therefore restrictions on abortion that rest on this claim are unjustified.</p>
+      <p>This is a recognizable variant of the Rawlsian conception of public reason that has been developed in *Political Liberalism* and subsequent work. In a pluralistic society, citizens owe one another reasons that all could in principle accept, drawn from a shared political conception of justice rather than from any particular comprehensive doctrine, religious or secular. Coercive law especially must satisfy this standard.</p>
+      <p>I find much of this attractive. But there are real difficulties when we apply it to abortion specifically.</p>
+      <p>First, the symmetry problem. Thomson tries to break the apparent stand-off by saying that one side seeks to impose force and the other seeks freedom from it. But this characterization is contestable. From the perspective of someone who believes the fetus has interests of its own, the law that permits abortion is not neutral—it is a positive license to harm one party in the interest of another. Such a person could equally well argue that the burden of justification falls on those who would permit, not those who would prohibit. The framing depends on a prior judgment about which party is the rights-holder.</p>
+      <p>Second, the reasonableness problem. Thomson&#x27;s argument relies heavily on the notion that abortion opponents&#x27; core claim—that fertilized eggs have rights—can be reasonably rejected. But &quot;reasonable rejection&quot; is doing massive work here, and Thomson does not fully theorize it. By her own admission, she cannot refute the personhood claim; she can only say that denying it is &quot;not contrary to reason.&quot; But on this standard, almost every contested moral claim can be &quot;reasonably rejected&quot;—including claims her own argument relies on. Is it &quot;contrary to reason&quot; to deny that severe constraints on liberty require special justification? Is it &quot;contrary to reason&quot; to deny that women&#x27;s equality requires access to abortion? Surely not. Yet Thomson presents these as nearly self-evident premises.</p>
+      <p>Third, and most seriously, Thomson&#x27;s framework risks effectively privatizing all controversial moral convictions, leaving only a thin shared morality to do the work of justifying coercive law. This is a familiar critique of Rawlsian public reason, and I think it has force. If religious citizens, or citizens with strong philosophical convictions about the moral status of nascent human life, are told that they cannot bring these convictions to bear on questions of law, they will reasonably feel that the deck is stacked. Their deepest moral commitments are ruled out of bounds at the door, while the convictions of their opponents (about autonomy, equality, the limits of state power) are admitted as the lingua franca of public discourse. This is not religious neutrality; it is a particular substantive vision masquerading as neutrality.</p>
+      <p>The Pope&#x27;s encyclical, whatever else one thinks of it, makes its case in moral and philosophical terms, not by appeal to revelation. The encyclical argues, for instance, that the continuity of biological development from conception is itself a reason to treat the fertilized egg as morally significant. One can reject this argument, but one cannot fairly dismiss it as a sectarian intrusion into public reason. It is a philosophical argument, and it deserves a philosophical response.</p>
+      <p>This brings me to what I think is the genuinely valuable contribution of Thomson&#x27;s essay. Her treatment of Dworkin is excellent. Dworkin&#x27;s attempt to reinterpret abortion opponents as not really meaning what they say is patronizing and false, and Thomson is right to call it out. The encyclical is not subtly arguing for something weaker than what it states. It is arguing exactly what it states. The merit of taking opponents seriously on their own terms is real.</p>
+      <p>But once we take them seriously on their own terms, we owe them more than a procedural argument about the allocation of justificatory burdens. We owe them an engagement with the substantive moral question. Why do animals matter morally? Why do infants? Why might a fetus be relevantly similar to or different from these? What is the moral significance of the genetic, developmental, and biological continuities that anti-abortion arguments emphasize? These are hard questions, and they cannot be answered by reframing them as questions about whose ox is being gored by state coercion.</p>
+      <p>A democracy genuinely committed to liberty must also be genuinely committed to engaging the moral disputes that liberty raises. Thomson&#x27;s procedural turn, however well-intentioned, threatens to substitute for that engagement rather than further it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>**On the Politics, If Not the Philosophy**</p>
+      <p>Set aside, for a moment, the philosophical question of whether fertilized eggs have rights. Thomson&#x27;s essay is most powerful, I think, not in its careful treatment of Dworkin or its analysis of &quot;interests&quot; and &quot;rights,&quot; but in its description of what is actually happening on the ground in the United States in 1995.</p>
+      <p>A man walks into two Brookline clinics and opens fire, killing two and wounding five. He then drives to Norfolk and shoots up another clinic. He is the latest in a string of assassins. Doctors who provide abortions are being murdered. Their colleagues are receiving &quot;Wanted&quot; posters with their faces on them. Insurance premiums for clinics are soaring. Medical schools, under pressure, have stopped teaching abortion procedures. In vast stretches of rural America, the constitutional right declared in *Roe* and reaffirmed in *Casey* has become a paper right—legally available, practically unobtainable.</p>
+      <p>This is the situation, and Thomson is right to insist that it cannot be permitted to wash over us as if &quot;all that matters is that the legal right was won.&quot; A right that no one can exercise is not a right.</p>
+      <p>What I want to add to Thomson&#x27;s essay is a thought about the political dynamics that produced this situation, and what they imply about the path forward.</p>
+      <p>The dominant narrative on the legal left has long been that *Roe* settled the matter and that ongoing opposition is mere reactionary refusal to accept settled law. Thomson herself flirts with a version of this when she defends the propriety of judicial settlement. She cites the recent empirical work suggesting that access would have been worse had the issue been left to legislatures, and she concludes that there is no principled objection to judicial resolution of the question.</p>
+      <p>I am not so sure. The empirical claim may well be correct as to access, narrowly defined. But the political claim—that constitutionalizing the question has produced a stable settlement—seems harder to sustain in light of the very phenomena Thomson describes. Twenty-two years after *Roe*, the issue is more divisive, not less. Opponents have not reconciled themselves to the constitutional status quo; they have organized, mobilized, and in extreme cases, taken up arms. The Christian Coalition&#x27;s political ascendancy is in significant part a story about abortion.</p>
+      <p>Compare the trajectory of abortion politics in Europe and Canada. In most European democracies, abortion was liberalized through legislation, often with significant compromises—gestational limits, counseling requirements, public funding tied to indication. The results have been politically stable settlements that command broad public acceptance, and access in practice that is in most cases superior to American access. The American exceptionalism on this question—the violence, the rage, the political polarization—is at least partly attributable, I suspect, to the particular path by which the right was established here.</p>
+      <p>This is not to say that *Roe* was wrongly decided. It is to say that the question of how a contested moral issue is resolved matters, politically, in ways that abstract jurisprudence sometimes obscures. A right won by judicial fiat does not, in general, achieve the kind of legitimacy that a right won through democratic deliberation does. This is especially true when the right concerns a question on which (as Thomson herself acknowledges) reasonable people deeply disagree.</p>
+      <p>Where does this leave the pro-choice movement in 1995? I would suggest two things.</p>
+      <p>First, defend the right vigorously, including against extralegal violence. The murders in Brookline and elsewhere are acts of terrorism, and they should be prosecuted as such. The federal government should use the full weight of its authority—including the FACE Act and federal civil rights law—to protect clinic workers and patients. Thomson&#x27;s call to take the threat seriously is exactly right.</p>
+      <p>Second, and harder: do not be satisfied with constitutional victories. The pro-choice movement needs to win the moral and political argument as well, in legislatures, in churches, in op-ed pages, on talk shows, in clinics. It needs to articulate why women&#x27;s autonomy matters, why early abortion is morally different from late abortion, why a society that denies women reproductive control denies them full citizenship. The constitutional right will only be secure when it is supported by a durable popular majority that understands and accepts the reasons for it.</p>
+      <p>Thomson&#x27;s essay does some of this work, and does it well. But her argument is pitched at a level of abstraction that is unlikely to move anyone who is not already convinced. To the abortion opponent who genuinely believes a baby is being killed, the response &quot;the constrained must be unreasonable in rejecting the constraint&quot; will sound like sophistry. Something more is needed. The pro-choice movement has, in figures like Cuomo, articulate spokespeople who can make the case in moral terms that reach across the divide. We need more of that, not less.</p>
+      <p>We also need, I think, to be honest about the moral complexity of what is at stake. A fertilized egg is not a baby, but it is also not nothing. An eight-week fetus is not a person, but its destruction is not morally trivial. The pretense that abortion is morally uncomplicated has done the pro-choice cause real damage. It is not necessary to embrace the encyclical&#x27;s view that abortion is murder in order to acknowledge that something morally weighty is involved in the destruction of a developing human organism. The honest acknowledgment of that weight, coupled with a defense of women&#x27;s authority to make this decision themselves, is a more sustainable politics than the rhetoric of unproblematic choice.</p>
+      <p>The Brookline murders should remind us that this is not an academic dispute. Real lives—of women, of doctors, of clinic workers, and yes, in the view of opponents, of unborn children—hang in the balance. Thomson is right to insist on engagement. The question is what kind of engagement we offer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Judith Jarvis Thomson’s essay is a formidable defense of the abortion right, but it rests on a crucial misstep: the claim that there is no reason to believe a fertilized egg has a right to life, and thus that restricting abortion on that ground is illegitimate. I intend to show that this claim is not only false but that the biological and moral evidence points precisely the other way, and that the law must therefore protect prenatal human life.</p>
+      <p>Thomson’s starting point is that human beings have a right to life. She then challenges the anti-abortion argument that says a human being’s life begins at conception. She insists that having rights presupposes having interests, which in turn require psychological states. Since a fertilized egg lacks such states, she concludes, no reason compels us to believe it has rights. But this line of reasoning smuggles in a controversial theory of personhood. It assumes that the capacity for mental states is what grounds the right to life, rather than membership in the human species.</p>
+      <p>Consider: a newborn infant has only rudimentary wants and fears, far less sophisticated than many animals. A sleeping adult momentarily lacks any occurrent psychological states. If the right to life truly depends on the actual exercise of consciousness, we would have no ground to condemn infanticide or the killing of people in deep sleep. Yet both are universally acknowledged as murder. The common-sense view, which the encyclical reflects, is that every living member of the human family is a person with a right to life, not because of some temporary attribute, but because of what it is: a human being with an inherent capacity for rational thought and moral choice. The fertilized egg is not just a piece of tissue; it is an organism of the human species, genetically distinct from its mother and father, and actively directing its own development. It is a human being at an early stage of life.</p>
+      <p>Thomson might reply that something can be a human organism without having a right to life, but that move requires a defensible criterion for moral standing. She offers none, merely asserting that the pro-life view is “not unreasonable” to reject. But is the claim that every human being has a right to life itself unreasonable? That claim is the foundation of human equality. If we can arbitrarily exclude some humans—those at very early developmental stages—from the moral community, we undermine that foundation. The burden of proof is on those who wish to draw a line. Thomson’s line (psychological interests) would also exclude some severely disabled adults, a conclusion she surely would not welcome. The encyclical’s argument from natural law is, at a minimum, as rationally defensible as her own.</p>
+      <p>Once we grant that a fetus from conception is a human being with a right to life, the balance shifts. Thomson acknowledges that rights can be trumped in some circumstances, but she insists that abortion cannot be restricted on a ground that the constrained are not unreasonable in rejecting. This is a novel principle: that any severe constraint on liberty is impermissible unless the constrained party must rationally accept the reason. But by this logic, could we ever prohibit murder, if the murderer finds the prohibition unreasonable? A society must be able to enforce moral norms even when some citizens disagree, as long as those norms can be rationally defended in the public square. The claim that it is always wrong to intentionally kill an innocent human being is rationally defensible. The fact that some women reject it does not make it an illegitimate basis for law.</p>
+      <p>Finally, Thomson’s attempt to separate abortion—even early abortion—from the killing of a baby is belied by the biological reality. The placard she derides showed a developed infant, but the point is that abortion ends the life of a developing human at whatever stage. Calling that “fraud” is a rhetorical escape, not an argument. Violence is deplorable, but the moral outrage at the killing of millions of innocent human beings is not a product of misleading rhetoric; it springs from a reasoned conviction that these are our fellow humans. The law should protect them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>In “Abortion: Whose Right?” Judith Jarvis Thomson trains her considerable philosophical talents on the weakest version of the anti-abortion position—the claim that even the fertilized egg has a right to life—and dispatches it with characteristic clarity. Yet as a feminist and a defender of abortion rights, I find her cautious minimalism deeply troubling. By focusing on early embryos and conceding that later fetuses might well have rights, she effectively cedes the moral high ground to the very forces that would control women’s lives. The right to abortion is not contingent on the philosophical undecidability of fetal personhood; it is grounded in the absolute right of every woman to bodily integrity and self-determination.</p>
+      <p>Thomson is, of course, the author of the most famous defense of this principle: the violinist thought experiment. It is a pity she did not employ it here. That analogy makes clear that even if we assume the fetus is a full person with a right to life, it does not follow that a woman must sustain its life with her body. No one—not a famous violinist, not a child, not a stranger—can claim such a use of another’s body without consent. The right to life is not a right to the use of another’s body, to claim what is needed to survive. This argument is far more powerful than Thomson’s current line, which depends on showing that the fetus “probably” has no right to life at all. The latter strategy invites endless and unwinnable metaphysical squabbles, and worse, it suggests that if it could somehow be proven that the fetus is a person from conception, then abortion might be murder. That is a dangerous concession. It plays directly into the hands of those who brandish ultrasound images and papal encyclicals, because we are forever on the defensive, arguing about heartbeats and neural development. The real moral fact is that women are persons, and the state may not compel them to gestate against their will, regardless of what we think about the entity inside them.</p>
+      <p>Thomson’s preoccupation with the encyclical’s claim about fertilized eggs is strategically misconceived. She devotes pages to demonstrating that reason does not compel belief in personhood at conception. But the anti-abortion movement in 1995 is not moved primarily by philosophical argumentation about fertilized eggs—it is moved by graphic images of late-term fetuses and by a deep-seated desire to reassert traditional gender roles. The encyclical itself is a political document aimed at reasserting male authority over women’s reproductive lives. When the Pope declares that abortion is murder and that those who support it are in moral crisis, he is not making a dispassionate philosophical claim; he is wielding religious power to enforce a particular vision of womanhood. Thomson’s gentle rebuke that the encyclical is “a thoroughly groundless assault on their moral integrity” is far too mild. It is a patriarchal edict, and we should say so.</p>
+      <p>Furthermore, Thomson’s legal argument relies on a slender liberal principle: that the state may not restrict a deeply valued liberty on grounds that the constrained are not unreasonable in rejecting. This principle is appealing but oddly conservative. It suggests that if a majority of women someday came to accept fetal personhood, then restrictions might become legitimate. Rights should not depend on epistemological stalemates. The right to abortion is a fundamental right of bodily autonomy, akin to the right to refuse medical treatment or to defend oneself against physical invasion. It persists even if every single woman were to believe that the fetus is a person, because no moral community may use one person’s body as a life-support system for another.</p>
+      <p>To be sure, Thomson is on our side, and her essay offers invaluable ammunition against the most absolutist anti-abortion claims. But we must go further. We must assert that abortion is not merely permissible when the fetus’s moral status is questionable, but is a positive good—an exercise of women’s moral agency and a necessary condition of equality. The violence at clinics, the harassment of doctors, the slow erosion of access in rural areas—these are not primarily caused by philosophical confusion; they are caused by a political movement that has been allowed to set the terms of the debate. We need a feminist reclamation of the moral language, in which women’s lives and autonomy are the central values, not the hypothetical rights of zygotes. Thomson’s minimalism, however elegant, ends up reinforcing the idea that abortion is a regrettable exception to a general rule that life deserves protection. That is not a foundation for lasting freedom.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Judith Jarvis Thomson’s article makes a sophisticated argument for why the state should not restrict abortion, but it conspicuously does not make the case for why courts, rather than legislatures, should have the final say. In fact, she asserts that “there can be no principled objection to the settlement of the issue by the judicial rather than the legislative branch” because fundamental liberties are at stake. But this simply begs the question. Whether abortion is a fundamental liberty is precisely what democratic majorities disagree about. Thomson’s own reasoning unwittingly provides a powerful argument for letting the people decide.</p>
+      <p>Consider her central claim: that restricting abortion on the ground that the fetus has a right to life from conception is illegitimate because the constrained—women who reject that premise—are not unreasonable in doing so. This is a claim about the reasonableness of moral pluralism. If that is true, it follows that the issue is, in John Rawls’s terms, a matter on which reasonable people can differ. In a liberal democracy, such issues are paradigmatically suited for legislative deliberation, where competing reasonable views can be weighed, compromises forged, and legitimacy secured through the consent of the governed. By contrast, when a court imposes one side’s view on the whole nation, it short-circuits that deliberative process and provokes the very rage and violence Thomson deplores. The backlash against Roe v. Wade is not just about the substance of abortion; it is about the loss of democratic self-rule. Many citizens rightly perceive that a moral issue of profound importance was taken out of their hands.</p>
+      <p>Thomson dismisses this concern by citing a study suggesting that legislative action would have resulted in less access to abortion than we currently enjoy. But that is exactly the point: in a democracy, the level of access should reflect the considered moral judgment of the people, not the preferences of judges or philosophers. If the majority of Americans, after full debate, came to believe that late-term abortions should be restricted, or that parental consent laws are appropriate, or that public funding should not be available, those judgments deserve respect. The Court’s usurpation has poisoned abortion politics, turning every election into a referendum on judicial appointments and making political compromise nearly impossible.</p>
+      <p>Thomson’s analogy to Bossuet—“I have the right to persecute you because I am right and you are wrong”—is revealing. In a democracy, a legislative majority that enacts a law does not “persecute”; it governs on the basis of a collective, if contested, moral vision. The law always involves the imposition of force. The question is whether that imposition has democratic legitimacy. Thomson’s alternative is that the constrained must themselves accept the reason for the constraint. By that standard, virtually no law could survive, since there will always be some who reject its premise. The proper standard is that the reason be one that can be publicly advanced in a democracy, even if some reject it. The claim that human life begins at conception is such a reason, whether or not one finds it compelling.</p>
+      <p>Finally, Thomson’s assertion that the abortion right is necessary for women’s equality is a powerful substantive argument—but it is an argument that should be made to fellow citizens, not decreed by nine justices. If it is as persuasive as she believes, it will carry the day in the legislative arena. The path to lasting social peace on abortion is not through judicial fiat, but through a democratic consensus that respects the deeply held convictions on all sides. That process will be messy and imperfect, but it is the only one consistent with a free society.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Judith Jarvis Thomson’s essay is a model of clear reasoning, but its central epistemological claim—that reason does not compel acceptance of the personhood of the early embryo—rests on an impoverished conception of reason itself. By treating “reason” as a faculty that operates only on empirical data about psychological states, she ignores an entire tradition of moral reasoning that grounds human rights in the nature of the human person, not in transient attributes. It is this tradition that animates the papal encyclical Evangelium Vitae, and it deserves a more careful response than Thomson’s dismissal.</p>
+      <p>The encyclical states that the right to life from conception is “based upon the natural law” and is “knowable by reason itself.” Thomson retorts that this claim “simply will not do.” But what is natural law reasoning, and how does it differ from the empiricist psychology she assumes? Natural law ethics begins with the observable fact that we are living human organisms directed toward certain ends: we naturally seek to preserve our existence, to develop our capacities, to live in society, and to know the truth. The first precept of practical reason is that good is to be done and evil avoided. Because life is a fundamental good, intentionally destroying an innocent human life is always morally wrong. The crucial question is: what counts as a human life? The natural law answer is that a human life is a living individual substance of a rational nature. The embryo from conception is precisely such a substance: it is a distinct living organism that belongs to the human species and has the inherent active potential to develop the higher functions of rationality, sensation, and self-movement. It is not a mere “piece of human tissue,” as Thomson asserts, any more than a newborn is a mere “piece” because it cannot yet walk. It is a human being at an early stage of development.</p>
+      <p>Thomson’s objection—that the embryo lacks psychological states and therefore lacks interests and thus rights—misses this ontological point. The foundation of a right to life is not the actual exercise of capacities but the nature of the being. We recognize that a person in a reversible coma retains the right to life, not because she is currently experiencing anything, but because she remains a human person with a rational nature. Similarly, a human embryo, by virtue of being a living organism of the human species, is a person with that same nature, albeit in its initial stages. The capacity for rational thought is present not as an occurrent attribute but as a natural potency rooted in the organism’s constitution. If this were not sufficient, then one could never say when, in the gradual development from embryo to fetus to newborn, the right to life suddenly appears. Any line would be arbitrary.</p>
+      <p>Thomson suggests that one could reasonably think that the future development of the embryo into a person lends “no weight at all” to the idea that it is a person now. But this is to treat the embryo as a mere passive thing that will become a person, rather than as a being that is already a human individual with a built-in developmental program. There is no moment at which a non-human entity becomes human; the transformation is continuous, and the substance remains the same. The encyclical’s teaching, therefore, is not an irrational dogmatism but a coherent philosophical account of personal identity.</p>
+      <p>Furthermore, Thomson’s characterization of the encyclical as a “thoroughly groundless assault” on the moral integrity of those who support legal abortion is unfair. The encyclical’s language about a “crisis of the moral sense” is a diagnosis of a cultural shift that has numbed the conscience to the value of life, not a personal indictment of every pro-choice individual. It calls for conversion, not condemnation. And indeed, if the natural law case is sound, then there is objective moral truth at stake. In a pluralistic society, one may advance such a claim in the public square without thereby “persecuting” others. Thomson’s Bossuet analogy fails precisely because the pope does not ask for lawful power to persecute; he calls for laws that protect the innocent. A law banning abortion is not a law against women; it is a law against killing.</p>
+      <p>Finally, Thomson’s political argument—that a deeply valued liberty may not be constrained on grounds the constrained are not unreasonable in rejecting—would have the effect of shrinking the public sphere to the lowest common denominator of moral agreement. But law often constrains liberty on controversial moral grounds: consider the prohibition of assisted suicide, or the ban on polygamy. The fact that some find such laws unreasonable does not make them exercises of bare force. The legitimacy of law rests on its aim to secure justice, not on the assent of every possible dissenter. If the just society requires protecting the most vulnerable, the law may and must do so, even if the powerful disagree.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Reading Judith Jarvis Thomson’s meticulous philosophical argument, I kept thinking: where are the women? Not the abstract women whose liberty is constrained, but the real, flesh-and-blood women who face unintended pregnancies. For them, abortion is not primarily a problem of rights theory or metaphysical status; it is a concrete, solitary, often frightening decision. What they need most is not a philosophical vindication of their liberty, though that matters, but a society that makes it possible for them to bear children with dignity or to end a pregnancy safely and without shame. The abortion debate has become a hostage to metaphysical abstractions, and Thomson’s essay, for all its brilliance, remains largely on that terrain. I want to redirect the conversation toward what we can actually do to help women and reduce the toll of abortion—both the number of abortions and the harm that flows from making them harder to obtain.</p>
+      <p>Thomson is right that the Court’s protection of abortion access has been essential. But at the grassroots, the real battle is not over fertilized eggs versus paintings; it is over insurance coverage, medication like RU-486, sex education, contraception funding, and social support for mothers. The encyclical and the placards are symptoms of a deeper societal failure: the failure to value both women and children enough to provide the resources that would make abortion less necessary. When a woman faces an unplanned pregnancy, her reasons are the weighty ones Thomson lists—poverty, violence, career disruption, health risks. Those reasons won’t disappear because a philosopher shows that a zygote has no right to life. They will, however, be mitigated by a living wage, universal health care, affordable child care, and genuine gender equality.</p>
+      <p>The religious opposition Thomson criticizes often does speak from a deep commitment to the sanctity of life. But too often that commitment is selective, focusing solely on the unborn while ignoring the lives of poor women and children. Instead of trading arguments about moral status, we should be forging coalitions around concrete measures that reduce the demand for abortion. We know from experience that countries with strong social safety nets and easy access to contraception have lower abortion rates. We also know that making abortion illegal does not eliminate it; it only makes it deadly. The public health argument for legal, safe abortion is overwhelming. That argument gets short shrift in Thomson’s rights-based framework, but it is the one that resonates most with the public and that, in the long run, may do more to secure access.</p>
+      <p>I am not suggesting we abandon the philosophical defense of abortion rights; Thomson’s work is vital. But as a matter of political strategy and human empathy, we need to pivot from winning a metaphysical debate to attending to the real-world conditions that lead women to seek abortions. When a scared teenager walks into a clinic past shouting protesters, she does not care whether the embryo is a threshold person; she cares about her future. We should meet her there, with compassion, resources, and yes, the freedom Thomson rightly defends. But that freedom must be part of a broader commitment to women’s full flourishing, not just an abstract right protected by a 1973 court decision.</p>
+      <p>In the end, the abortion wars will not be won by philosophers trading arguments about the nature of interests. They will be won or lost in the realm of practical policy and cultural change. Let us turn our energies to making this country a place where every child is wanted and every mother supported. That is the common ground that transcends the rights debate, and it is high time we occupied it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Judith Jarvis Thomson’s defense of the abortion right rests on a novel and deeply troubling principle of political philosophy: that the state may not severely constrain liberty based on a moral claim if the people being constrained are &quot;not unreasonable&quot; in rejecting that claim. Because she believes there is no conclusive reason to affirm that a fertilized egg has a right to life, she concludes that women are &quot;not unreasonable&quot; to reject this premise, and thus the state cannot force them to carry pregnancies to term.</p>
+      <p>While this formulation sounds appealingly tolerant, it is an astonishingly fragile foundation for human rights, and one that historical experience should warn us against.</p>
+      <p>Consider the implications of Thomson’s requirement that the justification for coercive law must be one that the constrained cannot reasonably reject. Throughout history, the most profound moral advancements have required the state to impose severe constraints on liberty precisely because a large, powerful segment of the population completely rejected the moral premise underlying those constraints. In the mid-nineteenth century, slaveholders genuinely believed that African Americans lacked the moral status of persons. Drawing upon pseudo-science, economic necessity, and even scripture, they found it entirely &quot;not unreasonable&quot; to reject the abolitionist claim that a slave possessed an inviolable right to liberty. By Thomson’s logic, the state would be engaging in an unjustified &quot;exercise of force&quot; by legally emancipating slaves, because the constrained class (the slaveholders) were, by their own internal logic and the cultural consensus of their peers, &quot;not unreasonable&quot; in rejecting the premise of equal human dignity.</p>
+      <p>Thomson attempts to circumvent this by asserting that the claim &quot;fertilized eggs have a right to life&quot; is completely devoid of rational support—she compares it to claiming a cell in one&#x27;s thumb is a person. But this is biological sophistry. An embryo is an integrated, self-directing human organism in the earliest stages of its natural development. A skin cell is a mere part of a larger organism. One need not appeal to the Papal encyclical *Evangelium Vitae* or any divine revelation to grasp this distinction; basic embryology confirms that conception marks the beginning of a unique biological human life. To recognize this biological reality and assign it moral weight is not an act of religious zealotry, nor is it rationally baseless.</p>
+      <p>If a biological human life is present, then the state has a compelling interest in protecting it. We do not require absolute epistemological certainty or universal consensus to establish human rights. We require only the recognition that when fundamental rights are at stake, the law must err on the side of life. Thomson argues that we cannot prove the fetus has a right to life. But she admits she cannot prove it does not. In the face of such uncertainty regarding the lives of millions of developing human beings, the truly reasonable legal posture is protection, not destruction.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>It is profoundly disappointing to see Judith Jarvis Thomson, who revolutionized the philosophical debate on abortion in 1971, retreat to the exhausting and unwinnable terrain of fetal personhood. In her famous earlier work, Thomson powerfully demonstrated that *even if* a fetus is granted full moral personhood from the moment of conception, it does not follow that the fetus has a right to use a woman’s body to sustain its life against her will. Yet in this essay, she inexplicably abandons her most potent feminist insight, choosing instead to argue with the Pope over whether a fertilized egg has interests.</p>
+      <p>By centering her defense of abortion access on the assertion that embryos and fetuses lack a right to life, Thomson implicitly concedes a dangerous premise: that if the fetus *did* have a right to life, abortion would indeed be impermissible, and women would be morally and legally obligated to endure forced pregnancy. This concession is fatal to the cause of women&#x27;s equality.</p>
+      <p>If we accept that a woman’s right to an abortion hinges on the biological or psychological status of the fetus, women’s bodily autonomy becomes entirely contingent. As medical technology advances, pushing the threshold of viability earlier and earlier, or revealing more about fetal neural development, the window for women&#x27;s freedom shrinks. Why should a woman’s status as a free and equal citizen depend on whether a fetus has developed the capacity for &quot;wants, hopes, fears, likes and dislikes&quot;?</p>
+      <p>The abortion debate is fundamentally not about the moral status of the fetus; it is about the moral status of women. It is about whether women are to be treated as autonomous individuals or as conscripted biological incubators. No person in our legal system has the right to use another person’s body without their continuous consent. A father cannot be legally compelled to donate a kidney or even a pint of blood to save his dying child. Why, then, should a woman be legally compelled to surrender her organs, her metabolism, and her health for nine months?</p>
+      <p>Thomson mentions the importance of abortion to women’s equality and liberty, but she subordinates these concerns to a sterile debate over fetal rights. When anti-abortion activists blockade clinics and shoot doctors, they are not merely expressing a philosophical disagreement about the point at which human rights begin; they are violently enforcing the patriarchal subjugation of women. They are demanding that women&#x27;s bodies be treated as public property.</p>
+      <p>Instead of parsing whether a fertilized egg has &quot;interests,&quot; we must unequivocally assert that women have interests, women have rights, and women are the sole moral arbiters of what happens inside their own bodies. Until the abortion rights movement stops apologizing, stops arguing about fetal development, and reclaims the absolute primacy of bodily autonomy, our rights will remain precarious.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Judith Jarvis Thomson makes quick work of Ronald Dworkin’s argument in *Life’s Dominion*, but she dismisses him too hastily by focusing solely on the rhetoric of the Vatican.</p>
+      <p>Dworkin’s insight was that despite the heated rhetoric of &quot;murder,&quot; the actual moral intuitions of most people who oppose abortion—and indeed, many who support it—revolve around the idea that human life has intrinsic, sacred value, even if a fetus does not yet possess the formal &quot;rights&quot; of a person. Thomson counters this by pointing to Pope John Paul II’s *Evangelium Vitae*, which makes no exceptions and insists that abortion is unequivocally the murder of a rights-bearing person.</p>
+      <p>However, Thomson mistakes the rigid doctrinal pronouncements of the Catholic hierarchy for the complex moral reality of the American public. If we are trying to understand the political and social dynamics of the abortion controversy in the United States, citing the Pope as the definitive representative of the anti-abortion position is analytically flawed.</p>
+      <p>Survey after survey demonstrates that the vast majority of Americans, including those who identify as &quot;pro-life,&quot; support legal abortion in cases of rape, incest, or when the mother&#x27;s life is at risk. As Dworkin correctly noted, if these individuals truly believed that an embryo was a person with an absolute right to life equivalent to a born child, they could not logically support a rape exception. You cannot murder a toddler simply because her conception was the result of a crime.</p>
+      <p>The fact that millions of anti-abortion Americans *do* support these exceptions proves Dworkin’s point: they do not actually view the fetus as a full person with rights, but rather as an entity of immense intrinsic moral value. They believe that destroying this value for &quot;frivolous&quot; reasons is a profound moral wrong, but they recognize that in tragic circumstances—such as rape—the destruction of this intrinsic value might be justified by the paramount needs of the woman.</p>
+      <p>By framing the opposition exclusively through the absolutist lens of the Pope, Thomson artificially polarizes the debate. She creates a binary choice: either the fetus is a full person from conception (the Pope&#x27;s view), or it is effectively a clump of cells with no rights, and we can regulate it as we please (her view). This ignores the vast, conflicted middle ground of Americans who view abortion as a tragic moral issue involving the weighing of intrinsic values, not an absolute clash of rights. Finding political peace on this issue requires speaking to that middle ground, not just debating the extremes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>At the conclusion of her essay, Judith Jarvis Thomson defends the Supreme Court&#x27;s role in securing abortion rights, dismissing the argument that judicial intervention has fueled the violent backlash we see today. Citing a single empirical study, she suggests that leaving abortion to the legislatures would have resulted in restricted access, thereby justifying the Court’s usurpation of the democratic process.</p>
+      <p>This argument is profoundly shortsighted and misdiagnoses the nature of political legitimacy.</p>
+      <p>The violence at clinics in Brookline and Norfolk is abhorrent and criminal. But we must understand the political pathology that breeds it. In a functioning democracy, citizens resolve their deepest moral disagreements through persuasion, elections, and legislation. When the Supreme Court handed down *Roe v. Wade*, and subsequently upheld it in *Casey*, it abruptly removed one of the most contentious moral issues from the democratic arena. It told millions of citizens who harbor deep, sincere moral convictions about the sanctity of life that their votes no longer mattered, and that a panel of unelected judges had settled the issue by constitutional fiat.</p>
+      <p>When people feel that the democratic process is closed to them on a matter they view as literal life and death, radicalization is inevitable. Thomson argues that since a fetus likely has no rights, there is &quot;no principled objection&quot; to the Court settling the issue. But this begs the question. The very thing in dispute is whether the fetus has rights. By relying on courts to bypass the voters, abortion advocates achieved a hollow, fragile victory that requires armed guards and bulletproof glass to maintain. A democratic settlement, however messy and compromised, would possess a legitimacy that judicial decrees can never command.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>As a progressive Catholic, I read Judith Jarvis Thomson’s essay with a mixture of agreement and deep sorrow. I agree with her political conclusion: the state should not criminalize abortion. Like Mario Cuomo, whom she cites, I believe that in a pluralistic democracy, one cannot use the coercive power of the law to enforce religious doctrine, especially when reasonable people disagree in good faith about the moral status of the fetus. Women facing crisis pregnancies deserve our compassion, our support, and the liberty to make their own agonizing choices.</p>
+      <p>Yet, I am deeply sorrowed by the cold, utilitarian logic Thomson employs to reach this conclusion. In her eagerness to dismantle the encyclical *Evangelium Vitae*, she entirely misses the profound moral challenge that Pope John Paul II has laid before the modern world.</p>
+      <p>Thomson reduces the debate to a sterile calculus of &quot;rights&quot; and &quot;interests.&quot; She likens a developing human embryo to a painting, arguing that because an embryo lacks psychological states, it cannot be wronged. She even suggests that it is not contrary to reason to view a human embryo as having no more moral significance than a cell in one&#x27;s thumb.</p>
+      <p>This reductionist view of human life is a symptom of the very &quot;crisis of the moral sense&quot; the Pope writes about. To recognize the humanity of the unborn is not simply a matter of religious dogma; it is an act of moral imagination and human solidarity. An embryo is not a thumbnail; it is the unfolding story of a human being in its most vulnerable, dependent stage.</p>
+      <p>The progressive vision should be one of a &quot;seamless garment&quot; of life. The same moral logic that compels us to protect the poor, the marginalized, and the condemned on death row should awaken our consciences to the tragedy of abortion. Thomson treats abortion merely as a liberty to be protected, completely ignoring the structural injustices—poverty, lack of healthcare, workplace discrimination, and male abandonment—that coerce millions of women into seeking abortions they would not otherwise want.</p>
+      <p>We can oppose the criminalization of abortion without abandoning our reverence for nascent human life. We can respect women&#x27;s moral agency while still mourning the destruction of the fetus as a profound loss. Thomson’s essay asks us to choose between women’s liberty and the moral weight of fetal life. A truly just society must refuse that false choice, striving instead for a world where every woman has the freedom to choose, and the material and social support to choose life.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Judith Jarvis Thomson has done something more useful than simply repeat the familiar defense of abortion as a matter of “privacy.” She has asked what kind of reason a constitutional democracy may use when it imposes a grave burden on citizens. That is the right question. The abortion debate is not merely a contest between two metaphysical assertions, one about fetal personhood and one about women’s autonomy, with the state free to pick either. It is a debate about coercion.</p>
+      <p>This point is often lost. Opponents of abortion say: “You cannot prove that the fetus is not a person.” Supporters answer: “You cannot prove that it is.” Then someone concludes that the matter is evenly balanced and should be settled by majority vote. Thomson rightly denies the symmetry. If the state bans abortion, it does not merely express a moral opinion. It forces a woman to remain pregnant, to undergo childbirth, and to assume all the risks, indignities, and life consequences that follow. The citizen who demands such a law is demanding state power over another person’s body. That demand requires a public justification of unusual strength.</p>
+      <p>The most important sentence in Thomson’s essay is her claim that “what the supporters want is a license to impose force; what the deniers want is a license to be free of it.” That does not by itself settle every question about abortion. But it does establish where the burden lies. Those who would make abortion criminal must show not merely that their view is sincere, or religiously grounded, or emotionally compelling, but that women are unreasonable in rejecting it. On the question whether a fertilized egg has the moral status of a child, that showing has not been made.</p>
+      <p>Indeed, it is striking how much anti-abortion argument depends on sliding between images. At one moment we are asked to contemplate a newborn baby; at the next we are told that the same moral conclusion applies to a zygote. But the emotional force of the first image cannot do the argumentative work required for the second. A baby has a face, cries, suffers, responds, is already enmeshed in human relations. A fertilized egg has human DNA and, under certain conditions, may develop into such a being. That difference matters to many reasonable people. It is not moral blindness to think so.</p>
+      <p>Thomson is also right to resist Ronald Dworkin’s too-comfortable interpretation of abortion opponents. Many of them really do believe abortion is murder. It is condescending, and politically foolish, to say they cannot mean what they say. But taking them seriously is not the same as granting them legal authority. A citizen may believe, with complete sincerity, that divorce is sinful, that war is always murder, or that eating animals is a grave evil. In a pluralist republic, sincerity is not enough to justify legal compulsion.</p>
+      <p>Where Thomson’s essay could be strengthened is in acknowledging that some regulations need not rest on the claim that the fetus is a rights-bearing person from conception. One may think that later fetal development has moral significance, or that the state has some legitimate interest in ensuring that decisions are informed, without embracing the absolutism of the encyclical. The danger is that “informed consent” and waiting periods often become devices of humiliation rather than information. Still, a liberal defense of abortion rights should not imply that all moral concern for fetal life is irrational or oppressive. The public may reasonably distinguish early abortion from late abortion, contraception from abortion, and medical necessity from elective procedure.</p>
+      <p>But those distinctions strengthen rather than weaken the case for the core right. Most abortions occur early. The strongest anti-abortion claim—that from conception there exists a person with a right to life equal to that of a born child—is precisely the claim least available as a basis for coercive law in a society of free and equal citizens. Casey’s preservation of Roe’s “central holding” therefore remains morally defensible, even if its “undue burden” standard will invite endless litigation.</p>
+      <p>Finally, Thomson’s opening reminder of violence matters. To call abortion “murder” in ordinary political speech is not the same as pulling a trigger. Responsibility for murder belongs to murderers. But words shape moral permission. If doctors are repeatedly described as baby-killers, if women are portrayed as accomplices in slaughter, if laws permitting abortion are said to have no moral validity, then some unstable adherents will draw the conclusion that killing providers is rescue. Leaders who use such language cannot wash their hands entirely of its foreseeable effects.</p>
+      <p>The right to abortion is not secure merely because the Supreme Court has spoken. Rights require institutions, doctors, clinics, public courage, and a moral vocabulary adequate to defend them. Thomson supplies part of that vocabulary. A society that cannot justify forcing women to remain pregnant has no right to do so.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Judith Jarvis Thomson’s essay is powerful, lucid, and, in one respect, admirable: she refuses to trivialize the pro-life claim. She does not pretend, as Ronald Dworkin sometimes seems to, that opponents of abortion cannot really mean what they say. Many of us do mean it. We believe that abortion intentionally destroys an innocent human life. We also condemn, without qualification, the shootings and bombings committed in the name of that belief. Those crimes are not the logical flower of respect for life but its grotesque betrayal.</p>
+      <p>Yet Thomson’s central argument fails. She says that because reasonable people may reject the claim that the fetus has a right to life from conception, the state may not impose severe restrictions on abortion on that ground. This is a demanding standard—too demanding, and not one our law or politics could possibly meet.</p>
+      <p>Many laws rest on moral judgments that some citizens reasonably reject. Pacifists reasonably reject the justice of war; yet they are taxed to support armies. Some citizens reasonably reject capital punishment; yet states continue to impose it. Many religious believers regard pornography as a grave social harm; civil libertarians reasonably deny that judgment. Economic regulation, environmental law, civil rights law, and criminal punishment all rest on contested moral and empirical premises. If every serious burden on liberty required a justification that the burdened could not reasonably reject, democratic government would be paralyzed.</p>
+      <p>Thomson might answer that pregnancy is different because the burden is bodily, intimate, and uniquely imposed on women. She is right that pregnancy is different. But the pro-life argument is also different, because what is at stake, if our claim is correct, is the life of a human being who cannot speak. The law regularly imposes burdens to protect the vulnerable. Parents are not free to abandon infants because care is exhausting. A father may be compelled to support a child he did not plan. Citizens may be required to testify, to serve on juries, to submit to quarantine, or to refrain from acts they regard as central to their freedom. Bodily liberty is profoundly important, but it is not absolute when another human life is at stake.</p>
+      <p>The dispute, then, returns to the status of the unborn. Thomson argues that fertilized eggs lack wants, hopes, fears, and interests, and that this gives us reason to deny that they have rights. But this account of rights is too narrow. Sleeping persons have no present wants. Temporarily comatose patients may have no present experiences. Newborn infants have only rudimentary mental lives. The severely disabled may lack many capacities that philosophers often use to define “interests.” Yet we rightly refuse to make their rights depend on currently exercisable psychological functions.</p>
+      <p>The better account is that rights attach to beings of a kind: living human organisms whose natural development, if not interrupted by death or disease, is toward the mature capacities of persons. A human embryo is not a skin cell. A skin cell is part of a larger organism; an embryo is an organism at an early stage. It is not “potential life” in the sense that sperm and ovum separately are potential life. It is already a living member of the human species, developing from within according to its own principle of growth. That fact may not compel every mind, but it is not sectarian dogma. It is a moral interpretation of biological reality.</p>
+      <p>Thomson objects that the encyclical says the truth is knowable by reason, whereas many intelligent people deny it. But a truth can be knowable by reason even if denied by reasonable people. Human equality itself was long denied by philosophers, slaveholders, and statesmen. The fact of disagreement does not prove that coercive law must abstain. If it did, the abolitionist could never have demanded law against slavery in a society where many “reasonably” defended property in human beings.</p>
+      <p>Of course, the analogy to slavery is inflammatory, and it should be used carefully. Women are not slaveholders, and pregnancy is not ownership. But the analogy shows the weakness in Thomson’s public-reason test. When a class of beings is excluded from legal protection, the central question is not whether those doing the excluding can offer an internally coherent account. The question is whether the excluded beings are in fact members of the community of rights.</p>
+      <p>That said, pro-life politics must face several hard truths. First, a society serious about protecting unborn life must also support pregnant women and children after birth. It is morally scandalous to demand childbirth while cutting nutrition programs, health care, adoption services, and assistance to poor mothers. Second, rape, grave fetal abnormality, and danger to the mother’s life are not marginal cases for the women who endure them. Even those of us who oppose abortion in nearly all cases should speak of these tragedies with humility, not slogans. Third, persuasion matters. A constitutional amendment or sweeping criminal prohibition unsupported by public conviction may deepen division and drive abortion underground.</p>
+      <p>But none of this vindicates Roe or Casey. Those decisions did not merely protect women from theological imposition. They removed from democratic deliberation a question on which the Constitution is, at best, silent. They also entrenched a regime in which the unborn child’s claim can rarely be given full legal weight. Thomson says courts exist to vindicate fundamental liberties. True. But courts also err when they invent liberties by disregarding other human beings who may be owed protection.</p>
+      <p>The violence at clinics has tempted some defenders of abortion to treat all pro-life language as dangerous. That is unjust. If abortion is the taking of innocent life, we must be allowed to say so. Moral clarity is not incitement. The remedy for murder committed by extremists is prosecution, not the silencing of conscience.</p>
+      <p>Thomson has challenged pro-lifers to give reasons, not merely declarations. That challenge should be accepted. But she should accept a challenge in return: do not make constitutional liberty depend on excluding the smallest human beings from the circle of protection simply because their claims are disputed. Every great question of justice is disputed. The task is not to escape moral controversy but to decide it rightly.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The trouble with the abortion debate is that each side insists on beginning where ordinary moral experience ends. One side says a fertilized egg must be treated exactly like a five-year-old child. The other sometimes speaks as though pregnancy were morally indistinguishable from removing a wart. Judith Jarvis Thomson avoids both crudities, but her conclusion is still too sweeping.</p>
+      <p>She is surely right that women’s liberty is gravely implicated. Pregnancy is not an inconvenience. It is a transformation of the body and, often, of one’s social and economic life. To compel continuation of pregnancy is to impose a burden unlike most others the law imposes. She is also right that the claim “personhood begins at conception” cannot simply be announced as though all decent people already know it. Many decent people do not know it; indeed, they reject it.</p>
+      <p>But from this it does not follow that the law must treat abortion chiefly as a private decision until birth, subject only to the relatively loose formula of Casey. Thomson focuses on conception because the encyclical and many activists do. Yet most Americans, if one may generalize from the public debate, do not live at either pole. They are uneasy about abortion, more permissive early in pregnancy, more restrictive later, and especially concerned about coercion, poverty, rape, health, and fetal abnormality. That middle position is not mere confusion. It reflects the moral fact that development matters.</p>
+      <p>An eight-week embryo is not a child. A viable fetus is not merely a “clump of tissue.” Law should be able to say both. The old trimester framework of Roe tried, however awkwardly, to recognize changing state interests. Casey’s undue-burden test preserved the core right but left uncertain how far states may go in expressing concern for fetal life. Perhaps uncertainty is unavoidable. But the public argument should acknowledge that a developing fetus can acquire increasing moral significance without possessing full constitutional personhood from conception.</p>
+      <p>What would a morally defensible compromise look like? First, early abortion should remain legal, accessible, and safe. This includes protection against clinic violence and obstruction. Whatever one thinks about abortion, shooting receptionists and doctors is terrorism, not civil disobedience. Second, the state may require truthful medical information, but not scripts designed to shame or manipulate. Waiting periods are suspect when they function mainly to burden poor women who must travel, miss work, and arrange child care. Third, after viability, the state may prohibit abortions except where necessary to protect the woman’s life or serious health interests, and perhaps in cases of catastrophic fetal condition. Fourth, government should reduce the number of abortions by reducing unwanted pregnancy: contraception, sex education, economic support for mothers, and responsible conduct by men.</p>
+      <p>This last point is too often missing. Some politicians most eager to restrict abortion are least eager to fund prenatal care, child support enforcement, contraception, or assistance to poor families. That inconsistency convinces many women that “life” is not the only issue; control is. Conversely, some abortion-rights advocates seem reluctant to say that abortion is ever morally troubling. That reluctance convinces many opponents that “choice” has become an evasion.</p>
+      <p>Thomson’s strongest claim is that the state may not force women to obey a doctrine they reasonably reject. But democratic law often acts amid reasonable disagreement. The better argument for abortion rights is not that contested moral premises can never justify law. It is that the particular law sought by absolutists—prohibition from conception—erases too much: women’s bodily integrity, tragic circumstance, fetal development, and moral pluralism.</p>
+      <p>We need a settlement that neither criminalizes women nor denies that unborn life has value. Casey may be the imperfect legal vessel for such a settlement. But our public rhetoric must become more honest than our slogans. Abortion is not murder in the ordinary sense, and it is not nothing. The law should begin there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Judith Jarvis Thomson’s essay is a defense of liberty, but it is also, perhaps unintentionally, an indictment of how thin liberty becomes when it is reduced to a formal legal right. Casey may have preserved the constitutional right to abortion, but Thomson begins by reminding us that rights can be hollowed out by fear, geography, money, and stigma. A woman has little meaningful liberty if the nearest provider is hundreds of miles away, if the clinic is surrounded by screaming demonstrators, if the doctor has quit after threats to his children, or if Medicaid will not pay for the procedure she cannot otherwise afford.</p>
+      <p>This is why the abortion question cannot be separated from equality. Thomson says denial of abortion impedes women’s “political, social, and economic equality.” That is true, but we should sharpen it: the burdens fall unequally among women. A professional woman in Boston or New York may have privacy, transportation, money, and a sympathetic physician. A poor woman in rural Mississippi, a teenager in a violent household, an immigrant afraid of institutions, or a woman dependent on public assistance may experience the “same” right very differently. The constitutional right is national; the ability to use it is local and class-bound.</p>
+      <p>The Hyde Amendment has for years made this plain. The state may not ban abortion outright, but it may refuse to fund most abortions for poor women, while funding childbirth. That is not neutrality. It is a thumb on the scale, and a heavy one. It says to poor women: wealthier women may exercise constitutional choice; you may choose only if you can pay. Those who speak reverently about unborn life often ignore the born woman’s poverty, health, housing, and existing children. Those who speak reverently about “choice” sometimes ignore that choice without resources is a cruel abstraction.</p>
+      <p>Thomson’s public-reason argument is therefore indispensable but incomplete. She argues that the state may not impose a severe constraint on women’s liberty on grounds women are reasonable in rejecting. Yes. But the state also has affirmative obligations if it is to make liberty real. Protecting clinic entrances through the FACE Act and injunctions is one part of that obligation. Training physicians is another. So is ensuring that abortion is included in ordinary medical education rather than exiled to besieged freestanding clinics. So is making contraception widely available. So is providing accurate sex education instead of pretending that ignorance produces chastity.</p>
+      <p>The violence Thomson describes should be understood not as an aberration from the abortion debate but as an extreme version of its disciplinary logic. Most opponents of abortion are not violent; many are decent people moved by sincere moral concern. But clinic blockades, harassment at doctors’ homes, publication of providers’ names, and the ritual shaming of patients all seek to do through private intimidation what the state has not fully done through law: make abortion unavailable. In that sense, the formal line between legal prohibition and practical obstruction is less clear for women than it is for lawyers.</p>
+      <p>This is also why the rhetoric of “murder” matters. Of course moral language must be free. A democracy cannot forbid citizens from saying that abortion is evil. But leaders who call doctors murderers while disclaiming any connection to violence are engaged in a dangerous game. If abortion providers are really equivalent to serial killers of children, why would one not stop them? The surprise is not that a few fanatics take the next step; the surprise is that more do not. Moral absolutism combined with personal identification of targets creates an atmosphere in which murder can present itself as rescue.</p>
+      <p>Still, abortion-rights advocates should not respond by denying all moral seriousness to pregnancy. Women do not need to pretend that embryos are meaningless in order to claim authority over their bodies. Many women who have abortions mourn, pray, deliberate, hesitate, or feel relief and sadness together. Others feel only relief. The point is not that abortion has one correct emotional meaning. The point is that the meaning belongs first to the woman whose body and future are at stake, not to legislators, bishops, judges, or protesters.</p>
+      <p>The encyclical Thomson discusses is especially troubling because it presents women’s moral agency as nearly invisible. The pregnant woman appears mainly as the location of another being’s vulnerability. But a woman is not a location. She is a person with memory, commitments, health, dependents, fear, work, sexuality, and conscience. Any moral argument that treats her as a vessel has already failed to recognize the central fact of pregnancy: two forms of human significance are entangled in one body, and only one is a rights-bearing citizen already living in the social world.</p>
+      <p>The equality argument also requires us to speak about men. Abortion restrictions regulate women’s bodies after men have often escaped responsibility for sex, contraception, child support, and care. A politics of “life” that does not demand male accountability is morally unserious. If Congress wishes fewer abortions, it can require better child support enforcement, fund prenatal and pediatric care, support battered women, and make contraception inexpensive and available. Punishing women is not family policy.</p>
+      <p>Thomson is right that the law cannot justifiably force women to accept the claim that personhood begins at conception. But the reproductive freedom worth defending is broader than freedom from criminal prohibition. It includes the material capacity to avoid unwanted pregnancy, to end a pregnancy safely, or to bear and raise children decently. In this sense, abortion rights and social welfare rights are not enemies. They are part of the same struggle over whether women, especially poor women, will be treated as full persons.</p>
+      <p>The question “Abortion: whose right?” has a simple first answer: it is the woman’s right because it is the woman’s body. But the fuller answer is social. It is a right that requires clinics, doctors, money, transportation, safety, honesty, and respect. Without those, the Constitution speaks in one room while women are turned away in another.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>I agree with Judith Jarvis Thomson about abortion and disagree with her about courts. That is not a small disagreement.</p>
+      <p>The moral core of her essay is persuasive. The state should not force a woman to continue a pregnancy on the basis of the claim that a fertilized egg has the same right to life as a child. That claim is too contested, too dependent on comprehensive moral or religious premises, and too indifferent to women’s bodily liberty to bear the weight of criminal law. Early abortion, at least, ought to remain legal.</p>
+      <p>But Thomson moves too quickly from that moral conclusion to approval of judicial settlement. She writes that vindicating fundamental liberties is exactly what courts are supposed to do. Sometimes. But courts also need constitutional warrant, not merely philosophical confidence. Roe v. Wade announced a national settlement more detailed than the Constitution’s text, history, or structure could comfortably support. Casey improved the rhetoric by speaking of liberty and equality, but it too left many citizens feeling that an immense moral question had been removed from ordinary politics by judicial decree.</p>
+      <p>Thomson replies that legislatures would likely have protected far less access. That may be true. Yet the fact that democratic politics would produce worse results does not automatically authorize courts to produce better ones. Otherwise constitutional law becomes moral emergency government by judges. Liberals should be wary of that principle, because courts will not always be liberal.</p>
+      <p>There is another cost. Judicialization encourages both sides to treat abortion as total war. If the Supreme Court is the prize, then every nomination becomes apocalyptic, every state regulation a test case, every compromise a betrayal. Pro-life citizens who might support contraception, social services, or early-pregnancy compromise are told that only reversal of Roe matters. Pro-choice citizens who might admit moral distinctions fear that any concession will be weaponized in court. The result is not deliberation but mobilization.</p>
+      <p>This does not excuse violence. The murders in Brookline and elsewhere are atrocities, and clinic access must be protected by law. Nor do I romanticize state legislatures, many of which would burden poor women first and most. But a more durable abortion liberty may require political work that Roe partially displaced: building majorities, securing statutory protections, funding services, persuading neighbors, and accepting some democratically enacted regulations that do not destroy the core right.</p>
+      <p>The constitutional right now exists, and after Casey it is unrealistic simply to wish it away. Courts should enforce it against bans and substantial obstacles. But defenders of abortion rights should not rest their case on judicial supremacy. Thomson has given us a strong public argument; it should be used in public politics, not only constitutional litigation. A right that depends entirely on courts is always one retirement, one election, or one doctrinal shift away from peril. A right defended by citizens may prove stronger.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Thomson has written a characteristically careful and rigorous essay, but I believe she has made a significant error at a crucial point in her argument. She claims that there is a &quot;gap&quot; in the reasoning that moves from &quot;you cannot wrong a painting&quot; to &quot;paintings lack the protected moral status we call rights.&quot; She suggests we lack a compelling rationale for crossing this gap. I want to argue that this is mistaken—that the rationale is available and, indeed, compelling.</p>
+      <p>Thomson&#x27;s argument against the interest-based account of rights proceeds as follows. If a creature has interests, then it can be wronged when those interests are impeded unfairly. But paintings have no interests, so they cannot be wronged. However, she objects that we still need an explanation for why the inability to be wronged entails the absence of rights. The gap she identifies is between &quot;cannot be wronged&quot; and &quot;lacks rights.&quot;</p>
+      <p>But I think the gap is illusory. Let us consider what it means to have a right. Thomson helpfully characterizes rights as &quot;trumps&quot;—having a right means that considerations of overall utility do not automatically justify overriding your interests. But this characterization only makes sense against a background where there are interests to protect. The very concept of a trump presupposes a domain in which it operates. You cannot have a trump in a game where no one is playing; you cannot have a right protecting interests where no interests exist.</p>
+      <p>When we say that something has rights, we are claiming that there are certain protections it enjoys that cannot be overridden simply because doing so would make the world go better. But this protection must be in relation to something—specifically, in relation to that entity&#x27;s welfare, its good, its interests. Without interests, there is nothing to protect, and therefore nothing that can enjoy the special status we call rights.</p>
+      <p>Thomson might respond that we could conceive of rights attached to entities that lack interests—that the protection might be for something&#x27;s sake rather than for the sake of the entity itself. But this conception is deeply obscure. What could it mean to protect something &quot;for its own sake&quot; if it has no perspective from which things go well or poorly? We can protect great works of art, but this is always for the sake of human beings who appreciate them or who would have appreciated them. There is no independent &quot;good of the artwork&quot; that stands as a reason for protection.</p>
+      <p>The force of this point becomes clearest when we consider why we grant rights to human beings. It is not simply because they are members of the biological species Homo sapiens—there are members of our species, such as those in persistent vegetative states, who lack the interests that normally accompany human personhood, and whose moral status is genuinely contested. Rather, we grant rights because human beings are the kind of creatures who have a welfare—creatures for whom things can go well or badly, who can be benefited or harmed.</p>
+      <p>This suggests that the relevant question is not whether a fertilized egg is a &quot;human being&quot; in some biological sense, but whether it is the kind of entity that can be wronged, which requires having a welfare. The answer to this question is almost certainly no, at least for the earliest stages of embryonic development.</p>
+      <p>I want to be careful here. Thomson is right that we cannot rule out the possibility that the fetus acquires rights at some point during gestation. Viability, sentience, neural development—these may be the morally relevant markers. But this point does not rescue her argument about the gap. It simply relocates the question. If we adopt an interest-based account of rights (as I think we should, despite Thomson&#x27;s misgivings), then the question becomes: at what point does the fetus develop the interests that ground rights? This is a question that requires empirical and philosophical investigation, but it is at least a tractable question. The view that rights begin at conception is not tractable—it simply asserts rights for an entity that cannot possibly be a right-holder on any defensible account.</p>
+      <p>Thomson&#x27;s essay is admirable in its insistence that those who reject the claim that fetuses have rights from conception cannot be written off as irrational or morally deficient. On this point I agree with her completely. But her attempt to leave the door open for the &quot;strong claim&quot; about conception relies on an error about the relationship between interests and rights. That door should be closed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Thomson&#x27;s essay exhibits a familiar pattern in contemporary academic discussions of abortion: a careful philosophical apparatus deployed in service of a conclusion that was reached before the argument began. She wants to defend abortion rights, and so she sets out to show that the case against abortion rests on foundations no stronger than those supporting the position she wishes to defend. But her argument trades on equivocation, and the result is a sophisticated defense of a conclusion that the evidence does not support.</p>
+      <p>Consider her treatment of the claim that human beings have rights from conception. She correctly notes that this claim cannot be &quot;bypassed as nonsense.&quot; But she then argues that because we cannot conclusively establish that the fetus lacks rights from conception, we cannot conclusively establish that abortion is impermissible. This is meant to clear the way for her argument that liberty should not be constrained on grounds others are &quot;not unreasonable in rejecting.&quot;</p>
+      <p>But notice the asymmetry in her treatment of evidence. She insists that we cannot conclusively refute the claim that fetuses have rights from conception. Yet she also acknowledges that we cannot conclusively establish this claim. If we apply her own standard consistently, we should be neutral on the question of fetal personhood—neither accepting nor rejecting it decisively. Yet she uses the inability to conclusively establish fetal rights as a license for unrestricted abortion access.</p>
+      <p>This is precisely the move she warns against when made by those who believe fetuses have rights. She criticizes the Pope for claiming that the doctrine &quot;is written in every human heart, knowable by reason itself.&quot; But she then claims that the opposing view—that fetuses lack rights from conception—is equally available to reason. If reason truly permits both views, why does the burden of proof fall entirely on those who would restrict abortion?</p>
+      <p>Thomson might respond that liberty is the default position—that we must have strong reasons to constrain it. But this assumes the question at issue. If a fetus does have rights from conception, then the &quot;liberty&quot; to obtain an abortion is not a liberty at all—it is a license to violate another&#x27;s rights. The burden of proof question cannot be settled independently of the question of fetal personhood.</p>
+      <p>More troubling is Thomson&#x27;s treatment of the violence committed against abortion providers. She attributes this violence partly to the rhetoric of those who say &quot;abortion is murder.&quot; She criticizes what she calls exaggeration and fraud in anti-abortion materials. But she does not consider whether her own rhetoric might have consequences. If the moral status of the fetus is genuinely uncertain, then those who believe it is a person are not irrational. They are facing a tragic moral situation in which their deeply held convictions about innocent human life are in conflict with a woman&#x27;s claimed liberty. Thomson&#x27;s dismissal of their position as based on grounds &quot;that neither reason nor the rest of morality requires women to accept&quot; is itself a form of rhetorical violence.</p>
+      <p>The essay concludes by defending the Court&#x27;s role in Roe v. Wade. But the proper role of courts in determining fundamental moral questions is itself deeply contested. Thomson assumes that &quot;vindicating our fundamental liberties is, after all, exactly what courts are supposed to do.&quot; This assumes that abortion rights are fundamental liberties—which is precisely what is at stake. Courts in a democracy answer to the people. When they override democratic majorities on contested questions of value, they risk both the legitimacy of their decisions and the fabric of democratic society.</p>
+      <p>Thomson&#x27;s essay deserves credit for its analytical rigor and its call for respectful dialogue. But it ultimately fails to grapple with the hardest question: whether the fetus has moral status worthy of legal protection. That question cannot be dissolved by philosophical maneuvering.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>Thomson makes one point that deserves careful attention from all sides of the abortion debate: the asymmetry between those who would constrain liberty and those who would exercise it. Her argument is that if the case for restricting abortion rests on grounds that reasonable people can reject, then restricting abortion is an exercise of mere force rather than legitimate authority.</p>
+      <p>This is a powerful point, and I think it has implications that Thomson herself does not fully draw out. The asymmetry she identifies is real, but it cuts both ways.</p>
+      <p>Consider the situation of a woman who has become pregnant and who does not wish to continue the pregnancy. She faces a choice between two courses of action, one of which will result in the destruction of the fetus (if the fetus has moral status) and one of which will not. According to Thomson&#x27;s own reasoning about asymmetric burdens, she cannot simply choose the option that better serves her interests if there is a reasonable possibility that doing so violates the fetus&#x27;s rights. The asymmetry applies to her choice as well.</p>
+      <p>This point matters because it undermines a common assumption in abortion discourse: that women who want abortions are simply exercising their liberty, and that restricting abortion is the action that requires justification. But if the fetus might have rights, then obtaining an abortion is an action that also requires justification. The woman cannot simply proceed as if her choice were unconstrained by moral considerations.</p>
+      <p>What follows from this? Not necessarily that abortion should be illegal. Thomson is right that the question of fetal personhood is genuinely contested, and that reasonable people can reach different conclusions. But the asymmetry does not automatically resolve in favor of abortion rights. Rather, it suggests that both sides should approach the question with humility.</p>
+      <p>Those who oppose abortion should recognize that their position requires them to persuade their fellow citizens through democratic means, not through violence or judicial override. Those who support abortion rights should recognize that their position involves a risk—that if the anti-abortion view is correct, then allowing unrestricted abortion causes grave moral harm. This does not mean that unrestricted abortion is impermissible given genuine uncertainty, but it does mean that the abortion rights movement should not treat the matter as settled or its opponents as moral monsters.</p>
+      <p>Thomson herself gestures toward this humility in her discussion of Mario Cuomo, where she notes that those who disagree with Catholic teaching on abortion &quot;act in other areas of life in a manner a Catholic respects.&quot; But she does not extend the same charity to the other direction. She treats the anti-abortion view as based on grounds that &quot;neither reason nor the rest of morality requires women to accept.&quot;</p>
+      <p>This is too quick. The claim that human beings have rights from conception is not merely a Catholic doctrine—many non-Catholics hold it as well. And the reasoning behind it is not obviously weak. The claim that potential persons matter morally is one that people of good will can endorse. That it is rejected by many thoughtful people does not show that it is unreasonable.</p>
+      <p>What would it mean to take the asymmetry seriously? It would mean acknowledging that both positions involve genuine moral stakes, and that the resolution of the issue through political institutions is legitimate even when it goes against one&#x27;s own convictions. Thomson herself notes that the empirical evidence suggests that legislative resolution would have produced less access to abortion than judicial resolution has produced. This is worth considering. But it does not settle the question of which institution should decide. Courts are not infallible, and their decisions carry costs.</p>
+      <p>The asymmetry between liberty and its constraint is real. But both liberty and its constraint can be exercised rightly or wrongly. The task is not to find a formula that tips the scales in one direction, but to reason carefully about when constraint is justified and when liberty should be exercised. Thomson&#x27;s essay contributes to that reasoning, even if it does not resolve it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>Thomson makes a passing reference to the fact that &quot;the children who become pregnant&quot; are often overlooked in discussions of abortion, and she is right to note this. But I want to suggest that her essay as a whole illustrates this oversight in a more fundamental way. The abortion debate, as she frames it, is a debate between rights-holders: the pregnant woman versus the fetus. The woman&#x27;s interests are important, but they are secondary to the question of whether the fetus has rights. What is missing is a sustained attention to the social, economic, and political conditions that make abortion a pressing issue for women.</p>
+      <p>Thomson lists various reasons a woman might want an abortion: rape, health risks, the inability to care for existing children, career considerations. But she presents these reasons as though they were simply facts about individual women facing individual choices. She does not ask why these reasons exist in the first place, or whether they might be eliminated by changes in social policy.</p>
+      <p>Consider the woman who believes she cannot supply a decent life for another child. This is a genuine and weighty concern. But why is she in this position? Perhaps because she lacks adequate healthcare, or because she lacks access to contraception, or because she lacks economic resources. These conditions are not natural facts—they are the products of social policy. A society committed to helping women avoid unwanted pregnancies would provide comprehensive sex education and readily available contraception. A society committed to supporting families would provide healthcare, childcare, and parental leave. If these social goods were widely available, the number of unwanted pregnancies—and hence the number of abortions—would presumably decrease dramatically.</p>
+      <p>Thomson&#x27;s argument for abortion rights is persuasive within the terms she sets. But those terms accept the world as it is, with all its injustices. She argues that women must have the right to choose abortion because their circumstances make it necessary. But this accepts those circumstances as given. A more radical feminist critique would ask whether abortion rights, however necessary in the short term, are sufficient for women&#x27;s liberation. They are not.</p>
+      <p>This point has implications for how we think about the abortion debate. The framing of abortion as a question of rights— woman&#x27;s right to choose versus fetus&#x27;s right to life—obscures the structural conditions that make the choice so fraught. ItIndividualizes what is social. It treats a political problem as a matter of individual conscience.</p>
+      <p>There is also a point about power here. The debate about abortion is, in significant part, a debate about who will control women&#x27;s bodies and women&#x27;s reproductive capacity. Thomson acknowledges that restricting abortion impedes &quot;the achievement of political, social, and economic equality for women.&quot; But she does not draw out the full implications of this point. If abortion restrictions are tools of gender oppression, then the demand for abortion rights is not merely a demand for liberty—it is a demand for power. The asymmetry she identifies between those who would constrain liberty and those who would exercise it is thus not merely a formal asymmetry of procedure. It is an asymmetry of power between those who have it and those who do not.</p>
+      <p>I do not disagree with Thomson&#x27;s argument. I want to supplement it. The abortion debate will not be resolved by philosophical argument alone, because it is not fundamentally a philosophical problem. It is a political problem about power, resources, and the social status of women. Until those structural conditions change, abortion rights will remain necessary, and Thomson&#x27;s defense of them will remain valuable. But we should not mistake a necessary position for a sufficient one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>In the midst of her essay, Thomson offers a striking observation about the Pope&#x27;s encyclical Evangelium Vitae. She writes: &quot;The acceptance of abortion in the popular mind, in behavior and even in law itself, is a telling sign of an extremely dangerous crisis of the moral sense, which is becoming more and more incapable of distinguishing between good and evil, even when the fundamental right to life is at stake.&quot; She correctly identifies this as &quot;a thoroughly groundless assault on [the] moral integrity&quot; of those who disagree with Catholic teaching.</p>
+      <p>This exchange is revealing. Both sides in the abortion debate are prone to dismissing their opponents as morally deficient—not merely mistaken, but wicked. Thomson criticizes the Pope for implying that supporters of abortion rights are &quot;incapable of distinguishing between good and evil.&quot; But her own essay contains similar implications. She writes that those who would restrict abortion want &quot;a license to impose force,&quot; and she compares their position to that of the &quot;French absolutist Bossuet&quot; who declared &quot;I have the right to persecute you because I am right and you are wrong.&quot;</p>
+      <p>This comparison is unfair. The anti-abortion position is not simply that one is right and one&#x27;s opponent is wrong. It is that innocent human life is at stake, and that this stake provides a morally weighty reason for legal protection. This is a position that reasonable, good-faith people can hold. To compare it to persecution simpliciter is to refuse to engage with its strongest version.</p>
+      <p>I think Thomson recognizes this to some extent. Her essay is careful and balanced in many respects, and she explicitly disavows the view that opposition to abortion is simply religious or irrational. But the language of &quot;force&quot; and &quot;persecution&quot; creeps in despite these disavowals, and it does damage to the quality of the debate.</p>
+      <p>What would a genuinely charitable engagement with the anti-abortion position look like? It would begin by taking seriously the claim that human life begins at conception. This claim, as Thomson acknowledges, cannot be dismissed as nonsense. It is a claim about the moral status of entities that are biologically continuous with the persons they will become. Whether one finds it persuasive or not, it is not unreasonable.</p>
+      <p>From this starting point, the anti-abortion position has considerable force. If the fetus is a person with a right to life, then abortion is a serious moral wrong—indeed, a form of killing. And if it is a serious moral wrong, then it is appropriate for law to discourage and prohibit it. This is not persecution; it is the normal functioning of a legal system that takes seriously the moral status of all human beings.</p>
+      <p>The difficulty, of course, is that the premise—that the fetus is a person with a right to life—is contested. Thomson argues that we cannot conclusively establish this premise, and she is right. But neither can we conclusively refute it. This means that the abortion debate is not a debate between the reasonable and the unreasonable. It is a debate between people who have reached different conclusions on a genuinely difficult question.</p>
+      <p>How should a democratic society decide such questions? Thomson defends the judicial resolution of Roe v. Wade, arguing that vindicating fundamental liberties is what courts are supposed to do. But this assumes that abortion rights are fundamental liberties—which is precisely what is at stake. A different view is that the question of fetal personhood is the kind of question that democratic majorities should resolve, through the slow and imperfect process of political deliberation.</p>
+      <p>Both approaches have costs. Judicial resolution protects rights against majoritarian backlash, but it does so in a way that bypasses democratic deliberation and may inflame political conflict. Legislative resolution respects democratic self-governance, but it exposes fundamental rights to the vicissitudes of political fortune. Neither approach is obviously correct.</p>
+      <p>What is clear is that the quality of the debate matters. When we dismiss our opponents as morally deficient, we make it harder to find common ground. When we take their arguments seriously, we create space for genuine persuasion. Thomson&#x27;s essay has much to offer in this regard, but its moments of rhetorical excess undermine its call for respectful dialogue.</p>
+      <p>The abortion controversy will not be resolved by a single essay or a single judicial decision. It will be resolved, if at all, through a long process of moral and political deliberation in which all parties treat each other with respect and take seriously the arguments on all sides. Thomson&#x27;s essay is a contribution to that process, even if it does not bring it to a close.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

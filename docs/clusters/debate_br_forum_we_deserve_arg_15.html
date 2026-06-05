@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While Evgeny Morozov correctly identifies the problematic mi... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_we_deserve.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_we_deserve.html">The AI We Deserve</a> · Cluster 15 of 49</div>
+  <h1 class="arg-title">"While Evgeny Morozov correctly identifies the problematic military and bureaucratic origins of AI, his critique of &#x27;instrumental reason&#x27; is flawed because democracy actually requires effective, goal-directed technology to deliver public goods and fulfill collective needs."</h1>
+  <div class="arg-meta">0 human · 1 LLM · 1 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"While Evgeny Morozov correctly identifies the problematic military and bureaucratic origins of AI, his critique of &#x27;instrumental reason&#x27; is flawed because democracy actually requires effective, goal-directed technology to deliver public goods and fulfill collective needs."</p>
+        <button class="essay-view-full" data-target="full-15-01222">View full essay</button>
+        <div class="essay-full" id="full-15-01222" style="display:none;">
+            <p>Evgeny Morozov offers a welcome antidote to the dreary realism of much AI debate. He is right that artificial intelligence has inherited institutional habits from military, corporate, and bureaucratic settings, and right that “democratizing AI” cannot mean merely adding transparency to systems whose purposes remain untouched. But his central contrast between instrumental reason and ecological reason does too much work. It risks turning “goals” into the villain of the story when the more important question is who sets the goals, under what constraints, and with what accountability.</p>
+            <p>Democracy is not opposed to instrumentality. It depends on it. A city that wants to reduce childhood asthma, a government that wants to deliver unemployment benefits on time, a hospital that wants to avoid medication errors, a union that wants to enforce a contract, a climate agency that wants to cut emissions: all are engaged in goal-directed activity. These goals are not inherently oppressive because they are goals. They are democratically legitimate when they are publicly debated, revisable, and pursued through institutions answerable to those affected.</p>
+            <p>Morozov’s critique of AI’s teleological origins captures something real about the Cold War research environment. Early AI did grow in proximity to defense agencies and managerial dreams of command and control. The General Problem Solver is a telling artifact: it presumes formalized problems, stable environments, and specified ends. But it does not follow that goal-directed computation is merely bureaucratic rationality in technical form. Weather forecasting, epidemiological modeling, accessible speech recognition, traffic safety systems, protein folding prediction, and assistive technologies for disabled people are also goal-directed. The problem is not that they pursue ends. The problem arises when ends are imposed without democratic authorization or when optimization blinds institutions to values that cannot be captured in the metric.</p>
+            <p>That distinction matters because a democracy without competent administration is not more humane. It is merely more frustrating, unequal, and vulnerable to demagogues. The recent history of public life is full of examples. People lose faith in democratic government when public systems cannot deliver passports, benefits, housing permits, disability services, or disaster aid. Bureaucracy can be dehumanizing, but arbitrary undercapacity is dehumanizing too. If AI can help a public agency answer questions in multiple languages, identify backlogs, flag inconsistent decisions, or make forms easier to complete, that is not a betrayal of ecological reason. It is a democratic good.</p>
+            <p>Morozov rightly warns against the Efficiency Lobby. Yet efficiency is not always the enemy of dignity. For a poor person spending hours navigating welfare paperwork, an immigrant trying to understand a legal notice, or a nurse drowning in documentation, efficiency may mean time restored to life. The left should be careful not to concede “efficiency” to managers and markets. There is a democratic efficiency: the reduction of needless burdens, the simplification of access to rights, the conservation of public resources for public purposes.</p>
+            <p>The strongest part of Morozov’s essay is his insistence that AI tools should help citizens pose problems, not merely solve official ones. Participatory budgeting, public modeling, and simulations of alternative futures are exactly the kinds of uses that deserve attention. But these activities too require structure, deadlines, constraints, and decisions. Citizens cannot deliberate forever in a stonefield of possibilities. At some point a budget must be passed, a flood barrier built, a curriculum chosen, a strike authorized, a treatment plan selected. Democratic politics is not the suspension of telos; it is the collective struggle over teloi.</p>
+            <p>The romantic figure of Storm’s eolithic wanderer is therefore both illuminating and misleading. It illuminates the importance of play, serendipity, and repurposing. Much creativity does arise when people encounter materials without a fixed plan. But democratic institutions cannot be organized primarily around wandering. They must create conditions in which wandering can inform action. A public library, a classroom, an arts program, a makerspace, or a citizen assembly may protect open-ended exploration, but each also has rules, budgets, facilitators, and purposes. The question is not whether we can escape instrumental reason. It is whether we can subordinate instrumental reason to reflective judgment.</p>
+            <p>This is also where the analogy between generative AI and the market becomes too sweeping. Morozov says that today’s AI resembles markets: a universal method for satisfying diverse demands, governed by private platforms and metered access. There is truth in this, especially in the API economy. But LLMs are not markets in any deep institutional sense. They do not coordinate independent producers through prices; they generate representations from trained statistical patterns. Their defects—hallucination, opacity, bias, dependence on concentrated compute—are not simply market defects. Nor will decommodification alone solve them. A public model can hallucinate. An open model can produce abuse. A nonprofit system can encode dominant assumptions. A state-run system can surveil.</p>
+            <p>That is why the language of “the Humanity Lobby” needs institutional specificity. Who governs public AI? Elected officials? Expert agencies? Citizen boards? Courts? Professional associations? Worker councils? All of the above? Different domains require different arrangements. A public AI tool used in criminal justice should be subject to stricter prohibitions than one used in art education. A medical model needs clinical validation. A tool for legislative drafting needs transparency and archival accountability. A model for citizens exploring climate scenarios needs plural assumptions and contestable parameters. Democracy is not a single institutional form; it is an ecology of checks, rights, capacities, and forums.</p>
+            <p>Morozov’s own examples point toward this more pluralistic conclusion. Project Cybersyn was not merely eolithic experimentation. It was a system built to manage nationalized industries under conditions of political emergency. It had democratic aspirations, but also technocratic risks. The Bariloche Foundation’s alternative modeling was valuable because it contested the assumptions of Northern modernization and environmental discourse. But its value lay in goal-laden argument: whose development, whose sacrifices, whose needs, whose future? These projects did not transcend instrumentality. They politicized it.</p>
+            <p>The same should be our aim with AI. We should not ask technology to deliver a post-instrumental society. We should build institutions that make the purposes of technology contestable. In practice, that means several things. First, high-stakes AI systems should be governed by domain-specific law, not voluntary ethics. Second, public agencies should have in-house technical capacity so they are not dependent on vendors. Third, workers affected by AI deployment should have bargaining rights over its use. Fourth, public-interest research should be funded to build tools that serve neglected needs. Fifth, citizens should be able to challenge automated decisions and demand human review.</p>
+            <p>These measures may sound less utopian than ecological reason. But they are not merely “policy tweaks.” They are ways of relocating power. A democratic society should indeed invest in technologies that support exploration, creativity, and public imagination. It should also use technology to make trains run, benefits arrive, and hospitals function. The danger is not instrumental reason as such. The danger is unaccountable instrumentality: optimization without politics, efficiency without rights, automation without voice.</p>
+            <p>The AI we deserve should leave room for messing about. It should help students, artists, organizers, and citizens discover possibilities they did not know how to ask for. But it should also help us accomplish hard collective tasks. Clean water, decarbonization, elder care, housing, public health, and legal access are not neoliberal distractions. They are democratic ends. We need not choose between the flâneur and the administrator. A mature democratic politics must make space for both: the person who notices a new use for the stone, and the community that decides what to build with it.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Goal-directed activity is not inherently oppressive or neoliberal; it is essential for legitimate democratic functions like healthcare delivery, climate action, and social services.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Efficiency should not be conceded to the market, as &#x27;democratic efficiency&#x27; can restore dignity to citizens by reducing the time and labor required to access their rights.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The romantic ideal of &#x27;eolithism&#x27; or purposeless wandering is insufficient for organizing society, as democratic politics ultimately requires making collective decisions and taking structured action.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The problems with current AI, such as bias and opacity, are not merely products of market logic and will not be solved by decommodification alone without specific institutional oversight.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">True democratization of AI involves subordinating instrumental reason to reflective judgment through domain-specific laws, worker bargaining rights, and public technical capacity rather than abandoning goals altogether.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

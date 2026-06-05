@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do College Students’ Votes Really Matter in an Election? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Politics · Binary</div>
+  <h1 class="debate-title">Do College Students’ Votes Really Matter in an Election?</h1>
+  <div class="question-body"><p>There has been much talk about the power of the youth vote — particularly college students and their support for Senator Bernie Sanders. But does civic engagement and political activism at a university level matter for our country’s politics?  Are college students really an important constituency?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>college students’ votes do not really matter in an election</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>college students’ votes really matter in an election</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 25%;"></div>
+        <div class="seg wo" style="width: 25%;"></div>
+        <div class="seg n"  style="width: 25%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 25%;"></div>
+      </div>
+      <span class="bar-num">n=4</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 80%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 29%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 4%;"></div>
+        <div class="seg ws" style="width: 12%;"></div>
+        <div class="seg ss" style="width: 54%;"></div>
+      </div>
+      <span class="bar-num">n=24</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_1.html">
+      <td class="arg-text">College students are a vital constituency because their high levels of engagement and passion provide candidates with the credibility needed to shape national political discourse and influence election outcomes.</td>
+      <td><span class="humans-pill ">3</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_2.html">
+      <td class="arg-text">While college students are a significant and influential constituency, their political importance should be viewed as part of a broader youth electorate rather than the sole representative of young voters.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_3.html">
+      <td class="arg-text">The current polarized and dogmatic political atmosphere on college campuses is failing to prepare students to be sensible voters and effective future leaders.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_4.html">
+      <td class="arg-text">College students represent a powerful and influential constituency when they leverage their numbers through organized, collective mobilization.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_5.html">
+      <td class="arg-text">The significance of college students&#x27; votes is determined by the geographic location of their university, with those in swing states wielding enough power to decide national elections.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-college-students-votes-really-matter-in-an-election_arg_6.html">
+      <td class="arg-text">College students are a decisive constituency whose votes matter because they are numerous and strategically concentrated enough to swing outcomes in a closely divided country.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Bianca Brooks</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/03/22/do-college-students-votes-really-matter-in-an-election/bianca-brooks" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Bryan Stascavage</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/03/22/do-college-students-votes-really-matter-in-an-election/bryan-stascavage" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Frank Luntz</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/03/22/do-college-students-votes-really-matter-in-an-election/frank-luntz" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Quentin Kidd</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2016/03/22/do-college-students-votes-really-matter-in-an-election/quentin-kidd" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The romance of the campus vote is enduring—from the McCarthy insurgency of 1968 to Obama&#x27;s 2008 ground game—but the arithmetic is sobering. Voters aged 18 to 29 made up about 19 percent of the eligible electorate in 2012, yet turned out at roughly 45 percent, compared with 72 percent for those over 65. College students, a subset of that already underperforming bloc, are an even smaller slice. In raw electoral terms, retirees in Florida matter more than freshmen in Iowa.</p>
+      <p>And yet dismissing students would be a mistake, for three reasons.</p>
+      <p>First, concentration matters as much as size. College towns—Iowa City, Ann Arbor, Boulder, Durham—can swing close primaries and even tip statewide races. Sanders&#x27;s lopsided victories in caucus states like Kansas and Nebraska, and his near-tie in Iowa, are inconceivable without the campuses. In low-turnout primaries, a mobilized student bloc is disproportionately powerful precisely because everyone else is staying home.</p>
+      <p>Second, students shape the agenda even when they don&#x27;t deliver pluralities. The salience of student debt, free public college, climate policy, criminal-justice reform, and a $15 minimum wage in the current Democratic primary is not an accident; it tracks the preoccupations of voters under 30. Hillary Clinton&#x27;s leftward movement on tuition and Wall Street reflects pressure from a constituency she is losing roughly two-to-one. Activism, in other words, has done work that votes alone have not.</p>
+      <p>Third, today&#x27;s college students are tomorrow&#x27;s habitual voters. Political scientists like Donald Green and Alan Gerber have shown that voting is sticky: get someone to the polls once or twice and you&#x27;ve likely made a lifetime voter. The parties that cultivate 20-year-olds in 2016 are building majorities for 2028.</p>
+      <p>So do college students&#x27; votes &quot;matter&quot;? Not in the way Florida seniors&#x27; votes matter on Election Day. But they matter in primaries, they matter for what candidates promise, and they matter for the shape of the electorate to come.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The idea that college students could swing an election is not wishful thinking; it is a recurring specter in American politics, visible whenever youth turnout surges—and just as visible when it collapses. In 2008, voters aged 18–29 made up 18 percent of the electorate, their highest share in decades, and their overwhelming preference for Barack Obama provided his margin of victory in several swing states. Four years later, after a steep drop-off, their diminished participation helped cost Democrats the House in 2010 and nearly the presidency in 2012. The lesson is not that students’ votes don’t matter; it’s that their mattering hinges entirely on whether they actually cast ballots.</p>
+      <p>That volatility is precisely what makes college students an important constituency in 2016. Senator Bernie Sanders’s primary campaign has been fueled by an almost unprecedented level of enthusiasm on campuses—massive rallies, robust social-media organizing, and a message that resonates with young people’s economic anxieties. Yet in the Democratic contest so far, high youth engagement in Iowa and New Hampshire did not translate into enough turnout to beat a more traditional coalition, underscoring a familiar risk: passion without follow-through leaves students as a celebrated but secondary force.</p>
+      <p>The structural barriers are real. Students often must navigate confusing registration rules, new addresses every year, and voter ID laws that don’t match their college IDs. Their geographic concentration, however, can be a double-edged sword. In cities like Madison, Ann Arbor, or Raleigh, an organized student bloc can flip a precinct or even a congressional district. More crucially, in a general election, the youth vote disproportionately populates the pivotal suburbs of battleground states. As the Sanders phenomenon shows, when campaigns actually invest in campus organizing—rather than just chasing older, more reliable voters—students can become a decisive lever. They matter not because they are a guaranteed electoral prize, but because their periodic awakenings reveal how much latent power sits inside classrooms, waiting for a reason to show up.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The college student vote matters immensely, functioning both as a direct electoral force and a powerful catalyst for ideological shifts. While political commentators frequently dismiss the youth vote due to historically low turnout rates—particularly during midterm elections—presidential races tell a decidedly different story.</p>
+      <p>One need only look back to 2008 and 2012 to understand the demographic&#x27;s electoral weight. Young voters and college students were the bedrock of the coalition that propelled Barack Obama to the presidency, providing critical margins of victory in key battleground states like Ohio, Virginia, and Florida. When mobilized, college students possess the raw numbers to swing national outcomes.</p>
+      <p>Beyond the mathematics of the electoral map, the current primary season demonstrates how university-level political activism shapes the national agenda. The overwhelming support among college students for Senator Bernie Sanders is not a mere passing campus trend; it is actively forcing the Democratic Party to recalibrate its platform. Because young voters are demanding attention to income inequality, systemic criminal justice reform, and college affordability, mainstream candidates are being compelled to address these issues. Even if Sanders does not secure the nomination, the student constituency has successfully dictated the terms of the primary debate.</p>
+      <p>Furthermore, civic engagement in college lays the groundwork for lifelong participation. The political habits formed on campuses today will define the electorate of tomorrow. College students are not just a crucial constituency for the 2016 election; they are the leading indicators of where American politics is inevitably heading.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>College students’ votes matter, but not in the romanticized way campaigns often suggest. They are not a sleeping giant that reliably appears every November and remakes the electorate. Young voters turn out at lower rates than older citizens, and students are especially easy to discourage: they move frequently, face confusing residency rules, lack cars, and often encounter registration deadlines or identification requirements designed around more settled adults. A constituency that participates irregularly cannot expect the same attention as seniors, homeowners or organized interest groups.</p>
+      <p>Still, dismissing student voters is a mistake. In close contests, small changes in turnout among 18-to-29-year-olds can matter enormously. Barack Obama’s 2008 coalition depended in part on unusually strong youth participation, and the energy behind Bernie Sanders shows that students can shape primaries, fundraising, volunteer networks and the language of a campaign even when they are not numerically dominant. On some campuses, thousands of voters live in one precinct or district; they can affect city councils, school boards, ballot measures and congressional races. Those offices decide transit, policing, housing, tuition policy and campus-community relations—issues students often experience directly.</p>
+      <p>Their influence is also broader than the vote count. Universities are incubators for political habits. A student who registers, canvasses, attends a caucus or argues about policy is more likely to become a lifelong participant. Movements for civil rights, divestment, gender equality and antiwar politics all drew strength from campuses before changing national debate.</p>
+      <p>So the better question is not whether student votes “really” matter, but whether students will use them consistently enough to be courted and feared. Power in politics belongs to those who show up. College students can matter greatly—but only if activism ends at the polling place, not before it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>College students do matter in elections, but the significance of their votes depends heavily on whether they actually show up at the polls. The enthusiasm surrounding youth participation is real and measurable, yet it has consistently fallen short of its potential.</p>
+      <p>Historically, young voters between 18 and 29 have represented a substantial portion of the electorate—roughly 21 million eligible voters in 2016—but their turnout rates have lagged behind older generations. In the 2012 presidential election, only about 45 percent of eligible young voters participated, compared to over 70 percent of voters 65 and older. This gap means that while the youth vote has power in theory, that power remains largely unrealized in practice.</p>
+      <p>When college students do mobilize—through campus registration drives, peer-to-peer outreach, and candidate engagement like we have seen with Senator Sanders—they can absolutely influence outcomes. The 2008 election demonstrated this clearly, when unprecedented youth turnout helped Barack Obama win several key states. College campuses and the communities surrounding them can shift electoral results when students are engaged and activated.</p>
+      <p>The real question is not whether students matter, but whether we have built the infrastructure and motivation for them to matter consistently. Voter ID laws, registration complexity, and the perception that individual votes don&#x27;t count all depress youth participation. If campaigns and universities invest in genuine civic education and remove barriers to voting, college students become a formidable electoral force. Their votes matter when they vote—and their absence matters even more.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The question of whether college students&#x27; votes &quot;really matter&quot; is misleading because it conflates two very different things: raw electoral power and political influence. By the first measure, college students are a disappointing constituency. By the second, they may be one of the most consequential blocs in American politics.</p>
+      <p>Start with the disappointment. Voters aged 18 to 29 turn out at substantially lower rates than older Americans — roughly 45 percent in 2012 compared to over 70 percent for those 65 and older, according to Census data. College students specifically face logistical obstacles that depress turnout further: confusing residency requirements, absentee ballot deadlines that sneak up during midterms, and voter ID laws (as in Texas and Wisconsin) that often exclude student IDs. The result is that even when young people are enthusiastic, as they obviously are for Bernie Sanders this primary season, that enthusiasm converts to votes inefficiently. Sanders has won young voters by margins of 70 or 80 points in some states, and yet he trails Hillary Clinton in delegates because older Democrats vote more reliably.</p>
+      <p>But focusing only on ballot totals misses the point. College students shape politics far beyond their share of the electorate. They are the country&#x27;s most concentrated volunteer labor pool — knocking doors, running phone banks, populating campaign offices. The Obama 2008 ground game was unthinkable without them. They also drive agenda-setting: the campus movements around divestment, sexual assault policy, racial justice (the Mizzou and Yale protests of last fall), and student debt have pushed issues onto the national platform that politicians had ignored for years. The fact that &quot;free public college&quot; is now a mainstream Democratic position would have been unthinkable five years ago, and it is squarely a product of student mobilization.</p>
+      <p>So do their votes matter? In tight races — think the 2012 presidential contest in Florida, or any number of House districts with major universities — yes, decisively. In the aggregate, less than they should. But the votes are only part of the picture. Civic engagement at the university level matters because campuses are where future organizers, candidates, and policy entrepreneurs are formed. Dismissing that as window-dressing misreads how American politics actually changes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Let&#x27;s be honest about what the numbers show: college students are a constituency politicians flatter and then ignore, and they have earned that treatment.</p>
+      <p>The romance around the &quot;youth vote&quot; returns every four years like cherry blossoms. In 2008, Barack Obama was supposed to herald a generational realignment powered by Facebook-savvy undergraduates. In 2016, Bernie Sanders is drawing arena crowds on campuses from Ann Arbor to Amherst. And in both cases, the underlying arithmetic tells a sobering story. Young voters are the least likely age group to actually show up. In the 2014 midterms, turnout among 18- to 24-year-olds was under 20 percent. Even in presidential years it rarely climbs above the high 40s. By contrast, voters over 65 turn out at rates approaching three-quarters. A vote that doesn&#x27;t get cast is, electorally speaking, no vote at all.</p>
+      <p>This is why policy follows seniors and not students. Social Security and Medicare are sacred. Tuition assistance, student loan reform, and youth-targeted job programs are bargaining chips. AARP has 38 million members who vote; the equivalent student lobby simply doesn&#x27;t exist with comparable discipline. When Sanders loses the Democratic nomination — and barring a dramatic shift, he will — the postmortem will note that he won voters under 30 by historic margins and still came up short, because he could not turn enthusiasm into ballots, especially among non-college youth.</p>
+      <p>There is a deeper problem too. College students are geographically concentrated in ways that dilute their power. Tens of thousands of them registered in a single college town produce one congressional district&#x27;s outcome, but disperse the same voters across their home states and they could swing several. Meanwhile, many never re-register after moving, or get tangled in absentee rules, or simply forget.</p>
+      <p>None of this means civic engagement on campus is worthless. Activism trains organizers, builds civic habits, and occasionally moves the Overton window. But the question posed is narrower: do their votes matter? In most elections, at the margin, no. Until college students vote at rates approaching their grandparents&#x27;, the political class will keep giving speeches at commencement and writing legislation for retirees. Power respects turnout. Students haven&#x27;t earned the respect yet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The framing of this debate — do college students&#x27; votes &quot;really matter&quot;? — already concedes too much to a cynical view of democracy. The answer matters less than the question&#x27;s premise, which treats voting as a transaction whose value depends on whether your bloc tipped the outcome. By that logic, almost no individual&#x27;s vote ever matters. The richer question is whether college students are participating in the civic life of the country in ways that strengthen democratic practice. And there, the answer is plainly yes.</p>
+      <p>Consider what Bernie Sanders&#x27;s campus rallies actually represent. Tens of thousands of young people are showing up to listen to an hour-long speech about wealth inequality, single-payer health care, and campaign finance. Whatever you think of his policies, this is not the apathetic, selfie-obsessed generation of cable-news caricature. These same students are leading movements on sexual assault policy that have forced every major university to revisit Title IX compliance. They are at the heart of Black Lives Matter, the climate divestment movement, and the fight over adjunct labor. To say their votes don&#x27;t matter because their turnout lags is to confuse one indicator of civic life with the whole of it.</p>
+      <p>It&#x27;s also worth challenging the turnout pessimism on its own terms. Young voters were decisive in 2008 and 2012; Obama won 18-29 year-olds by 23 points in 2012, and in states like Florida, Ohio, and Virginia that margin was the margin. The Voting Rights Project at Fair Elections Legal Network and groups like Rock the Vote have documented how student registration drives swing local races routinely. In college towns — Athens, Georgia; Boulder, Colorado; Burlington, Vermont — students elect mayors, city councils, and state legislators who shape policy on housing, policing, and the environment.</p>
+      <p>The deeper point is that democratic citizenship is a practice, not a transaction. Students who knock doors at 19 are the precinct captains at 30 and the candidates at 45. The Sanders campaign, whether or not it wins the nomination, will have introduced a generation to the mechanics of organizing. That is not a side effect of electoral politics; it is the seed of the next one. Asking whether their votes &quot;really matter&quot; is like asking whether teenagers learning to drive really need to be on the road. The country needs them there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>College students matter in elections, but not in the way the current Sanders moment suggests. Their influence is real, geographically uneven, and almost entirely contingent on whether someone bothers to organize them. This is the unglamorous truth that gets lost in the breathless coverage of youth rallies.</p>
+      <p>Three observations.</p>
+      <p>First, &quot;college students&quot; is not a coherent national constituency. There are roughly 20 million postsecondary students in the United States, but they include 40-year-old community college part-timers, dual-enrolled high schoolers, graduate students at elite research universities, and traditional undergraduates at residential four-year schools. The political behavior of these groups is wildly different. The image of the dorm-dwelling 20-year-old at Oberlin is a sliver of the actual population. Public policy and campaign strategy that treats them as a single bloc misses most of the people the label nominally covers.</p>
+      <p>Second, students&#x27; influence is highly local. In statewide and national races, their numbers are diluted by lower turnout and dispersion. But in college towns and the districts around them, students can be decisive. The fight over voter ID requirements in Wisconsin and North Carolina was largely about exactly this: state legislatures recognized that thousands of students registered at campus addresses could swing legislative districts, and moved to make registration harder. You don&#x27;t pass restrictive laws against a constituency that doesn&#x27;t matter.</p>
+      <p>Third, and most importantly, students respond to mobilization. The political science here is well-established: turnout among young voters spikes when campaigns invest in field operations on campuses, and collapses when they don&#x27;t. Obama 2008 invested heavily; the result was an 18-point youth turnout increase from 2000. The 2014 midterms saw minimal investment; turnout cratered. Sanders is doing serious organizing this cycle and seeing serious returns among the under-30 set. The lesson is not that young people are inherently engaged or inherently apathetic — it&#x27;s that they behave like every other constituency. They show up when asked, and stay home when ignored.</p>
+      <p>So do college students&#x27; votes matter? They matter exactly as much as campaigns and the students themselves decide to make them matter. That&#x27;s a less satisfying answer than either the cheerleaders or the cynics want, but it has the advantage of being true. The youth vote is not a sleeping giant. It is a muscle that atrophies without use.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>In the frantic calculus of modern campaigning, it’s tempting to dismiss college students as unreliable voters — passionate in the bleachers but absent when it counts. That narrative misses what’s actually unfolding in 2016. Bernie Sanders’s insurgent campaign isn’t just a personality-driven fluke; it’s a demonstration that when young people organize, they can fundamentally disrupt the political order. And in an era of razor-thin margins, college students’ votes aren’t just symbolic — they can be decisive.</p>
+      <p>Sanders’s traction, built almost entirely on voters under 30, has proved that youth enthusiasm can keep a candidacy viable against a well-funded establishment frontrunner. The same energy propelled Barack Obama in 2008, when a wave of first-time college voters helped him win the Iowa caucuses and build a coalition that shattered turnout records. If we fast-forward to a general election, the lessons are stark: the 2000 presidential election was decided by 537 votes in Florida. Any campus that managed to turn out a few hundred additional voters could have tipped the outcome. When elections are that close, the argument that youth turnout doesn’t matter collapses under simple arithmetic.</p>
+      <p>But the impact goes beyond a single contest. College-student activism forces issues — student debt, climate change, and criminal justice reform — onto the national agenda. Politicians ignore these at their peril once they see that millions of impassioned young people can move polling numbers in primaries. That pressure shapes party platforms and legislative priorities, whether or not a particular candidate wins. Dismissing college students as a constituency that “doesn’t really matter” is a self-fulfilling prophecy that discourages participation; embracing them as a legitimate, potentially decisive force acknowledges that democracy is strengthened when the people who will inherit the country’s biggest problems are given a stake in solving them.</p>
+      <p>Yes, older voters turn out more reliably. But elections are decided on the margins, and the margin of 2016 — whether in a contested primary or a swing-state nail-biter — may well be drawn dorm room by dorm room. The youth wave is real, and it’s already reshaping American politics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Ask any pundit, and they’ll tell you that college students are the sleeping giant of American politics. The narrative is seductive: an army of idealistic young voters, roused by campus rallies and Bernie Sanders, poised to transform the electorate. But the sobering truth is that in the contests that decide who holds power — especially general elections — that giant rarely wakes up, and when it stirs, it doesn’t hit hard.</p>
+      <p>Look at the numbers, not the rhetoric. In the 2014 midterms, only about 17 percent of 18- to 29-year-olds voted, a generational nadir that handed control of the Senate to the party least aligned with young Americans’ stated preferences. Even in the high-interest 2012 presidential race, youth turnout lagged 20 points behind that of voters over 65. Those older voters, clustered in swing states like Florida and Pennsylvania, are the truly decisive constituency; they cast ballots with metronomic regularity. College students, by contrast, are disproportionately concentrated in deep-blue cities or safely red rural counties where an extra thousand votes don’t alter the Electoral College math one bit. The noise they make on Twitter doesn’t translate into Electoral College margins.</p>
+      <p>The Sanders phenomenon, for all its energy, actually illustrates this overhype. His massive rallies filled with college students couldn’t stop Hillary Clinton from crushing him among older primary voters — the voters who actually decide nominations — in state after state. His coalition proved to be a mile wide and an inch deep, generating enthusiasm that didn’t materialize at the precinct level in sufficient numbers to win the delegate count. This pattern is typical: every cycle, a candidate captures the campus imagination, and every cycle, the pundit class pronounces that “this year is different.” It rarely is.</p>
+      <p>None of this is to say that college students’ participation has no value. Civic engagement is a good in itself. But if we’re asking whether their votes really matter as an electoral force that determines outcomes and drives policy, the evidence suggests that they are a constituency that politicians can easily afford to disappoint. The reliable older voter will still be standing in line at the firehouse on a cold Tuesday morning long after the dormitory passion has cooled.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>To ask whether college students’ votes “really matter” as if the only measure is who carries Ohio on Election Night is to miss the deeper architecture of political change. Student votes matter enormously, not primarily because they swing a specific November tally, but because they are an investment in the long-term health of American democracy and the generation that will soon run it.</p>
+      <p>The habit of voting forms early. Political scientists have demonstrated that voting is behaviorally sticky: if you cast a ballot in the first election for which you’re eligible, you are significantly more likely to keep voting for decades. So each college student who navigates a confusing registration process and waits in line at a campus polling place isn’t just adding one more tally to a candidate’s total; she is becoming a citizen who will show up in midterms, in local school-board races, and in primaries where a few thousand committed participants can reshape the choices available to everyone else. Dismissing these early votes as negligible is like ignoring the first small deposits in a compounding savings account.</p>
+      <p>Moreover, college campuses have always been laboratories for political movements that eventually win national majorities. The civil rights sit-ins weren’t immediately reflected in presidential returns, but they altered the moral landscape and trained a generation of organizers. The anti-apartheid divestment campaigns on campuses didn’t operate through the Electoral College, yet they helped shift foreign policy. Today’s activism around climate change and college affordability — energized by the Sanders campaign — is similarly forming the priorities and leadership cadres that will dominate politics when those students are 40, not 20. The long arc of civic life is longer than a single election cycle.</p>
+      <p>This is not a consolation prize for people who can’t win today. It’s an acknowledgment that democracies renew themselves through the noisy, inconvenient, and often numerically inefficient participation of the young. If we judge the worth of a college student’s vote only by whether it flips a swing state in 2016, we’ll miss the forest for the trees. The vote matters profoundly because it is the seed corn of a durable, engaged electorate — and because the questions that future electorate will demand answers to are being drafted right now in campus common rooms and student newspapers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>There is a cynical transaction at the heart of how politicians see college students: their energy is useful branding, but their votes don’t actually buy anything. The evidence is clear that, as an electoral constituency, college students are far too thin and unreliable to matter in the way that seniors, suburban homeowners, or union households matter. They are a backdrop for campaign ads, not a bloc that changes who governs or what gets passed.</p>
+      <p>The structural problem isn’t just turnout, though that’s devastating enough — consistently, fewer than half of eligible 18-to-24-year-olds vote in presidential years, and the number collapses in midterms. The deeper issue is geography and focus. National elections are won not by raw popular-vote enthusiasm but by the grim arithmetic of the Electoral College, where a few battleground states receive almost all the attention. College students are concentrated in non-competitive states like California, New York, and Texas, or scattered across districts where their numbers are swamped by older, more conservative neighbors. A candidate can lose the youth vote by 30 points, as Mitt Romney did in 2012, and still come within a whisker of the presidency. That reality teaches campaigns a brutal lesson: pandering to college students is a low-return investment.</p>
+      <p>The Sanders campaign is the perfect test case. It generated the most explosive campus excitement in a generation, yet it has stalled precisely where youth-driven movements always stall: in the ballot box, where the turnout from those raucous rallies didn’t match the hype. In key primary states, older voters outvoted young voters by margins that made the collegiate enthusiasm almost irrelevant to the delegate math. If a candidate perfectly tailored to the student left cannot translate that passion into primary wins, what evidence is there that college students will ever be the kingmakers they imagine themselves to be?</p>
+      <p>Policy outcomes confirm their irrelevance. The issues that inflame campuses — student debt relief, aggressive climate action, policing reform — remain stuck because the constituencies that actually determine elections have competing demands. Politicians know they can safely ignore the campus crowd and instead protect mortgage-interest deductions or Social Security, because the people who care about those things vote every single time. For all the talk of a youth wave, the wave never seems to break on the shore of power. College students’ votes, as a practical matter, are a whisper in a hurricane.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>To answer whether college students’ votes matter, one need only look at the policy platforms of the leading Democratic candidates in the current election cycle. The enthusiasm college students have shown for Senator Bernie Sanders is not merely a flash in the pan; it is fundamentally altering the ideological trajectory of American politics. College students matter because they possess the unique power to set the political agenda.</p>
+      <p>Critics often point to the fact that youth turnout is historically lower than that of older demographics. But measuring the impact of a voting bloc solely by its raw percentage of the electorate on Election Day misses the broader mechanism of political change. When thousands of students pack into stadiums and organize relentlessly on campuses, they generate a political gravity that mainstream politicians cannot ignore.</p>
+      <p>Consider the sudden prominence of tuition-free public college and the aggressive restructuring of student loan debt. A decade ago, these ideas were relegated to the political fringe. Today, because college students have weaponized their votes and voices, these policies are at the very center of the Democratic primary. Hillary Clinton, the quintessential establishment candidate, has been forced to shift her platform significantly to the left to capture the very constituency Sanders has energized.</p>
+      <p>Furthermore, college students serve as the primary engine for grassroots campaigning. They have the time, energy, and digital fluency to amplify a campaign’s message far beyond their own demographic. They run phone banks, canvas neighborhoods, and drive the social media narratives that eventually filter up to traditional news outlets.</p>
+      <p>A constituency’s importance is not just about whether they single-handedly decide an election; it is about whether they can dictate the terms of the debate. By demanding systemic economic reform and a rejection of traditional corporate politics, college students in 2016 have proven that they are the ideological vanguard. Even if their favored candidate does not ultimately win the nomination, their votes have already succeeded in shifting the Overton window of American politics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Every four years, the media falls in love with the narrative of the mobilized youth vote. Pundits point to crowded campus rallies, viral social media campaigns, and impassioned student protests as proof that young people are finally ready to flex their political muscle. Yet, time and again, when the polls close and the data is tallied, the reality sets in: college students are a remarkably unreliable constituency. If political importance is measured by the ability to consistently determine electoral outcomes, college students simply do not matter as much as we pretend they do.</p>
+      <p>The math is unforgiving. Historically, voters aged 18 to 29 consistently turn out at significantly lower rates than older age groups. While the 2008 election of Barack Obama saw an uptick in youth participation, it was an anomaly rather than a permanent realignment. In midterm elections, the drop-off among young voters is catastrophic. Politicians and campaign managers know this. It is the reason why political platforms are perennially dominated by issues like Social Security, Medicare, and prescription drug prices, while issues directly affecting young people—like affordable housing or entry-level job markets—receive mostly lip service. Candidates cater to the people who actually show up.</p>
+      <p>The current phenomenon surrounding Bernie Sanders is visually impressive, but it suffers from the same structural flaw. A retweet is not a vote. A crowded rally in a college town does not necessarily translate into a majority at the ballot box statewide. We frequently see young voters express deep dissatisfaction with the two-party system, leading them to stay home or vote for third-party candidates out of a sense of ideological purity. While this may feel empowering to the individual student, in a pragmatic political sense, it neutralizes their collective power.</p>
+      <p>To become an important constituency, college students must transition from temporary activists to habitual voters. Until they prove they can turn out not just for historic, charismatic figures or democratic socialists promising a revolution, but for the mundane, incremental elections that shape local and state governments, their actual electoral impact will remain a mirage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The question of whether college students’ votes matter cannot be answered with a simple yes or no, because the American electoral system does not treat all votes equally. Thanks to the Electoral College and the localized nature of congressional races, the importance of a college student&#x27;s vote depends almost entirely on their zip code.</p>
+      <p>For a student attending university in deep-blue Massachusetts or deep-red Alabama, their individual vote for president is largely symbolic. The state’s electoral votes are already decided. However, for a student attending Ohio State, the University of Pennsylvania, or the University of Florida, their vote is incredibly consequential. These massive campus populations are situated in the very swing states that decide presidential elections. A highly mobilized campus in Columbus or Philadelphia can yield thousands of votes—more than enough to tip a close statewide race, and by extension, the presidency.</p>
+      <p>We know that college votes in these states matter because we can see how hard certain political actors work to suppress them. Over the last several years, Republican-led state legislatures in battleground states have passed a slew of restrictive voting laws clearly designed to dilute the power of the college vote. North Carolina’s strict voter ID law, which explicitly excluded student identification cards from state universities as valid forms of voter ID, is a prime example. Other states have attempted to ban early voting sites on college campuses or heavily restrict out-of-state students from establishing residency for voting purposes.</p>
+      <p>Politicians are highly rational actors when it comes to self-preservation. State legislators would not expend the political capital required to pass highly controversial voting restrictions targeting college students if those students were an irrelevant constituency. The aggressive efforts to make it harder for students to vote are the ultimate proof of their political power.</p>
+      <p>So, do college students matter? In our current system of geographic battlegrounds, a mobilized campus in a swing state is one of the most potent political forces in the country. They matter enough that one party is banking its future on them, and the other is actively trying to keep them away from the ballot box.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>When assessing the impact of the college vote, pundits focus far too much on the immediate horizon. They ask whether college students will carry Bernie Sanders to the nomination, or whether they will show up for the eventual Democratic nominee in November. But viewing the college vote through the lens of a single election cycle fundamentally misunderstands how political power is built. College students’ votes matter immensely, not because of what they will do in 2016, but because of what their current political socialization means for the 2020s, 2030s, and beyond.</p>
+      <p>Political science has long demonstrated that voting is a habit. Studies show that if an individual votes in the first three elections for which they are eligible, they are overwhelmingly likely to become a lifelong voter. College is the critical incubator for this habit. Universities provide concentrated environments where civic engagement is accessible, voter registration drives are omnipresent, and political debate is a daily reality. The act of casting a ballot while in college sets a behavioral baseline that will persist long after graduation.</p>
+      <p>Furthermore, the college years are when partisan identities solidify. The Millennials currently moving through the university system are the largest, most diverse generation in American history. As they engage with the political process now, they are forging generational alliances and policy preferences that will dominate the American political landscape for the next forty years. Their current preference for robust social safety nets, climate action, and social inclusivity is laying the groundwork for a massive demographic realignment.</p>
+      <p>Even if college students do not turn out at the same rates as senior citizens this November, the votes they do cast are leading indicators of the country&#x27;s future direction. The political activism we are witnessing on campuses today is the formation of the next American electorate. Politicians who dismiss the youth vote because of lower historical turnout rates are playing a short-term game. College students matter because they are the foundation upon which the future of both major political parties must inevitably be built.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>College students’ votes matter, but not in the simplistic way campaign hype often suggests. They are rarely a single bloc that can be summoned by a hashtag or a rally on the quad. They are mobile, busy, often registered at home rather than at school, and historically less reliable voters than older Americans. Yet when they do participate in large numbers, they can change both election outcomes and the agenda of politics.</p>
+      <p>The clearest recent example is 2008. Barack Obama did not win because of young voters alone, but his margins among voters under 30 were enormous, and his campaign’s organizing on campuses helped expand the electorate in several competitive states. That mattered. Elections are often decided at the margins; if a state is won by two or three points, a surge among students at large universities can be the difference between victory and defeat. In primaries and caucuses, where turnout is smaller, organized student participation can be even more powerful. Senator Bernie Sanders’s appeal to young voters in 2016 is not imaginary. It reflects real enthusiasm, real volunteer labor and real pressure on the Democratic Party to talk about tuition, debt, inequality and money in politics.</p>
+      <p>Still, the phrase “youth vote” can mislead. Many young Americans are not in college, and their experiences differ sharply from those at selective universities. Working-class young people, community college students, young parents and young people of color are often less visible in media stories about campus activism. If campaigns treat “college students” as the whole youth constituency, they misunderstand the electorate.</p>
+      <p>The larger importance of student politics may be developmental. Voting is habit-forming. People who are contacted, registered and mobilized when they are 18 or 20 are more likely to remain engaged. Campus campaigns train organizers, normalize political discussion and create networks that later move into unions, nonprofits, parties and public office. That is not romanticism; it is how political generations are built.</p>
+      <p>So yes, college students matter — but only if they move from expressive politics to electoral participation. A march, a debate watch party or a viral post can signal intensity. A vote counts. A volunteer shift counts more. A campus that registers thousands of students and turns them out in November is not a sideshow. It is one of the places where the future electorate is being made.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The honest answer is: usually not as much as they think. College students are highly visible in campaigns because they are concentrated, energetic and attractive to journalists. A candidate can fill a gym with students, produce inspiring photographs and generate social media excitement. But elections are not won by excitement alone. They are won by voters who actually show up, and young voters have long had lower turnout rates than older voters.</p>
+      <p>That is especially true in midterms, primaries and local elections, where the electorate skews older and more affluent. Students may dominate the conversation on campus, but the zoning board, state legislature and Congress are often chosen by homeowners, retirees and regular party voters. In presidential elections, young turnout rises, but it still usually trails that of older citizens. A politician looking at scarce resources has reason to ask whether a campus rally produces votes or merely applause.</p>
+      <p>There is also the problem of geography. Many elite and politically active campuses are located in states or districts that are not competitive. A thousand additional student votes in Massachusetts, New York or California may make little difference in the Electoral College or in Senate control. In a swing state like Ohio, Florida, Virginia or North Carolina, student turnout can matter. But that is a narrower claim than saying “college students” are an important national constituency.</p>
+      <p>The current enthusiasm for Bernie Sanders illustrates both the promise and the limits. Sanders has plainly energized students, and his message on debt and inequality speaks to real grievances. But Democratic primaries are not decided by college students alone. The party’s electorate includes older voters, union households, African-American and Latino voters, suburban liberals and many people who do not spend their days on campuses. A movement that is overwhelmingly youthful may be loud without being electorally sufficient.</p>
+      <p>None of this means students should stay home. Voting is a civic duty, and close elections can turn on small margins. But we should resist flattering college students into believing that their activism automatically translates into power. In a democracy, influence requires organization, persistence and turnout across many kinds of voters. The students who matter most will be the ones who knock on doors, persuade people unlike themselves and vote in boring elections after the presidential excitement fades. Until then, the youth vote remains more potential than power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The question should not be whether college students’ votes “matter” in the narrow sense of deciding the next president. Sometimes they do; often they do not. The deeper point is that student politics changes what parties have to discuss. In that sense, college students are already an important constituency in 2016.</p>
+      <p>Consider the issues that have moved from the margins toward the center of Democratic politics: student debt, free or debt-free college, criminal justice reform, climate change, campaign finance, economic inequality. These are not exclusively student concerns, but college campuses have been major amplifiers. Sanders’s campaign did not invent them. It gave national electoral form to frustrations that had been growing since the financial crisis, Occupy Wall Street, the rise of adjunct labor debates and the mounting burden of tuition and loans. Students are not wrong to believe the political system has failed them when they are told to get degrees and then enter adulthood with weak wages and heavy debt.</p>
+      <p>Voting is only one instrument of political influence. Social movements often matter before they win majorities. They change language, force candidates to take positions, and make previously “unrealistic” proposals debatable. Few national Democrats were emphasizing tuition-free public college a decade ago. Now Hillary Clinton and Bernie Sanders both have plans to address college affordability, even if their approaches differ. That shift did not happen because pollsters suddenly discovered students; it happened because young activists, debtors and organizers made the issue impossible to ignore.</p>
+      <p>Of course, activism without electoral follow-through is limited. Politicians count votes. If students want climate policy, debt relief or a different criminal justice system, they must participate in primaries, general elections and state races. Governors and legislatures shape higher education budgets. Prosecutors and judges shape criminal justice. Congress controls much of the fiscal machinery. A generation that votes only when inspired by a presidential candidate will be disappointed by the results.</p>
+      <p>But it is too cramped to evaluate college students only as a turnout demographic. They are also cultural and ideological entrepreneurs. They supply campaigns with volunteers, small donations, digital energy and arguments. They help define what the next generation of party activists will demand. Even when they lose an election, they may win part of the platform.</p>
+      <p>College students’ votes matter most when joined to a larger politics: organizing beyond campus, linking debt to wages and inequality, and transforming youthful passion into durable civic habits. Their power is not automatic, but it is real.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>College students matter, but the country would be better served if we stopped treating “the campus” as the privileged symbol of youth politics. The national conversation often imagines young voters as students at four-year residential colleges debating Sanders versus Clinton in dining halls. That picture leaves out millions of young Americans: those in community colleges, the military, low-wage jobs, apprenticeships, caregiving roles or no school at all. If we ask only whether college students matter, we risk narrowing democracy to the young people who already have the most institutional support.</p>
+      <p>This matters politically because the barriers are different. A student at a residential college may need registration information, an absentee ballot or transportation to a polling place. A 22-year-old working two jobs may need time off, child care, a shorter line and a reason to believe politics has anything to do with rent or wages. Voter identification laws, confusing residency rules and registration deadlines can affect both groups, but they often hit hardest those with the least flexibility.</p>
+      <p>Campaigns pursue college students because they are easy to find. A university is a ready-made organizing site: dorms, student groups, email lists, rallies and peer networks. That makes campuses valuable. In close states, a disciplined registration and turnout operation at a large public university can produce meaningful votes. Student volunteers can also canvass surrounding communities and bring energy to campaigns that would otherwise rely on older party regulars.</p>
+      <p>But importance should not be confused with representativeness. College students tend to be more liberal than older voters, and activists on campus are often more ideological than students as a whole. They may push parties toward necessary reforms, especially on debt and climate change, but they can also overestimate how widely their assumptions are shared. A politics built only around campus enthusiasm can fail to speak to young nonstudents, let alone older voters.</p>
+      <p>The best answer is to expand the frame. College students’ votes do matter, particularly in primaries, caucuses and swing states. Their activism can shape agendas and train future leaders. But they are one part of a broader youth electorate, not its entirety. The real democratic challenge is to connect campus activism with the lives of young people outside the campus gates. If students use their relative privilege — time, networks, institutional space — to organize not just for themselves but with workers, debtors and marginalized communities, they can be an important constituency. If they remain a self-regarding subculture, their influence will be loud, visible and limited.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>College students’ votes matter because elections are not won by abstractions; they are won by margins. In a closely divided country, a constituency does not need to be a majority to be decisive. It needs to be large enough, concentrated enough in competitive states, and motivated enough to change the outcome. College students can meet that test.</p>
+      <p>The clearest recent example is 2008 and, to a lesser extent, 2012. Barack Obama’s advantage among younger voters was not a decorative feature of his coalition; it helped him win states that Republicans had every reason to contest. Young voters made up roughly one-fifth of the electorate in 2012, and Obama won them by a wide margin. In close states, that is the difference between governing and giving a concession speech.</p>
+      <p>The same dynamic is visible in this year’s Democratic primaries. Senator Bernie Sanders’s huge support among younger voters has not guaranteed him the nomination, but it has changed the conversation. Free public college, student debt, campaign finance, inequality and climate change are being discussed with more urgency because young voters and campus organizers have demanded it. Even where they do not control the final outcome, they alter the incentives of candidates who want to assemble a winning coalition.</p>
+      <p>There is also a multiplier effect. College campuses are unusually dense organizing environments. A student can register a roommate, drag a friend to a caucus, staff a phone bank, circulate a petition, or host a debate-watching party without leaving a few blocks. That makes civic engagement at universities more efficient than in many other settings.</p>
+      <p>But none of this means college students matter automatically. A rally is not a ballot. A trending hashtag is not turnout. Politicians respond to people who vote consistently, especially in primaries, midterms and local elections. Seniors have power not because they are morally more deserving but because they show up. If students vote only in presidential elections when a charismatic candidate excites them, they will be treated as an unreliable bonus rather than a core constituency.</p>
+      <p>The answer, then, is yes — but conditionally. College students matter when they register, when they learn the rules in the state where they live, when they vote down the ballot, and when they keep voting after graduation. They are not the whole electorate, and they cannot substitute for broader coalitions. But in a polarized era, they are far too numerous and strategically placed to dismiss.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The power of the college vote is often exaggerated. That is not because students are unintelligent or apathetic by nature. It is because politics rewards reliable participation, and college students have not yet made themselves reliable.</p>
+      <p>Campaign professionals are blunt about this. They look at who voted last time, who votes in primaries, who votes in midterms, and who can be reached efficiently. By those measures, older voters tower over young voters. In the 2014 midterms, turnout among voters under 30 was dismal, around one in five. Older Americans voted at far higher rates. That is why Social Security and Medicare are treated as untouchable while student debt, Pell Grants and youth unemployment are often discussed episodically.</p>
+      <p>The Sanders campaign shows both the promise and the limits of student politics. He has inspired enormous enthusiasm among young people, especially on campuses. But a candidate can win the under-30 vote by huge margins and still lose when older voters prefer someone else. Democratic primaries are not decided in student unions; they are decided by an electorate that is older, more racially diverse, and more habitual in its voting than the crowds that fill campus rallies.</p>
+      <p>There is also a geographic problem. Many students are clustered in college towns that are already Democratic. Others attend school out of state and are confused about whether to vote at home or on campus. Many move every year. They are hard to contact, hard to poll, and hard to turn out. Transience weakens them as a constituency.</p>
+      <p>This does not mean an individual student’s vote is worthless. In a close election, every vote is part of the margin. Nor does it mean student activism has no cultural influence. But if the question is whether college students are currently one of the most important voting blocs in American elections, the answer is: not usually.</p>
+      <p>They could become one. The path is not mysterious. Register early. Vote in primaries. Vote in midterms. Vote for city council, school board, district attorney and state legislature. Make candidates fear your absence and court your presence. Until that happens, politicians will continue to do what they have always done: listen most closely to the people who show up most consistently.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Asking whether college students’ votes “really matter” risks defining politics too narrowly. Of course ballots matter. But universities influence politics not only by adding votes to a candidate’s column. They also produce organizers, arguments, movements and pressure that can reshape what elections are about.</p>
+      <p>Student activism has a long history in American public life. Sit-ins during the civil rights movement, protests against the Vietnam War, divestment campaigns against apartheid, anti-sweatshop organizing, immigrant rights activism and climate campaigns all drew energy from campuses. These movements did not always win immediately, and they were not always popular at the time. But they helped move questions from the margins into mainstream debate.</p>
+      <p>That is happening again in 2016. The enthusiasm for Bernie Sanders among college students is not just a personality cult. It reflects real generational experiences: tuition hikes, heavy student debt, weak wage growth, expensive housing, anxiety about climate change, and distrust of institutions after the Iraq war and the financial crisis. Even if students do not decide every primary, they have helped force candidates to answer questions that might otherwise have been treated as secondary.</p>
+      <p>Campus politics also supplies campaigns with labor. Students knock on doors, make calls, run social media operations, register voters and attend caucuses. This is not glamorous, but it is how elections are built. A retired voter may be more likely to cast a ballot; a student may be more likely to spend ten hours persuading others to cast theirs. That distinction matters.</p>
+      <p>Still, campus activism has weaknesses. It can become insular, moralistic and detached from the communities surrounding the university. Students can mistake agreement among their friends for agreement among the electorate. They can also forget that “young voters” and “college students” are not the same group. Many young Americans are working full time, raising children, serving in the military, attending community college part time, or not in school at all. A politics that speaks only in the language of elite campuses will miss much of its own generation.</p>
+      <p>So yes, civic engagement at universities matters — but it matters most when it connects outward. Students should vote, but they should also organize with workers, neighbors, churches, unions, immigrant groups and local civic associations. They should care about campus sexual assault and student loans, but also policing, wages, public schools, transit and health care.</p>
+      <p>The college vote is not a magic wand. But campuses remain one of the few places where large numbers of young people live close together, argue intensely, and can be mobilized quickly. That makes them politically important, whether or not they cast the decisive ballot in November.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>College students matter, but the phrase “the college vote” can mislead us. It often conjures images of residential campuses, packed rallies and idealistic undergraduates. That is only one slice of young America. Many young adults are not in college. Many are in community colleges, working while studying, commuting, caring for relatives or struggling to pay rent. If politicians treat “youth politics” as something that happens mainly on leafy campuses, they will misunderstand the generation they claim to court.</p>
+      <p>This matters in the current debate over Bernie Sanders and young voters. His appeal among students is real and politically significant. But the issues behind that appeal are broader than campus life. Student debt is important, but so are low wages, health insurance, criminal justice, climate change, immigration, child care and the cost of housing. A 23-year-old working two jobs without a degree is no less part of the youth electorate than a sophomore at a private university.</p>
+      <p>College students are also not a single ideological bloc. They lean left as a group, but there are conservative, libertarian, moderate and politically disengaged students on every campus. Some are drawn to Sanders; others prefer Hillary Clinton; some are interested in Republican arguments about entrepreneurship, taxes, religious liberty or national security. Treating students as automatic foot soldiers for one party is a good way to miss the complexity of their views.</p>
+      <p>Where college students can have special power is locally. In many towns, a university is one of the largest institutions in the area. If students register where they live, they can influence races for mayor, city council, prosecutor, transit boards and ballot measures. These offices affect policing, rental housing, public transportation, zoning, campus safety and relations between the university and surrounding neighborhoods. Yet these are exactly the elections students are most likely to skip.</p>
+      <p>Universities should therefore encourage voting without turning themselves into partisan machines. They can provide registration information, host debates, make absentee-ballot rules clear, and help students understand whether they can vote at home or at school. States should not make student voting harder through confusing residency rules or restrictive ID requirements.</p>
+      <p>The best answer is not that college students are the decisive constituency in every election. They are not. The better answer is that they are citizens now, with interests now, living in communities now. Their votes matter when they use them — and they matter more when campus politics is connected to the wider lives of young people who may never set foot in a dormitory.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The enthusiasm around young voters in 2016 obscures a troubling reality: college students have historically failed to show up at the polls when it matters most. While commentators celebrate Bernie Sanders&#x27; rallies and the energy surrounding campus activism, the hard data tells a different story. In the 2014 midterms, voters aged 18-29 turned out at just 21 percent—lower than any other age group by a significant margin. The pattern repeats in presidential years too: despite higher youth participation in 2008 and 2012, younger voters still lag behind their elders by substantial margins.</p>
+      <p>The problem isn&#x27;t that students lack political opinions or engagement. We see plenty of that on social media and in dorm room debates. The problem is translating that enthusiasm into consistent electoral participation. Registration hurdles, confusing absentee ballot procedures, and simple inertia keep many students from voting, whether in their college town or back home.</p>
+      <p>What&#x27;s more, the geographic distribution of college students often works against their political influence. Major universities cluster in certain states, and students who hail from battleground states may spend election day in solidly red or blue territory where their individual votes carry less weight. A student at the University of Missouri voting in Missouri might matter; that same student voting in Kansas (where most Missouri students are from) changes nothing.</p>
+      <p>None of this means we should dismiss young people&#x27;s potential. But raw potential without execution is just wishful thinking. If college students want their votes to matter, they need to do more than show up to rallies—they need to show up to polling stations, year after year, regardless of whether a charismatic candidate has captured their attention. Until that happens, talk of the youth vote as a political force remains largely aspirational.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The question of whether college students&#x27; votes matter fundamentally misunderstands how political power actually works in this country. Power doesn&#x27;t come from individual votes; it comes from organized, visible constituencies that politicians feel compelled to court. And no group has more untapped potential for such organizing than young Americans on college campuses.</p>
+      <p>Consider the math. There are roughly 20 million college students in America. If even half of them voted in a presidential election, that would represent over 40 million potential ballots—enough to swing any state. The problem isn&#x27;t numbers; it&#x27;s mobilization. Candidates don&#x27;t invest resources where they don&#x27;t expect returns, and for decades, campaigns have written off young people as unreliable voters. That self-fulfilling prophecy has kept students disengaged.</p>
+      <p>But look at what&#x27;s happening now. Bernie Sanders has drawn enormous crowds of young voters and sparked conversations about student debt, income inequality, and democratic participation that extend far beyond his campaign. This energy, if sustained, could fundamentally reshape how campaigns think about the youth vote. More importantly, it demonstrates that when students feel genuinely represented by a candidate, they show up.</p>
+      <p>Campus organizing also has unique advantages. Students live in concentrated communities with shared spaces for registration drives, candidate forums, and get-out-the-vote efforts. Social networks that naturally form among classmates create organic channels for political mobilization. A single enthusiastic student organization can reach thousands of peers through everyday conversations.</p>
+      <p>The real question isn&#x27;t whether individual student votes matter—they rarely matter for any individual. The question is whether students can build the collective infrastructure to make their cohort impossible to ignore. That&#x27;s the challenge, and it&#x27;s one worth taking seriously.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The debate over student voting power often misses a crucial distinction: mattering in elections and mattering in politics are two different things. College students may not swing presidential elections on their own, but they absolutely shape the ideological terrain that all candidates must navigate.</p>
+      <p>Political scientists have long documented how campaign rhetoric shifts to capture emerging constituencies. When politicians believe young voters are paying attention—even if they don&#x27;t show up to vote—they adjust their positions on issues like student loans, climate policy, and immigration to appeal to that generation. In that sense, student engagement shapes the political landscape even when it doesn&#x27;t determine election outcomes.</p>
+      <p>Moreover, the habits formed during college years tend to persist. Research on political socialization suggests that first-time voters carry their partisan leanings and voting patterns forward for decades. A student who votes in 2016 is far more likely to vote in 2020, 2024, and beyond. This means that engagement on campus creates long-term political citizens, not just momentary surges.</p>
+      <p>We should also recognize the geographic irony at the heart of this debate. Many students attend university far from their registration addresses, making voting a logistical challenge. But this also means that when students do organize around specific issues—whether supporting local candidates or pushing for campus policies—they develop practical civic skills that carry forward into adult political life.</p>
+      <p>The answer to whether student votes matter isn&#x27;t simply yes or no. It&#x27;s more like: they matter more than most people realize in shaping political discourse, and they&#x27;ll matter increasingly as current students age into the electorate&#x27;s core. The investment in engaging college students isn&#x27;t just about this election—it&#x27;s about building political habits and influence for decades.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>I want to push back against both the pessimists and the enthusiasts on this question, because both sides are asking the wrong thing. The real issue isn&#x27;t whether student votes matter in any abstract sense—it&#x27;s whether we&#x27;re thinking about student political engagement in sufficiently ambitious terms.</p>
+      <p>Look at what&#x27;s actually happening on campuses right now. Students are organizing around issues that genuinely matter to them: tuition costs, racial justice, climate change, and economic inequality. They&#x27;re not just voting—they&#x27;re building organizations, running candidate meetups, and creating political infrastructure that could outlast any single election. That&#x27;s a different kind of power than electoral success, and arguably a more durable one.</p>
+      <p>The history of American political movements suggests that young people&#x27;s role has often been less about delivering votes and more about shifting what&#x27;s politically possible. The civil rights movement, anti-war protests of the 1960s, the environmental movement—students were central to all of them, not primarily as voters but as organizers and advocates. Politicians who ignored them did so at their peril, not because of ballot counts but because of the pressure they could generate.</p>
+      <p>This doesn&#x27;t mean elections are irrelevant to students. But it suggests that reducing political engagement to voting—something students do or don&#x27;t do on a single Tuesday in November—underestimates what campus activism can achieve. The real question for college students isn&#x27;t &quot;Can we win elections?&quot; It&#x27;s &quot;Can we build movements that shape what those elections are about?&quot;</p>
+      <p>If the answer is yes—and I think it often is—then student political engagement matters enormously, even when individual elections don&#x27;t go their way.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

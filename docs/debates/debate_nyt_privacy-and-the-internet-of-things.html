@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy and the Internet of Things · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Science Tech · Open-ended</div>
+  <h1 class="debate-title">Privacy and the Internet of Things</h1>
+  <div class="question-body"><p>A camera that lets you check on your sleeping baby? Very cool. A camera that lets hackers broadcast live video of your sleeping baby? Less cool.</p><p>Businesses, regulators and consumers are just beginning to see the potential of the Internet of Things, in which more and more objects become networked — not only cameras, but also dishwashers, running shoes, parking spaces … you name it. At the same time, privacy advocates are raising alarms.</p><p>What are some of the most exciting possibilities for Internet-connected objects, and how can we minimize the risks that come with them?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=7</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_1.html">
+      <td class="arg-text">We can enjoy the benefits of the Internet of Things while protecting our privacy by implementing a combination of proactive design, technical safeguards, user-friendly tools, and updated legislation.</td>
+      <td><span class="humans-pill ">3</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_2.html">
+      <td class="arg-text">To maximize the potential of the Internet of Things while minimizing privacy risks, companies should adopt an &#x27;Internet of Things bill of rights&#x27; centered on open-source hardware and consumer data ownership.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_3.html">
+      <td class="arg-text">The security risks of the Internet of Things should be addressed through architectural engineering standards and market-based enforcement rather than government regulation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_4.html">
+      <td class="arg-text">To realize the significant societal benefits of the Internet of Things while mitigating its inherent security and privacy risks, we must mandate that manufacturers integrate rigorous security standards and privacy-by-design principles into their products from the start.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_5.html">
+      <td class="arg-text">The Internet of Things offers a revolutionary opportunity to transform healthcare through continuous monitoring, provided we update privacy regulations to protect sensitive health data across all devices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_6.html">
+      <td class="arg-text">To mitigate the privacy risks of the Internet of Things, we must implement mandatory security certification standards for manufacturers to address the structural economic incentives that lead to insecure devices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_7.html">
+      <td class="arg-text">Governments should embrace the Internet of Things and sensor-driven data to improve public infrastructure and policy, provided they maintain transparency through open data standards.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_8.html">
+      <td class="arg-text">The Internet of Things should prioritize giving consumers direct access to their own data to empower them to make better decisions and reduce energy consumption.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_9.html">
+      <td class="arg-text">To protect consumers from the intrusive nature of the Internet of Things, regulators and designers must look beyond data privacy and prevent networked devices from being used as tools for unsolicited, in-home commercial manipulation.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_10.html">
+      <td class="arg-text">To protect the boundary between public and private life, the Internet of Things requires robust legal regulation and corporate accountability rather than a reliance on voluntary self-regulation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_11.html">
+      <td class="arg-text">To realize the benefits of the Internet of Things while minimizing privacy risks, security must be integrated into the product design through mandatory baselines, limited connectivity, and independent certification.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_12.html">
+      <td class="arg-text">Instead of accepting the Internet of Things as an inevitable benefit, we must critically evaluate whether the convenience of each networked device outweighs its significant surveillance and privacy costs.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_13.html">
+      <td class="arg-text">We should adopt a selective approach to the Internet of Things by prioritizing connectivity only for objects that solve real-world problems while maintaining a presumption of disconnection for consumer goods to protect privacy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_14.html">
+      <td class="arg-text">The Internet of Things offers transformative benefits for elder care and health monitoring, but its implementation must prioritize patient dignity and data privacy through strict consent, tiered access, and minimized surveillance.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_15.html">
+      <td class="arg-text">To ensure safety and accountability in the Internet of Things, connected devices should be subject to strict product liability and federal safety regulations rather than the lenient legal standards applied to software.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_16.html">
+      <td class="arg-text">While the Internet of Things offers transformative benefits for healthcare, infrastructure, and efficiency, mitigating its significant security and privacy risks requires a combination of regulatory enforcement, mandatory technical standards, and transparent consumer labeling.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_17.html">
+      <td class="arg-text">The primary threat to privacy in the Internet of Things is not illegal hacking, but the lawful collection and monetization of personal data by corporations enabled by weak regulations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_18.html">
+      <td class="arg-text">The most significant benefits of the Internet of Things lie in smart-city infrastructure, but realizing these gains requires mandatory public oversight and privacy-by-design to protect citizens from unavoidable surveillance.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_19.html">
+      <td class="arg-text">To prevent the Internet of Things from becoming a tool for corporate and governmental surveillance, we must implement a strict legislative framework that prioritizes data minimization, informed consent, and a ban on unauthorized secondary data use.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_20.html">
+      <td class="arg-text">Instead of pursuing the impossible goal of data privacy in an interconnected world, we should demand absolute transparency regarding how our data is processed, analyzed, and shared.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_21.html">
+      <td class="arg-text">To mitigate the risks of the Internet of Things and protect its potential benefits, the government must shift focus from abstract privacy concerns to the implementation of mandatory, concrete security standards for all networked devices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_22.html">
+      <td class="arg-text">The privacy risks of the Internet of Things should be mitigated by engineers and designers embedding privacy directly into the technical architecture of devices through a practice known as &#x27;privacy by design.&#x27;</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_23.html">
+      <td class="arg-text">The development of the Internet of Things should be governed by democratic deliberation and ethical oversight rather than being left to the profit-driven interests of technology companies.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_24.html">
+      <td class="arg-text">To mitigate the severe and intimate privacy risks posed by the Internet of Things, we must move beyond consumer education and implement binding legal regulations, technical audits, and private rights of action.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_25.html">
+      <td class="arg-text">The Internet of Things offers transformative potential for managing public goods like the environment and urban infrastructure, but realizing these benefits requires privacy frameworks that are calibrated to specific contexts of scale, purpose, and accountability.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_26.html">
+      <td class="arg-text">The Internet of Things poses a systemic threat to domestic privacy by enabling constant surveillance, necessitating a shift toward non-networked appliances and stronger legal protections for personal data.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_27.html">
+      <td class="arg-text">We should embrace the Internet of Things for its immense societal benefits while addressing security risks through standardized industry protocols and consumer education rather than through fear-based restriction.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_28.html">
+      <td class="arg-text">We can enjoy the benefits of the Internet of Things while protecting privacy by adopting a &#x27;Privacy by Design&#x27; framework that shifts system architecture away from centralized data collection.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_29.html">
+      <td class="arg-text">The Internet of Things should be governed by flexible market-based standards and targeted enforcement against bad conduct rather than heavy-handed preemptive regulation that stifles innovation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_30.html">
+      <td class="arg-text">To prevent the Internet of Things from becoming a pervasive architecture of observation, we must establish baseline privacy legislation and legal rights that limit data collection and usage.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_31.html">
+      <td class="arg-text">To realize the benefits of the Internet of Things, we must ensure privacy by maintaining contextual integrity and establishing enforceable boundaries for how data is collected and used.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_privacy-and-the-internet-of-things_arg_32.html">
+      <td class="arg-text">To minimize the risks of the Internet of Things, connectivity should be treated as a functional necessity rather than an inherent virtue, with a focus on data subtraction and the right to remain offline.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Aleecia M. McDonald</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/aleecia-m-mcdonald" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Brett Goldstein</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/brett-goldstein" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Julie Brill</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/julie-brill" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Limor Fried</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/limor-fried" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Michael Chui</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/michael-chui" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ryan Calo</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/ryan-calo" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Tim Woods</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/09/08/privacy-and-the-internet-of-things/tim-woods" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The promise of the Internet of Things is real, but the discussion so far has tilted toward gee-whiz demos at the expense of hard thinking about who owns the data these devices generate and who is responsible when they fail. Both questions deserve more attention than they&#x27;re getting.</p>
+      <p>Start with the possibilities. Networked sensors in the home can cut energy use significantly — the Nest thermostat is only the most visible example. Connected medical devices and pillboxes can keep elderly people in their homes longer and flag dangerous drug interactions before a pharmacist would. Municipal sensors on bridges and water mains could catch failures before they become disasters. Industrial applications — what GE has been calling the &quot;industrial internet&quot; — may matter more in dollar terms than any of the consumer gadgets that grab headlines.</p>
+      <p>But the recent FTC settlement with TRENDnet, whose insecure baby monitors let strangers peer into hundreds of homes, is a useful warning. The problem isn&#x27;t that someone built a bad product; it&#x27;s that the incentives in this market push almost every vendor toward the same mistakes. Shipping a connected dishwasher is a hardware company&#x27;s first software product, and security is treated as a cost center. Default passwords, unencrypted streams, and firmware that will never be patched are the predictable result.</p>
+      <p>Three things would help. First, the FTC should make clear — and Congress should ratify — that &quot;reasonable security&quot; is an enforceable obligation for any device that collects or transmits personal data, with safe-harbor guidance for small manufacturers. The agency&#x27;s recent workshop on the IoT is a start; the principles need teeth. Second, we need a meaningful data-minimization norm. A connected scale does not need to retain every weigh-in on a vendor&#x27;s servers forever, and a smart meter does not need to share appliance-level usage with third parties without consent. The Fair Information Practice Principles are forty years old and still adequate to the task if anyone bothers to apply them.</p>
+      <p>Third, and most neglected: we need to think about what happens when the company behind your thermostat or door lock goes bankrupt or simply loses interest. A web service can disappear and you lose your bookmarks; a discontinued IoT device can leave you with a brick on your wall or, worse, a permanent vulnerability on your home network. Some form of escrowed firmware or mandated end-of-life disclosure may be necessary.</p>
+      <p>None of this requires slowing innovation. It requires treating connected objects as what they are — durable goods that double as surveillance infrastructure — and writing rules that match. The alternative is a decade of TRENDnet stories, followed by the heavy-handed regulation that always arrives after public trust collapses.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The camera checking on a sleeping baby is a perfect symbol for this new world: a marvel of convenience that, if unsecured, becomes a window for strangers. Beyond such intimate uses, the Internet of Things promises to reshape daily life in ways that are genuinely exciting. Imagine a home where your thermostat learns your schedule, your refrigerator flags expired food, and your running shoes track not just miles but gait, alerting you to an injury before you feel pain. On a city scale, networked parking spaces could slash congestion, and smart grids could balance energy loads, reducing waste and lowering bills. These aren’t distant fantasies; early versions are already shipping, and the efficiencies they offer—in health, energy, and time—are transformative.</p>
+      <p>Yet the risks are inseparable from the sensors that make these objects smart. Every device becomes a potential data leak, compiling intimate portraits of our habits, movements, and even our bodies. The chilling possibility isn’t just a hacked baby monitor; it’s a dossier of your home’s occupancy patterns, sold to burglars or insurers without your knowledge. Minimizing these dangers requires a layered defense. First, security can’t be an afterthought. Devices must ship with mandatory, strong encryption and automatic, seamless updates—not the “admin/admin” defaults that have plagued routers for years. Second, we need data-minimization principles baked into law and code: a smart shoe shouldn’t collect location data if it only needs step counts. Third, transparency and meaningful consent are vital; consumers should see, in plain language, what data is gathered and have granular control to opt out. Finally, regulators must set clear liability for breaches, forcing manufacturers to treat privacy as a design priority rather than a public-relations problem. The promise of a responsive, efficient world is too great to abandon, but we’ll only embrace it if we can trust that our devices aren’t quietly betraying us.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The &quot;Internet of Things&quot; promises unprecedented efficiency and convenience. Smart thermostats learn our daily habits to radically reduce energy consumption; wearable fitness monitors track our vital signs to revolutionize preventative healthcare; and intelligent urban sensors could soon eliminate traffic gridlock. The potential for smart resource management and seamlessly integrated living is immense.</p>
+      <p>However, connecting mundane objects to the web transforms our private sanctuaries into relentless data-generation nodes. The recent, chilling reports of hackers infiltrating internet-connected baby monitors serve as a stark wake-up call. Too often, these consumer devices are rushed to market with flimsy security protocols, relying on easily guessable default passwords and unencrypted data streams. Furthermore, the aggregation of this deeply intimate behavioral data by manufacturers raises severe privacy questions about who owns our digital footprints and who else might gain access to them.</p>
+      <p>To minimize these risks without stifling innovation, the tech industry must embrace &quot;privacy by design.&quot; Manufacturers need to build security into the foundational architecture of their devices, rather than bolting it on as an afterthought. This means mandating forced password changes upon initial setup, utilizing robust encryption standards, and offering radically transparent, opt-in data collection policies.</p>
+      <p>Additionally, regulatory bodies like the Federal Trade Commission must take a stronger role in auditing the privacy and security claims of connected-device companies, penalizing those who negligently leave consumers exposed. We stand on the brink of a technological revolution, but we must not be required to sacrifice our fundamental privacy for the sake of convenience.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The Internet of Things is exciting because it can make the physical world visible, measurable and responsive in ways that were previously too expensive or cumbersome. A smart thermostat can learn when a family is home and reduce energy waste. Networked medical devices can help elderly or chronically ill patients remain independent while alerting caregivers to trouble. Connected cars can report maintenance problems before breakdowns and, eventually, coordinate traffic more safely. Sensors in bridges, water systems and power grids can detect failures early. Even mundane objects — parking meters, running shoes, refrigerators — can save time or reveal patterns that help people make better choices.</p>
+      <p>But the baby-monitor example captures the central problem: when an object becomes a computer, it inherits computer risks, and when it becomes networked, those risks scale. Many connected devices are being built by companies with little security experience, sold on thin margins and rarely updated after purchase. Default passwords, weak encryption and poorly designed cloud services are not abstractions; the Federal Trade Commission has already acted against a camera maker whose Internet-connected cameras exposed private home video feeds. Security researchers have also demonstrated attacks on cars and medical devices. These examples should be treated not as curiosities but as warnings about an industry racing ahead of its safeguards.</p>
+      <p>Minimizing the risks requires treating privacy and security as product requirements, not optional features. Devices should ship with unique passwords or require users to create strong credentials during setup. Communications should be encrypted by default. Manufacturers should provide clear update mechanisms and commit to supporting devices for a defined period; a “smart” appliance that cannot be patched is a future liability. Data collection should be limited to what the service actually needs, retained only as long as necessary and separated from personally identifying information where possible. Consumers should not have to read a legal treatise to learn whether their thermostat data, location history or health information is being sold, shared or handed to law enforcement.</p>
+      <p>Regulators also have a role. The FTC should continue to use its authority against deceptive or unfair practices, and baseline privacy legislation would help set expectations across industries. Standards bodies can develop security labels or certification programs, much as we have safety standards for electrical products. Procurement rules for hospitals, utilities and cities should demand strong security from vendors.</p>
+      <p>The goal should not be to halt the Internet of Things. Done well, it can conserve energy, improve health, reduce accidents and make cities work better. But “connected” should not become a synonym for “careless.” The bargain should be simple: if companies want to place sensors and networked computers in our homes, cars and bodies, they must earn that intimacy through restraint, transparency and security by design.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The Internet of Things promises genuine transformation in how we live. Connected devices can monitor chronic health conditions, reduce energy consumption in homes, and help us track everything from our fitness to our sleep patterns. For elderly relatives, networked sensors offer the chance to age in place safely. These are not trivial conveniences — they represent real improvements in quality of life.</p>
+      <p>But the baby camera example highlights a tension that runs through every connected device: convenience often requires vulnerability. Each networked object is a potential entry point for data collection, and not always by benevolent actors. A refrigerator that tracks your grocery habits is also, necessarily, building a profile of your household. A fitness band is collecting intimate details about your body. The question is not whether this data will be valuable, but who controls it and how securely it&#x27;s stored.</p>
+      <p>Minimizing these risks requires action on multiple fronts. First, security cannot be an afterthought — manufacturers must build robust protections into devices from the start, and software updates must remain available over a device&#x27;s lifespan. Second, consumers need meaningful control: clear explanations of what data is collected and genuine ability to delete it. Third, regulators should establish baseline standards for what companies can do with the information they gather. Fourth, the technology industry needs to develop common security standards that devices can meet.</p>
+      <p>The IoT is coming whether we like it or not. The question is whether we&#x27;ll build it in ways that respect the boundaries people expect, or whether convenience will continue to trump privacy until the damage is done.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (42 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**The Promise Is Real, But So Is the Peril**</p>
+      <p>The Internet of Things will be transformative, and it&#x27;s worth naming what&#x27;s actually exciting about it. A pill bottle that reminds an elderly parent to take her medication—and quietly alerts a caregiver when she doesn&#x27;t—could keep millions of people in their homes longer. A municipal water system that detects leaks in real time could save billions of gallons. Running shoes that track gait could help injured athletes recover. Thermostats that learn your patterns can cut household energy use by double digits. These aren&#x27;t science-fiction gadgets; many already exist.</p>
+      <p>But the baby-camera horror story from earlier this year, when a Houston family discovered a stranger shouting at their toddler through a hacked Foscam, illustrates the structural problem. The companies racing to network everything are not, by and large, security companies. They are appliance makers, toy makers, sneaker companies. Many ship products with default passwords, no encryption, and no mechanism for pushing security updates. Once the device is in your home, it&#x27;s frozen in time—vulnerabilities and all.</p>
+      <p>Minimizing the risk requires three things. First, the FTC should treat insecure connected devices as an unfair trade practice, as it began doing in the TRENDnet settling earlier this year. That sends a market signal. Second, we need basic baseline standards: forced password changes on setup, encrypted communications, and a commitment to patching for a defined product lifetime. Third, consumers need labeling—something like an Energy Star rating for security—so that the market can reward responsible manufacturers rather than the cheapest.</p>
+      <p>The deeper privacy question, beyond hackers, is what the manufacturer itself does with the data. A connected dishwasher knows when you&#x27;re home; a connected car knows where you drive. Without enforceable data-minimization rules, every object becomes a surveillance node operated by someone whose business model you didn&#x27;t sign up for. That&#x27;s the conversation we haven&#x27;t really started having yet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**Slow Down**</p>
+      <p>Before we get carried away imagining the wonders of a refrigerator that orders milk, let&#x27;s ask a simpler question: do we actually want this? The Internet of Things is being sold to us as inevitable, but inevitability is a marketing strategy, not a fact.</p>
+      <p>Consider what we are being asked to accept. Every object in your home becomes a data-emitting node. Your toothbrush reports your brushing habits to a server in a country you can&#x27;t name, run by a company you can&#x27;t sue, protected by a privacy policy you didn&#x27;t read and couldn&#x27;t enforce if you had. The dishwasher knows when you eat. The thermostat knows when you sleep. The car knows where you went. Aggregated, this is a portrait of your life more intimate than anything the NSA programs revealed this summer have produced—and it will be held by private actors with even fewer constraints.</p>
+      <p>The standard response is that consumers can choose. But choice presumes meaningful alternatives, and the trajectory of consumer electronics suggests that within a decade, buying a &quot;dumb&quot; television or a &quot;dumb&quot; car may not be possible. We will be opted in by default.</p>
+      <p>The standard response is also that regulation can fix the harms. Perhaps. But our regulatory apparatus has not even managed to pass baseline data-protection legislation for the web we already have. The idea that Congress will competently regulate networked toasters strains credulity.</p>
+      <p>I am not arguing we should ban the Internet of Things. I am arguing we should stop treating each new product launch as an unalloyed good and start asking, product by product, whether the convenience genuinely outweighs the surveillance cost. For a pacemaker that detects arrhythmia and calls 911, yes. For a fork that tweets your dinner, probably not. Discrimination, not enthusiasm, is the virtue we need.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**Treat Connected Devices Like Cars, Not Like Software**</p>
+      <p>When Microsoft ships a buggy version of Word, the consequence is annoyance. When Ford ships a defective brake system, the consequence is death—and we hold automakers to a standard of strict liability, mandatory recalls, and federal safety regulation. The Internet of Things sits awkwardly between these two regimes, and right now it is being treated as software when it should be treated as a physical product.</p>
+      <p>This matters because the software industry has been allowed to externalize the costs of its insecurity for decades. End-user license agreements disclaim all warranties. Breaches are met with apologies and credit monitoring. The legal architecture assumes the user accepts the risk. That arrangement was tolerable, barely, when the worst consequence was a hijacked email account. It is intolerable when the device in question is the lock on your front door, the insulin pump in your body, or the camera over your child&#x27;s crib.</p>
+      <p>The framework already exists. The Consumer Product Safety Commission regulates dangerous goods. The NHTSA mandates auto recalls. The FDA has begun, tentatively, to assert authority over networked medical devices—witness its draft guidance this June on cybersecurity for medical equipment. Extending product-liability principles to connected consumer goods would shift the incentives dramatically. If a manufacturer were on the hook for foreseeable harms caused by their unpatched device, they would patch it. If they could be forced to recall a vulnerable product, they would design it to be patchable in the first place.</p>
+      <p>Yes, this raises costs. Yes, it might slow the breathless pace of product launches. Good. The promise of the Internet of Things is genuine, but it will only be realized if consumers can trust that the objects in their lives are not also weapons aimed at them. Liability is how we have always built that trust for physical things. Connected objects are physical things.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>**The Killer App Is Healthcare**</p>
+      <p>Lost in the hand-wringing about hacked baby monitors is the most genuinely revolutionary application of networked objects: continuous, ambient health monitoring. We are within a few years of a world where chronic disease management—the single largest driver of healthcare spending in this country—is fundamentally reorganized around connected devices.</p>
+      <p>Consider diabetes. A continuous glucose monitor talking to an insulin pump talking to a smartphone, with anomaly detection in the cloud and a clinician alerted on dangerous trends, is not a luxury gadget; it is a functioning artificial pancreas, and it will save lives. Heart failure patients with networked scales and blood-pressure cuffs can be caught days before a decompensation that would have sent them to the ICU. Parkinson&#x27;s patients wearing motion sensors generate data that lets neurologists tune medications with a precision that ten-minute office visits never permitted. The Pew studies on the &quot;quantified self&quot; movement suggest patients want this; the question is whether the system delivers it well.</p>
+      <p>The privacy stakes here are obviously high. Health data is the most sensitive category we have, and HIPAA—written in 1996—does not contemplate a world where your shoes know more about your gait than your physician does. The data flowing from a consumer-grade fitness tracker to a third-party app is, in most cases, not covered by HIPAA at all. That is an obvious gap.</p>
+      <p>But the solution is not to abandon the technology; it is to extend the protections. Health data should be regulated as health data regardless of which device collects it. Patients should own their streams and be able to revoke access. Secondary use—selling fitness data to insurers, for example—should require explicit, unbundled consent.</p>
+      <p>Get this right and we transform medicine. Get it wrong and we create a discriminatory data economy that punishes the sick. The choice is in front of us, now.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>**Security Through Design, Not Through Regulation**</p>
+      <p>Much of the current debate assumes that the answer to insecure connected devices is more rules from Washington. I&#x27;m skeptical. Regulation written today will be obsolete the day it passes, and the FTC&#x27;s track record on technology issues suggests that any standards it imposes will reflect last year&#x27;s threat model. The better answer is architectural.</p>
+      <p>The fundamental problem with most current IoT devices is that they were designed as if they would sit on a trusted home network. They weren&#x27;t—they sit on the open internet, often with a public IP, often with admin credentials of &quot;admin/admin.&quot; This is not a regulatory failure; it is an engineering failure, and it has engineering solutions.</p>
+      <p>First, default-deny networking. A baby monitor has no business accepting unsolicited connections from arbitrary IP addresses. Manufacturers should design devices that phone home to a controlled cloud service and only accept connections relayed through it, authenticated end to end. This is how modern videoconferencing works and there is no reason a webcam should be any different.</p>
+      <p>Second, automatic, signed firmware updates. The model where a consumer is expected to log into a router-like web interface and manually flash new firmware is broken. Devices should update themselves, silently, with cryptographically signed code from the manufacturer.</p>
+      <p>Third, hardware-backed identity. Every device should ship with a unique key pair burned into a secure element at the factory. No shared default passwords. No master keys. Compromise of one device should not compromise a million.</p>
+      <p>None of this requires legislation. It requires that platform providers—Apple, Google, Amazon—who are building the hubs through which connected devices will operate, impose security requirements on the ecosystem. Apple does this aggressively in its App Store; the same model can work for HomeKit-style frameworks. Market gatekeepers, not regulators, are the most effective enforcers here, because they can iterate at the speed of the threat. Let them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>**The Real Risk Isn&#x27;t Hackers, It&#x27;s Companies Operating Legally**</p>
+      <p>Stories about strangers hijacking baby monitors are vivid, but they distract from the larger and more durable threat to privacy in the Internet of Things: the entirely lawful collection, aggregation, and sale of intimate behavioral data by the companies that make and operate the devices.</p>
+      <p>Consider the asymmetry. A hacker who breaks into your Foscam commits a federal crime under the Computer Fraud and Abuse Act. The company that sold you the camera, however, can write a privacy policy granting itself the right to record everything the camera sees, share it with &quot;business partners&quot; undefined, retain it indefinitely, and modify the terms unilaterally—and this is all perfectly legal. The hacker is a felon. The manufacturer is a business.</p>
+      <p>This is the structure of the surveillance economy as it stands. We extended it from web browsers to smartphones with barely a whimper, and we are now poised to extend it to every physical object in our lives. A connected scale knows your weight. A connected lock knows your comings and goings. A connected vibrator, sold by a Canadian company that made headlines this year, knows things even more personal. Every one of these data streams has commercial value, and in the absence of comprehensive baseline privacy legislation—which the United States, unlike Europe, does not have—there is no default rule preventing its monetization.</p>
+      <p>The European Data Protection Regulation, now under negotiation, gets the principles right: purpose limitation, data minimization, meaningful consent, a right to deletion. American debates remain stuck on a notice-and-choice model that everyone admits is fictional. No one reads the policies; no one can negotiate them; no one has a meaningful alternative.</p>
+      <p>If we want a connected future that doesn&#x27;t also become a panoptic one, the work isn&#x27;t primarily technical. It&#x27;s legal. We need a baseline privacy law, and we needed it ten years ago.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>**Smart Cities Are the Prize Worth Fighting For**</p>
+      <p>The most exciting frontier of the Internet of Things isn&#x27;t in our homes—it&#x27;s in our streets. Consider what becomes possible when a city&#x27;s infrastructure becomes sensor-rich and networked. Parking spaces that report their occupancy can eliminate the estimated 30 percent of urban traffic that consists of drivers circling for a spot. Streetlights that dim when nobody is present can cut municipal energy budgets significantly. Trash bins that report when they&#x27;re full let sanitation crews skip the empty ones. Air-quality sensors at the block level let asthmatic residents plan their commutes. Bridges with strain gauges can warn engineers before they fail.</p>
+      <p>Cities like Santander in Spain and Songdo in South Korea are already experimenting with this. Closer to home, Chicago&#x27;s planned array of environmental sensors is a modest version of the same idea. The aggregate gains—in energy, in time, in safety, in quality of life—dwarf anything we will get from a smarter refrigerator.</p>
+      <p>But cities are also where the privacy stakes become collective rather than individual. You can decline to buy a connected thermostat. You cannot decline to walk down a street that is densely instrumented with cameras, microphones, and Bluetooth sniffers. The data generated by smart-city infrastructure is data about everyone who passes through it, and the governance questions—who holds it, who can subpoena it, how long it is retained, whether it can be combined with face recognition—are public questions that cannot be resolved by clicking &quot;I agree.&quot;</p>
+      <p>This argues for a different kind of approach than we use for consumer products. Smart-city deployments should be subject to mandatory privacy impact assessments before deployment, with public comment. Data retention should be short by default. Identifying data should be discarded at the point of collection wherever possible; aggregate counts, not individual traces, satisfy most legitimate municipal uses.</p>
+      <p>We can have the efficiency and the freedom both, but only if cities are forced to design for both from the start. Retrofitting privacy onto a surveillance system that already exists has, historically, never worked.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The debate about the Internet of Things too often gets stuck on worst-case scenarios, like that unfortunate baby monitor hack. But that&#x27;s like throwing out the entire Web because of email spam. The truly exciting possibilities here are vast and, crucially, they are ones that consumers clearly want. Imagine a smart home where your thermostat learns your schedule and not only saves you money but reduces strain on the power grid, contributing to energy independence. Picture a running shoe that tracks your gait and warns you before an old injury flares up, or an embedded heart monitor that alerts your doctor at the first sign of arrhythmia, preventing a fatal event. These are not science fiction—they are imminent, and they promise a leap in convenience, health, and efficiency that rivals the smartphone revolution.</p>
+      <p>Yes, there are privacy risks. Networking ordinary objects means creating new data streams that can be intercepted or misused. But we already have the toolkit to minimize these risks without stifling innovation. Strong encryption for data in transit and at rest must become a baseline, not an afterthought. Manufacturers should be required to push automatic security updates, exactly as operating system developers do now, so a vulnerability discovered tomorrow doesn&#x27;t leave millions of devices exposed years later. User education is also key: people need to understand that changing a default password is as essential as locking the front door. These are practical, achievable steps. The market will demand them as trust becomes a competitive advantage. The promise of a responsive, efficient, personalized world is too great to be derailed by unreasoning fear.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>We are sleepwalking into a surveillance dystopia, only the bug is in our own kitchen. The compromised baby camera in the prompt is the least of it; it&#x27;s almost quaint. The real danger is not a pervert stranger watching a crib but a corporate and governmental apparatus slowly amassing the most intimate portrait of your life ever assembled. Your smart refrigerator knows when you are out of milk, but it also knows when you are out of town. Your health insurance company could one day access your fitness tracker&#x27;s data and raise your premiums because your heart rate was too high during a stressful meeting. Your car&#x27;s telematics box could report a single instance of hard braking to a data broker, making you a “high-risk” individual without your knowledge or consent.</p>
+      <p>The exciting possibilities—the energy savings, the elder care monitoring, the predictive maintenance—are real, but they are being built on a foundation of unrestricted data extraction. Minimizing the risks demands a full stop, not a gentle nudge. We need an immediate legislative framework, something like an Internet of Things Privacy Act. This must enshrine three principles: first, strict data minimization—devices should collect only what is functionally necessary and nothing more. Second, opt-in consent that is granular and truly informed, not a 50-page terms-of-service clickwrap. Third, a flat ban on the sale or secondary use of personal data without explicit, case-by-case permission, with real penalties for violations. If we fail to act, the convenience will come at the price of our autonomy, and in a few years we will look back and wonder how we ever let the glowing screens blind us to the chains they were forging.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The Internet of Things is not a binary choice between blind techno-optimism and Luddite panic. It is an unfolding reality that demands a new social contract. The exciting possibilities are genuinely world-changing: sensor networks in agriculture can dramatically reduce water waste and fertilizer runoff, smart cities can unclog traffic and slash emissions, and connected medical dispensers can ensure that frail seniors never miss a dose. These are public goods, not just consumer toys. But the risk is clear: the very connectivity that enables these marvels also creates an unparalleled system of mass behavioral monitoring.</p>
+      <p>How do we minimize the risks without forsaking the benefits? By codifying a set of rights that apply to the data generated by our things. This “Digital Bill of Rights for Things” should be straightforward. It would establish that the data produced by a device you own is your property, not the manufacturer&#x27;s. It would require a clear, time-limited purpose specification for any data collection, with automatic deletion after that purpose is fulfilled. It would give you the right to review and correct the data profile a company builds on you. And it would mandate an audit trail, so you can see who has accessed your data and why. Such a framework doesn&#x27;t ban smart devices; it civilizes them. It can be enforced through a combination of industry self-certification and a specialized regulatory body, avoiding the morass of heavy-handed command-and-control while still setting a firm baseline. The connected world is coming; the only question is whether it will be governed by the rules of a gold rush or the rules of a mature democracy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Let&#x27;s be honest: in the age of the Internet of Things, privacy as we&#x27;ve known it will be a memory. When your toaster, your doorknob, and the pavement beneath your feet are all generating data, the very notion of an unobserved life becomes technically quaint. The fight to lock down your data, to build higher walls around your personal information, is a losing game because the value of these networks precisely comes from sharing and correlating that data. Your smart car needs to broadcast its location to avoid collisions. Your health monitor&#x27;s worth is in its connection to a broader medical database. We should stop chasing an impossible ideal of seclusion and pivot to a far more radical and achievable demand: absolute transparency of the watchers.</p>
+      <p>What if, instead of trying to hide, we required that every algorithm that processes our data be open to inspection? That companies publicly disclose not just what they collect but the exact scores they assign us, the inferences they draw, and to whom they sell them? That government requests for device data be published in a live, searchable registry? This inverts the panopticon. The exciting possibilities of IoT—predictive cities, personalized medicine, homes that truly respond to our needs—can be realized without musty paternalism if we build them on a platform of radical openness. The risk is not that we are seen; it is that we see nothing of the system that observes us. Transparency levels the playing field, turning a surveillance tool into a tool for accountability and, ultimately, for genuine consumer and citizen power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>For all the hand-wringing over corporate data mining, the most immediate and devastating risk in the Internet of Things is much simpler: bad security. The hypothetical in the prompt is not just a privacy violation; it&#x27;s a criminal intrusion enabled by a device with laughably poor safeguards. When your dishwasher or your smart lightbulb is connected, it becomes a computer, and right now, most of these computers have the security posture of a screen door on a submarine. The truly exciting possibilities of IoT are in the industrial sphere—sensors that prevent bridge collapses, grids that heal themselves—and in personal health, but they will all be rendered useless if we cannot trust them to not be hijacked.</p>
+      <p>Minimizing the risks means shifting the entire conversation from abstract privacy fears to concrete, mandatory security standards. We don&#x27;t need philosophical debates; we need technical regulations. The government should mandate that any networked device sold must meet baseline security requirements: unique, randomly generated default passwords instead of hardcoded “admin”; signed and automatic firmware updates; a public vulnerability disclosure program from the manufacturer; and a minimum support lifecycle of, say, five years. Privacy will often naturally improve when security does; it’s hard to hoover up personal data if the device has been roped into a botnet. Let’s treat the Internet of Things like we did the automobile—a potentially dangerous marvel that was made safe by seatbelts, airbags, and crash-test standards, all mandated from the outside. We need the digital equivalent, and we need it now.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The most exciting promise of the Internet of Things is that markets will deliver a world of tailored, efficient services without any need for a heavy regulatory hand. A connected thermostat from a privacy-respecting company can slash your utility bill; a heart monitor can provide peace of mind. Consumers are not naive. As the early stumbles of some overly intrusive companies show, there is a swift and fierce backlash when people feel surveilled. Just as we saw the rise of organic and fair-trade labels for food, we will see a robust market for privacy-sealed devices. Entrepreneurs, sensing a competitive advantage, will rush to offer “no-surveillance” smart homes, where data stays in your own encrypted hub, not on some distant server.</p>
+      <p>Minimizing the risks is therefore a matter of empowering the consumer and allowing reputation and liability mechanisms to work. Privacy policies, however boring, need to become as clear and standardized as nutrition labels, allowing for easy comparison. A healthy ecosystem of independent certifiers—like a revived TRUSTe for hardware—will emerge to bridge the trust gap. And for the worst actors, the plaintiffs&#x27; bar and state attorneys general, armed with existing unfair-and-deceptive-practices laws, are a far more agile and terrifying deterrent than any federal bureaucracy could ever be. Government regulation in a field moving this fast would be a classic case of shutting the barn door after the horse has bolted, or worse, writing rules that freeze in place today&#x27;s flawed technologies and stifle the very innovations that will give us a more private tomorrow.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>We don&#x27;t need to wait for Congress or the market to solve the privacy problem of the Internet of Things. The solution can and must begin on the desks of the engineers and designers who are building these devices right now. The exciting possibilities—a sensor in an elderly parent&#x27;s bed that silently alerts a caregiver to abnormal breathing, a citywide grid that shaves peak energy load—are too important to be held hostage by a sense of ethical helplessness. The professionals who code the firmware and sketch the interface have the power to embed respect for privacy directly into the architecture, a practice known as “privacy by design.”</p>
+      <p>How do we minimize risks? First, by embracing data minimization at the code level. A smart traffic sensor can count cars and report aggregate speed without ever recording a license plate. A wearable health monitor can process raw accelerometer data on the device itself and transmit only a summary alert, not a continuous stream. Second, we can invert the default from “share everything” to “share nothing” unless explicitly opted in, with real-time, clear toggles. Third, engineers need the professional tools and standards to do this—secure coding libraries that are as easy to use as unsafe ones, and professional bodies like the ACM or IEEE that publish clear ethical guidelines and, critically, support engineers who blow the whistle on reckless data-harvesting designs. University curricula must also teach the sociology of privacy alongside circuit design, so the next generation sees it as a core constraint, like power efficiency, not an afterthought. The Internet of Things will be built by thousands of individual decisions. Make each one respectful of the human on the other end, and the whole system will be worthy of our trust.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The emergence of the Internet of Things promises a revolution in efficiency that we have only just begun to fathom. Far too much of the current discourse focuses on the admittedly sensational story of hacked baby monitors, ignoring the profound macroeconomic and environmental benefits of a fully networked world.</p>
+      <p>Consider the &quot;smart grid.&quot; By connecting home appliances like dishwashers and HVAC systems to the broader energy network, we can dynamically manage power loads, running energy-intensive machines during off-peak hours. This has the potential to drastically reduce our carbon footprint and lower consumer utility bills. Similarly, networked traffic lights communicating with GPS systems in cars can eliminate the friction of urban gridlock, saving billions of dollars in lost productivity and wasted fuel. In the realm of personal health, wearable devices like the Fitbit are already empowering individuals to take control of their fitness, shifting our healthcare system from a reactive, treatment-based model to a proactive, preventative one.</p>
+      <p>Of course, these exciting developments come with security risks, as all digital technologies do. However, we must not let fear stifle innovation. The solution to IoT vulnerabilities is not to disconnect, but to mature the technology. Just as the early days of e-commerce were plagued by fears of stolen credit card numbers, the industry responded by developing robust encryption standards like SSL.</p>
+      <p>We need to treat the Internet of Things with the same evolutionary patience. The tech industry must coalesce around standardized security protocols for connected devices, such as mandatory two-factor authentication and automatic firmware updates. Consumers, in turn, must be educated to treat their networked thermostat with the same security mindset they apply to their laptop. If we balance sensible security practices with an embrace of innovation, the Internet of Things will become an invisible, indispensable engine of human progress.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>In the wake of this summer&#x27;s revelations by Edward Snowden regarding the breathtaking scope of the NSA’s surveillance apparatus, the push for an &quot;Internet of Things&quot; feels less like a technological leap forward and more like the voluntary installation of a panopticon in our own homes.</p>
+      <p>The primary danger of the IoT is not merely the rogue hacker terrorizing a sleeping infant, though that is horrifying enough. The much larger, systemic threat is the invisible, ubiquitous harvesting of our most intimate behavioral data by corporations and governments. A networked home is a home that constantly reports on its inhabitants. A smart meter tells an observer exactly when you wake up, when you leave the house, and when you go to sleep. A networked television knows what you watch and when. Networked running shoes track your physical location and health metrics.</p>
+      <p>When every object we own is transmitting data to the cloud, the very concept of domestic sanctuary evaporates. We are creating a world where data brokers can build an infinitely detailed profile of our private lives, ready to be monetized by advertisers or subpoenaed by authorities. The privacy policies accompanying these devices are routinely unreadable, serving as legal shields for corporate data mining rather than protections for the consumer.</p>
+      <p>Minimizing these risks requires a fundamental shift in how we view digital privacy. We cannot rely on after-the-fact regulation or flimsy corporate promises. We must demand &quot;dumb&quot; alternatives—appliances that wash our dishes and heat our homes without requiring a Wi-Fi connection and an end-user license agreement. Furthermore, we must establish a legal doctrine that extends Fourth Amendment protections to the data generated by our connected devices, ensuring that the digital exhaust of our daily lives cannot be swept up without a specific, targeted warrant. Until such protections are in place, the smartest thing you can do with a &quot;smart&quot; device is leave it on the store shelf.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The Internet of Things represents an incredible opportunity for consumer convenience and industrial efficiency, but we are currently facing a massive market failure when it comes to security. Right now, the market heavily incentivizes rushing connected devices to store shelves as quickly and cheaply as possible. Security and privacy are treated as expensive afterthoughts.</p>
+      <p>As a result, we are flooding our homes and infrastructure with devices that have zero security testing, hardcoded default passwords, and no mechanisms for patching vulnerabilities. The average consumer has no way to evaluate whether the networked camera they are buying uses robust encryption or transmits their video feed in plain text over the internet.</p>
+      <p>Because consumers lack the information necessary to make secure choices, the free market cannot self-correct. This is precisely where the Federal Trade Commission must step in. We need the FTC to establish mandatory baseline security standards for any physical product that connects to the internet.</p>
+      <p>First, the FTC should mandate &quot;Privacy by Design.&quot; Devices should collect only the data strictly necessary for their function, and data collection should be opt-in, not opt-out. Second, devices must not be sold with universal default passwords like &quot;admin&quot; or &quot;1234&quot;—a practice that makes it trivially easy for automated bots to compromise thousands of devices at once. Finally, manufacturers must be legally required to provide security updates for the reasonable lifespan of the product.</p>
+      <p>If a company wants to profit from putting a computer inside a refrigerator, they must take responsibility for securing that computer. Without robust regulatory intervention, the Internet of Things will become an unmanageable security nightmare, undermining consumer trust and ultimately destroying the very market it seeks to create.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>We are standing on the brink of the next great technological revolution. Analysts estimate that the Internet of Things could add trillions of dollars in value to the global economy over the next decade. The possibilities are staggering: from smart agriculture sensors that optimize crop yields and conserve water, to inventory management systems that completely eliminate supply chain waste.</p>
+      <p>Yet, before this ecosystem has even fully bloomed, there is a loud chorus of voices demanding preemptive, heavy-handed regulation in the name of privacy. This is a profoundly misguided approach that risks strangling American innovation in its cradle.</p>
+      <p>The tech industry is already acutely aware of the privacy and security challenges posed by connected devices. Why? Because consumer trust is their most valuable asset. If a company sells a baby monitor that is easily compromised, the resulting media firestorm and reputational damage are far more punitive than any government fine. The market ruthlessly punishes companies that fail to protect their users.</p>
+      <p>Furthermore, the technology underlying the IoT is evolving at a breakneck pace. Any regulations drafted in Washington today will be obsolete by the time they are implemented, serving only as a barrier to entry for small startups who cannot afford armies of compliance lawyers.</p>
+      <p>Instead of tying the hands of innovators, we should trust the market to develop solutions. We are already seeing the emergence of third-party security certification firms and independent auditing services that evaluate the security of connected devices. As consumer demand for privacy grows, companies will increasingly compete on the security of their platforms. Let innovation flourish, and allow the dynamic forces of market competition to deliver both the magical conveniences of the IoT and the security consumers demand.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The debate surrounding the Internet of Things too often falls into a false binary: either we embrace a magical future of networked convenience, or we reject it to save our privacy. As engineers and designers, we know that this is a false choice. We can have the benefits of a connected world, but it requires a fundamental paradigm shift in how we architect these systems. We must implement &quot;Privacy by Design.&quot;</p>
+      <p>Currently, the default architecture for most IoT devices is lazy and dangerous: a sensor collects data, beams it entirely to a central corporate cloud server, processes it there, and sends a command back. This creates a massive, centralized honeypot of sensitive personal data, vulnerable to both hackers and government overreach.</p>
+      <p>The most exciting possibility for the IoT isn&#x27;t just connectivity; it&#x27;s distributed intelligence. We can minimize privacy risks by keeping data processing local. Your smart thermostat doesn&#x27;t need to send your family&#x27;s minute-by-minute movement patterns to a server in California just to adjust the temperature. The processing can and should happen on the device itself, or on a secure hub within your own home network.</p>
+      <p>When data absolutely must leave the home—for example, to provide neighborhood energy usage analytics—it must be anonymized and aggregated at the source. Furthermore, all data in transit must be secured using robust, end-to-end encryption.</p>
+      <p>The risks of the IoT are not inherent to the concept of connected devices; they are the result of poor engineering choices driven by a desire to monetize user data. By building systems that are localized, encrypted, and designed to minimize external data sharing by default, we can deliver the extraordinary benefits of the Internet of Things without sacrificing the sanctity of the private home.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>When we discuss the Internet of Things, the conversation inevitably drifts toward novelties—smart refrigerators that order milk, or networked running shoes. But the most profound and genuinely exciting application of this technology lies in healthcare and eldercare.</p>
+      <p>As our population ages, the strain on our healthcare system and family caregivers is becoming unbearable. Networked sensors offer a lifeline. Imagine a home equipped with discreet sensors that can detect if an elderly parent has fallen, or a smart pillbox that alerts a caregiver if medication is missed. Networked biometric monitors can track a patient&#x27;s heart rate and blood pressure from the comfort of their living room, allowing doctors to detect an impending cardiac event days before it happens. For millions, the Internet of Things will be the difference between moving to an expensive nursing facility and maintaining their independence at home.</p>
+      <p>However, the privacy risks are uniquely acute in this context. We are no longer talking about a hacker seeing your living room; we are talking about highly sensitive, intimately personal medical data flowing across commercial internet networks. The risk of this data being intercepted, or legally sold by data brokers to insurance companies to adjust premiums, is unacceptable.</p>
+      <p>To safely realize the life-saving potential of the healthcare IoT, we must bridge the gap between consumer technology and medical privacy laws. Currently, the Health Insurance Portability and Accountability Act (HIPAA) strictly protects medical records at your doctor&#x27;s office, but it often does not apply to consumer health devices and wellness apps. We urgently need legislation that extends HIPAA-like protections to any biometric or health-related data generated by consumer IoT devices. If we can secure this sensitive data through strict legal frameworks, the Internet of Things can revolutionize how we care for our most vulnerable citizens.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The rapid proliferation of the Internet of Things brings the digital economy&#x27;s original sin directly into the physical world. For years, internet users have enjoyed &quot;free&quot; services in exchange for giving up their digital data, operating under the adage: &quot;If you&#x27;re not paying for the product, you are the product.&quot; Now, we are paying hundreds of dollars for smart appliances, yet we are *still* being treated as the product.</p>
+      <p>The most pressing issue regarding the IoT is not merely fending off malicious hackers; it is the fundamental question of data ownership. When your networked car generates gigabytes of data regarding your driving habits, your daily commute, and your favorite locations, who owns that data? Currently, the manufacturer claims it, using it to build lucrative secondary revenue streams by selling your behavioral profile to advertisers and data brokers.</p>
+      <p>We cannot minimize the risks of the IoT until we establish a new framework of digital property rights. Consumers must be legally recognized as the sole owners of the data generated by their bodies, their homes, and their property.</p>
+      <p>If a corporation wishes to use the data generated by my smart meter or my connected watch, they should have to ask for explicit, granular permission—and they should have to compensate me for it. By transforming personal data from a free corporate resource into private property, we would immediately change the economic incentives of the tech industry. Companies would collect less data, secure it more robustly, and be forced to offer actual value to consumers in exchange for their information. The promise of a networked world is immensely exciting, but it must be built on a foundation of user empowerment, not user exploitation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The most exciting promise of the Internet of Things is not that my refrigerator will tweet when I am out of milk. It is that ordinary objects can become part of a feedback system that saves time, money and even lives. A thermostat that learns when a house is empty can reduce energy use. A pill bottle that reminds an elderly patient to take medicine can prevent a hospitalization. A car that reports a failing part before it breaks can keep a family off the shoulder of a highway. Networked parking meters can reduce the circling that clogs city streets. These are not gimmicks; they are ways to make the physical world less wasteful and less dumb.</p>
+      <p>But the baby-monitor example captures the danger: once an object is connected, it becomes a computer, and once it is a computer, it can fail like one. The risks are not only embarrassment or voyeurism. Data from “smart” devices can reveal when a home is empty, when a child is alone, whether a person has a medical condition, and what routines a family follows. That information is valuable to advertisers, insurers, employers, burglars and governments.</p>
+      <p>The answer is not to stop connecting things. It is to stop treating privacy and security as optional features. Manufacturers should have to meet basic standards before selling networked devices: unique default passwords, encrypted communications, automatic security updates, clear data-retention limits and a simple way to disconnect the product from the network. A baby camera should not ship with the same password as a thousand other baby cameras. A thermostat should not quietly keep years of occupancy data unless the consumer has knowingly agreed.</p>
+      <p>We should also demand “privacy by design.” Collect the minimum data necessary. Store sensitive data locally when possible. Make the default setting the most protective one, not the most profitable one. And when companies do use data, they should explain it in plain English at the moment it matters, not in a 40-page policy nobody reads.</p>
+      <p>The Internet of Things can become a public benefit or a surveillance infrastructure. The difference will be decided less by the brilliance of the gadgets than by the rules built into them from the start.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The first thing to say about the Internet of Things is that it is being marketed backwards. We are being invited to admire the convenience of a networked nursery camera, bathroom scale, sneaker or dishwasher before we have asked who controls the data, who can see it, and who profits from it. That is a dangerous order of operations.</p>
+      <p>The exciting possibilities are real. A runner can learn from a sensor in her shoe. A city can manage traffic and parking more intelligently. A dishwasher might run when electricity is cheapest. A home health device could allow an older person to live independently longer. These are appealing because they make hidden patterns visible. But that is also precisely the privacy problem. The same visibility that helps the user helps anyone else with access to the data.</p>
+      <p>In 2013, after the revelations about the National Security Agency’s collection programs, it is no longer credible to say, “Don’t worry, nobody is interested in your data.” Governments are interested. Companies are interested. Data brokers are interested. If our phones already create intimate records of our movements and associations, imagine what happens when our homes, cars, appliances and clothing join in. The home has traditionally been the core of private life. The Internet of Things could turn it into a sensor platform.</p>
+      <p>Voluntary self-regulation will not be enough. The incentives are wrong. Companies gain by collecting more information, keeping it longer and finding new uses for it. Consumers cannot realistically audit embedded software or negotiate privacy terms for every light bulb. Regulators should require data minimization, security audits, breach notification and meaningful consent. They should also prohibit unfair secondary uses. If I buy a smart meter to save energy, that should not become a license to sell inferences about my daily life to marketers or insurers.</p>
+      <p>There should be special protection for children. A connected toy or nursery camera should be treated with more care than a coupon app. And there should be legal accountability when companies ship insecure devices. If a manufacturer sells a lock that can be opened by strangers, we know whom to blame. The same principle should apply when the lock is digital.</p>
+      <p>The Internet of Things will not merely add convenience. It will redraw the boundary between public and private life. That boundary deserves law, not just optimism.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>I am less worried about the “Internet of Things” than about the Internet of Cheap Things. The worst privacy failures will not come from some science-fiction supercomputer. They will come from inexpensive cameras, routers, toys and appliances rushed to market by firms that have never thought seriously about security. A webcam with a factory password, an unpatched operating system and no easy update mechanism is not a miracle of innovation. It is a peephole.</p>
+      <p>The possibilities are nevertheless impressive. Smart irrigation systems could save water in drought-prone regions. Networked medical monitors could allow doctors to spot trouble before a patient lands in the emergency room. Industrial sensors can make bridges, factories and power grids safer. Even mundane applications — a package that reports its temperature during shipping, a parking space that reports availability — can reduce waste.</p>
+      <p>But minimizing risk requires us to be blunt: these objects are computers, and computer security is hard. We cannot rely on consumers to fix problems they cannot see. Most people will not change default passwords, install firmware updates or read technical warnings. Nor should the safety of a baby monitor depend on whether exhausted new parents understand router configuration.</p>
+      <p>Manufacturers need a security baseline. Devices should not use universal default credentials. They should authenticate users properly. They should encrypt sensitive communications. They should receive patches for a clearly stated support period. They should fail safely. If a company cannot maintain the software in a connected device, it should think twice before connecting it.</p>
+      <p>There is also a design lesson: not everything needs to connect to the public Internet. Some devices can work on a local network. Some can transmit only aggregated data. Some can have physical switches that cut off cameras and microphones. Engineers often ask, “Can we connect this?” The better question is, “What is the least connectivity needed to deliver the benefit?”</p>
+      <p>Finally, we need independent testing. We have safety standards for toasters because bad toasters can burn down houses. Insecure devices can also cause real harm: stalking, burglary, identity theft, sabotage. A trusted certification mark for basic security would help consumers and reward responsible companies.</p>
+      <p>The Internet of Things can be made safer, but only if we stop treating security as a patch to be added after the product launch. It must be part of the product itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The best case for Internet-connected objects is a human one. Consider an elderly widow who wants to stay in her own apartment. A motion sensor can tell whether she has gotten out of bed. A pill dispenser can remind her to take medication. A wearable device can detect a fall. A networked stove can alert a relative if it is left on. None of this is glamorous, but it may preserve dignity and independence.</p>
+      <p>The same is true in health care more broadly. A diabetic patient might use connected glucose monitoring. A heart patient might send daily readings without traveling to a clinic. Doctors could respond to early warning signs instead of waiting for crises. At a time when health costs are straining families and governments, better monitoring could mean better care at lower cost.</p>
+      <p>Yet health-related data is among the most sensitive information a person has. A pattern of missed pills, restless sleep or unusual movement can reveal illness, depression, pregnancy, disability or decline. If that information leaks, it can affect employment, insurance, family relationships and personal autonomy. The privacy risk is not abstract; it is bound up with vulnerability.</p>
+      <p>So the health-oriented Internet of Things should be built on consent, restraint and trust. Patients and families should know what is being collected, who receives it and how long it is kept. Sharing with a doctor is not the same as sharing with an advertiser. Sharing with an adult child is not the same as sharing with every relative. Systems must allow different levels of access.</p>
+      <p>We should also avoid turning care into surveillance. A person who needs assistance does not lose the right to private life. The goal should be to detect meaningful problems, not to produce a minute-by-minute record of someone’s existence. Designers should favor alerts over constant observation when possible: “no movement by 10 a.m.” may be enough; a live camera feed may be excessive.</p>
+      <p>Regulators have a role, but families and institutions do too. Nursing homes, hospitals and home-care companies should adopt clear rules for connected devices. Data should be protected as seriously as medical records, even when it comes from a consumer gadget rather than a hospital machine.</p>
+      <p>The Internet of Things will be most valuable when it helps people live more safely and freely. It will fail morally if safety becomes an excuse to watch them all the time.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>A useful way to think about the Internet of Things is to separate data that serves the user from data that serves someone else. A smart thermostat that lowers my heating bill is serving me. A smart thermostat that allows a company to build a profile of my household routines for resale is serving someone else. The same device can do either, depending on the business model.</p>
+      <p>This is why ownership and control of data should be central. Consumers buying connected products should not be treated as mere sources of raw material. If my car, shoes, scale or dishwasher generates information about me, I should have enforceable rights over that information: the right to see it, delete it, move it to another service and prevent unrelated uses. These rights should not vanish because the data came from an object rather than from a keyboard.</p>
+      <p>The opportunities are enormous. Smart grids can match electricity use to supply. Networked cars can reduce congestion and improve maintenance. Environmental sensors can map pollution in real time. Farmers can use connected equipment to manage water and fertilizer more precisely. These applications could make society cleaner and more efficient.</p>
+      <p>But the benefits will be unevenly distributed unless we address control. The danger is a world in which households pay for the devices, companies harvest the data, and citizens bear the risk. The privacy policy becomes the deed of ownership, and it is written by the seller. That is not a fair bargain.</p>
+      <p>A better model would combine personal control with public-interest uses. For example, smart-meter data could help utilities manage demand, but only in forms that do not expose the intimate rhythms of individual homes. City parking data can be public without identifying drivers. Health-device data can support research if it is truly anonymized and voluntarily shared. The point is not to lock all data away. The point is to decide deliberately when sharing is justified.</p>
+      <p>There is also a competition issue. If a company controls both the device and the data, consumers may be trapped. Open standards and data portability would let users switch services without losing their histories or replacing every object in the house.</p>
+      <p>The Internet of Things should not become a system in which things report upward to corporations by default. It should be a system in which objects work for the people who bought them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The phrase “Internet of Things” makes connection sound inevitable, as if dishwashers and parking spaces are simply waiting to join history’s next great network. But we should be more selective. Some objects will be improved by connectivity. Others will become more expensive, more fragile and more intrusive without solving a real problem.</p>
+      <p>The exciting possibilities are mostly in areas where information is currently scarce and costly: energy, transportation, health, agriculture and infrastructure. A bridge that reports stress, a water system that detects leaks, a bus stop that tells passengers when the next bus is coming — these are sensible uses. They provide public or practical value that outweighs the complexity.</p>
+      <p>But a networked appliance should have to justify itself. Does a refrigerator need to know what brand of milk I buy? Does a television need to report everything watched in the living room? Does a toy need to record a child’s voice and send it to a server? Too much of the consumer Internet of Things risks being novelty plus data extraction. The object becomes “smart” mainly because it has learned to talk about its owner.</p>
+      <p>Minimizing risk begins with a presumption of disconnection. If the feature works without the Internet, leave it offline. If data can stay in the home, keep it there. If a sensor is not needed, do not include it. If a camera is needed only occasionally, provide a visible shutter. If a microphone is active, make that fact obvious. These are simple design choices, but they respect the difference between convenience and intrusion.</p>
+      <p>Consumers also need the ability to use basic functions without surrendering privacy. A thermostat should still heat the house if the company’s server is down or if the owner declines data sharing. A scale should still display weight without uploading it. Products that become useless unless users accept surveillance-like terms are not consumer-friendly.</p>
+      <p>The most underrated privacy technology is the off switch. The second most underrated is the absence of a sensor in the first place.</p>
+      <p>We should welcome connected objects where they solve real problems. But we should resist the idea that every object deserves an IP address. The private spaces of daily life are valuable partly because they are not always measured. A civilized Internet of Things will know when to remain silent.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The Internet of Things should be understood as the next stage of urban infrastructure. The individual gadgets get the attention — baby monitors, shoes, dishwashers — but the most exciting possibilities may be collective. Sensors in roads can manage traffic lights. Smart parking systems can reduce congestion. Garbage bins can signal when they are full. Water pipes can detect leaks. Buildings can adjust energy use. Cities can become more responsive without necessarily becoming more crowded or more expensive.</p>
+      <p>For local governments facing tight budgets, this matters. A city that knows where buses are, where lights are broken and where water is being wasted can deliver better services. Citizens could benefit from cleaner air, shorter commutes and lower utility bills. Environmental gains are especially important: small efficiency improvements across millions of devices can add up.</p>
+      <p>But “smart city” should not become a polite name for mass tracking. The same sensors that help manage traffic can identify vehicles. Public Wi-Fi systems can follow phones. Cameras can be combined with databases. After the recent debate over government surveillance, city officials should assume that citizens will not simply trust assurances that data will be used responsibly.</p>
+      <p>The solution is democratic governance. Public sensor systems should be debated openly before they are deployed, not quietly purchased from vendors. Cities should publish what data they collect, at what level of detail, for what purpose and for how long. Whenever possible, data should be aggregated at the source: count cars, do not track drivers; measure foot traffic, do not identify pedestrians. If personally identifiable information is collected, there should be strict retention limits and independent oversight.</p>
+      <p>Procurement rules can also shape the market. Cities should refuse to buy systems that lock public data into proprietary platforms or give vendors broad rights to reuse citizen information. Contracts should require security updates, audits and breach notification. Public data collected for public purposes should not become a hidden revenue stream.</p>
+      <p>There is a civic upside as well. Some data should be open. If air-quality readings, transit arrival times or energy-use statistics are made available in privacy-protective forms, citizens, journalists and entrepreneurs can build tools that government would never invent on its own.</p>
+      <p>The Internet of Things can make cities more humane, but only if it is built as public infrastructure with public values. Efficiency is not enough. A smart city must also be an accountable city.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The most exciting Internet-connected objects will not be the gimmicks. A refrigerator that tweets is a punch line. A thermostat that learns when a house is empty and reduces peak electricity demand is not. A medication bottle that quietly alerts an adult child when an elderly parent misses doses may keep someone out of a nursing home. A network of parking spaces can reduce circling traffic. A pair of running shoes can help a patient recover from knee surgery without waiting three weeks for a doctor to notice a problem.</p>
+      <p>The point of the Internet of Things is that the world can become measurable in small, useful ways. Energy use, water leaks, sleep patterns, traffic flow, spoiled food and failing machinery can all be detected earlier and managed better. That is a real social gain.</p>
+      <p>But the same features that make these devices useful make them dangerous: they are persistent, intimate and easy to forget. A baby camera is not just a camera; it is a camera, a microphone, a network connection, a password database, a software update policy and a company’s privacy practices. The recent FTC action against TRENDnet’s insecure cameras is a useful warning. If a product is sold as a way to protect your home, it cannot be engineered as if security were an optional feature.</p>
+      <p>The answer is not to stop connecting objects. It is to build them as if they matter. First, collect less data. If a thermostat can learn a schedule inside the device, it should not automatically transmit minute-by-minute household behavior to a server. Second, secure devices by default: unique passwords, encrypted connections, automatic security updates and no exposed administrative panels that ordinary consumers do not understand. Third, give users understandable controls. “Agree” buttons buried in 40-page terms of service are not consent.</p>
+      <p>Regulators should insist on truthful claims and reasonable security, as the FTC has begun to do. Industry should develop a simple labeling system, something closer to an energy-efficiency sticker than a legal contract, showing what data is collected, where it goes, how long it is kept and whether the product will receive updates.</p>
+      <p>The Internet of Things should be allowed to grow, but not on the theory that consumers must become network engineers to own a baby monitor. The bargain should be simple: if companies want to put sensors in our homes, cars and bodies, they must make privacy and security part of the product, not an afterthought.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Before we celebrate smart dishwashers and self-reporting running shoes, we should ask a more basic question: who will control the record of ordinary life? The Internet of Things promises convenience, but it also promises a sensor network in the home, on the street, in the car and on the body. That is not merely a new consumer electronics category. It is a new architecture of observation.</p>
+      <p>The old privacy model — notice and consent — is already collapsing on the Web. It will be absurd when every light bulb, smoke alarm and toy has a privacy policy. No one will read all of those terms, and even if they did, they would have little bargaining power. This summer’s surveillance revelations have also taught a hard lesson: data collected for one purpose rarely stays confined to that purpose. It can be subpoenaed, sold, hacked, shared with insurers, used in divorce proceedings or folded into government databases.</p>
+      <p>Yes, there are exciting uses. Networked medical devices can save lives. Smart meters can help manage a cleaner electric grid. Sensors in bridges and water systems can warn of failures before people die. But these benefits do not require a free-for-all in personal data.</p>
+      <p>We need baseline privacy legislation, not just better manners from manufacturers. The rules should include purpose limitation: a baby monitor company should not become a behavioral advertising company because it happens to have access to a nursery. Data should be collected only when necessary, retained only as long as necessary and used for secondary purposes only with explicit, meaningful permission. Consumers should have rights to inspect, correct and delete information about themselves. Strong security should be a legal duty, not a marketing feature.</p>
+      <p>There should also be special protection for home and body data. A person’s sleep, movements, energy use and medical readings reveal religion, illness, sex, disability and political activity. Law enforcement access to such records should require proper judicial process. Employers and insurers should not be allowed to coerce people into wearing surveillance devices as the price of work or coverage.</p>
+      <p>The Internet of Things may bring useful tools. But unless we establish rights now, it will also normalize a world in which being alive means continuously generating data for someone else.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>It would be a mistake to let the creepiest examples define the Internet of Things. Every new networked technology begins with a mixture of marvels and embarrassing failures. Early e-commerce had fraud. Early Wi-Fi had laughable security. Yet we did not solve those problems by requiring permission from Washington before anyone built a website or a router.</p>
+      <p>The promise here is enormous precisely because the field is still open. A small company can build a sensor that helps farmers irrigate more efficiently. A start-up can make a device that lets an elderly person live independently longer. A clever thermostat can save money and electricity without requiring a homeowner to become an energy expert. Connected appliances can diagnose failures before a repair truck is sent. These are not trivial gains.</p>
+      <p>The danger of heavy regulation at this stage is that it will lock in the largest incumbents. General Electric, Google, Apple, Verizon and the big appliance makers can hire compliance departments. The garage inventor cannot. If we write detailed rules before we understand the technology, we may get fewer innovations and no more privacy.</p>
+      <p>That does not mean doing nothing. Fraud and negligence should be punished. If a company advertises a “secure” baby camera and ships it with reckless flaws, the FTC should act. If a device maker hides material data practices, that is deception. If a product causes harm because basic security was ignored, courts can impose liability. But the rules should be targeted at bad conduct, not at the mere act of connecting objects to networks.</p>
+      <p>The better path is flexible: industry security standards, independent certification, clearer privacy notices, rapid software updates and competition over trust. Consumers differ. Some will trade data for lower energy bills or better health tracking; others will pay more for devices that keep information local. Markets can reflect those choices if companies are required to be honest.</p>
+      <p>The Internet of Things should not become a lawless zone. But neither should it be treated as a public menace before it has matured. Encourage experimentation, punish deception, demand reasonable security and let consumers decide which connected objects are actually worth inviting into their lives.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>The least interesting version of the Internet of Things is the talking refrigerator. The more important version is the connected city. Sensors in parking spaces can reduce congestion by guiding drivers directly to open spots. Water systems can detect leaks before streets collapse. Buses can report their location so riders are not left guessing in the rain. Air-quality monitors can identify pollution block by block. Streetlights can dim when no one is nearby and brighten when pedestrians approach. These are practical improvements to public life, not futuristic toys.</p>
+      <p>But because many of these devices operate in public space, the privacy problem is different from the one posed by a baby monitor. You can decide not to buy a connected crib camera. You cannot realistically opt out of a city full of cameras, transit cards, license-plate readers, smart meters and location-aware services. That means the safeguards must be democratic, not merely individual.</p>
+      <p>Cities should adopt public sensor ordinances before they deploy these systems. Residents deserve to know what is being collected, by whom, for what purpose, and for how long. A parking sensor should not quietly become a general law-enforcement dragnet. A transit payment system should not retain years of identifiable travel histories unless there is a compelling reason. Aggregated traffic data may be useful; permanent personal movement dossiers are something else.</p>
+      <p>Procurement is crucial. Governments buying “smart city” systems should require strong security, independent audits, data minimization and open documentation of data flows. Vendors should not own municipal data simply because they installed the equipment. Contracts should prohibit resale or secondary use without public approval. If a company cannot explain how it protects the information its devices collect, it should not get the contract.</p>
+      <p>Equity matters too. Smart infrastructure should not become just another way to ticket poor neighborhoods more efficiently while wealthy neighborhoods get better services. The same sensors that optimize parking should also improve bus reliability, water safety and emergency response. Communities should have a voice in where devices are installed and how data is used.</p>
+      <p>The exciting possibility is a city that wastes less, responds faster and gives citizens better information about the place they live. The risk is a city that watches constantly and explains nothing. The difference will not be determined by the sensors themselves. It will be determined by rules, procurement choices and public oversight. If cities build the Internet of Things as civic infrastructure rather than as a surveillance platform, privacy and innovation can coexist.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>In the Internet of Things, privacy begins with engineering. A connected camera is not just a camera. It is a small computer running software, often with a Web server, a wireless connection and a password. A connected thermostat, toy or medical monitor has the same basic problem. If that computer is poorly built, the privacy policy is just decoration.</p>
+      <p>Many consumer devices are designed under brutal cost pressures. They ship with default passwords, outdated software, insecure remote-access features and no realistic plan for updates. Consumers are then blamed for not administering them correctly. That is backwards. No parent should need to know how to configure a firewall in order to keep strangers from watching a nursery.</p>
+      <p>The minimum standards are not mysterious. Devices should have unique credentials, not “admin/admin” logins shared by thousands of units. Communications should be encrypted. Remote access should not require exposing a control panel to the open Internet. Software updates should be signed, automatic when possible and available for a stated support period. Companies should maintain a way for researchers to report vulnerabilities without being threatened. Products should fail safely: a door lock, insulin pump or smoke detector cannot simply stop working because a server is unavailable.</p>
+      <p>There is also a business-model problem. A $59 gadget may be sold once, but securing it is an ongoing obligation. If manufacturers cannot afford to patch a connected device, they should not connect it. One useful model would be a safety mark, akin to Underwriters Laboratories, for networked products. Certification would not guarantee perfection, but it would tell consumers and retailers that basic practices had been followed.</p>
+      <p>Regulators can help by treating unreasonable security as an unfair or deceptive practice, especially when companies make claims about safety. The FTC’s action against insecure Internet cameras is a good start. Retailers can help by refusing to stock devices that lack update mechanisms or ship with known defects. Internet service providers can help by notifying customers when devices on their networks appear compromised.</p>
+      <p>The most exciting uses — home health care, energy management, safer transportation, industrial maintenance — all depend on trust. Trust will not come from slogans about “smart” products. It will come when manufacturers accept that they are no longer just making appliances. They are making networked computers that happen to wash dishes, monitor babies or count steps. They should be held to that standard.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>The first rule of the Internet of Things should be: do not connect things unless there is a real reason. A networked heart monitor may be invaluable. A networked bridge sensor may save lives. A networked irrigation system may conserve water. But a dishwasher that wants an account, a toothbrush that uploads brushing habits and a toy that sends a child’s voice to a server are not automatically progress.</p>
+      <p>Connectivity often serves the manufacturer more than the customer. It creates a continuing relationship after the sale, a stream of data, opportunities for advertising, and sometimes a way to sell subscriptions or supplies. It also creates new ways for products to fail. A simple appliance can last for decades. A “smart” appliance may depend on software updates, remote servers and a company that may lose interest long before the machine wears out.</p>
+      <p>There are genuine possibilities here. Sensors can help older people remain at home safely. Smart meters can make the electric grid more efficient. Devices that track exercise or sleep can help some people understand their health. But we should stop treating connection as a virtue in itself. Every sensor is also a possible leak. Every wireless feature is also a possible attack surface. Every database is also a temptation.</p>
+      <p>The best privacy protection is often subtraction. Collect less. Transmit less. Store less. Put a physical switch on microphones and cameras. Let basic functions work without registration. Do not punish customers who choose not to create an online account. Make “offline mode” a consumer right, not a hidden option. If a product stops receiving security updates, consumers should be told plainly, just as they are told about expiration dates on food or medicine.</p>
+      <p>Regulators should require honesty about what a connected product needs in order to function. If the cloud service is optional, say so. If the device becomes useless without it, say that too. Consumers should ask a simple question before buying: what problem does the network connection solve for me?</p>
+      <p>The Internet of Things will be healthiest if it includes the right not to participate. Sometimes the smartest object is the one that stays dumb.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>Privacy is not the same as secrecy. Most people are happy to share some information in some settings: a baby’s image with grandparents, a running route with a coach, electricity usage with a utility, medical readings with a doctor. The violation occurs when information escapes the setting in which it made sense. A baby monitor becomes disturbing when the manufacturer, a hacker or a stranger can watch. A fitness device becomes troubling when an employer or insurer uses it to judge discipline or risk. A smart meter becomes intrusive when household routines are treated as marketable behavioral data.</p>
+      <p>This is the central challenge for the Internet of Things. These devices will sit at the boundaries of intimate contexts: home, health, family, work, transportation. The right question is not simply “Did the consumer consent?” Consent is too weak when it is buried in boilerplate and required to use the product. The better question is: what information flow is appropriate to the relationship?</p>
+      <p>That suggests several principles. A device should have a clear primary purpose, and data collection should be limited to that purpose. A sleep monitor needs sleep data; it does not need to sell profiles to unrelated advertisers. A parking sensor needs to know whether a space is occupied; it does not need to build a permanent record of a driver’s movements. Companies that receive sensitive household or bodily data should have duties resembling confidentiality: use it for the service promised, protect it carefully and do not repurpose it without a strong justification.</p>
+      <p>We should also be modest about anonymization. Location trails, energy patterns and device identifiers can be surprisingly revealing even after names are removed. Combining datasets can put identities back together. That means privacy has to be built into architecture: local processing where possible, aggregation before transmission, short retention periods, access logs and user-visible controls showing what data left the device and where it went.</p>
+      <p>There are thrilling possibilities. Connected medical devices can turn episodic health care into continuous care. Smart homes can assist people with disabilities. Environmental sensors can show citizens what they are breathing. Supply-chain sensors can reduce waste and contamination. But all of these depend on confidence that data will not be turned against the people who generate it.</p>
+      <p>The Internet of Things will not be trusted if it relies on a fiction that every consumer can negotiate with every object. Trust will come from enforceable boundaries: technical, legal and social. Keep information in the context where it belongs, and the benefits of connected objects become much easier to embrace.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>The Internet of Things represents one of the most genuinely transformative technological shifts since the advent of the personal computer. When I look at what&#x27;s genuinely exciting here, I&#x27;m not thinking about the gimmicky stuff — the internet-connected toaster that tweets your breakfast. I&#x27;m thinking about what happens when we network infrastructure at scale: imagine city water systems that detect contamination in real time, or roads embedded with sensors that route traffic away from collapsing bridges before anyone dies. These aren&#x27;t science fiction scenarios; they&#x27;re the natural next step in how we&#x27;ve used networked information technology since the ARPANET era.</p>
+      <p>The privacy concerns are real and they deserve serious treatment, but they shouldn&#x27;t paralyze us. The right frame is not &quot;IoT is dangerous&quot; versus &quot;IoT is wonderful.&quot; The right frame is governance. We need to ask, as a society, what the default settings should be. Manufacturers currently default to maximum data collection because that&#x27;s what serves their business interests. That default should flip. Data collection should be opt-in, with meaningful disclosure, not buried in unreadable terms of service agreements.</p>
+      <p>I also think we need a serious conversation about data minimization — a principle that says networked devices should collect only the data they genuinely need to function, retain it only as long as necessary, and delete the rest. This isn&#x27;t radical. It&#x27;s an application of fair information practice principles that privacy scholars have articulated for decades. The FTC has already started moving in this direction with its 2012 privacy report.</p>
+      <p>Consumers, meanwhile, need better tools. Privacy-by-design is a nice phrase but it&#x27;s meaningless to most buyers standing in a Best Buy aisle comparing smart thermostats. Industry self-certification has failed repeatedly in other contexts. We need third-party auditing — perhaps government-backed seals of approval, similar to what Energy Star does for energy efficiency — that give consumers meaningful signals about which products respect their privacy. The exciting possibilities of IoT are real. But realizing them responsibly requires that we stop treating privacy as an afterthought.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-36">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-36" style="display:none;">
+      <p>Let me be direct: the privacy risks of the Internet of Things are not hypothetical. They&#x27;re already materializing, and the gap between what our data reveals and what we imagine it reveals is staggering. When you put a networked camera in your home, you&#x27;re not just putting a camera in your home. You&#x27;re putting a data collection device there, and that device is generating information streams that flow through servers, cloud platforms, and third-party analytics services that most consumers don&#x27;t even know exist.</p>
+      <p>The baby monitor example in the prompt isn&#x27;t alarmism — it&#x27;s a real scenario that security researchers had already documented by 2013. The &quot;Shodan&quot; search engine, which indexes internet-connected devices, revealed thousands of webcams, security systems, and industrial control devices accessible to anyone who knew where to look. This isn&#x27;t a bug in the IoT vision; it&#x27;s a fundamental feature of how networked devices operate in a commercial ecosystem that rewards data harvesting.</p>
+      <p>What troubles me most is the granularity. Earlier digital privacy concerns involved data that was already somewhat abstracted — your browsing history, your purchase records. IoT data is intimate in a different way. It captures the physical world around you: when you sleep, what you eat, how you move through your home, whether you&#x27;ve left for vacation. This data, when aggregated, can reveal medical conditions, relationship dynamics, parenting patterns, and more — with a precision that earlier data collection simply couldn&#x27;t match.</p>
+      <p>The solution isn&#x27;t consumer education. Placing the burden on consumers to understand complex technical systems and read privacy policies is a convenient fiction that industry prefers. We need binding legal limits on what IoT data collection is permissible, for what purposes, and with what retention timelines. We need a private right of action so individuals can sue companies that violate those limits. And we need regulators with actual technical capacity to audit these systems, not just lawyers reading terms of service.</p>
+      <p>The exciting possibilities are real. But &quot;move fast and break things&quot; is not an acceptable framework when the thing being broken is democratic control over intimate details of daily life.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-37">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-37" style="display:none;">
+      <p>I want to push back against a certain tendency in this debate: the assumption that the exciting possibilities and the privacy risks exist in necessary tension. They don&#x27;t, not if we design the ecosystem thoughtfully from the start. The Internet of Things, at its best, is about convenience and insight — about your home knowing you&#x27;re about to wake up and adjusting the thermostat accordingly, about your car alerting you that a key component needs maintenance before you&#x27;re stranded on the highway. These aren&#x27;t trivial conveniences. They&#x27;re the kind of quality-of-life improvements that, aggregated across millions of people, represent a real advance in human flourishing.</p>
+      <p>The privacy concern is valid but often overstated. Most consumers, if asked, would trade a certain amount of data collection for genuine utility. The problem isn&#x27;t that people don&#x27;t want smart devices; the evidence suggests they increasingly do. The problem is that the industry hasn&#x27;t developed trustworthy norms for disclosure and consent. That&#x27;s a solvable governance problem, not a fundamental flaw in the IoT concept.</p>
+      <p>What would help? A combination of industry standards and smart defaults. If every internet-connected device shipped with privacy settings defaulted to &quot;minimum collection,&quot; if device makers were required to provide plain-language summaries of what data they collect and why, if there were meaningful audit mechanisms — the market could function. Privacy-conscious consumers could select privacy-conscious products, and the market would reward that differentiation.</p>
+      <p>I&#x27;m also optimistic about technical solutions. Privacy-enhancing technologies are advancing rapidly. Differential privacy, which allows aggregate analysis of data while protecting individual records, is being actively researched and deployed by companies like Google. Homomorphic encryption, which allows computation on encrypted data without decryption, remains computationally expensive but is improving. These aren&#x27;t silver bullets, but they&#x27;re real tools.</p>
+      <p>The IoT is coming regardless. The question is whether we&#x27;ll shape it thoughtfully or cede that shaping to the companies most motivated by data collection. I&#x27;d rather engage constructively.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-38">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-38" style="display:none;">
+      <p>The most exciting possibility for the Internet of Things isn&#x27;t any particular device — it&#x27;s the systemic transformation of how we understand and manage the physical world. We are, right now, in the early stages of adding a nervous system to the planet. The implications are hard to overstate. Urban environments that can sense traffic density and redirect flow in real time. Agricultural systems that monitor soil moisture and nutrient levels with centimeter precision. Energy grids that respond dynamically to actual consumption patterns rather than estimated ones.</p>
+      <p>But I want to focus on what I think is genuinely underexplored: the potential for IoT to serve public goods that have historically been underserved by market mechanisms. The environment is the clearest example. We currently lack real-time, granular data about air quality, water contamination, and soil health at the scales necessary for meaningful policy intervention. Distributed sensor networks — cheap, networked, pervasive — could change that. Environmental monitoring that used to require expensive dedicated infrastructure could become ubiquitous. Communities that currently lack the resources for environmental testing could deploy their own networks.</p>
+      <p>The privacy challenge here is somewhat different from the consumer device scenario. When a city deploys air quality sensors, or when a utility deploys smart meters, the privacy stakes are real but the governance frameworks are also more developed. Municipalities and regulated utilities are subject to public records laws, oversight mechanisms, and political accountability in ways that a startup selling internet-connected juice makers is not.</p>
+      <p>So my suggestion is that we calibrate our privacy concern to context. The risks of a corporate smart fridge that monitors your eating habits for advertising targeting are different from — and in some ways less alarming than — the risks of a poorly regulated municipal surveillance infrastructure that tracks your movements through public space. We need comprehensive privacy frameworks, but they need to be sensitive to scale, purpose, and accountability.</p>
+      <p>The exciting possibilities for public benefit are there. The challenge is making sure that the governance frameworks catch up to the technology before the technology creates fait accompli.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-39">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-39" style="display:none;">
+      <p>From a regulatory standpoint, the Internet of Things exposes a fundamental problem: our existing privacy frameworks were built for a world that no longer exists. The FTC&#x27;s authority over unfair or deceptive practices is useful but reactive. The Children&#x27;s Online Privacy Protection Act covers children under 13. HIPAA covers health information. But there&#x27;s no general federal privacy law in the United States that establishes baseline principles for how companies can collect, use, retain, and share the torrent of data that IoT devices generate.</p>
+      <p>This regulatory gap isn&#x27;t an accident. It&#x27;s the product of decades of successful lobbying by the technology industry, which has consistently argued that innovation would be strangled by regulation. That argument has been used before — against environmental regulation, against financial regulation, against food safety standards — and it has been consistently wrong. Innovation didn&#x27;t die when the EPA was created. It adapted. The same will happen with IoT regulation.</p>
+      <p>What should regulation look like? First, data minimization mandates: companies should be required to collect only the data they need for the specific purpose disclosed to the consumer. Second, retention limits: data collected by IoT devices should be deleted after a defined period unless the consumer affirmatively consents to retention. Third, security standards: manufacturers of internet-connected devices should be required to meet baseline security standards, similar to how the automotive industry is required to meet crash safety standards. Fourth, breach notification: consumers should be notified promptly when their IoT data is compromised.</p>
+      <p>Some will argue that regulation will stifle this nascent industry. I disagree. Clear rules actually help industries mature. They reduce uncertainty, create competitive differentiation for responsible players, and build consumer trust. The companies that are building IoT devices responsibly should want regulation — it would raise the bar and disadvantage the fly-by-night operators who are giving the industry a bad reputation.</p>
+      <p>We don&#x27;t need to choose between innovation and privacy. We need to build a regulatory framework that achieves both.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-40">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-40" style="display:none;">
+      <p>I want to approach this differently — not by cataloging the exciting possibilities or enumerating the risks, but by asking a more foundational question: what kind of IoT do we actually want, and who gets to decide?</p>
+      <p>The current trajectory is clear: manufacturers are building devices that generate as much data as possible, as cheaply as possible, with minimal constraints on how that data can be used. The market isn&#x27;t correcting this because most consumers lack the technical knowledge to understand what they&#x27;re agreeing to, and even those who do understand often have no viable alternatives. You want a smart home? You have roughly two options, and neither offers meaningful privacy control.</p>
+      <p>This isn&#x27;t a neutral trajectory. It&#x27;s a deliberate choice, made by companies pursuing their financial interests, that has been dressed up as technological inevitability. The &quot;Internet of Things&quot; as a marketing term was coined by Kevin Ashton at Procter &amp; Gamble in 1999 specifically to describe a supply chain tracking concept. It has since been expanded into a vision of total data extraction from daily life, and the expansion has been presented as progress when it&#x27;s actually a particular vision of progress — one that benefits data collectors at the expense of data subjects.</p>
+      <p>I think we need a genuinely democratic conversation about this. What data should be collectable? By whom? For what purposes? These aren&#x27;t technical questions. They&#x27;re political and ethical questions that should be answered through democratic deliberation, not left to engineers in Silicon Valley optimizing for engagement metrics.</p>
+      <p>Some concrete proposals: mandatory public hearings before large-scale IoT deployments in public spaces. Community veto power over IoT infrastructure in residential areas. Strong whistleblower protections for employees who report data misuse. And critically, public investment in open-source, privacy-respecting alternatives to the commercial IoT ecosystem.</p>
+      <p>Technology is not neutral. It embeds values. The IoT we&#x27;re building today will shape the texture of daily life for generations. We should be intentional about that shaping.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-41">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-41" style="display:none;">
+      <p>Let me focus on a risk that I think receives insufficient attention: the security dimension of IoT privacy, which is distinct from but related to the data collection dimension. Every internet-connected device is a potential attack vector. Every device that stores or transmits personal data is a potential breach target. As the IoT expands, the attack surface expands correspondingly — and the security track record of consumer IoT devices in 2013 is, to put it charitably, not encouraging.</p>
+      <p>The problem is structural. Device manufacturers operate on razor-thin margins in competitive consumer markets. Security is expensive. It adds development time. It requires ongoing updates. And the devices themselves — the cheap webcams, the sub-$100 smart thermostats, the $30 fitness trackers — are produced with minimal attention to security architecture. Many of these devices ship with hardcoded passwords, unencrypted communications, and no mechanism for security updates. This isn&#x27;t necessarily negligence; it&#x27;s the economics of the space.</p>
+      <p>The consequences are serious. A compromised IoT device can be used as a stepping stone into a home network. It can be enrolled in a botnet. It can be used for stalking — a compromised &quot;smart&quot; device in a domestic abuse situation becomes a surveillance tool. It can reveal patterns that enable physical intrusion. The security failures of IoT are not hypothetical; worms like the &quot;Carna botnet&quot; exploration of internet-connected devices were already demonstrating the scale of the problem.</p>
+      <p>The fix isn&#x27;t primarily consumer education. It&#x27;s security standards. I would support mandatory security certification for IoT devices before they can be sold — a UL listing equivalent for cybersecurity. At minimum, requirements should include: no hardcoded passwords, mandatory encrypted communications, secure update mechanisms, and a defined end-of-support timeline so consumers know when their devices will stop receiving patches.</p>
+      <p>Security and privacy are not the same thing, but in the IoT context, they&#x27;re deeply intertwined. A device that collects minimal data but stores it insecurely is not privacy-respecting. We need to address both dimensions simultaneously, and the security dimension deserves more attention than it currently receives.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

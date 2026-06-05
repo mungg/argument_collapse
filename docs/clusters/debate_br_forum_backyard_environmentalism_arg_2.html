@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The collaborative, performance-based regulatory model propos... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_backyard_environmentalism.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_backyard_environmentalism.html">Beyond Backyard Environmentalism</a> · Cluster 2 of 40</div>
+  <h1 class="arg-title">"The collaborative, performance-based regulatory model proposed by Sabel, Fung, and Karkkainen risks becoming an abdication of the government&#x27;s fundamental responsibility to protect public health and the environment."</h1>
+  <div class="arg-meta">1 human · 4 LLM · 5 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Matt Wilson, Eric Weltman</span>
+        </div>
+        <p class="essay-quote">"The collaborative, performance-based regulatory model proposed by Sabel, Fung, and Karkkainen risks becoming an abdication of the government&#x27;s fundamental responsibility to protect public health and the environment."</p>
+        <a class="essay-link" href="https://www.bostonreview.net/forum_response/matt-wilson-eric-weltman-governments-job/" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Clean air and water should be a universal right rather than a benefit reserved for &#x27;squeaky wheel&#x27; communities with the time and resources to engage in local activism.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Information-based and voluntary initiatives are not substitutes for traditional regulation but are most effective when used as tools to prod government enforcement of existing permits and rules.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">The threat of stringent government mandates, such as outright bans or strict enforcement of the Endangered Species Act, is a necessary &#x27;stick&#x27; to bring private actors to the negotiating table.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">The proposed model overestimates the capacity and willingness of ordinary citizens to participate in complex technical planning, which can lead to &#x27;backroom deals&#x27; dominated by well-resourced corporate interests.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Different environmental threats require different policy responses, and for persistent or high-risk toxins, centralized bans are safer and more effective than decentralized, deliberative planning.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"The proposed &#x27;rolling-rule regime&#x27; is a dangerous regulatory experiment that risks undermining environmental protection by replacing mandatory national standards with unaccountable, industry-dominated local negotiations."</p>
+        <button class="essay-view-full" data-target="full-2-81518">View full essay</button>
+        <div class="essay-full" id="full-2-81518" style="display:none;">
+            <p>The Charm of the New and the Uses of the Old</p>
+            <p>Fung, Sabel, and Karkkainen have written a captivating piece, and that is exactly what worries me. The essay glides past hard questions about enforcement, capture, and political power because it has fallen in love with its own architecture. Anyone who has actually litigated under the Clean Water Act or watched a state department of environmental quality slowly suffocate under industry pressure will recognize the seduction—and the danger—of the &quot;rolling-rule regime&quot; the authors describe.</p>
+            <p>Let me concede what is worth conceding. The Toxics Release Inventory has indeed been one of the most successful environmental statutes of the last quarter century, precisely because it harnessed reputational pressure rather than relying solely on administrative penalty. Aggregate toxic releases as reported under TRI have fallen substantially since 1988, and we have a generation of environmental journalists and community organizers who would not exist without that data. The Massachusetts TURA program builds on that base intelligently. The 1987 Chesapeake Bay Agreement marked a real institutional achievement. None of this is in dispute.</p>
+            <p>What is in dispute is the inference the authors draw from these cases—that we are witnessing the birth of a new regulatory paradigm that supersedes both command-and-control and market-based approaches, and that we should accelerate the transition. I think this inference rests on three confusions.</p>
+            <p>The first is a confusion about what made these programs work. TRI works because behind it sits the residual threat of substantive command-and-control statutes—RCRA, CERCLA, the Clean Air Act—that give the disclosed information bite. A firm that releases enormous quantities of a TRI chemical is not merely embarrassed; it is also exposed to citizen suits, to potential listing decisions, to scrutiny under permit programs. Strip away that surrounding architecture and TRI becomes a press-release exercise. Similarly, the Chesapeake Bay Program operates against the backdrop of point-source permitting under the CWA. The &quot;directives&quot; that the authors describe as having &quot;dubious legal pedigree&quot; are persuasive precisely because the agencies signing them have real legal authority elsewhere. The rolling-rule regime is, in this sense, parasitic on the very command-and-control system the authors are eager to declare exhausted.</p>
+            <p>The second confusion is about Habitat Conservation Plans, which the authors hold up as their most ambitious example. The reality of HCPs as practiced in the 1990s is considerably uglier than this essay lets on. The Service has issued plans with &quot;No Surprises&quot; assurances locking in landowner obligations for fifty or even one hundred years—periods over which we cannot remotely predict the trajectory of climate, hydrology, or species behavior. Take Babbitt&#x27;s flagship Southern California plans: the gnatcatcher reserves were drawn on maps largely by developers, with biologists brought in to bless the result. The authors themselves admit, in a footnote that deserves more attention than they give it, that as of July 1998 no one in Washington had even collected the HCPs that had been negotiated, much less read them. This is not &quot;deep use.&quot; It is decentralization without the conditions that would make decentralization accountable. To call this proto-democratic is to mistake an enforcement vacuum for a participatory triumph.</p>
+            <p>The third confusion is about deliberation itself. The authors imagine a process in which &quot;protagonists discover unanticipated solutions provisionally acceptable to all&quot; through &quot;disciplined consideration of alternative policies.&quot; This is a beautiful picture. It is also one that ignores everything we know about the bargaining power differentials that structure environmental conflicts. The Pacific Lumber HCP, the Plum Creek HCP, the Murray Pacific HCP—these were not Habermasian conversations. They were negotiations between a highly capitalized resource extraction firm with experienced counsel and a federal agency under enormous political pressure to &quot;demonstrate the workability&quot; of flexibility, in the authors&#x27; own approving phrase. The local conservation groups that the authors imagine as equal participants either lacked the technical capacity to engage meaningfully, or were deliberately excluded, or—most often—participated in good faith and were rolled. John Kostyack&#x27;s work for the National Wildlife Federation, which the authors cite, makes this point with considerably more bite than the authors acknowledge.</p>
+            <p>There is a deeper issue here about the politics of regulatory reform. The case for command-and-control was never that bureaucrats in Washington possessed &quot;modest omniscience.&quot; It was that diffuse, vulnerable interests—future generations, voiceless species, downstream communities, poor neighborhoods—are systematically underrepresented in any bargaining-based process, and that the function of national rules is to set non-negotiable floors that protect those interests against the immediate pressures of local politics. The genius of the Clean Air Act was not that EPA knew best; it was that EPA could insist on lead-free gasoline, on the phase-out of CFCs, on acid rain controls, over the heads of industries and state governments that would have bargained those gains away locality by locality. Lead in children&#x27;s blood fell by roughly three-quarters between 1976 and the early 1990s because of a command, not a conversation.</p>
+            <p>I am not against learning. I am not against monitoring, benchmarking, or local experimentation. I am against the rhetorical move that uses the genuine successes of information-disclosure programs to argue for the dismantling of mandatory standards. And I notice that this move is being made not only by Sabel and his co-authors but by precisely those regulated industries that have the most to gain from rolling rules that, in practice, roll only in one direction.</p>
+            <p>The authors anticipate this objection and respond that pluralist politics has not in fact produced &quot;exquisite balance&quot; but rather &quot;a welter of clashing rules&quot; and &quot;self-canceling swings of policy.&quot; Fair enough. But the answer to dysfunction in pluralist democracy is not to replace it with an unaccountable network of stakeholder negotiations whose outputs no elected body has ratified. The authors notice this problem, gesture toward the Miller Bill, and hope Congress will somehow bless the new architecture. Yet they do not engage seriously with the possibility that Congress, looking at the actual record of HCPs, might decide to constrain rather than authorize them—and that this would not be a failure of political imagination but a reasonable response to the evidence.</p>
+            <p>What I would propose instead is something more modest than the authors&#x27; transformative vision. First, retain mandatory national floors—including substantive standards for endangered species, ambient air and water quality, toxic releases—as the non-negotiable baseline. Second, embrace information-disclosure regimes like TRI as supplements that intensify pressure for performance above the floor, not as replacements for the floor itself. Third, demand from any locally-negotiated arrangement (HCP, watershed plan, etc.) the procedural safeguards the Miller Bill outlines—objective biological goals, monitoring, public participation, periodic review—and the legal authority to revoke approvals when those safeguards fail. Fourth, fund the national environmental groups and academic centers that can serve as independent monitors, because without them the &quot;pooling of experience&quot; the authors celebrate will be done by the regulated industries themselves.</p>
+            <p>This is not a sexy program. It does not promise a &quot;novel form of democracy.&quot; It does promise that when a developer in San Diego County wants to take the last reasonable habitat for a listed species, we will say no, and mean it.</p>
+            <p>The authors close with an inspiring quotation from John Dewey, the spirit of which I share. Dewey believed that democracy required ongoing inquiry and experimentation. He also believed, less often quoted, that publics form around problems they cannot solve through immediate face-to-face deliberation, and that the function of the state was to constitute those publics. The administrative state we have, for all its flaws, is the institutional sediment of that insight. Before we celebrate its supersession, we should ask whether what is replacing it really has more democratic credentials, or merely a more flattering vocabulary.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The success of information-based programs like the Toxics Release Inventory is parasitic on the threat of existing command-and-control laws rather than a replacement for them.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Habitat Conservation Plans (HCPs) often result in an enforcement vacuum where developers dictate terms and agencies grant long-term &#x27;No Surprises&#x27; assurances without adequate scientific oversight.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The &#x27;deliberative&#x27; model ignores the massive power and resource imbalances between highly capitalized industries and local conservation groups.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">National command-and-control rules are essential to protect diffuse and voiceless interests, such as future generations and endangered species, from being bargained away in local political processes.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Regulatory reform should focus on strengthening mandatory national floors and procedural safeguards rather than dismantling the administrative state in favor of unratified stakeholder negotiations.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"The proposed shift from command-and-control regulation to collaborative &#x27;rolling-rule&#x27; regimes is a dangerous abdication of federal responsibility that prioritizes procedural participation over substantive environmental protection."</p>
+        <button class="essay-view-full" data-target="full-2-83235">View full essay</button>
+        <div class="essay-full" id="full-2-83235" style="display:none;">
+            <p>The seductive narrative spun by Fung, Sabel, and Karkkainen presents a world where environmentalism has matured from angry NIMBYism into a rational, collaborative process of continuous improvement. It is a vision of “rolling-rule regimes” where local stakeholders, industry, and experts sit together, pooling information and setting their own goals, overseen by a benignly coordinating center. It sounds democratic, efficient, and almost too good to be true. That is because it is. The authors have mistaken a set of carefully curated anecdotes for a generalizable model, and in doing so, they gravely underestimate the dangers of dismantling the command-and-control system that has been the backbone of American environmental protection for three decades.</p>
+            <p>The central flaw is the conflation of participation with protection. The essay celebrates the Chesapeake Bay Program’s tributary teams and Southern California’s HCPs as exemplars of deep use. But look under the surface: the Chesapeake Bay is still profoundly degraded. Nutrient reduction targets have been repeatedly missed. The voluntary, collaborative model has proven agonizingly slow in producing real, measurable improvements in water quality, while thousands of farms and suburban lawns continue to send excess nitrogen and phosphorus into the water. The 40% reduction goal by 2000 will almost certainly not be met. The reason is simple: local autonomy, in the absence of a firm regulatory stick, tilts overwhelmingly toward the interests of those with the most to lose from mandatory restrictions—developers, large agricultural operations, and industrial users. The narrative of cooperation masks a power imbalance that citizen volunteers, however well-intentioned, cannot overcome.</p>
+            <p>The HCP story is even more troubling. The authors acknowledge that many HCPs are little more than bilateral deals between a permit-seeker and a field agent, lacking rigorous monitoring or meaningful public participation. They pin their hopes on a Miller Bill that may never pass, and on new FWS guidance that is, by their own description, tepid. But the structural problem is not that the rolling-rule mechanism hasn’t been fully built; it’s that the very premise of local deal-making undermines the foundational principle of the Endangered Species Act: that no economic interest should be allowed to push a species to extinction. The ESA’s Section 9 is rigid because extinction is irreversible. By turning that prohibition into a bargaining chip—offering an “incidental take” permit in exchange for some negotiated conservation measures—we shift the burden of proof onto the species. The authors praise the San Diego multi-species plan, yet many conservation biologists remain deeply worried that the reserve design is inadequate, that buffer zones are too narrow, and that the adaptive management triggers are too weak. The plan may simply be a more sophisticated way of writing a death warrant for the gnatcatcher and a dozen other species, dressed in the language of collaborative governance.</p>
+            <p>The Toxics Release Inventory is a genuine success story of information disclosure, but it is not a replacement for regulation. Public shaming worked because it augmented, not supplanted, the underlying threat of enforcement actions. Companies reduced emissions partly to avoid bad press, but also because they suspected that high reported numbers would invite lawsuits and tighter legal restrictions. TURA in Massachusetts adds planning requirements, but as the authors note, it imposes no penalties for failing to act on those plans. The 20% reduction in toxics use is encouraging, but it is a reduction from a very high baseline, and the easiest, most cost-effective reductions are always harvested first. What happens when the low-hanging fruit is gone, and firms face the need for truly expensive process changes? Voluntary planning, without a mandatory backstop, will stall. The claim that 86% of firms would continue to plan even absent legal requirements is a survey response, not a revealed preference. It is easy to say one would voluntarily do the right thing when the legal requirement remains in place as a safety net.</p>
+            <p>The nuclear industry example is particularly misleading. INPO succeeded not because it was a model of collaborative self-governance, but because the Nuclear Regulatory Commission stood behind it with formidable enforcement power. The NRC could pull an operating license; that ultimate authority gave INPO’s peer reviews teeth that Responsible Care, a purely private Chemical Manufacturers’ Association program, conspicuously lacks. The essay admits that Responsible Care faces a “stalemate” and risks becoming a public relations maneuver. Exactly so. And that is the far more likely outcome for expanded rolling-rule systems that lack a robust, enforceable federal floor. In the case of non-point source water pollution, there is no federal floor at all. The Clean Water Act’s failure to regulate agricultural runoff is precisely the reason the Chesapeake Bay is in trouble. Turning that regulatory void over to tributary teams, no matter how thoughtfully convened, is an abdication of federal responsibility.</p>
+            <p>The authors call for Congress to give legislative legitimacy to this new architecture. But the legislation they envision—exemplified by the Miller Bill—would essentially codify a system of procedural benchmarks (planning, reporting, monitoring) without substantively requiring actual environmental results. It would be a “process” law, not an “outcome” law. The history of administrative law teaches that procedural mandates are easily captured and gamed by sophisticated repeat players. A developer can hire a team of consultants to produce a volumious monitoring report and a beautifully adaptive management plan, while the habitat continues to shrink. The promise of transparency and public participation, absent the resources for local communities to hire their own experts and lawyers, becomes a hollow ritual.</p>
+            <p>The first generation of backyard environmentalism was born of a deep and justified distrust of distant corporations and captured agencies. It demanded that government stop harmful activities, not merely negotiate over how much harm is acceptable. The rolling-rule regime, for all its talk of democratic deepening, risks returning us to a world where the fox and the henhouse jointly design a collaborative poultry management plan. Environmentalists should be not opponents of innovation, but they must be defenders of the non-negotiable bottom lines—numeric water quality standards, prohibitions on taking endangered species, and enforceable caps on toxics—that the command-and-control system, for all its flaws, has incrementally put in place. The new architecture may have a role as a supplement, a way to achieve above-and-beyond performance in willing communities. But as a replacement for the backbone of regulatory obligation, it is a recipe for erosion, not progress.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Local autonomy and voluntary collaboration inherently favor powerful economic interests like developers and industrial polluters over marginalized citizen volunteers.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The flexibility of Habitat Conservation Plans undermines the Endangered Species Act by turning irreversible extinction risks into negotiable bargaining chips.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Information disclosure and voluntary planning mechanisms, such as TRI and TURA, only remain effective when backed by the credible threat of mandatory federal enforcement.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The success of industry self-regulation, such as in the nuclear sector, is dependent on the oversight of a central authority with the power to revoke operating licenses.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Codifying a performance-based architecture would replace substantive environmental outcomes with easily gamed procedural benchmarks that favor sophisticated corporate actors.</span></li>
+              <li class="src-d"><span class="num">06</span><span class="sub-text">The collaborative model fails to address critical regulatory voids, such as non-point source pollution, where a lack of a federal floor has led to continued ecological degradation.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"The proposed &#x27;rolling-rule regime&#x27; is less a democratic innovation than a systematic weakening of environmental protections that prioritizes economic development over statutory mandates and accountability."</p>
+        <button class="essay-view-full" data-target="full-2-40351">View full essay</button>
+        <div class="essay-full" id="full-2-40351" style="display:none;">
+            <p>Regulatory Innovation or Regulatory Retreat?</p>
+            <p>The lead essay presents the &quot;rolling-rule regime&quot; as a triumph of practical deliberation over the limitations of both command regulation and market-based approaches. Yet a closer examination reveals that what is being celebrated may be less a novel democratic innovation than a systematic weakening of environmental protections dressed in the language of participation and adaptation.</p>
+            <p>Consider the Habitat Conservation Plans examined in the essay. These plans emerged because Section 9 of the Endangered Species Act threatened to halt development wherever endangered species were found. Landowners, developers, and local governments recoiled at this prospect, and Congress responded by creating the HCP mechanism as a escape valve. The result has been a systematic trading of endangered species protection for development permits. The &quot;incidental take&quot; permits that HCPs provide allow developers to proceed with projects that harm listed species, provided they set aside some habitat and implement mitigation measures. The authors acknowledge that &quot;many of these agreements produce more, better, and more sophisticated ecosystem management regimes than would emerge from even the strictest application of Section 9.&quot; But this comparison is misleading. The question is not whether HCPs outperform the polar alternative of rigid enforcement; it is whether they achieve adequate protection relative to what the law actually requires.</p>
+            <p>The &quot;adaptive management&quot; rhetoric that pervades HCP discourse functions as a legitimating smokescreen for inadequate conservation. When a plan fails to achieve its biological objectives—if species continue to decline, if habitat restoration proves insufficient—proponents respond that management must &quot;adapt.&quot; But adaptation can become an endless deferral of accountability. Each failure becomes evidence that more learning is needed before tough decisions can be made, while the species at risk continue their slide toward extinction.</p>
+            <p>The Chesapeake Bay Program presents a similarly troubling picture. While the authors celebrate the program&#x27;s evolution toward participatory tributary teams, they acknowledge that &quot;the very fluidity of the internal governance of the program becomes a liability, as external interlocutors seek, in vain, to determine the authoritative voice of an institutional ensemble that adjusts precisely by not having one.&quot; This institutional opacity makes accountability extremely difficult. When nitrogen loading targets are not met, when fish populations continue to decline, when agricultural operations evade their obligations—where is the mechanism for corrective action? The program&#x27;s governance structure seems designed to diffuse responsibility so thoroughly that no actor can be held accountable for failure.</p>
+            <p>The broader philosophical commitments underlying the rolling-rule regime also warrant scrutiny. The authors embrace what they call a &quot;pragmatist&quot; approach that &quot;rejects immutable principles.&quot; But environmental law embodies fundamental commitments—to preventing extinction, to protecting public health, to ensuring that polluters bear the costs of their contamination. These are not bureaucratic rigidities to be transcended through clever institutional design; they are moral commitments that constrain the range of acceptable outcomes. A regime that treats these commitments as merely provisional, subject to revision through deliberative processes among affected stakeholders, may prove unable to resist the relentless pressure that economic interests bring to environmental debates.</p>
+            <p>The authors note that some environmentalists prefer &quot;strict application of Section 9&quot; and dismiss this position as insufficiently sophisticated. But there is wisdom in this preference. When statutory protections can be traded away through negotiated agreements, when minimum standards are understood as merely temporary benchmarks subject to continuous revision, when accountability is diffused across multiple levels of governance—environmental protection becomes whatever powerful interests will allow. The rolling-rule regime may be innovative, but innovation in service of accommodating development is not necessarily progress.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Habitat Conservation Plans (HCPs) function as an escape valve for developers, allowing them to trade away endangered species protections for &#x27;incidental take&#x27; permits.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The rhetoric of &#x27;adaptive management&#x27; serves as a smokescreen that allows for the endless deferral of accountability when conservation goals are not met.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The fluid and decentralized governance structures of programs like the Chesapeake Bay Program diffuse responsibility so thoroughly that no single actor can be held accountable for environmental failure.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The pragmatist rejection of &#x27;immutable principles&#x27; undermines the fundamental moral and legal commitments of environmental law, such as preventing extinction and protecting public health.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">By treating minimum standards as provisional and subject to negotiation, the regime leaves environmental protection vulnerable to the relentless pressure of powerful economic interests.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While the rolling-rule regime offers flexibility and local adaptation, it risks undermining democratic legitimacy and environmental protection by replacing clear legal accountability with a vague system of mutual responsibility that is easily exploited by powerful interests."</p>
+        <button class="essay-view-full" data-target="full-2-25741">View full essay</button>
+        <div class="essay-full" id="full-2-25741" style="display:none;">
+            <p>Devolution, Accountability, and the Federalism Problem</p>
+            <p>The lead essay&#x27;s most provocative claim concerns the relationship between the rolling-rule regime and democratic accountability. The authors argue that this framework creates &quot;a collaborative and mutual accountability of center to parts, parts to center, parts to other parts, and all to the whole enterprise—and to the public generally.&quot; But what exactly does this mean in our constitutional system? And how does it function in practice?</p>
+            <p>Federal environmental law typically operates through a framework of national standards that states implement and enforce. The Clean Air Act, the Clean Water Act, and the Endangered Species Act establish minimum requirements that states may exceed but not undercut. This structure reflects constitutional allocations of authority and political judgments about the appropriate distribution of regulatory responsibility. The rolling-rule regime proposes something different: broad local autonomy within general guidelines, with accountability achieved through information pooling and performance comparison rather than hierarchical command.</p>
+            <p>The Chesapeake Bay Program illustrates the institutional complexity this entails. The program&#x27;s signatories include EPA, the governors of Maryland, Virginia, and Pennsylvania, and the mayor of the District of Columbia. The Executive Council and implementation committee operate through consensus, with directives that possess &quot;dubious legal pedigree and status&quot; yet are considered &quot;morally binding.&quot; When loadings exceed targets, when tributaries fail to achieve water quality standards, when agricultural operations evade their obligations—which legal authority can compel corrective action? The program&#x27;s flexibility enables adaptation to local conditions, but it also enables evasion of accountability.</p>
+            <p>The authors acknowledge that HCPs vary enormously in their quality and rigor, with &quot;nearly unsupervised local autonomy&quot; determining whether plans monitor effectively or provide genuine public access to decision-making. They propose the Miller Bill as a remedy—requiring the Secretary of the Interior to review HCPs triennially and publish annual reports on the status of all plans. But this proposal faces practical obstacles. The authors note that &quot;no one in Washington had even collected the HCPs that had already been negotiated up until that point—much less read them, or attempted to absorb any generally-applicable lessons.&quot; If administrative capacity for oversight is so limited, how will triennial reviews function?</p>
+            <p>The deeper issue concerns democratic legitimacy. When EPA establishes air quality standards under the Clean Air Act, it does so through notice-and-comment rulemaking subject to judicial review. Affected parties may challenge standards as insufficiently protective or excessively burdensome. This process is cumbersome and often produces rigid rules that fail to account for local conditions. But it provides a clear framework for accountability: national standards, publicly developed, with identifiable responsible officials.</p>
+            <p>The rolling-rule regime operates through less visible processes. Local deliberation among affected stakeholders determines what counts as acceptable performance. National authorities aggregate information and adjust benchmarks. But who is accountable when local agreements prove inadequate? When tributary strategies fail to achieve water quality goals? When species protected by HCPs continue to decline? The mutual accountability the authors describe may function well when all parties share a commitment to environmental improvement. It may prove far less effective when powerful economic interests dominate local negotiations.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The lack of clear legal authority in collaborative frameworks like the Chesapeake Bay Program makes it difficult to compel corrective action when environmental targets are missed.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The administrative capacity required for national authorities to effectively monitor and pool information from thousands of local experiments is currently non-existent or severely limited.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The shift from transparent, judicial-reviewed federal rulemaking to less visible local deliberations reduces the public&#x27;s ability to hold specific officials accountable for regulatory failures.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The rolling-rule model assumes a shared commitment to environmental goals that may not exist when powerful economic interests dominate local stakeholder negotiations.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">The &#x27;dubious legal pedigree&#x27; of the directives used in these new regimes creates a constitutional and practical vacuum regarding who is ultimately responsible for enforcing standards.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can Tax Policy Distinguish the Rich from the Middle Class? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Economy · Open-ended</div>
+  <h1 class="debate-title">Can Tax Policy Distinguish the Rich from the Middle Class?</h1>
+  <div class="question-body"><p>President Obama’s plan to eliminate the tax breaks for college savings accounts known as 529s, which primarily benefit the 5 percent of households earning more than $200,000, was swiftly shot down as an affront to the middle class. His new budget calls for increased taxes on the wealthy to explicitly address income inequality with benefits for lower- and middle-income families.</p><p>How can federal tax policy differentiate between “rich” and the “middle class”?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_1.html">
+      <td class="arg-text">Tax policy should focus on creating a broadly progressive system where liabilities rise with income rather than attempting to technically define and exempt a specific middle class.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_2.html">
+      <td class="arg-text">To effectively distinguish the rich from the middle class, federal tax policy must shift its focus from high-salary income to capital accumulation and inherited wealth.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_3.html">
+      <td class="arg-text">Federal tax policy can only accurately distinguish the rich from the middle class by indexing income thresholds and tax brackets to regional costs of living.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_4.html">
+      <td class="arg-text">The federal tax code should not attempt to differentiate between the rich and the middle class or redistribute wealth, as the government should instead focus on eliminating the underlying policies that create unfair upward wealth distribution.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_5.html">
+      <td class="arg-text">Federal tax policy should differentiate between the rich and the middle class by accounting for regional cost-of-living variations or by transitioning to a progressive consumption tax.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_6.html">
+      <td class="arg-text">Federal tax policy should not be adjusted for regional cost-of-living differences because such measures would overcomplicate the tax code and ignore the fact that living in high-cost areas is a personal choice.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_7.html">
+      <td class="arg-text">Federal tax policy can effectively distinguish the rich from the middle class by replacing inefficient tax expenditures with targeted spending programs or by implementing caps and fixed rates on tax benefits.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_8.html">
+      <td class="arg-text">Federal tax policy already possesses the technical mechanisms, such as adjusted gross income thresholds and phase-outs, to effectively distinguish between the rich and the middle class.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_9.html">
+      <td class="arg-text">Federal tax policy fails to distinguish the rich from the middle class because it targets the high-earning professional class whose cultural identity and financial anxieties align with the middle class rather than the truly wealthy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_10.html">
+      <td class="arg-text">Instead of attempting to differentiate between classes through complex tax preferences, the federal government should broaden the tax base and target the genuinely wealthy through direct structural reforms.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_11.html">
+      <td class="arg-text">Federal tax policy can effectively distinguish the rich from the middle class by utilizing precise, income-based phaseouts of deductions and credits rather than blunt, sweeping eliminations of tax benefits.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_12.html">
+      <td class="arg-text">The federal government should replace the income tax with a progressive consumption tax to more accurately and automatically distinguish the wealthy from the middle class based on spending behavior rather than income levels.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_13.html">
+      <td class="arg-text">The federal tax code already possesses the mechanisms to distinguish the rich from the middle class, but it currently uses those mechanisms to disproportionately benefit high earners through regressive tax expenditures.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_14.html">
+      <td class="arg-text">Federal tax policy should move toward a simplified system with fewer brackets and deductions rather than attempting to define and distinguish between the rich and the middle class.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_15.html">
+      <td class="arg-text">To effectively distinguish between the rich and the middle class, federal tax policy must replace regressive tax deductions and exemptions with flat, refundable tax credits.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_16.html">
+      <td class="arg-text">To effectively distinguish the rich from the middle class, federal tax policy should focus on the distinction between income derived from labor and income derived from wealth and assets.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_can-tax-policy-distinguish-the-rich-from-the-middle-class_arg_17.html">
+      <td class="arg-text">To be politically viable and substantively fair, federal tax policy should distinguish between the truly wealthy and upper-middle-class earners by targeting accumulated privilege rather than ordinary aspirations like college savings.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Aparna Mathur</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/04/can-tax-policy-distinguish-the-rich-from-the-middle-class/aparna-mathur" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jared Bernstein</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/04/can-tax-policy-distinguish-the-rich-from-the-middle-class/jared-bernstein" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jeffrey A. Miron</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/04/can-tax-policy-distinguish-the-rich-from-the-middle-class/jeffrey-a-miron" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Kim Rueben</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/04/can-tax-policy-distinguish-the-rich-from-the-middle-class/kim-rueben" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Thomas Hungerford</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/04/can-tax-policy-distinguish-the-rich-from-the-middle-class/thomas-hungerford" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The 529 debacle revealed less a failure of tax policy than a failure of political vocabulary. &quot;Middle class&quot; in American politics is aspirational, not statistical: households earning $250,000 routinely describe themselves that way, and politicians of both parties indulge the fiction. Any tax reform that hopes to address inequality has to begin by acknowledging that the income distribution is continuous, and that drawing a sharp line between &quot;rich&quot; and &quot;middle&quot; will always feel arbitrary to the people just above it.</p>
+      <p>That said, the tools to differentiate exist and already work reasonably well — we simply use them inconsistently. Three mechanisms matter. First, marginal rate brackets: the top bracket at $400,000-plus already isolates roughly the top 1 percent, and additional brackets above $1 million and $10 million would sharpen the distinction further. Second, the treatment of capital income: the gap between the 23.8 percent rate on long-term capital gains and dividends and the 39.6 percent rate on wages is the single biggest reason Warren Buffett pays a lower rate than his secretary. Equalizing those rates, or taxing accrued gains at death as Obama&#x27;s budget proposes, targets the wealthy almost surgically, because the top 1 percent receives the overwhelming share of capital income. Third, phase-outs and refundability: deductions and exclusions (mortgage interest, employer health insurance, 529s, retirement accounts) flow disproportionately upward because they are worth more in higher brackets and require disposable income to use. Converting deductions to capped credits, as Martin Feldstein and others have proposed, would redirect those subsidies.</p>
+      <p>The 529 episode shows the political constraint: tax expenditures, once established, generate constituencies that punch above their demographic weight. A household earning $180,000 in Westchester does not feel rich, and its vote counts. The honest answer, then, is that tax policy can distinguish the rich from the middle class — through rate structure, capital income reform, and credit design — but only when politicians are willing to defend the line they draw.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The swift political demise of President Obama’s proposal to curb the tax advantages of 529 college savings plans captured a central paradox of American tax policy. On paper, the benefits of these accounts flow overwhelmingly to the top 5 percent of households, those earning more than $200,000 a year. Yet the outcry that killed the idea framed it as an assault on the middle class itself, demonstrating just how difficult it is for the tax code to draw a bright line between the merely comfortable and the truly wealthy. The question is not merely technical—can tax policy distinguish the rich from the middle class?—but political: will we ever let it?</p>
+      <p>From a design standpoint, the tools are readily available. A steeply progressive income-tax rate structure is the most direct instrument. Rates that kick in at high thresholds, such as the 39.6 percent bracket on taxable income above roughly $415,000 for single filers in 2015, explicitly target top earners. To make that distinction bite, the code can phase out deductions and personal exemptions for high-income taxpayers, as the Pease limitation already does, or means-test benefits directly. The Earned Income Tax Credit, for instance, phases out entirely before a family reaches middle-class income, while the child tax credit begins to shrink above $110,000 for married couples. Such provisions show that the federal government is perfectly capable of reserving help for those with modest incomes and extracting more from those at the summit.</p>
+      <p>The deeper trouble, however, lies not in scarcity of policy mechanisms but in the slippage between income categories and the social language of class. A threshold of $200,000 may sound rich in Mississippi but feels decidedly middle class to a family with two earners, a mortgage, and day-care costs in New York or San Francisco. Many tax expenditures that economists view as regressive—the mortgage interest deduction, the exclusion for employer-provided health insurance, the lower rate on capital gains and dividends—are defended as pillars of middle-class security because they benefit a broad swath of voters who think of themselves as anything but wealthy. When President Obama proposed capping the value of itemized deductions at 28 percent for the top brackets, it was framed not as a levy on the rich but as a threat to charitable giving and home values that would cascade downward. The 529 reversal was only the latest proof that any tax benefit, however skewed at the top, can be successfully rebranded as an aspirational middle-class entitlement the moment it is threatened.</p>
+      <p>This points to a fundamental mismatch. Tax policy can easily differentiate by the neutral metric of dollars earned, but it cannot so cleanly sort by the politically charged and self-identified notion of “middle class.” The very ambiguity of the term is its political strength. A majority of Americans consider themselves middle class, making any measure that explicitly draws a line between them and the “rich” vulnerable to the charge that it will penalize hard work, discourage saving, or eventually creep down the income ladder. This is why the most durable tax increases on the wealthy over the past generation—such as the creation of the top bracket in 1993 or the Affordable Care Act’s surtax on investment income—were coupled either with very high thresholds or with reassurances that the vast majority of filers would be untouched. Even then, they passed by razor-thin margins and under intense partisan fire.</p>
+      <p>Ultimately, the federal tax code can and does separate high earners from the rest through rates, phase-outs, and targeted credits. But the question of whether policy can distinguish the rich from the middle class is the wrong one. The real issue is whether the public will accept any distinction that moves beyond the demonstrably super-rich—the top 1 percent—and encroaches upon the professional and entrepreneurial families who see themselves not as privileged but as the core of the American middle. The 529 fracas suggests the answer, for now, is no.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Federal tax policy struggles to differentiate between the rich and the middle class because the American definition of &quot;middle class&quot; is more psychological than mathematical. The recent uproar over 529 college savings accounts perfectly illustrates this phenomenon. Households earning over $200,000 a year are statistically in the top 5 percent of the income distribution, yet they vehemently view themselves as middle-class parents simply trying to save for their children&#x27;s education.</p>
+      <p>Part of the difficulty in drawing a federal tax line is geographical. A $250,000 household income in Manhattan or San Francisco affords a lifestyle that feels distinctly middle-class—complete with crushing mortgage stress, high property taxes, and exorbitant childcare costs. In contrast, that same income in rural Ohio constitutes immense local wealth. Because federal income tax brackets are uniform across the country, they act as a blunt instrument that routinely frustrates high-cost-of-living voters.</p>
+      <p>However, the deeper issue is our ongoing reliance on income rather than wealth as the ultimate dividing line. To truly distinguish the rich from the middle class, tax policy must shift its focus from high-salary earners to capital accumulators. The truly wealthy do not primarily build or maintain their fortunes through W-2 wage income; they rely heavily on capital gains, dividends, and generational wealth transfers.</p>
+      <p>When the Obama administration proposes reforming the trust-fund loophole or closing the &quot;stepped-up basis&quot; on inherited assets, these are steps in the correct direction. Such mechanisms accurately target the economic elite—the investor class—without snagging the two-earner professional households who, despite their high salaries, still feel highly economically insecure.</p>
+      <p>If lawmakers genuinely want to address inequality without triggering massive upper-middle-class backlash, they must recognize that high-earning professionals still identify as working people. A successfully progressive tax system should draw its most important line not just by how much money citizens make, but by how they actually make it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Federal tax policy can distinguish the rich from the middle class, but only if it stops pretending that one bright line can do all the work. “Middle class” is partly an income category, partly a wealth category, and partly a political identity. A family earning $210,000 in Manhattan with children and student loans is not in the same position as a billionaire, but it is also not typical: median household income is roughly a quarter of that. Tax law should acknowledge both facts.</p>
+      <p>The best approach is not to ask whether a household feels rich, but whether it has unusual capacity to pay or is receiving subsidies that overwhelmingly flow upward. On that test, many tax preferences fail. The mortgage-interest deduction, preferential rates on capital gains, estate-tax exemptions and college-savings breaks often deliver the largest dollar benefits to households with the most assets. A 529 account is useful to some upper-middle-class savers, but families struggling to pay rent or tuition cannot benefit much from tax-free investment gains because they have little money to invest. Calling every affluent beneficiary “middle class” makes the term meaningless.</p>
+      <p>Still, policy must be careful. Income in a single year can mislead: a small-business owner may have a temporary spike, a retiree may realize capital gains, and regional costs vary. That argues for graduated phaseouts rather than cliffs, multi-year averaging where appropriate, and separate treatment of wages, inherited wealth and capital income. It also argues for designing benefits as refundable credits or direct aid when the goal is to help low- and middle-income families, rather than deductions and exclusions that are worth most to those in high brackets.</p>
+      <p>A reasonable tax code would use several markers: adjusted income, accumulated wealth, type of income, family size and the nature of the tax benefit. It would not put a schoolteacher and a hedge-fund partner in the same category merely because both claim a deduction, nor would it treat a $200,000 household as needy simply because it is not super-rich.</p>
+      <p>The real obstacle is not technical but political. Every tax preference has beneficiaries who describe themselves as middle class. If Congress accepts that claim at face value, inequality policy becomes impossible. If it measures ability to pay honestly, the distinction is difficult but entirely workable.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>One of the most persistent puzzles in tax design is whether the code can reliably draw a line between the rich and the middle class without creating perverse incentives, administrative headaches, or misleading labels. The definition of “rich” is inherently elastic: it can be anchored to a fixed dollar amount, to a percentile of the income distribution, or to a broader notion of wealth or consumption. Because income, wealth, consumption, and family circumstances all move together, any single metric is inevitably a simplification. The question is whether that simplification serves policy goals or undermines them.</p>
+      <p>The existing federal income tax already differentiates between high earners and the middle class through progressive rates. The top marginal rate kicks in above roughly $400,000 for single filers in 2015, while the 10‑ and 15‑percent brackets apply to the bulk of middle‑income taxpayers. Phase‑out provisions, such as those that reduce the benefit of the Earned Income Tax Credit or the child tax credit at higher incomes, add another layer of targeting. The 529 plan example illustrates both the promise and the pitfalls: by offering a tax‑advantaged savings vehicle limited to families that can afford to set aside $14,000 per year, the policy effectively subsidizes a group that, by most measures, is already well‑off.</p>
+      <p>Some analysts argue that income is an inadequate proxy for economic well‑being and that a wealth tax or a consumption tax would more accurately separate the rich from the middle class. A wealth tax would capture assets that generate income but are not reported on annual returns, while a consumption tax would tax people based on what they spend rather than what they earn. Both approaches face formidable design problems: valuation of assets is costly, and a broad consumption tax would hit low‑income households disproportionately unless paired with a generous exemption. Moreover, targeting benefits to groups defined by wealth or consumption raises privacy concerns and invites strategic reshuffling of assets.</p>
+      <p>The political appeal of a “middle‑class” label is strong: it signals fairness and broadens the coalition for a tax change. Yet that appeal can distort design. When a benefit is framed as helping the middle class, it may attract households that barely qualify, and when it is stripped from high earners, the backlash can be swift, as the 529 rollback showed. An honest approach would define targeted provisions by specific income ranges or measures of economic need and would communicate those criteria transparently. This would reduce demagoguery and allow the tax code to allocate resources where they reduce inequality.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The Line Is Real, and We Already Draw It</p>
+      <p>The flap over 529 accounts obscures a basic truth: federal tax policy already distinguishes between the rich and the middle class, and does so with reasonable precision. The Earned Income Tax Credit phases out around the low-to-middle ranges. The Child Tax Credit phases out beginning at $110,000 for couples. The American Opportunity Credit phases out at $180,000. The Pease limitation on itemized deductions and the PEP phase-out of personal exemptions kick in around $300,000. The top marginal rate of 39.6 percent applies above roughly $465,000 for joint filers. The 3.8 percent net investment income tax targets households above $250,000.</p>
+      <p>The mechanism is the phase-out, and it works. By using adjusted gross income thresholds with gradual reductions, Congress can deliver benefits to families earning $60,000 without writing checks to families earning $600,000. The 529 episode was not a failure of design but a failure of politics: the President proposed taxing accumulated gains in vehicles that disproportionately serve the affluent, and affluent families — who vote, donate, and write op-eds — complained loudly enough that the proposal collapsed within a week.</p>
+      <p>The honest question is not whether tax policy can distinguish rich from middle class, but where we want the lines drawn and what we want to do at each level. Households between $100,000 and $250,000 are an awkward category — comfortable in Tulsa, squeezed in San Francisco — and they are large enough and politically active enough that any administration touching their tax preferences pays a price. Calling them &quot;middle class&quot; is rhetorically convenient but statistically generous: a household at $200,000 sits above 95 percent of American families.</p>
+      <p>So the technical answer is straightforward. AGI thresholds, phase-outs, and differential treatment of wage versus capital income give policymakers ample tools. What&#x27;s hard isn&#x27;t the engineering. It&#x27;s persuading the upper-middle class that they aren&#x27;t the middle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>&quot;Middle Class&quot; Is a Feeling, Not a Bracket</p>
+      <p>Ask a family earning $300,000 whether they are rich, and almost none will say yes. Ask a family earning $40,000 whether they are middle class, and almost all will say yes. That is the political problem the Obama administration just ran into with 529 accounts, and it is the problem any administration runs into whenever it tries to nudge tax burdens upward on the professional class.</p>
+      <p>The reason is that &quot;middle class&quot; in American usage is a cultural identity, not an income range. It means: I work for my living, I worry about my bills, I haven&#x27;t inherited my position, my kids&#x27; college isn&#x27;t a sure thing. A two-earner household of a public school principal and a hospital administrator in suburban New Jersey can clear $200,000 and feel every bit of that description. So can a self-employed couple in Denver with two kids in braces and a mortgage. They are, by the numbers, in the top 5 percent. By their own lights, they are squarely in the middle.</p>
+      <p>This is why income-threshold politics keeps misfiring. The 529 program was a textbook case of an upper-middle-class subsidy — Government Accountability Office studies have shown most of the benefit flows to households well above the median. But the families using it don&#x27;t experience the benefit as a windfall; they experience it as relief from the punishing cost of tuition, which has risen far faster than their wages.</p>
+      <p>Tax policy can certainly draw lines — at $250,000, at $400,000, at $1 million. The question is whether those lines correspond to anything the public recognizes as the rich. Until policymakers stop using &quot;rich&quot; to mean &quot;professional class with two incomes and a mortgage&quot; and start reserving it for the genuinely wealthy — the dividend-and-capital-gains class, households in the top 1 percent and especially the top 0.1 percent — they will keep getting clobbered when they try to redistribute.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>Stop Drawing Lines and Broaden the Base</p>
+      <p>The premise of the question is itself the problem. The American tax code is a thicket of carve-outs, credits, deductions, and phase-outs precisely because we have spent forty years trying to use it to differentiate among groups of taxpayers — rich, middle, poor, parents, students, homeowners, savers, retirees. The 529 episode is a perfect illustration of where this leads: a preference is created, a constituency forms around it, and any future attempt to repeal it is denounced as a tax hike on the middle class, regardless of who actually benefits.</p>
+      <p>A better approach would stop trying to micro-target. Broaden the base, lower the rates, eliminate most preferences, and use a small number of clearly progressive marginal brackets plus a refundable credit at the bottom to handle distributional concerns. The Tax Reform Act of 1986 — under a Republican president and a Democratic House — moved in this direction and was widely admired. Since then, we have undone most of its work by piling preferences back into the code.</p>
+      <p>If the President wants to address inequality, he has cleaner tools than tinkering with 529s. Raise the top marginal rate. Tax capital gains and dividends as ordinary income above some threshold. Close the carried-interest loophole. End the step-up in basis at death, which lets enormous fortunes pass untaxed across generations. Each of these touches the genuinely wealthy without affecting the dentist in Cincinnati saving for her daughter&#x27;s tuition.</p>
+      <p>The reason these proposals are politically harder than killing 529s is instructive. The genuinely wealthy are well-represented in Washington; the upper-middle class is loud. The path of least resistance has been to nibble at upper-middle-class preferences while leaving the real fortunes alone. That is not progressive reform. It is tax policy theater, and the public is right to be skeptical.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Geography Is the Missing Variable</p>
+      <p>Two hundred thousand dollars buys very different lives in different parts of the country, and any honest discussion of where the middle class ends has to grapple with this. In rural Mississippi or eastern Tennessee, a $200,000 household income places a family in something like local aristocracy. In Manhattan, San Francisco, Boston, or the Washington suburbs, it buys a modest apartment, a long commute, and a constant low-grade anxiety about private school tuition. The federal tax code mostly ignores this.</p>
+      <p>It shouldn&#x27;t. The standard deduction and bracket thresholds are uniform nationally, and while the state and local tax deduction provides some implicit adjustment for high-tax (and usually high-cost) areas, it does so in a regressive way — it&#x27;s worth most to those who itemize and face the highest marginal rates. A more honest approach would index income thresholds for major federal preferences and brackets to regional cost of living, the way Social Security uses a national average wage but the way many federal pay scales already include locality adjustments.</p>
+      <p>The political resistance to this is obvious: it would look like a giveaway to blue-state professionals. But the underlying principle — that purchasing power, not nominal income, is the right measure of who is rich — is sound. The 529 debate hinged on it. Families using 529s most heavily are concentrated in high-cost metros where college savings of $200,000 or more per child are not a luxury but a necessity, given sticker prices at private universities now exceeding $65,000 a year.</p>
+      <p>Can tax policy distinguish rich from middle class? Only crudely, as long as it treats a dollar in Birmingham and a dollar in Brooklyn as equivalent. They aren&#x27;t. Until federal policy acknowledges this, the political category of &quot;middle class&quot; will keep expanding upward to include households who, on paper, look wealthy but, in their daily lives, do not feel that way — and reformers will keep losing the argument.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Income Misses the Point; Tax Wealth Instead</p>
+      <p>The 529 dust-up reveals something important: when we talk about distinguishing the rich from the middle class through the tax code, we are almost always talking about income. But income is a poor proxy for wealth, and wealth is what most people mean when they say &quot;rich.&quot;</p>
+      <p>A surgeon earning $400,000 with student loans, a recent mortgage, and no inherited assets is, in any meaningful sense, in the same economic situation as her merely affluent neighbors — comfortable, secure, but dependent on continuing to work. A trust-fund heir with $20 million in index funds earning $400,000 in qualified dividends pays a lower effective federal tax rate than the surgeon and never has to work a day. The income tax sees them as roughly equivalent. They are not.</p>
+      <p>This is why arguments over where to set income brackets keep feeling unsatisfying. The truly rich — the top tenth of one percent, who hold a disproportionate share of national wealth — derive most of their economic power not from wages but from accumulated capital. Income tax tweaks barely touch them. Even raising the top marginal rate to 50 percent would leave the Walton or Koch fortunes essentially undisturbed, because those fortunes generate gains that are realized strategically, deferred indefinitely, and stepped up at death.</p>
+      <p>If we want tax policy to distinguish the rich from everyone else, the cleanest tools are: taxing capital gains at ordinary rates, ending step-up in basis, strengthening the estate tax, and considering some form of progressive wealth tax. Thomas Piketty&#x27;s recent work has put these questions squarely on the table. They are politically difficult, but they target the right people.</p>
+      <p>Meanwhile, fighting over 529 accounts — a preference worth a few thousand dollars to dentists and engineers — is a distraction. It picks a fight with the upper-middle class while leaving the actually rich entirely undisturbed. That isn&#x27;t a strategy for addressing inequality. It&#x27;s a strategy for losing midterms.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The swift collapse of the 529 proposal reveals a dangerous political reflex, but it does not mean tax policy is incapable of drawing a clear line between the rich and the middle class. The failure was one of design and framing, not principle. The administration applied a blunt instrument—eliminating a deduction entirely—rather than a targeted phaseout. A far more durable approach is to define the distinction directly through income thresholds built into the tax code itself. The current marginal rate structure already begins this work, but it can be sharpened by phasing out deductions, credits, and exemptions as adjusted gross income rises. For instance, the mortgage interest deduction could be capped at a loan value well below the current $1 million limit, and the deduction for state and local taxes could be reduced for couples earning more than $250,000. These measures affect only a small sliver of taxpayers, roughly the top 3 percent, and they capture the genuinely affluent without ensnaring the two-earner professional household that the 529 debate clumsily weaponized. The key is precision: a family earning $200,000 in a high-cost city is not poor, but their financial life is radically different from someone pulling in $500,000 in capital income. By using multiple income thresholds tied to different types of income and deductions, Congress can protect the upper-middle while raising revenue from the truly wealthy. That differentiation is bureaucratically simple and politically possible if legislators focus on the data showing that the top 1 percent have captured nearly all income gains since the recovery began. The 529 debacle should not discourage such efforts; it should teach us that distinguishing the rich from the middle class requires scalpel-like phaseouts, not sweeping eliminations.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The intense backlash to President Obama’s 529 plan lays bare a stubborn truth: federal tax policy cannot reliably distinguish the rich from the middle class, because no single number captures the lived experience of a household. A family in San Francisco scraping together a down payment on a median-priced home on $200,000 feels far more financially strained than a family in rural Texas on half that income, yet gross income thresholds treat them identically. The 529 accounts, derided as a giveaway to the top 5 percent, are overwhelmingly used by parents who are not yacht-owning plutocrats but dual-earning nurses, engineers, and small-business owners facing the six-figure cost of a college education. When you try to separate the rich from the middle class through the tax code, you inevitably draw arbitrary lines that ignore regional cost-of-living chasms and the fact that many high-income households are merely “high consumption” households with no net wealth to speak of. The more productive path is to abandon the project of precise distinction and instead build a tax system that is broadly progressive but universal in its benefits. A larger standard deduction, sharply increased child tax credits delivered monthly, and a robust earned income tax credit lift the bottom and middle without ever needing to define who counts as rich. The wealthy would pay more through higher marginal rates because they earn more, but the code would not try to separate them from the middle through a maze of phaseouts that inevitably trip over edge cases. The 529 storm was not an anomaly; it was a preview of every future fight that pits perception against geography. Tax policy should focus on what people keep after taxes and transfers, not on the impossible task of labeling a household “rich” using a single line on a form.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Tax policy can distinguish the rich from the middle class if it stops obsessing over how much people earn and starts looking at how they earn it. The central divide in modern American capitalism is between those who work for a living and those who live off their assets. The middle class—however stretched—derives the overwhelming bulk of its income from wages and salaries. The genuinely wealthy, by contrast, build fortunes from capital gains, dividends, carried interest, and inherited assets, forms of income taxed at preferential rates that are often half the top rate on labor. Closing that gap is the cleanest, most defensible way to draw a policy line. Raising the long-term capital gains rate for households with total income above $400,000, abolishing the carried interest loophole, and enacting a meaningful estate tax with a high exemption would barely touch the professional upper-middle class, because they do not depend on those income streams. A surgeon earning $350,000 in wages still pays ordinary income rates; her taxes would barely change. But a hedge fund manager pulling in $5 million largely through carried interest would pay significantly more. This distinction mirrors public sentiment precisely: Americans resent not high incomes but unearned income and loopholes. The 529 fight misfired because it hit a popular vehicle used by wage earners saving for a specific expense. Taxing capital more like labor flips the script and targets the true sources of dynastic wealth without ever needing to argue about whether $200,000 makes you rich. By focusing on the character of income, the tax code can quietly but powerfully distinguish the investor class from everyone else.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>If the goal is to truly separate the rich from the middle class, the federal income tax is the wrong tool entirely. Its complexity invites loopholes, and its focus on annual income misses accumulated wealth entirely. A far more effective approach is to shift toward a progressive consumption tax, a move that would make the distinction automatic and politically durable. Under a system like the Bradford X-tax or a carbon tax with a lump-sum rebate, households are taxed on what they spend, not what they earn, but the rate rises steeply with consumption levels. A family spending $50,000 a year would face a low or zero net tax because a generous monthly rebate offsets their burden. A household spending $300,000 would pay a much higher marginal rate on spending above a certain threshold, while a multi-millionaire’s yacht purchase would face top rates. No one needs to define “middle class” by an income number; the distinction falls out of actual behavior. The wealthy consume more and save more, and a consumption tax hits the former while leaving the latter untaxed—channeling investment into the economy. The 529 controversy showed the trap of income-based definitions: parents saving for college were treated as fat cats because their income looked high on paper. A consumption tax would never penalize saving for education or retirement; it would only ask what you take out of the common pool to spend today. That is a system where the rich pay more not because a bureaucrat labeled them, but because their spending patterns reveal them. It is time to rethink the entire platform.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>We don’t need to invent new ways to distinguish the rich from the middle class in the tax code. We need to stop pretending the current code doesn’t already make that distinction, powerfully and perversely, in favor of the wealthy. The real question is whether we have the political courage to reverse it. Nearly every major tax expenditure—the mortgage interest deduction, the exclusion of employer-sponsored health insurance, the preferential rates on capital gains, and the sacrosanct 529 plans themselves—provides its largest benefits, in absolute dollars, to the top income quintile. A household earning over $200,000 receives an average annual tax subsidy for housing and health care that dwarfs what a middle-income family gets, because the subsidy is pegged to the size of the mortgage, the cost of the health plan, and the marginal tax rate. Eliminating or capping these expenditures would automatically make the code distinguish the rich from the middle class by removing the invisible architecture that currently shields high earners. The 529 proposal failed not because it was unfair, but because it threatened a concrete benefit that affluent families had already internalized as part of their financial planning. That political reality underscores the true obstacle: not a lack of policy instruments, but a collective unwillingness to ask something of the professional class. The heavy lifting of distinguishing “rich” from “middle” can be done by capping all itemized deductions at a dollar limit and converting the mortgage interest deduction into a flat credit. These moves would raise revenue almost exclusively from the top 10 percent while leaving the middle class’s reliance on the standard deduction untouched. The tax code already knows who is rich; it simply refuses to act on that knowledge.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>To distinguish the rich from the middle class, federal tax policy must rely on statistical reality rather than emotional self-identification. The recent uproar over President Obama’s proposal to eliminate tax advantages for 529 college savings accounts perfectly illustrates the problem. The administration correctly noted that the vast majority of these benefits go to the top 5 percent of earners. Yet, the proposal was swiftly abandoned because that top 5 percent—households making upwards of $200,000 a year—loudly identified themselves as the &quot;middle class.&quot;</p>
+      <p>They are not. The median household income in the United States currently hovers around $52,000. When a family brings in four times the national median, they have objectively crossed into the realm of the wealthy.</p>
+      <p>Federal tax policy can and should draw a hard line using these statistical truths. We can distinguish the rich by capping itemized deductions at a specific income threshold—for example, the top two income deciles—and phasing out tax expenditures like the mortgage interest deduction and tax-free college savings for those high earners.</p>
+      <p>The resistance to doing so is not an economic problem; it is a psychological one. In America, almost everyone considers themselves middle class. The billionaire imagines he is simply a hard-working regular guy, and the family earning $250,000 feels financially stretched because of private school tuition and luxury car payments. Tax policy cannot afford to indulge these delusions. By strictly enforcing income cutoffs based on national percentiles, the federal government can ensure that policies designed to boost the true middle class—the middle 50 percent of the income distribution—are not quietly siphoned off by the affluent.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The fundamental flaw in trying to use the federal tax code to separate the &quot;rich&quot; from the &quot;middle class&quot; is that a single national income number is entirely meaningless in a country as vast and economically diverse as the United States.</p>
+      <p>President Obama’s budget treats a household earning $200,000 as &quot;wealthy.&quot; In Peoria, Illinois, or rural Texas, that salary undoubtedly buys a rich lifestyle: a large home, multiple cars, and significant disposable income. But for a dual-income family living in Manhattan, San Francisco, or Washington, D.C., $200,000 is squarely middle class. Once you account for exorbitant state and local taxes, the astronomical cost of housing, and childcare, these families are not living in the lap of luxury. They are commuting on the subway and clipping coupons just to stay afloat.</p>
+      <p>Federal tax policy fails to distinguish between the rich and the middle class because it refuses to index income brackets to the local cost of living. Stripping away tax incentives for college savings from a family in Brooklyn because they hit a flat national threshold is inherently punitive. It treats them as if they have the same purchasing power as a family earning the same amount in Kansas.</p>
+      <p>If we genuinely want the tax code to target the truly wealthy without punishing the urban middle class, we must either adjust federal tax brackets based on regional cost-of-living indices, or abandon the premise of class-based taxation altogether in favor of a flatter, simpler code. Until we do, arbitrary national numbers will continue to penalize families who are statistically &quot;rich&quot; but functionally middle class.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>If the goal of the tax code is to benefit the actual middle class rather than the wealthy, the solution is not merely tweaking marginal tax brackets. Instead, lawmakers must fundamentally restructure how we deliver tax relief: we need to replace deductions with refundable tax credits.</p>
+      <p>The recent debate over 529 college savings accounts highlights a structural bias in our tax system. Tax deductions and exemptions are inherently &quot;upside-down.&quot; They provide the largest financial benefit to those in the highest marginal tax brackets and offer absolutely nothing to those whose incomes are too low to owe federal income tax. To benefit from a 529 plan, a family must have enough disposable income to lock away thousands of dollars for years. A working-class family struggling to pay monthly bills simply cannot participate. Therefore, any policy structured as a deduction or investment exemption will inevitably become a subsidy for the rich, masquerading as middle-class relief.</p>
+      <p>To differentiate the classes and appropriately target aid, tax policy should shift toward fixed, refundable credits. For instance, instead of offering a tax deduction for college tuition or a tax-advantaged savings account, the government could offer a flat, refundable tax credit of $2,000 per student.</p>
+      <p>To a household earning $250,000, a $2,000 credit is a negligible drop in the bucket. But to a household earning $50,000, that same credit is transformative. By heavily utilizing credits rather than deductions, the tax code naturally distinguishes between the wealthy and the middle class through the proportional impact of the policy. The federal government does not need to engage in complex means-testing or arbitrary income cutoffs; it simply needs to redesign tax expenditures so they are mathematically progressive rather than regressive.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>Politicians frequently demand that tax policy distinguish the rich from the middle class, but this endeavor is doomed by the realities of American political identity. The swift death of President Obama’s proposal to end 529 tax breaks is a masterclass in why tax policy can never successfully isolate the wealthy: the &quot;middle class&quot; in America is not an economic bracket, but a near-universal political identity.</p>
+      <p>In the United States, class consciousness is famously weak. Survey after survey shows that everyone from the working poor earning $30,000 to white-collar professionals earning $300,000 identifies as middle class. Because of this, any attempt to roll back benefits for the upper-middle class is instantly weaponized by opponents as an assault on the middle class itself.</p>
+      <p>The 529 plans are an excellent example. The data clearly showed that these benefits accrue almost entirely to the top 5 percent. Economically, cutting them to fund broader community college initiatives was a direct transfer from the rich to the working and middle classes. Yet, Republicans and many Democrats immediately framed the move as an attack on &quot;middle-class college savers.&quot; The White House caved in a matter of days.</p>
+      <p>Tax policy cannot distinguish the rich from the middle class because the electorate will not allow it to. The moment a line is drawn—whether at $100,000, $200,000, or $250,000—those just above the line will deploy their considerable political and cultural capital to portray themselves as beleaguered everyday Americans. Until we have a cultural reckoning with what it actually means to be wealthy in America, federal tax policy will remain paralyzed, forced to hand out subsidies to the rich under the politically bulletproof banner of &quot;middle-class tax relief.&quot;</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The debate over whether $200,000 in salary constitutes &quot;rich&quot; or &quot;middle class&quot; misses the fundamental nature of inequality in the 21st century. If federal tax policy truly wants to distinguish the wealthy from the rest of America, it needs to stop obsessing over earned income and start looking at accumulated wealth and capital.</p>
+      <p>As Thomas Piketty’s recent scholarship has powerfully demonstrated, the defining characteristic of the modern upper class is not high wages, but capital ownership. A dual-income household where two highly educated professionals earn a combined $200,000 might look rich on an IRS W-2 form. But if they are carrying $150,000 in student loan debt and paying a mortgage, their actual net worth might be negligible. Compare them to an heir who earns $150,000 entirely through dividends on a massive, inherited stock portfolio. The former is a high-earning member of the working middle class; the latter is genuinely wealthy.</p>
+      <p>Yet, our tax code treats the heir much better. Through preferential capital gains rates and the &quot;step-up in basis&quot; loophole at death, true wealth is shielded from the punitive taxation applied to wage labor.</p>
+      <p>To distinguish the rich from the middle class, the President and Congress must shift the tax burden away from payrolls and onto capital. This means aggressively raising the capital gains tax to match ordinary income rates, instituting a financial transaction tax, and closing estate tax loopholes that allow massive fortunes to be transferred generation to generation tax-free.</p>
+      <p>Targeting 529 accounts for families making $200,000 is a distraction. It pits the middle class against the upper-middle class while the ultra-wealthy continue to accumulate unchecked capital. A tax policy that genuinely differentiates the rich from the rest must measure prosperity not by the sweat of one&#x27;s brow, but by the size of one&#x27;s portfolio.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Yes, federal tax policy can distinguish the rich from the middle class, but only if lawmakers stop pretending that every household that uses a tax preference is therefore “middle class.” The 529 controversy is a perfect example. These accounts are described in the language of aspiration: parents saving for college. But in practice, the biggest benefits flow to families with enough disposable income to save thousands of dollars after paying for housing, retirement, health care and current education expenses. A household earning $60,000 may desperately want to save for college; a household earning $250,000 is far more likely to actually max out a tax-favored account.</p>
+      <p>The tax code already makes distinctions all the time. It phases out personal exemptions and deductions, limits IRA contributions for higher earners, targets the earned-income tax credit to low-wage workers, and taxes estates only above high thresholds. The question is not whether differentiation is possible. It is whether Congress has the political courage to accept that the top 5 percent is not the same as the median household.</p>
+      <p>A reasonable system should use several markers: income, family size, filing status, and the type of income received. A couple earning $220,000 in wages in New York is not the same as a hedge fund manager earning millions in carried interest, but both are far better positioned than a family earning $55,000. Tax policy need not treat them identically. Benefits can phase down gradually rather than disappear at a cliff. Capital gains and dividends, which are disproportionately received by the affluent, can be taxed more like wages. Tax expenditures such as 529s, mortgage interest deductions on large homes, and exclusions for employer benefits can be capped where they mainly subsidize those already comfortable.</p>
+      <p>The “middle class” should not be defined by anecdotes about expensive suburbs. It should be defined relative to the actual national distribution of income and wealth. By that measure, households over $200,000 are affluent, even if they do not feel rich. Tax policy can recognize gradations, but it should not allow the very comfortable to hide behind the truly squeezed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>Federal tax policy can draw lines, but it cannot reliably capture what Americans mean by “middle class.” That is the problem. “Rich” is not only a number on a tax return. It depends on where a family lives, how many children it supports, whether it has medical bills, whether its income is temporary, whether it has student debt, and whether it has wealth behind it.</p>
+      <p>A family earning $210,000 in Manhattan or San Francisco with three children, high rent, no inherited assets and looming college bills may be in the top slice of national income, but it may not experience life as affluent. A retired couple with a paid-off house, a large brokerage account and modest taxable income may look middle-income to the Internal Revenue Service while having far more security. A small business owner may show volatile income that spikes in one year and collapses the next. These cases do not disprove inequality; they show the limits of annual income as a moral measuring stick.</p>
+      <p>The 529 proposal ran into this ambiguity. The administration was right that 529 benefits are tilted upward. But the symbolism was terrible: it targeted a vehicle associated with college savings, one of the central anxieties of middle-class life. Even families who do not use 529s could imagine wanting to. In politics, an account labeled “college” will always sound more middle-class than a capital-gains preference, even if the distributional tables say otherwise.</p>
+      <p>The better approach is not to hunt for a perfect rich-middle boundary. It is to design broad rules that reduce inequality without requiring every household to be culturally classified. Tax capital income more consistently. Limit deductions that become more valuable as tax brackets rise. Expand refundable credits, child care support and higher-education aid that do not require families to have spare cash upfront. Avoid sharp cutoffs that turn a $1 raise into a large tax penalty.</p>
+      <p>Tax policy can identify high-income taxpayers. It cannot settle the national argument over who is “really” middle class. Policymakers should acknowledge that limitation and build less brittle, more transparent rules.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The premise that Washington can neatly sort Americans into “rich” and “middle class” is more dangerous than it sounds. It invites politicians to raid any savings vehicle used by upper-income families and call it fairness. The attempted attack on 529 plans is a case in point. These plans encourage parents and grandparents to save for college, at a time when tuition has risen far faster than inflation and student debt is a national worry. Penalizing saving because the benefit is not evenly distributed is a strange way to help families become self-reliant.</p>
+      <p>Of course higher-income households are more likely to use 529s. Higher-income households are more likely to save in general. That does not make saving a loophole. If the government wants more families to save for college, it should simplify plans, improve financial literacy, and perhaps provide matching help for lower-income savers. Eliminating tax-free withdrawals would not make college cheaper. It would simply make careful planning less attractive.</p>
+      <p>Nor is $200,000 a magic number. In many parts of the country it is plainly a high income. In high-cost metropolitan areas, for a two-earner couple with children, it can mean a comfortable but pressured life: large tax bills, expensive housing, child care, and no eligibility for most need-based aid. Calling such families “the rich” may be satisfying politically, but it obscures the difference between professionals and the truly wealthy, whose wealth is measured in assets, not paychecks.</p>
+      <p>The tax code is already too complex, riddled with phaseouts, credits, exclusions and special definitions. Adding more income tests and class labels will make it worse. A better reform would lower rates, broaden the base, reduce special-interest loopholes, and promote growth. If inequality is the concern, address it through education reform, job creation, and a safety net that helps the poor without punishing thrift.</p>
+      <p>Tax policy can identify taxpayers with higher incomes. But it should be cautious about turning every such distinction into a claim about class. The middle class is not strengthened by taxing away the tools it uses to save.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>Tax policy can distinguish the rich from the middle class, but the distinction should be based on “ability to pay,” not on slogans. A good tax system asks three questions: How much income does the household receive? What kind of income is it? And how much wealth or economic security stands behind it?</p>
+      <p>Annual income is the easiest measure, and it should remain central. A household above $200,000 is statistically far above the American middle. But annual income alone is imperfect. A tax return may understate the resources of people who live off appreciated assets, borrow against wealth, or receive lightly taxed capital gains. It may overstate the long-term position of a family with a one-time income spike. That argues for better design, not surrender.</p>
+      <p>The most sensible way to differentiate is through gradual phaseouts and caps. If Congress wants to preserve 529s for ordinary savers, it could limit tax-free earnings to a reasonable amount per beneficiary, phase out benefits at high incomes, or convert the subsidy into a credit or match that is more valuable to modest-income families. What makes the current structure regressive is that the benefit is largest for those who can contribute the most and who face higher marginal rates. That is not an unavoidable feature of college saving policy; it is a design choice.</p>
+      <p>The same logic applies across the code. Deductions are upside-down subsidies: a dollar deducted is worth more to someone in the 39.6 percent bracket than to someone in the 15 percent bracket. Credits, especially refundable credits, are better tools for middle- and lower-income families. Capital gains and dividends should not receive such large preferences when those forms of income are concentrated at the top. Estate taxation, too, is an appropriate way to distinguish dynastic wealth from ordinary earnings.</p>
+      <p>There will always be hard cases: expensive cities, large families, business owners, medical costs. But hard cases should shape thresholds and phaseouts, not paralyze policy. The tax code already distinguishes among taxpayers. The real question is whether those distinctions will protect economic security for the broad middle or continue subsidizing those least in need of help.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The fight over 529 plans shows that “middle class” is as much an identity as an income category. Many Americans who are objectively affluent do not think of themselves as rich. They compare themselves with neighbors, not with the national median. They see college bills, mortgages, payroll taxes and retirement anxiety. So when a president says a tax break mostly benefits the top 5 percent, many hear something else: Washington is coming after prudent parents.</p>
+      <p>That does not mean the distributional facts are irrelevant. They matter a great deal. If a tax benefit mainly helps households earning more than $200,000, it is not a broad middle-class program. But politicians should understand why the label alone does not persuade. The middle class is defined by security: the ability to afford housing, health care, education, retirement and some cushion against bad luck. Some high earners have that security; many median earners do not. Tax policy should aim at the condition, not the label.</p>
+      <p>That suggests a shift away from boutique savings preferences and toward direct support. A family struggling to pay community college tuition gains little from a tax-free investment account it cannot afford to fund. It gains more from Pell Grants, refundable education credits, child tax credits, wage subsidies, and affordable child care. A worker paying more in payroll taxes than income taxes will not be helped much by deductions. A renter receives nothing from the mortgage interest deduction. A family without surplus income receives little from tax-favored savings.</p>
+      <p>At the top, tax policy should be honest. High incomes, large capital gains and inherited wealth are not middle-class simply because their owners work hard or worry about their children. The code should reduce preferences that flow upward and use the revenue to strengthen real economic security.</p>
+      <p>Still, reformers should pick their fights carefully. The 529 proposal may have been defensible on paper but politically clumsy. Better to begin with larger, clearer inequities: capital gains preferences, carried interest, excessive deductions and estate tax avoidance. Tax policy can distinguish rich from middle class, but only if it defines the middle class by vulnerability and opportunity, not by sentimental branding.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Yes, federal tax policy can distinguish the rich from the middle class, but only if we stop allowing “middle class” to mean “everyone who worries about bills.” Anxiety is not the same as economic position. A household making more than $200,000 may face college costs, a mortgage and child care, especially in an expensive metropolitan area. But nationally it is still near the top of the income distribution. The typical American household earns a fraction of that.</p>
+      <p>The tax code already makes such distinctions. It has graduated rates, phaseouts for deductions and credits, the earned-income tax credit, payroll taxes, estate taxes and special rules for investment income. The problem is not that lines cannot be drawn; it is that every line creates an aggrieved constituency just above it.</p>
+      <p>The 529 controversy shows why design matters. The president was right that 529 tax benefits are tilted upward. Families living paycheck to paycheck cannot shelter large sums for college; affluent families can. A tax subsidy for investment earnings is most valuable to those who have money to invest. Calling that a middle-class benefit stretches the phrase beyond usefulness.</p>
+      <p>Still, outright repeal was a poor political instrument. College is one of the central middle-class fears, and parents saving for it are not villains. A better policy would cap tax-free 529 balances, limit the benefit for high-income households, or convert education tax breaks into refundable credits that help families who cannot save much in the first place. That would preserve the norm of saving while recognizing that unlimited tax-free accumulation is not a necessity for the truly middle class.</p>
+      <p>The larger principle is simple: use income, family size and the source of income, and avoid cliffs by phasing changes in gradually. Wages, capital gains, inheritances and large tax shelters should not be treated as morally identical. Tax policy will never capture every nuance of geography or circumstance, but it can tell the difference between a family struggling near the median and a family with enough surplus income to seek tax-advantaged investments. Imperfect distinctions are not the same as impossible ones.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The federal tax code can sort taxpayers into income brackets, but it cannot reliably sort Americans into “rich” and “middle class.” Those are social and political categories as much as economic ones. A couple earning $210,000 in New York with student loans, two children and no pension may be affluent by national standards, but they will not experience themselves as rich. A retiree with modest annual income but a large portfolio may look middle-income on a tax return. A small-business owner may have one very good year followed by two terrible ones.</p>
+      <p>That does not mean distribution does not matter. It means the tax code is a blunt and often misleading tool for expressing it. Adjusted gross income misses local costs, debt burdens, age, wealth and volatility. Meanwhile, genuinely wealthy households often have the best accountants and the greatest ability to choose when income appears. The more complicated the code becomes, the more opportunities there are for avoidance.</p>
+      <p>The 529 dispute illustrates the problem. The administration could accurately say the benefit flows disproportionately to high earners. But families heard something else: Washington wanted to tax the college savings of parents who had done what they were told to do. In politics, symbolism matters. Saving for education is not a yacht deduction.</p>
+      <p>A better approach is to stop building so much social policy into narrow tax preferences. Keep rates broad and progressive, eliminate deductions and exclusions that have no strong justification, and deliver help for low-income families through simple, transparent credits or direct spending. If Congress wants to tax millionaires more heavily, it can say so plainly and set thresholds high enough that the public understands the target.</p>
+      <p>But pretending that a national tax form can finely distinguish the rich from the middle class will continue to produce backlash. Tax policy should measure income and collect revenue. It should not be asked to settle every argument about class identity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The most important distinction is not between households that earn $180,000 and those that earn $220,000. It is between people who live mainly from labor and people who live mainly from wealth.</p>
+      <p>That is where tax policy should focus. A surgeon, a two-lawyer couple or a successful small-business owner may have high annual income. They are not poor, and they should pay more than a median-income family. But the durable advantages of the rich come from assets: stock portfolios, closely held businesses, inherited wealth, real estate, deferred capital gains and the ability to borrow against appreciating property. Much of the inequality debate since the recession has centered on precisely this fact. The recovery has been far kinder to asset owners than to wage earners.</p>
+      <p>The tax code often treats wealth gently. Long-term capital gains and dividends are taxed at lower rates than ordinary wages. Unrealized gains can go untaxed for years. The “stepped-up basis” at death can erase capital gains tax entirely. Estate taxes now apply only to very large estates. Carried interest allows some investment managers to treat compensation as capital gains. These are not middle-class provisions, even if defenders can always produce a sympathetic edge case.</p>
+      <p>Compared with those issues, 529 plans are a small battlefield. But they are revealing. A 529 is useful only if a family has money left over to save and enough tax liability to make the shelter valuable. That does not describe most families. Still, college saving is a legitimate goal, so the solution should not be to abolish the benefit without replacement. Congress could cap the amount that receives tax-free treatment, prevent huge accounts from becoming estate-planning devices, or phase out the benefit for very high-income households. The revenue should go toward Pell Grants or refundable education credits that help students whose parents cannot pre-fund tuition.</p>
+      <p>If tax policy wants to distinguish rich from middle class, it should look at balance sheets as well as paychecks. The middle class owns a home, a retirement account if fortunate, and maybe a college fund. The rich own claims on future income streams and have the flexibility to time, transform and transmit income. A tax system that ignores that difference will overtax some high earners while undertaxing some of the truly wealthy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The administration made a tactical and substantive mistake by reaching for 529 plans. A family earning more than $200,000 is not typical, and it is fair to ask such families to contribute more. But many of them are better described as upper-middle-class strivers than as “the rich” in the sense most Americans understand the term. They work for salaries, pay mortgages, save for tuition and worry about retirement. They are comfortable, not dynastic.</p>
+      <p>That distinction matters because tax policy depends on consent. If every household in the top 5 percent is treated as though it belongs to the same category as hedge-fund billionaires, reform will fail politically. The 529 proposal collapsed so quickly because it appeared to punish a virtuous behavior: saving for a child’s education. At a time when tuition has risen faster than family income, raiding college accounts was bound to look like a middle-class tax increase, regardless of the distribution tables.</p>
+      <p>Federal policy should draw the line higher and cleaner. Raise revenue from households with very high incomes, large estates and substantial investment income. Close carried-interest treatment. Limit deductions for those with incomes far above ordinary professional salaries. Enforce the estate tax. Those measures address real concentrations of wealth without telling parents that their child’s college fund is a loophole.</p>
+      <p>For the middle and lower-middle class, the better tools are Pell Grants, community college support, child credits and payroll tax relief. Those benefits can be targeted without undermining saving. Congress can also cap abusive uses of 529s rather than eliminating their basic tax treatment.</p>
+      <p>There is no magic income number that separates rich from middle class. But there is a political common sense: do not define “rich” so broadly that people who earn salaries and save for college think the government is coming after them. Aim at accumulated privilege, not ordinary aspiration.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>Tax policy can distinguish the rich from the middle class well enough for governing, but not with a single bright line. “Rich” is a zone, not a number. The mistake is to imagine that one threshold—$200,000, $250,000, $1 million—can carry the whole moral weight of the tax system.</p>
+      <p>A workable approach would use several tests. First, adjust for family size and use income over more than one year where possible, so one-time events do not define a household permanently. Second, distinguish wages from capital income. A family living on salaries is different from one whose income comes from dividends, capital gains and inherited assets. Third, convert deductions into credits or caps. Deductions are worth more to people in higher brackets; credits can be made equal or refundable. Fourth, avoid cliffs. If a benefit disappears all at once at $200,001, the tax code has created resentment and bad incentives. Phaseouts are less dramatic and more defensible.</p>
+      <p>The 529 episode fits this framework. The administration identified a real inequity: tax-free college savings disproportionately benefit families who already have spare cash. Most low-income families cannot contribute thousands of dollars a year to an investment account. In that sense, the 529 subsidy is not primarily middle-class aid.</p>
+      <p>But the proposal also ignored the meaning of the policy. College savings sit at the center of middle-class aspiration. Parents do not view a 529 account as a luxury shelter; they view it as evidence of responsibility. A smarter reform would preserve modest 529 benefits, cap very large balances, and phase out the tax advantage for households clearly in the upper tier. The savings could finance refundable education credits or larger Pell Grants, which reach families with little ability to save.</p>
+      <p>Cost of living complicates the matter but should not paralyze policy. A high-income family in San Francisco or Washington may feel squeezed, but it still commands resources unavailable to the median household in Ohio or Arizona. Federal taxation cannot be rewritten block by block, and high-cost cities also contain poor families who face those same prices with far less income.</p>
+      <p>The larger challenge is honesty. Many affluent Americans sincerely call themselves middle class because they work, feel insecure and are not extravagantly rich. Tax policy should acknowledge that insecurity without surrendering to it. A top-5-percent household is not the same as a billionaire household, but neither is it the same as a median household. Good policy can recognize both truths.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Tax policy not only can but must distinguish between income groups if it hopes to achieve any redistributive purpose. The very logic of progressivity demands such lines be drawn, however imperfectly. The relevant question is not whether we can draw a clean divide between &quot;rich&quot; and &quot;middle class&quot; but whether we can draw defensible ones that serve legitimate purposes.</p>
+      <p>The $200,000 threshold for 529 account holders that Obama targeted reflects a reasonable operational definition. Families earning that amount have meaningful options unavailable to those making $60,000 or $80,000 a year. They can afford to save for college rather than borrow; they can take advantage of tax-free growth in ways that lower-income families cannot. Eliminating their specific preference does not impoverish them—it simply removes a subsidy whose benefits flow overwhelmingly to those least in need of public assistance.</p>
+      <p>Critics whohowl that any tax increase on upper earners constitutes an attack on the middle class are engaged in rhetorical sleight of hand. The middle class is not unified in its interests with the wealthy merely because both pay taxes. The $4 trillion in wealth held by the top one percent did not materialize through superior virtue; it accumulated partly through tax structures that have grown increasingly favorable to high earners over three decades.</p>
+      <p>Defining &quot;rich&quot; requires judgment, not mathematics. But a household earning $250,000 annually occupies a fundamentally different position than one earning $55,000, regardless of geography or lifestyle. We need not achieve philosophical precision to design tax brackets that ask more from those who have more.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The Obama administration&#x27;s 529 retreat revealed something important: the political class cannot clearly define who the rich are because the category is inherently political theater. What we witnessed was not careful policy analysis but class-warfare rhetoric colliding with electoral reality.</p>
+      <p>Consider the absurdity of the $200,000 threshold. In Manhattan, a family earning that amount may struggle with housing costs. In rural Kansas, the same income represents genuine prosperity. Washington cannot legislate geographic equity, yet it keeps trying to draw national lines that ignore local realities.</p>
+      <p>The deeper problem is that &quot;middle class&quot; has become a rhetorical shield. Any tax increase gets labeled an assault on ordinary Americans while any deduction gets defended as helping those same Americans. Politicians use these terms strategically, not analytically. The 529 debate demonstrated this perfectly: the accounts do primarily benefit upper earners, yet defenders immediately reframed them as middle-class savings vehicles.</p>
+      <p>Rather than continuing to draw increasingly arbitrary lines, we should simplify the tax code dramatically. Fewer brackets, fewer deductions, lower rates. This approach avoids the need to constantly adjudicate who counts as rich—it asks everyone to contribute at rates that reflect ability without pretending we can neutrally define economic categories.</p>
+      <p>The class-warfare approach to taxation may generate good headlines, but it produces incoherent policy. We should reject the premise that good tax policy requires distinguishing people by income category.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Drawing the line between rich and middle class in tax policy confronts an unavoidable measurement problem: income is only one dimension of economic position, and annual income barely captures economic reality for high-wealth households.</p>
+      <p>The top five percent of earners by income differs significantly from the top one percent by wealth. Many wealthy individuals—notably founders of companies and real estate investors—report modest incomes while holding enormous assets. Tax policy focused on income therefore misses the true economic elite while catching professional managers and doctors who earn high salaries but do not control significant capital.</p>
+      <p>The 529 debate illustrates this precisely. The accounts benefit families disciplined enough to save for college, regardless of whether they are truly wealthy. A surgeon earning $350,000 who diligently saves for three children&#x27;s education faces different marginal utility of that money than an investor who earns nothing this year but holds $50 million in appreciated stock.</p>
+      <p>This does not mean we cannot design progressive tax policy. It means we must be honest about what our distinctions accomplish and whom they capture. A income-based threshold like $200,000 will necessarily include some who are not economically powerful and exclude others who are. That imperfection is not a fatal flaw but a constraint requiring humility.</p>
+      <p>We should design policies with clear purposes, measure their effects honestly, and update them as evidence accumulates. The pretense that we can draw precise class boundaries is the problem—not the imperfections in any particular line.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The debate over 529 accounts and &quot;middle class&quot; tax policy reveals how thoroughly our political discourse has abandoned economic specificity for symbolic warfare. Both sides treat &quot;rich&quot; and &quot;middle class&quot; as fixed categories rather than contested social constructions that serve particular political purposes.</p>
+      <p>I want to argue for a different approach: instead of asking how tax policy can distinguish rich from middle class, we should ask what behaviors and outcomes we want tax policy to encourage or discourage. The 529 accounts were justified as encouraging college savings. If that goal is valid, we should examine whether the subsidy achieves it efficiently. If the goal is addressing inequality, we should design policies that directly target inequality rather than claiming to help middle-class families while primarily benefiting the wealthy.</p>
+      <p>The Obama budget&#x27;s approach conflates two distinct questions: what total tax burden is appropriate, and how should it be distributed across income levels. By framing everything in class terms, we avoid hard choices about the size and scope of government that transcend the rich-middle class binary.</p>
+      <p>Some families earning $250,000 genuinely struggle with private school tuitions, healthcare costs, and urban expenses. Others earning $90,000 have inherited wealth that dwarfs any income differential. Class-based tax categories cannot capture these realities.</p>
+      <p>We need tax reform that focuses on the specific purposes taxation should serve, with explicit acknowledgment that &quot;middle class&quot; and &quot;rich&quot; are rhetorical categories, not economic facts. Only then can we design policies that actually address stated goals.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The 529 controversy exposed a structural tension that tax policy cannot resolve: Americans simultaneously want progressive taxation that redistributes from rich to poor and a tax code that does not penalize success or punish middle-class aspiration. These desires conflict when applied to specific policies.</p>
+      <p>President Obama identified a real problem. The 529 accounts&#x27; tax advantages do flow disproportionately to high earners. Eliminating them would raise revenue from those best positioned to pay more. Yet the political backlash was immediate and effective, not because the critics were wrong about the policy&#x27;s effects but because &quot;attacking college savings&quot; reads terribly regardless of who actually benefits.</p>
+      <p>This suggests the real question is not whether tax policy can distinguish rich from middle class but whether our political discourse allows such distinctions to survive public scrutiny. The answer, increasingly, is no. Middle-class identity has become so central to American political appeal that any tax increase gets framed as an assault on ordinary people, even when the numbers show otherwise.</p>
+      <p>The long-term solution requires escaping this rhetorical trap. We need to make the distributional effects of specific policies clearer, avoiding the vague class categories that confuse more than they illuminate. &quot;Households earning over $200,000&quot; should replace &quot;the wealthy&quot; in policy discussions. &quot;Families with children in college&quot; should replace &quot;the middle class.&quot;</p>
+      <p>Until we do this, tax policy will continue lurching between symbolic gestures toward equality and retreats under political pressure. The 529 episode was not a policy failure—it was a communication failure, and we should learn from it accordingly.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

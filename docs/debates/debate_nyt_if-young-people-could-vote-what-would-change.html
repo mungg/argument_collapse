@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>If Young People Could Vote, What Would Change? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Politics · Open-ended</div>
+  <h1 class="debate-title">If Young People Could Vote, What Would Change?</h1>
+  <div class="question-body"><p>There are plenty of reasons many young people don’t vote. For one thing, they consider the political system is broken, and they have good cause to be cynical. For another, they just aren’t in the habit yet. “Once you’ve made your first vote,” a developmental psychologist told The Times, “it becomes part of your routine.”</p><p>So what if the law allowed Americans to start that routine earlier? If teenagers under 18 could vote, how would the presidential candidates change their campaigns? What issues would students want them to concentrate on?</p><p>This forum is a collaboration with The Learning Network, and the responses are from students who commented in its Student Opinion series.</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=7</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_1.html">
+      <td class="arg-text">If young people under 18 could vote, presidential candidates would shift their campaign focus toward social issues, education reform, and more relatable personal branding to appeal to the values of the younger generation.</td>
+      <td><span class="humans-pill ">5</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_2.html">
+      <td class="arg-text">The voting age should remain at 18 because teenagers lack the necessary life experience and legal responsibilities required to exercise governing power effectively.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_3.html">
+      <td class="arg-text">Lowering the voting age would likely have a negligible impact on political outcomes and is not a principled approach to increasing youth participation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_4.html">
+      <td class="arg-text">Lowering the voting age would force political candidates to adopt more liberal social stances and prioritize economic issues related to education and tuition costs.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_5.html">
+      <td class="arg-text">While lowering the voting age would increase political interest among teenagers, most are not yet equipped to vote independently and would force candidates to prioritize superficial image and simplified messaging.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_6.html">
+      <td class="arg-text">Lowering the voting age to 16 would have a minimal impact on political campaigns unless it is accompanied by institutional reforms that address the practical barriers to youth turnout.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_7.html">
+      <td class="arg-text">The voting age should not be lowered immediately; instead, we should implement a staged approach that builds youth political influence and responsibility through local participation and education.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_8.html">
+      <td class="arg-text">Lowering the voting age to sixteen would not necessarily result in a more liberal electorate, as teenage voters are influenced by economic anxieties and parental political affiliations that can skew conservative.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_9.html">
+      <td class="arg-text">Lowering the voting age to 16 would likely degrade political discourse by encouraging candidates to prioritize superficial celebrity-driven marketing over substantive policy engagement.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_10.html">
+      <td class="arg-text">Lowering the voting age would be an ineffective gesture because it fails to address the deep-seated structural flaws and systemic corruption that currently undermine American democracy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_11.html">
+      <td class="arg-text">Lowering the voting age to sixteen would not significantly alter presidential campaigns or the political landscape because teenagers would largely mirror the voting patterns of their parents.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_12.html">
+      <td class="arg-text">Lowering the voting age to under eighteen would destabilize the two-party system by providing a surge of support for third-party and independent candidates.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_13.html">
+      <td class="arg-text">Lowering the voting age to include teenagers would force political parties to radically restructure their platforms to prioritize progressive social issues and long-term environmental protections.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_14.html">
+      <td class="arg-text">Instead of focusing solely on lowering the federal voting age, we should prioritize state-level structural reforms that remove barriers to participation for young people.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_15.html">
+      <td class="arg-text">Enfranchising teenagers would force presidential candidates to shift their focus from the economic concerns of middle-aged homeowners to the specific financial crises facing America&#x27;s youth.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_16.html">
+      <td class="arg-text">Lowering the voting age to under eighteen would transform presidential campaigns by making high schools central hubs of civic engagement and political accountability.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_17.html">
+      <td class="arg-text">Lowering the voting age to include teenagers would be a disastrous mistake that would degrade the quality of political discourse and lead to fiscally irresponsible governance.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_18.html">
+      <td class="arg-text">Lowering the voting age to include students would force politicians to shift education policy from abstract data-driven debates to addressing the actual lived experiences and needs of people in the classroom.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_19.html">
+      <td class="arg-text">Lowering the voting age to under 18 would likely result in minimal changes to the political landscape because teenagers&#x27; voting patterns and campaign interactions would mirror those of the existing electorate.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_20.html">
+      <td class="arg-text">Lowering the voting age will only be effective and equitable if it is accompanied by significant structural reforms that ensure access for all young people, rather than just the most privileged.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_if-young-people-could-vote-what-would-change_arg_21.html">
+      <td class="arg-text">Lowering the voting age to 16 or 17 would most significantly impact local politics by forcing municipal and school officials to address the specific needs and concerns of teenagers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Eliza Renner</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/eliza-renner" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Erik Schmidt</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/erik-schmidt" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Hope Boone</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/hope-boone" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Nkemka Obineche</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/nkemka-obineche" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ryan Griffin</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/ryan-griffin" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Samantha Ann Marroquin</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/samantha-ann-marroquin" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Sophie Marcus</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/11/04/if-young-people-could-vote-what-would-change/sophie-marcus" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>If teenagers under 18 could vote, the most immediate change would be in how candidates talk—and where they show up. We&#x27;d see fewer rallies in retirement-heavy Florida condo communities and more campaign stops at high schools, community colleges, and on platforms like YouTube and Tumblr, where younger Americans already gather. Both Obama and Romney have courted youth this cycle, but mostly through college outreach. Expanding the franchise downward would force a real conversation with people who don&#x27;t yet have a vote, a paycheck, or a tax bill, but who live with the consequences of every long-term decision adults make.</p>
+      <p>The issues would shift accordingly. Student loan debt, now past $1 trillion, would move from a talking point to a central plank. The cost of college, the quality of public high schools, and the federal role in education (think No Child Left Behind and the Common Core rollout) would get sustained attention. Climate change—conspicuously absent from this year&#x27;s debates until Hurricane Sandy—would be harder to ignore, since young voters consistently poll as more worried about it. Gun violence in schools, immigration policy affecting classmates under DACA, and LGBT equality would likely gain ground too.</p>
+      <p>There&#x27;s a fair worry that teens would simply mirror their parents, but research on adolescent civic development suggests otherwise: voting habits formed early stick. The bigger risk isn&#x27;t that young voters would distort politics—it&#x27;s that candidates, faced with an electorate stretching down to 16, would finally have to plan past the next quarterly poll.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>Lowering the voting age to 16 would force candidates to reckon with issues they too often ignore. Right now, politicians can safely pander to seniors on Social Security while ignoring the crushing student loan debt or the terrifying projections of climate change that will define our adult lives. If teenagers could vote, a candidate’s stance on college affordability or green energy would become as electorally potent as their Medicare plan. Campaigns would visit high schools, holding town halls where students grill them on tuition hikes.</p>
+      <p>Early voting would embed the habit before the chaotic years of early adulthood; research shows that voting is habitual, and starting at 16 makes future participation more likely. Critics say we aren’t informed enough, but many adults vote on gut instinct too. Civics classes equip us with the basics, and the act of voting would make those lessons real. Our cynicism might actually diminish if politicians had to earn our votes. The deeper change isn’t a youth takeover, but a system forced to prove it listens to the generation that will live longest with its decisions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>If the voting age were lowered to 16, candidates would immediately be forced to overhaul their outreach. Instead of pandering exclusively to seniors in Florida or Ohio through television ads and Medicare promises, campaigns would pivot aggressively to social media. Politicians could no longer afford to treat young Americans as a passive audience or a mere backdrop for photo opportunities; they would have to actively engage them where they actually congregate.</p>
+      <p>The policy landscape would also undergo a dramatic realignment. Today, the national debate over education often treats students as subjects rather than stakeholders. If teenagers had the ballot, candidates would have to directly answer for the soaring cost of college tuition and the crushing burden of student loan debt—issues that are deeply terrifying to high schoolers facing a sluggish, post-Recession economy. We would see concrete proposals for job creation tailored specifically to youth unemployment, rather than vague promises about general economic growth.</p>
+      <p>Furthermore, long-term systemic issues would move from the periphery to the center stage. Climate change, which received shockingly little attention in the presidential debates until Hurricane Sandy forced the issue last week, would become a top priority for a demographic that will actually inherit the environmental consequences. Social issues, such as marriage equality and immigration reform like the DREAM Act, would also gain unprecedented traction, reflecting the more tolerant, diverse realities of younger generations. Ultimately, enfranchising teenagers would force Washington to stop borrowing against the future and start investing in it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>If 16- and 17-year-olds could vote, campaigns would not suddenly become youth seminars, but they would have to stop treating teenagers as scenery for photo opportunities. A few million new voters, concentrated in high schools and reachable through families, teachers, phones and social networks, would be worth organizing. Candidates would visit schools more often, explain their positions in plainer language and compete over issues that now get polite applause but little urgency.</p>
+      <p>Those issues would begin with education: class size, testing, college affordability, Pell Grants, student loan interest rates and whether vocational programs deserve the same respect as four-year colleges. Teenagers would also press candidates on jobs, because many are already working or watching older siblings graduate into a weak labor market. They would ask about climate change with unusual seriousness, since they will live longest with the consequences. After Hurricane Sandy, it is harder to pretend that energy policy is abstract.</p>
+      <p>Lowering the voting age would also strengthen citizenship. Voting is a habit, and 18 is often a chaotic age: moving, starting college, joining the military or looking for work. At 16, most students are still rooted in communities and taking civics or history. Let them vote while democracy can still be taught as something practiced, not merely tested.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Lowering the voting age would force candidates to take young people&#x27;s concerns seriously rather than treating them as an afterthought. Right now, politicians court seniors and suburban moderates while assuming young voters will fall in line or stay home. If 16 and 17-year-olds held the franchise, campaign strategies would shift in predictable ways.</p>
+      <p>Candidates would invest heavily in education policy beyond the usual platitudes. Student loan debt—which had reached crisis proportions by 2012—would demand actual solutions rather than symbolic gestures. Youth unemployment, which hovered near historic highs in the Obama years, would dominate stump speeches. And candidates would finally have to articulate coherent positions on issues like climate change and digital privacy, which young people care about intensely but older voters often dismiss.</p>
+      <p>The campaigns themselves would adapt too. Candidates would appear at high schools and colleges rather than relying exclusively on television advertising and polished rallies. Micro-targeting would need to account for a cohort that consumes media differently than their parents. Ground operations would recruit teenage volunteers not just to mobilize others but to vote themselves.</p>
+      <p>There&#x27;s also something subtler at play. Voting, like voting habits themselves, is partially social. If your friends and classmates were voting, the social proof might loosen the cynicism that keeps many young people away from the polls. Lowering the voting age could begin a virtuous cycle rather than simply adding voters to an existing pattern.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (42 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>If teenagers could vote, the most immediate shift would be in how candidates talk about education. Right now, college affordability gets a passing nod, mostly aimed at parents footing tuition bills. But if 16- and 17-year-olds were casting ballots, Pell Grants, student loan interest rates, and the cost of community college would move from footnote to headline. Romney and Obama have both gestured at student debt this cycle, but neither has made it central. With teen voters, they would have to.</p>
+      <p>High school issues would also finally get airtime. Standardized testing, the narrowing of curricula under No Child Left Behind, school funding disparities, the quality of school lunches — these are things students experience daily and adults rarely prioritize at the ballot box. A candidate who promised meaningful reform of testing culture would suddenly have a constituency.</p>
+      <p>Beyond education, climate change would likely rise on the agenda. Polling consistently shows younger Americans take global warming more seriously than their elders, perhaps because they expect to live with its consequences longer. In a campaign season where climate was barely mentioned during the presidential debates — a striking omission after a year of drought and Hurricane Sandy — teenage voters would force the issue.</p>
+      <p>Finally, the tone of campaigning itself might change. Teenagers consume political information through YouTube, Twitter, and Tumblr more than through 30-second TV spots. Candidates would have to meet them there, which could mean less scripted, more conversational outreach. Whether that produces better politics or just slicker marketing is debatable, but the texture of the campaign would unmistakably shift.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>I&#x27;m skeptical that lowering the voting age would change much of anything. The premise of the question assumes teenagers have distinctive political preferences that are currently being ignored, but the evidence suggests young people who do vote already align closely with the 18-to-24 bracket — left-leaning, but not dramatically so on most issues outside of social questions like same-sex marriage.</p>
+      <p>More importantly, turnout among newly eligible 18-year-olds is famously poor. In 2008, voters aged 18-24 turned out at roughly 49 percent, well below older cohorts, and 2012 is unlikely to break that pattern. If we extended the franchise to 16-year-olds, we should expect even lower turnout from that group. The actual marginal voter added by such a reform would be small, and probably not demographically distinctive enough to swing campaign priorities.</p>
+      <p>There&#x27;s also a deeper question the prompt glosses over: why is 18 the threshold? It&#x27;s tied to the draft-era logic of the 26th Amendment — if you can be sent to war, you can vote. That&#x27;s a coherent principle. &quot;If you might develop a voting habit&quot; is not, by itself, a principled basis for franchise expansion. We don&#x27;t extend other rights (contracts, marriage without consent, criminal majority) to 16-year-olds for similar reasons.</p>
+      <p>If we want young people to vote more, the answer isn&#x27;t lowering the age — it&#x27;s civic education, automatic registration at 18, and making Election Day a holiday. Those reforms would do more for youth participation than handing ballots to high school sophomores who, with respect, are mostly not asking for them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The candidates would change their campaigns less than people imagine, because campaigns are built around likely voters, and teenagers — even enfranchised ones — wouldn&#x27;t be likely voters at first. What would change, slowly, is the agenda the political system feels obligated to address.</p>
+      <p>Think about which issues currently dominate presidential campaigns: Medicare, Social Security, tax rates on high earners, jobs for middle-aged workers. These reflect the priorities of the people who actually vote. Seniors are 16 percent of the population but punch far above their weight at the polls, which is why entitlement programs serving them are politically untouchable. If younger people voted in similar proportions, we&#x27;d see comparable deference to their concerns.</p>
+      <p>What might those concerns be? I&#x27;d guess: the cost of higher education, the youth unemployment rate (which has hovered above 16 percent for much of the recovery), climate policy, internet freedom (remember the SOPA backlash earlier this year), and immigration — especially for the millions of teens with undocumented family members or who are themselves Dreamers. The DREAM Act has languished for over a decade partly because the people it most directly affects can&#x27;t vote.</p>
+      <p>Campaign style would shift too. The 2012 race has already seen Obama appear on &quot;Between Two Ferns&quot;-style outlets and Romney try, awkwardly, to reach younger audiences. Imagine if those audiences were the decisive ones. We&#x27;d see less reverence for the Sunday political shows and more engagement on platforms teenagers actually use.</p>
+      <p>The change wouldn&#x27;t be revolutionary overnight. But over a generation, lowering the voting age could meaningfully tilt American politics toward the long term.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Let&#x27;s be honest about something the prompt elides: most teenagers don&#x27;t want to vote, and most who say they do haven&#x27;t thought hard about what voting means. I&#x27;m a high school senior, and I can tell you that the political conversations in my hallways oscillate between memes about Big Bird and reflexive repetitions of whatever our parents say at dinner. That&#x27;s not a slander on my generation — it&#x27;s developmentally normal. Political identity is still forming.</p>
+      <p>That said, I don&#x27;t think the right response is exclusion. The right response is taking civic education seriously. My school offers a single semester of government in senior year, and it&#x27;s largely about memorizing the three branches. Compare that to countries like Germany or the Nordic states, where civic engagement is woven through the curriculum and youth turnout is consequently much higher.</p>
+      <p>If teenagers could vote tomorrow, I suspect the first election would look chaotic — high abstention, scattered preferences, lots of votes cast on superficial grounds. But by the second or third cycle, with schools adapting and campaigns engaging, you&#x27;d see something more substantive emerge. Habits form, as the psychologist quoted in the prompt notes.</p>
+      <p>The issues I&#x27;d want candidates to address: the absurd cost of college, which is pricing my friends out of their futures; gun violence in schools, which my generation has lived under since Columbine; and the failure to act on climate change, which we will inherit. None of these get serious treatment in the current campaign. Not because the answers are hard — though they are — but because the people most affected don&#x27;t yet have a vote.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>I want to push back on the framing that young people are cynical because the system is &quot;broken.&quot; That&#x27;s a self-flattering story. The system isn&#x27;t broken; it&#x27;s responsive — to the people who participate in it. Young people don&#x27;t vote, and so politicians don&#x27;t court them, and so young people conclude politicians don&#x27;t care about them, and so they don&#x27;t vote. It&#x27;s a feedback loop, and cynicism is its lubricant.</p>
+      <p>Lowering the voting age might disrupt that loop, but only if it&#x27;s paired with something more demanding: a cultural expectation that voting is a duty, not a lifestyle accessory. The Australians have compulsory voting and turnout above 90 percent. We don&#x27;t need to go that far, but we should stop treating non-voting as a defensible form of protest. It isn&#x27;t. It&#x27;s a gift to whoever wins.</p>
+      <p>If 16- and 17-year-olds could vote, what would change? Probably not the outcome of the 2012 election — Obama would still likely win the youth vote handily, just as he did in 2008. But the long-term composition of the electorate would shift. Younger voters who establish the habit early tend to keep voting, and a more participatory young electorate would force both parties to compete for them, rather than writing them off.</p>
+      <p>The candidates would talk more about education, climate, and student debt — not because those are intrinsically &quot;youth issues,&quot; but because young people would be the marginal voters worth chasing. Politicians are not stupid. They concentrate where the votes are. Put votes in teenagers&#x27; hands, and you&#x27;ll see remarkable creativity in how politicians address their concerns.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Here&#x27;s a contrarian thought: extending the vote to teenagers might actually make politics more conservative on some issues, not less. The standard assumption is that young voters are liberal, and on social issues — gay marriage, marijuana, immigration — they generally are. But teenagers are also more religious than their parents in some communities, more attached to their hometowns, and often more economically anxious because they&#x27;re staring directly at a brutal job market.</p>
+      <p>Consider the issues that might matter most to a 16-year-old in a working-class town in Ohio or western Pennsylvania. Not abstract progressive causes, but: Will there be jobs when I graduate? Can my family afford to keep me in school? Is the local factory closing? These are the issues Romney has tried, with mixed success, to make central. A teenage electorate might not be the unbroken liberal bloc commentators assume.</p>
+      <p>There&#x27;s also the question of family influence. Sixteen-year-olds still live at home and are heavily shaped by their parents&#x27; politics. Studies of political socialization consistently show that adolescents&#x27; partisan identification tracks closely with their parents&#x27;. Enfranchising them might effectively give parents an extra vote, weighted toward whichever demographics have more children — which, in current America, skews somewhat religious and somewhat conservative.</p>
+      <p>I don&#x27;t say this to oppose lowering the voting age. There are good arguments for it. But the breezy assumption that teen voters would push the country leftward and force candidates to embrace a youth-progressive agenda deserves more scrutiny. The actual electoral consequences are less predictable than the prompt&#x27;s framing suggests, and that uncertainty is itself an argument for taking the experiment seriously.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The issue I most want candidates to talk about, and that they barely have this entire campaign, is climate change. Neither Obama nor Romney mentioned it in the three presidential debates — the first time that&#x27;s happened since climate became a political issue. Hurricane Sandy may have finally forced it back into the conversation in the campaign&#x27;s last week, but it&#x27;s been a glaring absence.</p>
+      <p>Why? Because the people who will live longest with climate consequences are the people with the least political power: us. If teenagers could vote, I guarantee that silence would be impossible. A candidate ignoring climate change in a race where millions of young voters listed it as a top concern would be committing political malpractice.</p>
+      <p>Beyond climate, I&#x27;d want candidates to address the specific economic situation facing my generation. Youth unemployment is over 16 percent. Student loan debt has crossed $1 trillion, surpassing credit card debt. The traditional path — college, job, house, family — is increasingly out of reach. These aren&#x27;t &quot;youth issues&quot; in some peripheral sense; they&#x27;re the central economic question of the next twenty years, and they barely register in the current campaign.</p>
+      <p>Campaign style would change too. I think we&#x27;d see less negative advertising, because young voters respond poorly to it and tune out faster than older audiences. We&#x27;d see more authentic, less rehearsed candidate appearances. We&#x27;d see more digital engagement and less of the dreary parade of swing-state rallies.</p>
+      <p>Would lowering the voting age fix American politics? No. But it would force the system to take seriously the people who have to live with its decisions the longest. That alone is reason enough to consider it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The question presumes that if teenagers could vote, something important would shift. But that assumption rests on the idea that low youth turnout is merely a function of age, not of political culture. The evidence suggests otherwise. In 2008, voters aged 18 to 24 still turned out at rates far below older cohorts, despite a surge of enthusiasm. It isn’t that 18-year-olds are magically ready to vote; it’s that voting is a habit that takes time to form, and lowering the age would simply postpone the problem. A 16-year-old is just as likely to be checked out of politics as a 19-year-old, if not more so, because both are navigating the same disengaged social environment.</p>
+      <p>Campaigns would adjust, but only superficially. Candidates would add a few stops at high schools, maybe launch a Snapchat or a meme, but the core policy asks—jobs, taxes, healthcare—would remain pitched to the actual reliable voters. The math of electoral strategy doesn’t shift just because the potential pool expands; it shifts only when those new voters demonstrate they will show up. And there is little reason to think they would, given that their older siblings don’t.</p>
+      <p>What would change? Very little. The real work of building a voting habit requires parents who vote, schools that teach civic skills, and communities that model political participation. Age isn&#x27;t the bottleneck—the environment is. Until we fix that, lowering the voting age would just give us a slightly younger group of non-voters, and the cynicism would continue.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>If young people could vote, the entire rhythm of presidential campaigns would change. Suddenly, candidates would have to speak to the generation that will live longest with the consequences of today’s decisions. The current discourse, fixated on short-term economic indicators and the fears of near-retirees, would be forced to accommodate the long-view priorities of 16- and 17-year-olds: climate change, college affordability, and the national debt that they will have to pay down. These aren’t abstract ideals—they are life-defining realities for students who watch tuition rise yearly and see summers grow hotter.</p>
+      <p>The change wouldn’t be just a few extra policy planks. It would alter the tone of our politics. Young people are less partisan, more pragmatic, and deeply distrustful of ideological gridlock. A flood of youth votes would reward candidates who talk honestly about problems and penalize those who rely on culture-war distractions. Campaigns would invest in civic engagement at schools, not as a charity project but as an electoral necessity, and that alone would help close the yawning gap in political knowledge. When you know you’ll be able to act on your opinions, you pay attention.</p>
+      <p>Critics say young people aren’t informed enough, but that’s largely because the system gives them no real stake. Give them the vote, and you give them a reason to learn. The most important change wouldn’t be the election result itself—it would be the quiet, transformative realization that politics belongs to them, too.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Let’s be honest: if 16-year-olds could vote, the main thing that would change is the volume of celebrity endorsements and the stock of backpacks with campaign logos. Politicians are not noble philosophers; they are strategic animals who chase votes where they find them. And high school students, for all their passion, are a demographic that responds to social dynamics and pop culture more than policy papers. So campaigns wouldn’t suddenly elevate serious youth concerns; they’d figure out which boy band or viral video creator can deliver a bloc, and they’d plaster the hallways with that.</p>
+      <p>We’ve already seen this movie with the 18-to-24 vote. In 2008 and 2012, youth outreach often meant celebrity-laden events and “Rock the Vote” style campaigns that treated politics as a lifestyle accessory. Meanwhile, the tough decisions about college costs and climate policy were made by the same gerrymandered, donor-influenced politicians as always. Lowering the age would amplify that dynamic, not correct it.</p>
+      <p>The deeper problem is that young people, understandably, have not yet developed the bullshit detector that comes from years of being disappointed by incumbents. They might be especially susceptible to grand promises that vanish after the election. The short-term effect would be a circus; the long-term effect could be even more cynicism when the promises fail to materialize. Voting isn’t a toy. Entrusting it to a group still navigating adolescence, without a corresponding investment in critical media literacy, risks turning democratic participation into just another consumer brand exercise.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The most profound shift wouldn’t be in who wins next Tuesday, but in what happens in classrooms and living rooms the Tuesday after. If 16-year-olds could vote, high schools would become de facto civic laboratories. Imagine a school where registration drives happen in homeroom, where students debate candidates in history class because the election is no longer a simulation but a real event they will directly shape. This would do more for political literacy than a dozen updated textbooks.</p>
+      <p>There’s a well-documented effect: when people vote early, their participation becomes habitual, and those habits ripple through families. A teenager who votes often brings parents who might have sat out to the polls, or at least prompts conversations about candidates and propositions. Civic engagement is contagious, and lowering the voting age could inoculate entire households against apathy. The candidates would notice, too, and they’d start paying attention to school board politics, youth mental health funding, and public transportation routes that get young people to after-school jobs—not out of altruism, but because those issues now have a constituency.</p>
+      <p>We’d see a gradual renewal of political community, one that starts with the first real vote. And the political class would eventually be staffed by people who began thinking about governance at 16, not 26. That’s the real change: not a flashy policy pivot but a generational deepening of democratic life.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>We’re asking the wrong question. The issue isn’t what would change for candidates; it’s what already happens to young people that goes unaddressed because they lack a voice. Thousands of 16- and 17-year-olds work part-time jobs and pay income taxes. They can be tried as adults in criminal court. They live with the outcomes of environmental regulation, education funding, and healthcare policy. Yet they remain subject to decisions made by officials they had no role in choosing. This is taxation without representation, plain and simple, and it offends the core principle of democratic legitimacy.</p>
+      <p>Lowering the voting age wouldn’t be a strategic gambit to get better climate policy or affordable college—though those are worthy aims. It would be an act of justice. No other competent group of citizens is so systematically excluded from the franchise. If we trust a young person to operate a vehicle, hold a job, and face adult penalties for their actions, then we implicitly acknowledge their capacity for reasoned judgment. Denying the vote on the grounds of immaturity is a hypocritical patchwork of inconsistencies.</p>
+      <p>What would change for campaigns? Perhaps very little, and that’s fine. The point is that millions of Americans who contribute to this society would finally be seen as full participants in it. The habit of voting might start earlier, but more importantly, the habit of being taken seriously would start earlier. That alone is a change worth making.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The issues we’d hear about would be the ones that adults tend to treat as low-priority—and that’s exactly the point. A 16-year-old’s political world is shaped by things most pundits ignore: the condition of school bathrooms, the availability of mental health counselors, the experience of being surveilled online, the quality of public transit to get to a weekend job. These aren’t trivial; they are the texture of daily life for millions, and they sit at the intersection of youth, class, and race.</p>
+      <p>If young people voted, candidates would have to build a platform around these lived realities. Imagine a town hall where a high school student asks about privacy rights on social media, or the funding formula for school-based therapists, and the candidate can’t just pivot to Medicare. They’d need answers. Over time, this would force a broadening of what counts as a “real” political issue. The policy agenda would grow more granular, more local, more attuned to the infrastructure of adolescence.</p>
+      <p>That’s not to say youth votes would be monolithic. Suburban teens worried about college admissions would vote differently from rural teens working on family farms. But collectively, they’d inject a new set of questions into the public conversation—questions about how the government structures the transition to adulthood. The change wouldn’t be a single dramatic reversal; it would be a quiet expansion of what democracy pays attention to, and that would benefit everyone.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The premise itself is a kind of evasion. For years, we’ve seen a political system that fails to engage even its eligible adults, with turnout languishing, trust cratering, and policy relentlessly shaped by the wealthy. To ask whether lowering the voting age would change things is to sidestep the far deeper rot. Young people are right to be cynical: they observe a government that cannot pass basic laws, a campaign finance regime that drowns out ordinary voices, and a media environment that rewards spectacle over substance.</p>
+      <p>Lowering the voting age to 16 wouldn’t fix that. It would simply add more people to a broken machine. The same structural barriers—voter ID laws, complicated registration processes, gerrymandered districts—would suppress the youth vote just as they suppress others. The same big-money interests would buy the primaries. The same vapid horserace coverage would turn youth participation into a gimmicky sideshow rather than a genuine empowerment.</p>
+      <p>If we’re serious about what would change, we need to talk about public funding of elections, universal voter registration, and the restoration of actual deliberation to our civic life. Only then would the entry of young people mean something more than a slightly larger, slightly younger group of disenchanted citizens. The right question isn’t “What if young people could vote?” but “What kind of democracy would they be joining, and why isn’t it working for anyone?”</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>If teenagers were granted the right to vote, the most immediate and profound shift in American politics would be the sudden death of the AARP’s absolute monopoly on campaign rhetoric. For decades, presidential candidates have treated Medicare and Social Security as untouchable third rails because older Americans vote in massive numbers. If young people entered the electorate, politicians would be forced to offer the same level of deference to youth issues.</p>
+      <p>Right now, the national conversation around education is largely dictated by adults—teachers&#x27; unions, administrators, and politicians who haven&#x27;t sat in a classroom in decades. If high school students could vote, candidates like Barack Obama and Mitt Romney would have to directly answer to the people actually subjected to policies like No Child Left Behind and Race to the Top. We would see town halls dedicated to the anxiety of standardized testing, the quality of school lunches, and the crumbling infrastructure of public schools.</p>
+      <p>Furthermore, the crippling fear of college tuition and student loan debt would move from a secondary talking point to a central pillar of every platform. A sixteen-year-old voter is staring down the barrel of a higher education system that could leave them tens of thousands of dollars in debt before they even secure a job. If campaigns had to win over these prospective freshmen, we would see aggressive, concrete proposals to subsidize state universities and cap tuition rates. In short, the political gravity would shift from preserving the comfort of the end of life to investing heavily in its beginning.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>While it is tempting to imagine that lowering the voting age to sixteen would usher in a bold new era of progressive, youth-driven politics, the reality is far more mundane. If teenagers under eighteen were allowed to cast ballots, presidential campaigns would hardly change at all. The electoral map would remain the same, the dominant issues would remain the same, and the political establishment would simply adjust to a slightly larger voting pool.</p>
+      <p>The primary reason for this is parental influence. A sixteen-year-old is legally and financially dependent on their parents. They live in the same house, eat at the same table, and generally absorb the socioeconomic and cultural values of their household. Political science consistently shows that the strongest predictor of a person&#x27;s political affiliation is the affiliation of their parents. If high school students could vote in the 2012 election, the vast majority would simply duplicate their parents&#x27; votes. A conservative household in Texas would produce an extra Republican vote, and a liberal household in Massachusetts would produce an extra Democratic vote.</p>
+      <p>Because this demographic would not behave as a unified, independent bloc, campaign strategists wouldn&#x27;t need to write new playbooks. They wouldn&#x27;t suddenly pivot to youth-centric issues because they would recognize that reaching the parent effectively reaches the teenager. Aside from perhaps running a few more advertisements on MTV or creating more engaging social media profiles, candidates would treat teenagers as a mere extension of their existing target demographics. The numbers would go up, but the political landscape would remain entirely undisturbed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>If the voting age were lowered to include teenagers, the Republican and Democratic parties would have to radically restructure their platforms regarding social issues and climate change. As we approach the 2012 election, we still see significant political hesitation around topics like marriage equality. While President Obama has recently &quot;evolved&quot; on the issue, many politicians remain tethered to older, socially conservative voting blocs.</p>
+      <p>Young people do not share this hesitation. For the under-18 demographic, equal rights for the LGBT community is not a wedge issue; it is a settled matter of basic human decency. Any candidate who relies on socially conservative rhetoric to win primaries would find themselves politically decimated in a general election that included millions of high schoolers. Campaigns would be forced to abandon the culture wars of the 1990s and 2000s, realizing that appealing to traditionalism alienates a massive new chunk of the electorate.</p>
+      <p>Similarly, the dialogue around energy and the environment would transform. Right now, candidates debate climate change primarily through the lens of short-term economic impact and gas prices. Teenagers, however, are acutely aware that they will inherit the long-term consequences of our current environmental negligence. If they had a voice at the ballot box, campaigns could no longer afford to dismiss green energy or treat environmental protection as a fringe, special-interest issue. We would see the environment elevated to a top-tier national security and economic priority, because to a young voter, climate change isn&#x27;t a political debate—it&#x27;s the future of their habitat.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Lowering the voting age to include teenagers would be a disastrous experiment that would degrade the quality of our political discourse. The fundamental prerequisite for responsible voting is having a tangible stake in the economy and society—what we often call &quot;skin in the game.&quot; Minors, by definition, lack this. They do not pay property taxes, they do not manage household mortgages, and very few rely on a full-time job to survive.</p>
+      <p>If people under eighteen could vote, presidential campaigns would degenerate into blatant pandering. Without an understanding of the complex realities of taxation and the national deficit, younger voters would be easily swayed by promises of &quot;free&quot; government benefits. How could a responsible candidate who wants to balance the budget compete with a candidate promising federally funded iPads for students, abolition of standardized testing, or free college for everyone regardless of merit?</p>
+      <p>Politicians already struggle to tell adult voters hard truths about our national debt and the limits of government spending. If they had to appeal to teenagers, whose prefrontal cortexes—the part of the brain responsible for long-term planning and risk assessment—are literally still developing, campaigns would become popularity contests entirely divorced from fiscal reality. Instead of focusing on vital, complex issues like foreign policy, trade agreements, and healthcare reform, candidates would spend their time courting celebrities and promising unworkable, utopian programs to a demographic that won&#x27;t have to foot the tax bill for them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>If teenagers were enfranchised, the 2012 presidential campaigns would be forced to face the bleak economic reality confronting America&#x27;s youth. Right now, both the Obama and Romney campaigns talk endlessly about the middle class, defining it almost exclusively through the struggles of middle-aged homeowners. They debate tax cuts for small business owners and bailout packages for auto companies. But for a teenager looking at the current post-recession economy, these issues completely miss the mark.</p>
+      <p>Today&#x27;s youth face an unprecedented crisis of entry-level opportunity. If high schoolers could vote, they would demand that candidates address the disastrous youth unemployment rate and the exploitative rise of the unpaid internship. A sixteen- or seventeen-year-old voter wants to know how they are supposed to build a life when entry-level jobs require years of experience, and the only way to get experience is to work for free—a luxury only the wealthy can afford.</p>
+      <p>Campaigns would have to shift their economic messaging from &quot;recovering lost wealth&quot; to &quot;creating a foundation for the next generation.&quot; We would hear debates about minimum wage hikes specifically targeting service and retail jobs where young people are concentrated. We would see proposals for federal job guarantees for youth or tax incentives for companies that hire high school graduates. The political focus would shift from protecting the retirement accounts of older Americans to ensuring that younger Americans actually have a functioning ladder to climb in the first place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The two-party system survives because older generations have deeply ingrained partisan habits. Adults often vote straight-ticket Democrat or Republican out of sheer inertia. Teenagers, however, have not yet been assimilated into these tribal loyalties. If young people under eighteen could vote, the most profound change would be a massive destabilization of the Democratic and Republican establishments and a genuine opening for third-party and independent candidates.</p>
+      <p>Look at the enthusiasm Ron Paul generated among young people during the Republican primaries this year. He didn&#x27;t speak in focus-grouped talking points; he offered radical, logically consistent ideas about civil liberties, foreign intervention, and the Federal Reserve. Young people respect authenticity and ideological consistency far more than partisan tradition. If millions of teenagers were suddenly added to the voter rolls, the suffocating duopoly of our political system would crack.</p>
+      <p>Candidates like Gary Johnson or Jill Stein, who are currently ignored by the mainstream media, would find a fertile base of young voters eager for alternatives. To survive, the major candidates would have to abandon their careful, middle-of-the-road triangulation. They could no longer rely on the argument that &quot;a vote for a third party is a wasted vote,&quot; because this new generation hasn&#x27;t yet accepted the premise that they are required to choose the lesser of two evils. Campaigns would be forced to be genuinely visionary, rather than just slightly less objectionable than the other guy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>If young people under eighteen could vote, the physical geography and daily reality of a presidential campaign would completely transform, bringing civic engagement directly into the heart of American communities: the public high school.</p>
+      <p>Currently, politicians visit diners in Iowa or factories in Ohio because that is where the reliable voters are. If sixteen- and seventeen-year-olds had the ballot, high school gymnasiums and auditoriums would become mandatory stops on the campaign trail. Candidates would have to stand in front of bleachers full of teenagers and look them in the eye. This shift would do more to revitalize American civic education than any textbook or curriculum ever could.</p>
+      <p>Government and civics classes would cease to be abstract academic requirements; they would become real-time laboratories for democracy. Students would analyze a candidate&#x27;s speech given during their third-period assembly and then debate it in the cafeteria. Furthermore, the condescending tone that politicians often use when speaking *about* youth would vanish, replaced by the respectful tone they use when speaking *to* voters. By integrating the political process so deeply into the daily lives of students, we wouldn&#x27;t just change the tone of a single election. We would build a lifelong habit of democratic participation, curing the cynicism that currently keeps so many young adults away from the polls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Lowering the voting age to 16 would not transform American politics overnight, but it would force candidates to stop treating teenagers as scenery in campaign ads and start treating them as citizens. Right now, high school students are directly affected by decisions about school funding, college loans, war, immigration, climate change and taxes, yet they have no formal power over the people making those decisions.</p>
+      <p>If 16- and 17-year-olds could vote, presidential campaigns would have to visit high schools the way they visit factories, diners and college campuses. Candidates would be asked less about vague “education reform” and more about overcrowded classrooms, standardized testing, bullying, school safety, arts programs and whether college will be affordable for ordinary families. Students would also push harder on environmental issues. After a year of heat waves, drought and now Hurricane Sandy, it is not hard to imagine younger voters asking why climate change is still treated as a side issue.</p>
+      <p>The strongest argument for lowering the voting age is habit. Many teenagers are still in school, living in a community and taking government or history classes. That may be the perfect time to connect civics to an actual ballot. Waiting until 18 often means waiting until students are moving away, starting jobs, entering college or dealing with adult chaos for the first time.</p>
+      <p>Of course young voters would not all think alike. Some would favor President Obama, some Governor Romney, and many would be undecided or uninterested. But that is true of adults too. The question is not whether teenagers are perfectly informed. The question is whether they have enough at stake to deserve a voice. They do.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>I am not convinced that allowing minors to vote would improve elections. It is easy to romanticize young people as more idealistic, more tolerant or more focused on the future. Some are. Others are just as uninformed, distracted and partisan as adults, except with less life experience and more dependence on parents and teachers.</p>
+      <p>Voting is not simply an expression of opinion. It is a share of governing power. Presidents appoint judges, conduct wars, negotiate with foreign governments and shape tax policy. A 15- or 16-year-old can have strong views about these matters, but most teenagers have not yet paid rent, supported a family, held a full-time job or dealt with the health care system independently. That does not make them unintelligent. It means they are still in a protected stage of life.</p>
+      <p>If teenagers could vote, campaigns might not become more serious; they might become more manipulative. Candidates already reduce complicated issues to slogans for adults. For younger voters, campaigns could lean even more heavily on celebrity endorsements, social media gimmicks and promises about cheaper college without explaining trade-offs. Schools could also become political battlegrounds, with parents and interest groups fighting over how students are “educated” before voting.</p>
+      <p>The voting age of 18 is not perfect, but it is a reasonable public line. At 18, people can serve in the military, sign contracts and be tried as adults in most contexts. Rights and responsibilities begin to line up.</p>
+      <p>Teenagers should be encouraged to debate, volunteer, organize and learn how government works. They can influence politics before they vote. But the ballot should remain tied to legal adulthood, not simply to enthusiasm or future impact.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>If young people could vote, the biggest change might not be in who wins elections but in what questions candidates are forced to answer. Teenagers are used to being talked about rather than talked to. Politicians praise “the next generation,” but the actual campaign often revolves around seniors, homeowners, business owners and reliable voting blocs.</p>
+      <p>A youth vote would change that calculation. Candidates would have to speak more concretely about education. Not just “better schools,” but whether testing has gone too far, whether poor districts should get more support, whether teachers are being blamed for problems caused by poverty, and whether college should require decades of debt. In 2012, both parties talk about opportunity, but the cost of opportunity is rising quickly. Teenagers know that.</p>
+      <p>They would also ask about jobs. Adults sometimes assume students are insulated from the economy, but many families are still recovering from the recession. Teenagers see parents laid off, older siblings moving home after college and friends taking minimum-wage work. A campaign aimed at them would need a real answer about youth unemployment and vocational paths, not just a promise that everyone should go to college.</p>
+      <p>The danger is that politicians would pander. But pandering already happens with every group: retirees, veterans, farmers, suburban mothers, evangelicals. The solution is not to exclude teenagers; it is to teach them how to recognize pandering.</p>
+      <p>Letting younger citizens vote would also improve civics education. A lesson about the Electoral College is abstract. A lesson before casting a real ballot is different. Even if many teenagers skipped the election at first, those who voted would start building the habit early, and democracy badly needs more habits of participation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The debate over teen voting should begin with a simple fact: age does not guarantee wisdom. Many adults vote based on party label, family tradition, anger, race, religion, television ads or a single issue they barely understand. Yet no one suggests testing adults before they enter the booth. If ignorance is not a reason to deny the vote to a 45-year-old, it should not automatically deny the vote to a 16-year-old.</p>
+      <p>A better standard is stake in society. Teenagers have one. They attend public schools. They ride public transportation. They work part-time jobs and pay sales taxes. Some pay income taxes. Many help translate bills and ballots for parents. Some are immigrants’ children whose families live under the shadow of deportation policy. Others have parents in Afghanistan or Iraq, or older friends who may enlist. They are not outside politics; they are inside it without representation.</p>
+      <p>The campaigns would have to adapt. Obama and Romney would probably use more online outreach, but the more important shift would be substantive. Students would demand attention to college costs, the DREAM Act, student privacy, bullying, gun violence, climate change and the trade-off between military spending and domestic investment. They might also challenge both parties’ habit of promising the future while mortgaging it.</p>
+      <p>I would start by lowering the voting age to 16 in local elections, where teenagers know the issues most directly: school boards, mayors, parks, libraries and policing. Then states could evaluate turnout and civic learning before expanding further. But the principle is clear. Democracy should not be afraid of young voices. If we trust teenagers to study American government, work, drive and be affected by law, we can trust many of them with a ballot.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>If Americans under 18 could vote, campaigns would change less than people think. The romantic version says candidates would suddenly discuss climate change, tuition, bullying and school quality. Maybe. But campaigns are driven by likely voters, not eligible voters. Even among 18-to-29-year-olds, turnout is often disappointing compared with older Americans. Expanding the electorate to 16- and 17-year-olds would matter only if they actually voted.</p>
+      <p>That is the practical obstacle. Teenagers have busy lives, limited transportation, changing addresses, little knowledge of registration rules and, often, a feeling that politics is fake. Those barriers do not disappear because the law changes. A candidate might make a few school visits, record a YouTube message and create youth-themed ads, but if polls showed that teenagers were not turning out, the campaign would return to older voters.</p>
+      <p>The more meaningful reform would be automatic or school-based registration, better civics education and easier voting. Imagine every high school holding nonpartisan registration drives, teaching students how primaries work, explaining local offices and giving students a chance to discuss ballot measures. That would probably do more for democracy than simply changing the age line.</p>
+      <p>I am open to votes at 16, especially because habits form early. But the reform should not be oversold. Young people are not a magic cure for polarization, money in politics or shallow campaigns. They are diverse, and many would inherit the political views of their families and communities. Some would be liberal, some conservative, some apathetic.</p>
+      <p>The real question is whether we want to build citizens earlier. If so, lowering the voting age must be paired with institutions that make voting normal, understandable and convenient. Otherwise, we will have created a new right that too few young people use.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>Teenagers should not have to wait until 18 to vote, because many political decisions are really decisions about their future. The national debt, climate policy, education funding and foreign policy will last much longer than one presidential term. Older voters understandably care about Medicare, Social Security and home values. But a democracy tilted too heavily toward older voters can become short-sighted.</p>
+      <p>That does not mean older Americans are selfish or young Americans are pure. It means every age group sees the world from its own position. A 70-year-old may worry most about retirement security; a 16-year-old may worry about whether there will be jobs, affordable college and a livable planet. Both perspectives are legitimate. Only one reliably votes in large numbers.</p>
+      <p>In the 2012 campaign, both President Obama and Governor Romney have talked about students, but usually through their parents: how families will pay for college, how the economy will create jobs for graduates. If teenagers had votes, candidates would have to address them directly. They would need to explain why student loan policy matters, what they would do about community colleges and apprenticeships, how they would handle immigration cases involving students who grew up here, and whether they take climate science seriously.</p>
+      <p>The voting age was lowered to 18 during the Vietnam era partly because people argued that those old enough to be drafted were old enough to vote. Today the argument is different: those old enough to inherit the consequences should have a voice in choosing them.</p>
+      <p>I would set the voting age at 16. At that age, many students are capable of reasoned political judgment, and they are still reachable through schools. Pair the reform with serious civics classes, debates and registration. Young voters would not fix democracy, but they would make it more future-conscious.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Before lowering the voting age, we should ask what problem we are trying to solve. If the problem is that politicians ignore young people, then yes, more young voters might help. But if the problem is that American politics is cynical, polarized and dominated by money, adding teenagers to the electorate will not automatically repair it. It may simply expose them earlier to the same broken machinery.</p>
+      <p>There is also a question of independence. Many teenagers still live under strong authority from parents, schools and churches. Of course adults are influenced too, but minors have less practical freedom to resist pressure. If a household is intensely political, would a 15-year-old feel free to vote differently from a parent? If a school leans strongly in one direction, would students hear a fair range of arguments? These concerns are not reasons to silence young people forever, but they are real.</p>
+      <p>A compromise would be to expand youth participation without immediately giving a full presidential vote. Cities and states could create youth advisory councils with actual access to school boards and legislatures. Schools could hold official mock elections tied to civics courses. Local governments could let 16-year-olds vote in school board elections first, since those offices directly govern students’ daily lives.</p>
+      <p>If that worked well, the case for broader voting rights would become stronger. If turnout was low or the process became too partisan, reformers would learn from it.</p>
+      <p>Young people deserve respect in politics. They should be questioned by candidates, invited to debates and taught that citizenship is more than complaining online. But the vote is a serious instrument. Rather than treating a lower voting age as a symbolic gesture, we should build a path that gives teenagers influence, education and responsibility in stages.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>If 16- and 17-year-olds could vote, candidates would have to stop treating “the future” as a slogan and start treating it as a constituency. Teenagers are the people who will live longest with today’s decisions about climate, debt, education and war, yet they have no direct leverage over them. That is a strange gap in a democracy.</p>
+      <p>The most immediate change would be in campaigning. Obama and Romney would not just visit college campuses; they would visit high schools, vocational programs and community centers. Their campaigns would spend more energy on Facebook, YouTube and text messaging, but the shift could not be only cosmetic. Young voters would ask different questions: Why is college becoming a lifetime financial burden? Why do schools emphasize standardized tests over useful skills? What is the plan for jobs that pay more than minimum wage? Why was climate change barely discussed in the debates, especially after a season of droughts, heat and now Hurricane Sandy?</p>
+      <p>Lowering the voting age would also build the voting habit earlier. A 16-year-old is often still in school, surrounded by civics teachers, peers and organized institutions that could help make registration and voting understandable. By 18, many young people are moving, working irregular hours or starting college, exactly when registration becomes more confusing.</p>
+      <p>Teenagers are not magically wiser than adults, but neither are they uniquely ignorant. Many work, pay taxes, care for siblings, use public transportation and attend public schools. They are already citizens in every way except the one that makes politicians listen. Giving them the vote would not fix politics, but it would make politics answer to the people who have the largest stake in what comes next.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>I doubt that letting teenagers vote would transform presidential politics as much as people imagine. Campaigns are not moral philosophers; they are vote-maximizing machines. If under-18 voters turned out at low rates, candidates would mostly ignore them, just as they often ignore young adults now. If they did vote, campaigns would microtarget them with the same mixture of slogans, fear and flattery used on everyone else.</p>
+      <p>There is also a tendency to romanticize “the youth vote” as if teenagers all share one ideology. They do not. Some would favor President Obama because of student loans, immigration or gay rights. Others would favor Governor Romney because of religion, taxes, abortion or their parents’ small businesses. Many would simply reflect the political culture of their families and communities. That is not a reason to deny them rights, but it is a reason to be realistic about what would change.</p>
+      <p>The central issue of 2012 is still the economy. Teenagers care about jobs because they want summer work, future careers and families who are not under constant financial stress. But so does everyone else. Candidates might add more lines about college affordability, school technology and social media freedom, yet the basic campaign would remain about unemployment, health care, taxes and the deficit.</p>
+      <p>A better reform would be to make the first vote at 18 easier and more meaningful: automatic or same-day registration, stronger civics classes, nonpartisan mock elections and preregistration in high school. The habit of voting matters, but the age line is not the only barrier. If politics seems broken to young people, handing them a ballot earlier will not by itself make them believe the system is worth their trust.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>If students could vote, the biggest change would be that education policy would finally have to include the people sitting in the classrooms. Right now, adults debate “accountability,” “standards” and “school reform” as if students are data points instead of citizens. Presidents, governors and mayors talk about test scores constantly, but they rarely ask whether the school day is preparing young people for adult life.</p>
+      <p>A teenage electorate would push candidates to answer concrete questions. Why are arts, music and shop classes disappearing while test preparation expands? Why do wealthy districts offer advanced courses, counseling and extracurriculars while poorer districts struggle with overcrowded classrooms? Why do students who do not plan to attend a four-year college often get treated as failures instead of being offered serious vocational and technical paths? Why is mental health support so thin when stress, bullying and family instability affect learning every day?</p>
+      <p>In 2012, both parties say education matters. President Obama points to Race to the Top and student loan relief; Governor Romney talks about choice and competition. But much of that debate still sounds like adults arguing over systems. Student voters would make it harder to ignore lived experience. Campaigns might hold town halls in high schools, release education platforms written in plain language and recruit student organizers. More important, they would have to defend their ideas to people who know exactly what a broken lunch period, a useless worksheet or an inspiring teacher looks like.</p>
+      <p>Young voters would not all agree. Some would want more discipline, others more freedom; some would prefer charter schools, others more investment in neighborhood schools. But that disagreement is democracy. Students deserve more than being the subject of policy. They should be participants in making it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>The voting age should remain 18. That does not mean teenagers are stupid or that adults always vote wisely. Plenty of 16-year-olds follow public affairs more closely than many adults. But a voting rule has to be based on a general civic threshold, not on the most impressive exceptions.</p>
+      <p>Eighteen is the age when Americans take on most adult legal responsibilities. They can sign binding contracts, serve on juries, live independently without parental permission and register for the draft. Voting is not just self-expression; it is an exercise of political power over other people. It is reasonable to connect that power to the broader transition into legal adulthood.</p>
+      <p>Lowering the voting age could also create unhealthy pressures. High school students live in environments controlled by parents, teachers, coaches and administrators. If their votes became valuable, campaigns and interest groups would enter schools more aggressively. Some students would feel pressure to adopt the politics of adults who control grades, recommendations or household peace. That is not the independence we should want in a voter.</p>
+      <p>Candidates would probably respond with pandering: promises about tuition, testing, driving laws or youth programs that sound attractive but are fiscally vague. Teenagers would be another demographic to flatter, not a magic cure for cynicism.</p>
+      <p>The better answer is preparation. Every high school should teach practical civics: how to register, how local government works, how to evaluate a ballot initiative, how to separate reporting from propaganda. States should allow preregistration before 18 so young adults are ready when their first election arrives. Democracy needs young citizens, but it also needs a meaningful line between childhood and adulthood. Eighteen remains the least imperfect place to draw it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The most interesting effect of a youth vote would not be on presidential elections. It would be on local politics. Obama and Romney would still spend most of their time talking about jobs, taxes, health care and the deficit. But school board members, mayors and city council candidates would suddenly discover that teenagers are not background scenery.</p>
+      <p>Local government shapes teenagers’ daily lives. It decides whether buses run late enough for after-school jobs, whether libraries stay open, whether recreation centers exist, whether police enforce curfews fairly and whether school budgets protect counselors, arts programs and sports. Yet the people most affected by these choices usually cannot vote, while older homeowners with strong turnout dominate many local elections.</p>
+      <p>If 16- and 17-year-olds had ballots, a school board candidate could not simply promise “higher standards” and avoid students. Students would ask about class size, bullying policies, over-testing, special education, school lunches, college counseling and the lack of vocational options. A mayoral candidate might have to discuss safe transportation, youth unemployment and public spaces where teenagers are welcome instead of treated as a nuisance.</p>
+      <p>Starting locally might also make voting less abstract. A presidential election can feel distant and theatrical; a school board election is about the building a student enters every morning. If young people learned that voting could change bus routes or course offerings, the habit of participation would become real.</p>
+      <p>There are risks. Turnout might be low, and schools would need careful rules to keep partisan campaigning from overwhelming class time. But the principle is sound: people governed by public institutions should have some voice in them. Teenagers may not decide the presidency, but they could make local democracy less tilted toward those who already have power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>Before celebrating a teenage vote, we should ask: which teenagers would actually be heard? Expanding the franchise does not automatically produce equality. If 16- and 17-year-olds could vote under the same complicated rules that already discourage many adults, the likely winners would be affluent students with politically active parents, strong civics classes and easy transportation to polling places.</p>
+      <p>That would leave out many of the young people with the most at stake: students working after school, teenagers in foster care, students whose parents are immigrants, young people in unstable housing and those attending underfunded schools. Campaigns would quickly learn which teenagers were easiest to reach and would target suburban, college-bound youth while claiming to speak for “young people” as a whole.</p>
+      <p>If the voting age is lowered, it should be paired with serious access reforms. Registration should happen in schools in a nonpartisan way. Election information should be available in multiple languages. Polling places should be accessible to students who cannot drive. Teachers should be allowed to explain the process without pressuring students toward a party. Voter ID rules should not exclude teenagers who do not have driver’s licenses.</p>
+      <p>A genuinely broad youth electorate could change the agenda. It might bring more attention to immigration, especially after the debate over the Dream Act and the Obama administration’s deferred action policy. It could raise questions about the minimum wage, juvenile justice, police treatment of teenagers, public college costs and environmental policy. But if access is unequal, the reform could simply create another privileged voting bloc.</p>
+      <p>The ballot is powerful only when people can use it. Lowering the voting age is a promising idea, but it must be designed for all young citizens, not just the easiest ones for campaigns to find.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>A youth vote might make American politics more future-oriented, but not necessarily more liberal or more conservative. Its real value would be forcing candidates to explain the long-term consequences of their promises.</p>
+      <p>In 2012, both parties avoid some hard truths. Democrats defend Medicare and Social Security, often without being clear enough about how an aging population will affect future taxpayers. Republicans warn about the national debt, but then promise tax cuts and higher defense spending that also require arithmetic. Both sides talk about energy independence, yet climate change barely appeared in the presidential debates. Young voters would have the standing to ask: what exactly are you leaving us?</p>
+      <p>Teenagers would not all demand more spending. Some would worry about college tuition and want larger Pell Grants. Others would ask why Washington keeps borrowing money they will have to repay. Some would want aggressive action on carbon emissions; others would worry about gas prices and jobs in energy states. That diversity is healthy. The point is not that young people have one correct platform. The point is that they are underrepresented in a system where benefits for current voters are easier to defend than investments for future citizens.</p>
+      <p>Candidates would adapt. Obama would likely emphasize student loans, clean energy and health coverage for young adults. Romney would likely stress debt, entrepreneurship and job growth. Both would need to speak less as if young people are props at rallies and more as if they are auditors of the national balance sheet.</p>
+      <p>Democracy always favors the present because the present votes. Letting older teenagers participate would modestly correct that bias. It would not make politics pure, but it would add millions of citizens whose central question is exactly the one Washington needs to hear: what will this country look like when we inherit it?</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>Lowering the voting age would fundamentally reshape political rhetoric and policy priorities in ways that benefit everyone. Young Americans under 18 are deeply concerned with issues that directly affect their futures: climate change, student debt, educational funding, and job availability. These aren&#x27;t fringe concerns—they represent the world they&#x27;re inheriting.</p>
+      <p>Candidates would suddenly need to speak authentically about college affordability, not just invoke it as a talking point. The youth vote carries enough demographic weight to make or break elections, as we&#x27;ve seen in 2008 and 2012. Politicians would be forced to articulate concrete plans rather than vague promises about opportunity.</p>
+      <p>There&#x27;s also the matter of investment and engagement. When young people participate in elections, they develop civic habits that last. The developmental psychologist quoted by The Times is right—voting becomes routine once begun. A generation that starts voting at 16 or 17 would carry that habit through their twenties and thirties, creating more engaged citizens overall.</p>
+      <p>Critics argue teens lack the sophistication for political judgment, but the same could be said of many adult voters. Young people consume news, understand policy trade-offs, and have strong opinions about their communities. They notice when schools are underfunded and when job markets exclude them. Their perspectives deserve representation in the democratic process.</p>
+      <p>The political system is &quot;broken,&quot; as the question notes, partly because it excludes those most affected by long-term decisions. Including young voters wouldn&#x27;t fix everything, but it would make our democracy more responsive to all Americans.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-36">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-36" style="display:none;">
+      <p>The enthusiasm for lowering the voting age obscures a fundamental question: maturity. While 16-year-olds can work, pay taxes, and drive cars, the cognitive science on political judgment is more complicated than proponents acknowledge.</p>
+      <p>Developmental psychologists have documented that abstract reasoning and long-term consequence assessment continue developing into the mid-twenties. Political opinions require evaluating complex trade-offs, assessing credibility of competing sources, and weighing present costs against future benefits. These capacities vary significantly among young people, and the population that would gain the vote includes many who simply haven&#x27;t developed them fully.</p>
+      <p>We shouldn&#x27;t mistake passion for judgment. Teenagers can feel strongly about issues—they often do—without having the contextual experience to evaluate policy proposals. Someone who has never paid rent, navigated healthcare systems, or supported a family cannot fully grasp the implications of economic or social policies in the same way as those living those realities.</p>
+      <p>The real concern is manipulation. A voting bloc of legally minors would be particularly susceptible to appeals that tug at emotion without substance. Campaigns targeting such voters would prioritize style over policy detail, potentially degrading democratic discourse.</p>
+      <p>None of this means young people&#x27;s interests should be ignored. But formal political power comes with formal responsibility. Perhaps the answer lies elsewhere—better civics education, lowered registration barriers, Get-Out-The-Vote efforts—rather than lowering an age limit that exists for legitimate reasons.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-37">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-37" style="display:none;">
+      <p>If teenagers could vote, campaigns would adapt in predictable ways: more social media presence, simplified messaging, and pandering on education policy. But the deeper change would be how candidates conceptualize their mandate.</p>
+      <p>Presidential campaigns currently treat young people as an afterthought until GOTV drives activate them. With millions of new voters eligible, candidates would need genuine youth outreach throughout the election cycle—not just during early voting windows. This might mean substantive engagement with issues like climate policy, student debt, and youth unemployment rather than perfunctory appeals.</p>
+      <p>The Democratic Party would likely benefit initially. Young voters skew liberal, and adding more of them to the electorate would shift the political center of gravity leftward. Republicans would face pressure to soften positions on issues like tuition support and environmental regulation. This competitive dynamic could produce policy innovations addressing long-neglected youth concerns.</p>
+      <p>However, campaigns might also become more superficial. Reaching younger voters through social media could reduce substantive policy discussion across all demographics, as campaigns optimize for engagement metrics rather than informational content.</p>
+      <p>The change I&#x27;d most welcome is increased attention to intergenerational equity. Current politics disproportionately serves older Americans—through Social Security, Medicare, and tax policies. Adding millions of young voters would force politicians to reckon with the distributional consequences of their choices. Our democracy works best when all stakeholders have voice. Young people deserve that voice.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-38">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-38" style="display:none;">
+      <p>We should consider lowering the voting age to 16, not just 18. At 16, many young people are already engaged with civic institutions through driving, working, and increasingly through education. They have direct experience with policies that affect their daily lives.</p>
+      <p>Research from countries like Austria and Norway, which have experimented with lower voting ages, suggests that 16-year-olds are neither more nor less informed than older young voters. The real barrier to informed voting isn&#x27;t age—it&#x27;s engagement and education. And evidence indicates that introducing voting habits earlier produces more consistent participation over lifetimes.</p>
+      <p>Critics will object that teenagers lack life experience, but we don&#x27;t apply that standard to other rights or responsibilities. Sixteen-year-olds face real consequences for their actions under the law. They pay taxes. They&#x27;re required to attend school in most states. They can consent to medical treatment in many jurisdictions. The vote is a logical extension of the other responsibilities we already assign to this age group.</p>
+      <p>The cynicism young people feel toward politics partly stems from feeling excluded from decisions that affect them. Climate policy, educational funding, labor regulations—these shape their futures profoundly. Giving them political voice might actually reduce that cynicism by demonstrating that their participation matters.</p>
+      <p>A voting age of 16 would also catch young people during peak educational years, allowing schools to integrate civic learning with actual voting participation. This could strengthen democratic habits precisely when they&#x27;re most malleable.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-39">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-39" style="display:none;">
+      <p>The question assumes lowering the voting age would increase youth political power, but this misdiagnoses the problem. Young people don&#x27;t fail to vote primarily because of legal age restrictions—they fail because of structural barriers, disengagement, and justified alienation from a political system that ignores their interests.</p>
+      <p>In 2008, youth turnout surged to historic highs. In 2012, it dropped significantly. This wasn&#x27;t because 18-to-24-year-olds suddenly became more or less informed; it was because Obama campaign investments made voting easy and worthwhile. The lesson is clear: mobilization matters more than eligibility.</p>
+      <p>Lowering the voting age to 17 or 16 would add a few million potential voters, but without parallel investments in making voting accessible, we&#x27;d see the same low participation rates. Early voting locations near college campuses, online registration, same-day registration—these interventions have proven effects on youth turnout. An age change without infrastructure investment would be largely symbolic.</p>
+      <p>The focus should be on registration modernization and removing barriers, not age manipulation. We&#x27;re told young people need to &quot;make voting part of their routine,&quot; but we make registration difficult, polling places inconvenient, and election day a workday. The answer is systemic reform of how Americans vote, not a modest expansion of eligibility.</p>
+      <p>If we really want young people engaged, we should meet them where they are with systems designed for their participation. That&#x27;s a more honest and effective agenda than tinkering with age limits.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-40">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-40" style="display:none;">
+      <p>From a purely strategic standpoint, extending voting rights to young teenagers would dramatically alter campaign calculus. Candidates spend enormous resources targeting demographic groups, and none is more coveted than the youth vote—except none is harder to mobilize.</p>
+      <p>Adding millions of voters from ages 16 to 17 would reshape Electoral College strategies, swing state calculations, and advertising markets. Campaigns targeting these voters would need to start earlier, use different media, and make different policy commitments. The question of what issues they&#x27;d emphasize is therefore less important than how early and how substantively engagement would begin.</p>
+      <p>We might see a new industry of youth political consulting, specialized get-out-the-vote operations for high schools and colleges, and new forms of youth-oriented political advertising. Political parties would invest heavily in registration drives at younger ages.</p>
+      <p>The unintended consequences could be significant. Campaigns might emphasize issues that resonate with younger voters but alienate older ones, deepening generational polarization. Alternatively, parties might compete more aggressively on youth-oriented policies, potentially producing better outcomes for younger Americans.</p>
+      <p>But I suspect the biggest change would be cultural. Politics would become more legitimate in young people&#x27;s eyes, reducing the cynicism the question mentions. More young people would discuss elections in schools and homes, normalizing political engagement as a coming-of-age experience rather than an afterthought.</p>
+      <p>The vote itself isn&#x27;t just a mechanism—it&#x27;s a symbol of membership in the political community. Extending that symbol to young people matters symbolically and practically.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-41">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-41" style="display:none;">
+      <p>The debate about youth voting rights often ignores a crucial dimension: federalism. While the question addresses presidential elections, voting age rules are primarily state-level matters for most elections. Lowering the presidential voting age would require federal constitutional action, but states retain significant control over other elections.</p>
+      <p>This suggests the question&#x27;s framing is somewhat artificial. If we want young people voting, we might achieve more by working state-by-state than by pursuing a constitutional amendment. Several states already allow 17-year-olds to vote in primaries if they&#x27;ll be 18 by the general election—a modest but meaningful step.</p>
+      <p>More ambitious reforms might include automatic registration at 18, same-day registration, and mail-in voting systems that reduce friction for all voters, including young ones. These structural changes have bipartisan support and proven effectiveness.</p>
+      <p>The question of what &quot;would change&quot; if young people could vote ultimately depends on whether we think young voters would be substantively different from older ones. I suspect they would, but not in the ways typically assumed. Young people care deeply about education, opportunity, and their communities&#x27; futures. Those concerns are legitimate and underrepresented in current politics.</p>
+      <p>Rather than debating age limits endlessly, let&#x27;s focus on removing barriers to participation. If young people want to vote, we should make it as easy as possible. The rest—issue priorities, campaign strategies, policy outcomes—will follow from genuine democratic engagement.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

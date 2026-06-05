@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To handle heartbreak effectively, one should allow for a bri... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_how-to-handle-heartbreak-on-valentines-day.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_how-to-handle-heartbreak-on-valentines-day.html">10 Ways to Handle Heartbreak on Valentine’s Day</a> · Cluster 1 of 48</div>
+  <h1 class="arg-title">"To handle heartbreak effectively, one should allow for a brief period of intense wallowing before actively re-engaging with the world and maintaining a positive outlook."</h1>
+  <div class="arg-meta">3 human · 16 LLM · 19 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Dan Savage</span>
+        </div>
+        <p class="essay-quote">"To handle heartbreak effectively, one should allow for a brief period of intense wallowing before actively re-engaging with the world and maintaining a positive outlook."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/12/how-to-handle-heartbreak-on-valentines-day/dan-savage" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Allow yourself exactly two weeks to indulge in misery, binge-watch television, and vent to patient friends.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">After the initial mourning period, force yourself to exercise, socialize, and listen to others instead of discussing your breakup.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Adopt a &#x27;fake it until you make it&#x27; mentality by pretending to be happy to help your mind actually recover.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Recognize that being single is not a negative state and that short-term relationships can be just as valid and satisfying as long-term ones.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">View a breakup as a necessary step toward finding a successful relationship rather than a permanent failure.</span></li>
+              <li class="src-h"><span class="num">06</span><span class="sub-text">Consider rebound sex as a potentially positive way to move on, as it can sometimes lead to unexpected long-term success.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Tracy McMillan</span>
+        </div>
+        <p class="essay-quote">"The most effective way to handle heartbreak is to remain fully present in the current moment rather than burying the pain through distractions."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/12/how-to-handle-heartbreak-on-valentines-day/tracy-mcmillan" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Heartbreak is a form of grief that must be processed and experienced rather than suppressed.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Focusing on the immediate present provides a sense of stability and relief by preventing the mind from dwelling on the past or fearing the future.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Intense emotional pain is temporary and will pass more quickly if one does not prolong suffering through nostalgia or anxiety.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Staying present allows an individual to internalize the necessary lessons from a failed relationship to ensure future growth.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Isabel Gillies</span>
+        </div>
+        <p class="essay-quote">"A person should handle heartbreak by embracing the emotional pain as a source of personal growth while gradually re-engaging with the world through self-care and physical activity."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/02/12/how-to-handle-heartbreak-on-valentines-day/isabel-gillies" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Heartbreak serves as a valuable opportunity to discover one&#x27;s inner grit, ingenuity, and resolve.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">It is important to allow yourself a period of open mourning and indulgence to process the loss of a deep love.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Engaging with external stimuli, such as art, nature, and learning, helps provide a necessary change in perspective.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Physical activity and movement are essential tools for managing heightened emotions and improving one&#x27;s state of mind.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Maintaining a sense of forward momentum is crucial because positive experiences often follow periods of emotional distress.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Heartbreak should be treated as a legitimate injury that requires structured self-care, the setting of boundaries, and a healthy reframing of the narrative."</p>
+        <button class="essay-view-full" data-target="full-1-32905">View full essay</button>
+        <div class="essay-full" id="full-1-32905" style="display:none;">
+            <p>Heartbreak should be treated less like a personal failure than like an injury: real, painful and deserving of care. The first task is to stop reopening the wound. That usually means limiting contact, putting away the digital reminders and resisting the late-night forensic investigation of old texts. Social media makes grief feel interactive; it is often healthier to make it temporarily boring.</p>
+            <p>The second task is not to “get over it” on command. People recover by metabolizing loss, not by pretending it is trivial. Let yourself be sad, but give sadness some structure: take walks, sleep, eat decently, keep appointments, and see friends even when you are poor company. Exercise and routine are not clichés; they help restore a sense of agency when rejection has made life feel externally controlled.</p>
+            <p>It also helps to tell the story carefully. A breakup can become evidence that one is unlovable, or it can become evidence that one attachment ended. Those are very different conclusions. Talk to people who will comfort you without turning your former partner into a cartoon villain. If the pain becomes immobilizing or dangerous, seek professional help.</p>
+            <p>On Valentine’s Day, ignore the marketing. Love is larger than romance, and recovery begins by remembering that.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Individuals should stop reopening the emotional wound by limiting contact and avoiding the digital reminders of the past relationship.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Recovery requires metabolizing the loss through a consistent routine of physical exercise, proper sleep, and social interaction rather than suppressing the sadness.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">It is essential to reframe the breakup as a single ended attachment rather than a personal indictment of one&#x27;s lovability.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Seeking professional help is necessary if the emotional pain becomes immobilizing or poses a danger to one&#x27;s well-being.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">One should resist commercialized romantic expectations and remember that love exists in forms beyond just romance.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Handling heartbreak effectively requires a combination of emotional acceptance, physical self-care, and the disciplined removal of digital and social triggers."</p>
+        <button class="essay-view-full" data-target="full-1-16794">View full essay</button>
+        <div class="essay-full" id="full-1-16794" style="display:none;">
+            <p>Heartbreak resists tidy listicles, but a few principles help more than ten clever tactics. First, accept the pain rather than racing to extinguish it; grief, as Bowlby and Kübler-Ross both observed, runs its course only when allowed in. Second, protect the body — sleep, food, exercise — because misery amplifies in a depleted nervous system. Third, mute the feed: scrolling through an ex&#x27;s photos is self-administered poison. Fourth, lean on friends, not rebounds; loneliness, not solitude, is the danger. Finally, treat Valentine&#x27;s Day as one inflated Tuesday. The cards will be gone by Monday, and so, eventually, will the worst of the ache.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Grief must be fully acknowledged and experienced rather than suppressed for true healing to occur.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Maintaining physical health through sleep, nutrition, and exercise prevents the nervous system from amplifying emotional misery.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Cutting off digital contact and avoiding social media updates of an ex-partner is essential to prevent self-inflicted emotional harm.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Seeking support from established friendships is more beneficial for recovery than pursuing rebound relationships.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Reframing Valentine&#x27;s Day as an ordinary, temporary event helps diminish the cultural pressure and loneliness associated with the holiday.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"To effectively handle heartbreak, one must balance the honest processing of grief with proactive self-care and healthy boundaries."</p>
+        <button class="essay-view-full" data-target="full-1-60766">View full essay</button>
+        <div class="essay-full" id="full-1-60766" style="display:none;">
+            <p>Valentine’s Day can turn heartbreak into a public spectacle, every red rose and box of chocolates mock your solitude. But the real challenge of heartbreak isn’t a saccharine holiday—it’s the ache that follows you into the ordinary hours. Start with a deceptively simple rule: don’t arm-wrestle your feelings. Suppressing sadness or rage can prolong suffering; grieving allows the emotional wound to drain.</p>
+            <p>At the same time, grief needs a container. Reach out to friends who will listen without trying to fix you, and return the favor by not letting the breakup become the only topic. Physical activity—even a brisk walk—can reset a spiraling mind, as dozens of studies have shown that exercise blunts the stress response. Don’t marinate in your ex’s social media presence; digital rubbernecking is pure emotional poison.</p>
+            <p>Finally, treat yourself with the same kindness you would offer a devastated friend. Heartbreak is not a failing; it’s proof that you can form deep attachments, and that capacity will serve you again. The goal isn’t to forget but to integrate the loss into a story that eventually includes joy.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Acknowledge and experience your emotions fully rather than suppressing them to allow the emotional wound to heal.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Seek out supportive social connections where you can share your feelings without letting the breakup dominate every conversation.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Engage in physical activity to help regulate the body&#x27;s stress response and calm a spiraling mind.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Establish digital boundaries by avoiding the ex-partner&#x27;s social media to prevent unnecessary emotional distress.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Practice self-compassion by viewing the ability to feel heartbreak as a positive sign of one&#x27;s capacity for deep connection.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"A person should handle heartbreak by embracing the emotional grieving process while utilizing practical routines and social support to facilitate long-term healing and resilience."</p>
+        <button class="essay-view-full" data-target="full-1-59541">View full essay</button>
+        <div class="essay-full" id="full-1-59541" style="display:none;">
+            <p>Heartbreak, though painful, is a natural part of human experience that most people navigate successfully with time and support. Research in interpersonal relationships suggests that suppressing grief or rushing to &quot;move on&quot; often prolongs suffering rather than alleviating it. Rather than viewing heartbreak as a problem to solve immediately, embracing the emotional experience—allowing oneself to grieve—facilitates genuine healing.</p>
+            <p>Practical steps can complement emotional processing: maintaining daily routines preserves structure and self-worth, while leaning on trusted friends or family provides both distraction and perspective. Physical activity helps regulate the stress hormones that accompany romantic loss, and limiting contact with an ex-partner allows space for clarity to emerge.</p>
+            <p>Crucially, heartbreak distorts thinking. People in acute distress often make permanent decisions based on temporary emotional states. Resisting major life changes during the most painful period typically leads to better outcomes. Over time, most individuals not only recover but report gaining deeper self-knowledge and resilience from the experience.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Allowing oneself to fully experience and process grief is more effective for genuine healing than suppressing emotions or rushing the recovery process.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Maintaining daily routines and engaging in physical activity helps preserve self-worth and regulate the physiological stress associated with romantic loss.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Seeking support from trusted friends and family provides necessary perspective and distraction during the recovery period.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Establishing boundaries by limiting contact with an ex-partner creates the mental space required for clarity to emerge.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Avoiding major life decisions during the acute phase of heartbreak prevents making permanent changes based on temporary emotional distress.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"To effectively handle heartbreak, one must treat it as a legitimate physical injury while actively shifting focus from romantic idealization toward platonic support and self-compassion."</p>
+        <button class="essay-view-full" data-target="full-1-83842">View full essay</button>
+        <div class="essay-full" id="full-1-83842" style="display:none;">
+            <p>Valentine’s Day notoriously amplifies the sting of a breakup, but the first step to handling heartbreak is validating it as a genuine physiological event. Functional MRI studies demonstrate that the brain processes romantic rejection in the exact same neural pathways that register physical injury. When you are heartbroken, your brain is experiencing real pain. Treat the acute phase of heartbreak with the same deliberate care as nursing a physical injury—prioritizing rest, routine, and time.</p>
+            <p>The second step is actively rejecting the commercial mandate that romantic love is the only love worth celebrating. We are increasingly seeing a cultural shift toward honoring platonic bonds, popularized by the recent rise of &quot;Galentine’s Day.&quot; Redirecting your energy toward friends reminds your brain that you belong to a supportive community, which directly counteracts the evolutionary panic of isolation.</p>
+            <p>Finally, practice cognitive reappraisal. Heartbreak mimics chemical withdrawal, often causing us to obsessively idealize our ex-partners. Counter this by consciously documenting the relationship&#x27;s actual flaws. Let the holiday be an exercise in self-compassion, trusting that surviving this acute pain builds enduring psychological resilience.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Heartbreak should be treated with the same deliberate care and rest as a physical injury because the brain processes romantic rejection through the same neural pathways as physical pain.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Actively celebrating platonic friendships helps counteract the psychological distress of isolation and challenges the cultural narrative that romantic love is the only valuable form of connection.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Practicing cognitive reappraisal by documenting a relationship&#x27;s flaws helps break the cycle of obsessive idealization that mimics chemical withdrawal.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Approaching heartbreak as an exercise in self-compassion allows an individual to build long-term psychological resilience.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"A person should handle heartbreak by allowing themselves to fully grieve and experience the pain without the immediate pressure to be productive or self-improving."</p>
+        <button class="essay-view-full" data-target="full-1-57541">View full essay</button>
+        <div class="essay-full" id="full-1-57541" style="display:none;">
+            <p>I distrust the modern impulse to make heartbreak productive. “Learn from it.” “Grow from it.” “Become your best self.” Fine, perhaps, eventually. But in the early days, heartbreak does not need a lesson plan. It needs permission to be useless.</p>
+            <p>There is dignity in mourning. If someone mattered, losing that person should hurt. The pain is not evidence of weakness; it is evidence that attachment is not a hobby. A breakup can reorder the furniture of the soul. Songs become dangerous. Restaurants become haunted. The city itself seems to have taken sides.</p>
+            <p>So my recommendation is this: grieve without immediately improving yourself. Take a sick day if you can. Wear the ugly sweater. Eat cereal for dinner once. Read poems too dramatically. Lie on the floor. Be ridiculous, but be safe. The danger is not sadness; the danger is pretending not to be sad until it leaks out as cruelty, obsession or despair.</p>
+            <p>Later, yes, you can exercise, journal, forgive, date again, develop perspective, and thank the catastrophe for whatever wisdom it delivered. But do not rush to gratitude. Some losses deserve a period in which they are simply losses.</p>
+            <p>Valentine’s Day will try to sell you two cures: romance if you have it, chocolate if you don’t. Neither is enough. What helps is time, and time is annoyingly noncommercial. Let the day be awful if it is awful. Dawn will arrive on February 15 without asking whether you celebrated properly.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Heartbreak should be treated as a legitimate period of mourning rather than a weakness or a problem to be solved with a lesson plan.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Suppressing sadness or rushing to find gratitude can lead to negative emotional outcomes like cruelty, obsession, or despair.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The early stages of loss deserve a period of being &#x27;useless&#x27; where one is permitted to be ridiculous and safe in their sorrow.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Commercialized solutions and forced celebrations of Valentine&#x27;s Day should be ignored in favor of letting time naturally pass.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"To effectively handle heartbreak, one must balance an initial period of deep, intentional grieving with a gradual return to structured daily life and social connection."</p>
+        <button class="essay-view-full" data-target="full-1-25591">View full essay</button>
+        <div class="essay-full" id="full-1-25591" style="display:none;">
+            <p>Let yourself grieve. That is the single most important piece of advice I can give anyone in the throes of heartbreak, and it is the one most often ignored. We live in a culture that treats sadness as a problem to be solved rather than an experience to be lived through. When a relationship ends, something real has died — a future you imagined, a daily rhythm, a person who knew the shape of your day. Pretending otherwise only delays the reckoning.</p>
+            <p>Set aside an evening. Put on the songs that hurt. Look at the photos. Cry until you are tired of crying. The body has its own intelligence about loss, and if you let it do its work, the acute phase passes faster than if you spend your energy fighting it.</p>
+            <p>What you should not do is wallow indefinitely. There is a difference between grief and rumination. Grief moves; rumination loops. After a week or two of permitted sadness, gently begin reintroducing structure: a morning walk, a standing dinner with a friend, a project that demands your hands. The Victorians understood this with their year of mourning followed by a return to society. We have lost that wisdom and replaced it with either suppression or wallowing, neither of which heals.</p>
+            <p>On Valentine&#x27;s Day specifically? Make plans. Not heroic plans — modest ones. A friend, a meal, a movie. The day&#x27;s symbolism is only as powerful as you allow it to be.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Suppressing sadness is counterproductive because it ignores the reality of the loss and delays the necessary emotional reckoning.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Actively engaging with painful memories and emotions allows the body to process the acute phase of loss more quickly.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Distinguishing between healthy grief and repetitive rumination is essential to prevent getting stuck in a cycle of misery.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Reintroducing routine and modest social plans helps reclaim agency and diminishes the power of symbolic days like Valentine&#x27;s Day.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"To effectively handle heartbreak, one must fully accept and experience the pain rather than attempting to suppress or ignore it."</p>
+        <button class="essay-view-full" data-target="full-1-49078">View full essay</button>
+        <div class="essay-full" id="full-1-49078" style="display:none;">
+            <p>The first thing to accept is that you will feel terrible, and that’s okay. Trying to muscle through heartbreak by ignoring it just makes the ache go underground and erupt later. Let yourself cry into your pillow, listen to sad songs, and stare at the wall. Don’t make any major decisions, don’t post sad quotes online, just give the hurt the space it demands. Valentine’s Day is a cheap trigger; the real work is quiet and private. You are not weak for mourning love’s end—you are human.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Suppressing emotional pain only causes it to resurface more intensely at a later time.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Allowing oneself the space for private mourning and simple emotional release is a necessary part of the healing process.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Avoiding major life decisions or public displays of grief prevents impulsive actions during a period of emotional vulnerability.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Recognizing that mourning a lost relationship is a natural human experience helps remove the stigma of feeling weak.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"A person should handle heartbreak by allowing themselves to fully experience their grief while simultaneously practicing self-care and self-validation."</p>
+        <button class="essay-view-full" data-target="full-1-52651">View full essay</button>
+        <div class="essay-full" id="full-1-52651" style="display:none;">
+            <p>Let yourself cry until your ribs hurt. Then, before the day is over, buy yourself the bouquet of flowers you used to hope would arrive. Put them in your best vase and place them where you can see them from your bed. You exist. That’s enough.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">One should permit themselves to express deep emotional pain through crying without restraint.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Performing small acts of self-kindness, such as buying oneself flowers, helps reclaim a sense of worth.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Recognizing and accepting one&#x27;s own existence is a sufficient foundation for healing.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Instead of trying to manage or optimize heartbreak through quick-fix advice, one should embrace the sadness as a necessary and clarifying experience."</p>
+        <button class="essay-view-full" data-target="full-1-20259">View full essay</button>
+        <div class="essay-full" id="full-1-20259" style="display:none;">
+            <p>I want to push back on the entire framing of this question. Heartbreak does not need to be &quot;handled.&quot; It is not a public relations problem or a leaking pipe. It is the appropriate response to losing someone you loved, and the contemporary impulse to manage it, optimize it, life-hack it into a five-step recovery plan is part of why so many of us are so bad at being sad.</p>
+            <p>Look at the advice industry around breakups. Eat Pray Love yourself in some foreign country. Throw yourself into work. Get under someone new to get over the old one. Make a vision board. Try cognitive behavioral therapy. Try ayahuasca. Each of these prescriptions assumes that the goal is to return, as quickly as possible, to a baseline of productivity and good cheer.</p>
+            <p>But heartbreak, properly attended to, can be one of the most clarifying experiences of a life. It strips away pretense. It tells you what you actually wanted, what you settled for, what you are willing to tolerate, what you are not. People who rush through it — who are dating again in three weeks, who insist they are &quot;fine&quot; — tend to repeat the patterns that brought them there.</p>
+            <p>So my advice is to refuse advice. Sit in the dark for a while. Notice what you notice. Do not narrate the experience to your friends in real time. Do not blog it. Heartbreak is one of the few remaining experiences that resists optimization, and that is a feature, not a bug.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">The contemporary impulse to life-hack heartbreak prevents people from learning how to properly process sadness.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Most breakup advice wrongly assumes the primary goal is to return to a baseline of productivity and cheer as quickly as possible.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Properly attending to heartbreak provides essential self-knowledge and clarity regarding one&#x27;s desires and boundaries.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Rushing through the recovery process often leads individuals to repeat the same relationship patterns that caused the heartbreak.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Resisting the urge to narrate or publicize the experience allows for a more authentic and unoptimized form of healing.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Heartbreak should be embraced as an opportunity for profound self-discovery and emotional growth rather than something to be avoided or quickly resolved."</p>
+        <button class="essay-view-full" data-target="full-1-68914">View full essay</button>
+        <div class="essay-full" id="full-1-68914" style="display:none;">
+            <p>Heartbreak, for all its sting, is a profound teacher if you let it be. Instead of fleeing the discomfort, sit with it. Rainer Maria Rilke wrote that “perhaps everything that frightens us is, in its deepest essence, something helpless that wants our love.” A shattered relationship reveals the architecture of your own needs and illusions. What did you idolize? What boundary did you fail to set? Where did you silence yourself in the name of harmony? The loneliness that descends on Valentine’s Day can be repurposed as a kind of archaeological dig into the self. Keep a journal, not of grievances but of observations: “I miss the morning texts, not him,” or “I feel relief I didn’t expect.” These fragments accumulate into a map of your interior. The goal isn’t to arrive at tidy closure—closure is a myth—but to become fluent in your own emotional language. Heartbreak opens a door to the person you become when no one is watching. Walk through it with curiosity rather than dread. Long after the sting fades, the self-knowledge stays, making the next love wiser and the next solitude richer.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Sitting with the discomfort of heartbreak allows a person to identify the specific needs, illusions, and boundaries that defined their past relationship.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Repurposing loneliness into a process of self-observation helps one become fluent in their own emotional language.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The pursuit of &#x27;closure&#x27; should be abandoned in favor of developing a deeper, more curious relationship with one&#x27;s internal self.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The self-knowledge gained from processing heartbreak leads to wiser future relationships and a more fulfilling experience of solitude.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"To handle heartbreak, one should embrace the grieving process with self-compassion while trusting in their innate human capacity to survive emotional pain."</p>
+        <button class="essay-view-full" data-target="full-1-08526">View full essay</button>
+        <div class="essay-full" id="full-1-08526" style="display:none;">
+            <p>Handle heartbreak by remembering that you have done it before, even if you don&#x27;t think you have. Every disappointment, every loss, every moment you thought you couldn&#x27;t bear — you carried it forward. This is what humans do. We are remarkably good at surviving our own pain.</p>
+            <p>Valentine&#x27;s Day makes it harder because it is a socially enforced reminder that love exists and you currently don&#x27;t have it. But grief is not a contest. You do not owe anyone composure. You do not need to prove you are &quot;healing correctly.&quot; Eat the ice cream. Watch the sad movie. Cancel the plans. Then, when you are ready — and only when you are ready — take a walk. Look at the sky. Notice that the world is still there, and so are you.</p>
+            <p>The person you are waiting to become will arrive. She is already on her way. You just can&#x27;t see her yet because you&#x27;re still here, in the hard part.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Reflecting on past experiences of loss and disappointment proves that you have the resilience to endure current suffering.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">You should reject social pressures to maintain composure or follow a specific timeline for healing.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Engaging in small acts of self-care and eventually reconnecting with the world helps facilitate the transition to a future version of yourself.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Recognizing that the world continues to exist around you provides necessary perspective during the most difficult stages of grief.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Heartbreak should be handled by accepting it as an inevitable condition of life rather than a problem to be solved."</p>
+        <button class="essay-view-full" data-target="full-1-52672">View full essay</button>
+        <div class="essay-full" id="full-1-52672" style="display:none;">
+            <p>I have no patience for Valentine&#x27;s Day heartbreak advice that treats this as a problem to be solved. It is not a problem. It is a condition of being alive and loving people.</p>
+            <p>What does help, in my experience, is radical honesty with yourself. You are sad. You are allowed to be sad. The world will not end, but right now it feels like it might, and that feeling is real even if the catastrophe is not. Let it be real.</p>
+            <p>Also, resist the temptation to analyze the relationship to death. You will do this anyway, but try not to. You cannot figure out the whole truth right now. You only have your side, your memory, your version. That is incomplete. So let it be incomplete for now. Answers come later, when you are further from the wound.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Practicing radical honesty allows you to validate your sadness and the intensity of your feelings without fear of catastrophe.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Resisting the urge to over-analyze the relationship prevents you from obsessing over an incomplete and biased narrative.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Accepting that clarity and answers only come with time and distance from the initial emotional wound is essential for healing.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"To handle heartbreak, one must honor the loss of their former self and allow the grieving process to unfold naturally without external or internal pressure."</p>
+        <button class="essay-view-full" data-target="full-1-12713">View full essay</button>
+        <div class="essay-full" id="full-1-12713" style="display:none;">
+            <p>The most useful frame I have found for Valentine&#x27;s Day heartbreak is this: you are not grieving the person, you are grieving the version of yourself that existed in the relationship. That person was real, and she had hopes, and those hopes were real. Honor them.</p>
+            <p>Don&#x27;t rush the grief. Don&#x27;t let anyone — including yourself — tell you that you should be &quot;over it&quot; by now. Valentine&#x27;s Day is just a day. The pain it surfaces existed before February 14th and will persist after February 15th. The holiday just gave it a stage. Acknowledge that, and then put the stage away.</p>
+            <p>Cry if you need to. Laugh if you can. Most likely you will do both, in unpredictable sequence. That is not weakness. That is how grief works when grief is honest.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Heartbreak should be framed as grieving the version of yourself and the hopes that existed within the relationship rather than just the loss of the other person.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Individuals should resist the urge to rush their recovery or adhere to arbitrary timelines for when they should be &#x27;over&#x27; the pain.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Valentine&#x27;s Day should be viewed as a temporary stage that merely highlights existing pain rather than a definitive marker of one&#x27;s emotional state.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Expressing a wide range of unpredictable emotions, such as crying and laughing, is a sign of honest grief rather than a sign of weakness.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"On Valentine’s Day, heartbroken individuals should fully embrace self-indulgent wallowing as a temporary way to process their pain."</p>
+        <button class="essay-view-full" data-target="full-1-18872">View full essay</button>
+        <div class="essay-full" id="full-1-18872" style="display:none;">
+            <p>Embrace the cliché! Society looks down on wallowing, but I argue that Valentine&#x27;s Day is the one day a year you are culturally permitted to be a complete, self-indulgent disaster.</p>
+            <p>If you are heartbroken, go to the grocery store and buy the largest tub of Ben &amp; Jerry&#x27;s you can find. Purchase a shockingly cheap bottle of wine. Put on your oldest, ugliest sweatpants. Queue up a Netflix marathon of the saddest, most emotionally manipulative romantic comedies you can find—*Love Actually*, *The Notebook*, whatever makes you weep the loudest.</p>
+            <p>We spend so much of our lives trying to project an image of invulnerability. It takes a lot of energy to keep a stiff upper lip at the office and smile politely when people ask how you are doing. Give yourself a 24-hour pass to be pathetic. Scream at the television. Eat carbs until you fall into a food coma. Get it all out of your system. Tomorrow, on February 15th, you can shower, put on real clothes, and rejoin respectable society. But for today, the couch is your kingdom, and you are allowed to mourn.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Engaging in stereotypical behaviors like eating comfort food and watching sad movies provides a necessary emotional outlet.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Granting oneself a designated period to be &#x27;pathetic&#x27; offers a much-needed break from the exhausting social pressure to appear invulnerable.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Intentionally getting all the sadness out of one&#x27;s system in a single day makes it easier to return to normal life afterward.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The most effective way to handle heartbreak on Valentine’s Day is to lean into the pain and allow yourself to fully experience the grief rather than resisting it."</p>
+        <button class="essay-view-full" data-target="full-1-59765">View full essay</button>
+        <div class="essay-full" id="full-1-59765" style="display:none;">
+            <p>The most effective way to handle heartbreak on Valentine’s Day is a radical one: lean into it. Our culture is obsessed with the eradication of negative emotion. We are constantly told to “move on,” “get over it,” or “distract ourselves.” But grief—and heartbreak is absolutely a form of grief—demands to be felt.</p>
+            <p>Mindfulness teaches us that suffering is multiplied by our resistance to it. When we fight the reality of a broken heart, we create secondary anxiety about the fact that we are sad. This Valentine’s Day, instead of forcing yourself to go to a noisy bar or swiping mindlessly on Tinder to prove you are fine, allow yourself to not be fine.</p>
+            <p>Sit in your apartment, turn off your phone, and let the wave of sadness wash over you. Cry if you need to. Acknowledge the physical sensation of the ache in your chest. By giving the heartbreak space to exist without judgment, you rob it of its terrifying power. Emotions, even the most agonizing ones, are transient if we do not build dams to trap them in our minds. The quickest way out of the pain is straight through it.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Resisting negative emotions creates secondary anxiety and multiplies the suffering caused by heartbreak.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Mindfulness suggests that acknowledging physical and emotional sensations without judgment reduces their power over us.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Emotions are transient by nature and will pass more quickly if they are not suppressed or trapped by distractions.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Cultural pressures to move on or distract oneself are counterproductive to the natural process of grieving a lost relationship.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

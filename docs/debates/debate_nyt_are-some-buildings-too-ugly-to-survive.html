@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Are Some Buildings Too Ugly to Survive? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Culture · Binary</div>
+  <h1 class="debate-title">Are Some Buildings Too Ugly to Survive?</h1>
+  <div class="question-body"><p>The Orange County government building in Goshen, N.Y.,  has a leaky roof,  faulty ventilation and mold and, in the eyes of many, is just plain ugly. Officials shut it down last year and would like to demolish and replace it. But  it is a prime example of Brutalism, from the noted architect Paul Rudolph. Many want to preserve it, even though, like many examples of Brutalism, it has not aged well. Do even ugly, unpopular buildings deserve to be saved if they are significant? Or should a community, or owner, be allowed to eliminate architectural mistakes?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>Ugly, unpopular buildings do not deserve to be saved even if they are architecturally significant</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>Ugly, unpopular buildings deserve to be saved if they are architecturally significant</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 20%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 20%;"></div>
+        <div class="seg ws" style="width: 20%;"></div>
+        <div class="seg ss" style="width: 40%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 20%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 20%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 60%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 32%;"></div>
+        <div class="seg wo" style="width: 2%;"></div>
+        <div class="seg n"  style="width: 12%;"></div>
+        <div class="seg ws" style="width: 15%;"></div>
+        <div class="seg ss" style="width: 38%;"></div>
+      </div>
+      <span class="bar-num">n=40</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_1.html">
+      <td class="arg-text">Modernist buildings like Paul Rudolph’s Orange County government building should be preserved because their architectural significance and potential for revitalization outweigh temporary aesthetic unpopularity and repair costs.</td>
+      <td><span class="humans-pill ">4</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_2.html">
+      <td class="arg-text">The survival of significant but flawed buildings like the Orange County Government Center should depend on creative stewardship and adaptive reuse rather than a binary choice between total preservation or demolition based on aesthetic preference.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_3.html">
+      <td class="arg-text">Except for a single specimen kept as a historical warning, Brutalist buildings should be demolished because they lack aesthetic merit and impose a hostile environment on the public.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_4.html">
+      <td class="arg-text">The Orange County Government Center should be preserved primarily because demolishing such a massive structure would be environmentally reckless in an era of climate change.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_5.html">
+      <td class="arg-text">Significant architectural works like the Orange County Government Center should be preserved despite their perceived ugliness or functional flaws because they represent important cultural and historical experiments in civic identity.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_6.html">
+      <td class="arg-text">Communities and elected officials should have the right to demolish architecturally significant buildings if they fail to serve their practical purpose and are widely disliked by the public.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_7.html">
+      <td class="arg-text">Instead of choosing between total preservation or demolition, communities should pursue a rigorous analysis to determine if significant but difficult buildings can be adapted and transformed for modern use.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_8.html">
+      <td class="arg-text">The decision to preserve or demolish controversial buildings like the Orange County Government Center should be based on a conditional framework that balances cultural significance against practical factors like cost, safety, and functionality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_9.html">
+      <td class="arg-text">Communities should be allowed to demolish significant Brutalist buildings when their architectural ambition results in dysfunction, public resentment, and a failure to serve the needs of the citizens.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_10.html">
+      <td class="arg-text">Architecturally significant buildings should be preserved even if they are currently considered ugly or unpopular, as public taste is cyclical and preservation should protect a diverse civic memory rather than just what is currently fashionable.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_11.html">
+      <td class="arg-text">We should preserve controversial midcentury buildings like the Orange County Government Center because current aesthetic judgments are temporary and do not reflect a structure&#x27;s long-term historical value.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_12.html">
+      <td class="arg-text">Buildings that fail to function safely and effectively for their users should be demolished, regardless of their architectural significance or pedigree.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_13.html">
+      <td class="arg-text">Brutalist civic buildings like the Orange County Government Center should be demolished because their inherently hostile and intimidating design is incompatible with democratic values.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_14.html">
+      <td class="arg-text">The Orange County Government Center should be demolished and replaced because the financial burden of preserving a fundamentally flawed and unpopular building is an unjustifiable use of taxpayer funds.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_are-some-buildings-too-ugly-to-survive_arg_15.html">
+      <td class="arg-text">The most responsible solution for the Orange County Government Center is adaptive reuse, which preserves the building&#x27;s structural integrity while modernizing its aesthetics and functionality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Aaron M. Renn</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/08/are-some-buildings-too-ugly-to-survive/aaron-m-renn" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Allison Arieff</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/08/are-some-buildings-too-ugly-to-survive/allison-arieff" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Anthony M. Daniels</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/08/are-some-buildings-too-ugly-to-survive/anthony-m-daniels" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">David J. Brown</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/08/are-some-buildings-too-ugly-to-survive/david-j-brown" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Raksha Vasudevan</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/04/08/are-some-buildings-too-ugly-to-survive/raksha-vasudevan" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The question of whether to save Paul Rudolph&#x27;s Orange County Government Center poses a false choice between aesthetic preference and historical significance. The harder, more honest question is who gets to decide, and on what timescale.</p>
+      <p>Brutalism is the architectural movement we love to hate. The very nickname, derived from Le Corbusier&#x27;s *béton brut* but absorbed into English as a near-pun, has been an albatross around the movement&#x27;s neck. Yet the same was once true of Victorian buildings, which mid-century modernists tore down with gusto, and of Art Deco, which preservationists had to fight to save in the 1970s. Penn Station was demolished in 1963 because mid-century New Yorkers found it bloated and old-fashioned; today its loss is the touchstone case for historic preservation. Taste cycles. The buildings we condemn as eyesores at age forty are often the ones our grandchildren plead to keep. Rudolph&#x27;s Goshen building, completed in 1967, is right at the dangerous age—too old to feel fresh, too young to feel historic.</p>
+      <p>That doesn&#x27;t mean every concrete pile deserves a reprieve. Rudolph is not a marginal figure; he chaired Yale&#x27;s architecture school and his Yale Art and Architecture Building is canonical. The Orange County Government Center is one of his more ambitious civic experiments, an interlocking composition of 87 roofs meant to dramatize the workings of democratic government. Whatever one thinks of the result, it is the kind of building that scholars and architects will be studying long after the leaks are forgotten. Significance is not a popularity contest, and preservation law exists precisely because majorities in any given decade cannot be trusted to recognize what later generations will value.</p>
+      <p>At the same time, communities are not museums, and a county government cannot be conscripted into permanent stewardship of a failing building it never wanted. The roof leaks, the ventilation is broken, mold is colonizing the offices. If Orange County is asked to bear preservation&#x27;s costs, preservationists need to come to the table with money, with adaptive-reuse plans, and with realistic answers about how the building can serve a working function. The DOCOMOMO chapter and the World Monuments Fund, which has put the building on its watch list, ought to be partners, not just protesters.</p>
+      <p>The right standard, then, is neither &quot;save everything significant&quot; nor &quot;let owners eliminate mistakes.&quot; It is: significant buildings carry a presumption against demolition, but that presumption can be rebutted when the costs of preservation fall unfairly on a public that needs functioning facilities and when no credible alternative use emerges. Ugliness, in itself, should never be the deciding factor. We are simply too unreliable as judges of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>Architecture is a strange art: it must not only be meaningful but also useful. The Orange County government building in Goshen, designed by Paul Rudolph, is now unloved and unusable—a leaky roof, mold, and faulty ventilation plague it. Its Brutalist style, once celebrated for its bold honesty, now strikes many as oppressive and cold. Yet, to demolish it simply because it is “ugly” would be a mistake, as tastes change. Victorian Gothic was once reviled, now cherished. But when a building fails so completely in function, the question shifts from aesthetics to practicality.</p>
+      <p>Preservationists argue that significant architecture deserves protection regardless of current fashion. Rudolph’s work is undeniably important; it represents a key moment in postwar modernism. But architecture exists for people, not just for history books. A building that is actively harming its occupants and draining public funds cannot be sustained indefinitely just because of its pedigree. The community’s voice matters: if the people who use it every day find it dysfunctional and demoralizing, their judgment should carry weight.</p>
+      <p>That said, demolition should not be the automatic response. A thoughtful community might instead commission a replacement that acknowledges the original’s place in history—perhaps incorporating salvaged elements or documenting the building thoroughly before it goes. We should not be too quick to erase our architectural past, even its mistakes. But we also should not be so beholden to architectural significance that we force people to live with a building that has, in every practical sense, failed. Sometimes, even significant buildings are, indeed, too ugly—and too broken—to survive.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The debate over the Orange County Government Center in Goshen, New York, captures a perennial tension in urban planning: the clash between architectural history and civic utility. Paul Rudolph’s Brutalist design is undoubtedly significant to architectural scholars. Yet, to the people who must work in and pay for it, the building is largely seen as an imposing, ugly failure plagued by leaks, mold, and faulty ventilation. While preservationists are right to argue that we should not demolish buildings based solely on fleeting aesthetic trends, a community must have the right to replace structures that fundamentally fail to serve their purpose.</p>
+      <p>History warns us against destroying buildings just because they have fallen out of fashion. Architectural tastes are notoriously cyclical. Victorian homes were once dismissed as haunted monstrosities, and Art Deco masterpieces were frequently razed to make way for generic glass boxes. Today, Brutalism is enduring its own period of intense public disdain. With its heavy, unyielding concrete forms, the style is undeniably alienating to the general public, making it easy to hate. Preservationists rightfully point out that if we tear down every Brutalist structure today, future generations will lament the loss of an entire era of architectural history.</p>
+      <p>However, architecture is fundamentally distinct from painting or sculpture because it must be inhabited. A government building is not merely a museum piece; it is a functioning workplace and a public utility. When a structure fails on basic metrics of health, safety, and operational efficiency, the argument for preservation weakens considerably. Orange County employees are not just facing an unpopular facade, but rather mold, poor air quality, and chronic water damage. When a building becomes a physical hazard and an unsustainable financial drain, its historical status must be weighed against the well-being of the community.</p>
+      <p>Furthermore, Brutalist buildings are uniquely difficult to retrofit. Their massive poured-concrete walls and rigid spatial organizations resist easy modernization. If a municipality cannot practically or economically update a structure to meet current environmental and workplace standards, forcing them to maintain it elevates academic architectural theory over the day-to-day civic realities of the people who rely on the space.</p>
+      <p>Not every building designed by a famous architect is a masterpiece, and not every example of a controversial movement deserves eternal life. We should actively identify and preserve the finest, most adaptable examples of Brutalism to protect our architectural heritage. But a community should not be held hostage by a failing structure just to appease architectural historians and critics from afar. When a building can no longer safely or effectively serve the public, demolition is not a cultural crime—it is a practical necessity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Yes, some buildings are too unhealthy, wasteful or obstructive to survive. But “too ugly” is a dangerous standard. Ugliness is often the first verdict rendered on new architecture and the last one to be revised. Victorian ironwork, Art Deco towers and even cast-iron commercial buildings all had periods of being considered expendable. If preservation had always followed public taste at its most impatient, many cities would be poorer.</p>
+      <p>The Orange County Government Center is not just any inconvenient old office block. Paul Rudolph was a major American architect, and the building is a serious example of a postwar civic ideal: muscular, complex, anti-monumental in the classical sense, and meant to make government visible as a set of interlocking public functions. That does not make the leaks, mold or ventilation failures irrelevant. A public building must serve the public before it serves architectural history.</p>
+      <p>But demolition should be the last argument, not the first. The right question is not whether many residents dislike Brutalism. The questions are: Can the building be repaired at a reasonable cost? Can it be adapted to contemporary needs? Would replacement truly be cheaper over its life cycle, including demolition, new construction and the loss of embodied energy? Is there a way to preserve the most significant portions while improving or adding to the rest?</p>
+      <p>Preservationists also have responsibilities. They cannot simply declare significance and hand taxpayers the bill. If a building is to be saved, advocates should help identify practical uses, financing, phased repairs and design changes that address the failures that made people hate it. Reverence for an architect should not become indifference to employees who worked under a leaking roof.</p>
+      <p>Communities should be allowed to remove genuine failures. But they should be wary of calling a challenging building a mistake merely because it is unfashionable. A significant ugly building deserves a fair trial: evidence, alternatives and imagination before the wrecking ball.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The Orange County government building in Goshen represents a genuine dilemma, but the framing of the question—asking whether &quot;ugly&quot; buildings &quot;deserve&quot; preservation—contains a conceptual trap. A building&#x27;s worth cannot be reduced to its immediate visual appeal, and communities that equate preservation with sentimentality often miss the point entirely.</p>
+      <p>Paul Rudolph was one of the defining figures of American modernism, and the Goshen building stands as a significant example of his mature Brutalist work. These are not merely buildings that failed to age gracefully; they are architectural documents of a particular moment when architects believed that raw material honesty and sculptural mass could express civic ambition. That vision may now seem dated or unappealing, but that judgment reflects our current taste, not some timeless aesthetic standard. The buildings we now cherish from earlier periods—Gothic cathedrals, Victorian civic structures—were often regarded as eyesores or inappropriate in their own time. Preservation, at its best, protects buildings not because everyone finds them beautiful but because they embody ideas worth remembering.</p>
+      <p>This does not mean every unpopular structure warrants rescue. The question of significance matters enormously. Rudolph&#x27;s work, the Yale Art and Architecture Building in New Haven, the Boston City Hall complex—these have sparked genuine architectural discourse and influenced generations of designers. Their preservation advocates are not simply sentimentalists; they recognize that demolishing such buildings would impoverish our built environment and erase evidence of an important design philosophy. By contrast, a mediocre structure from any era, however beloved by locals, rarely justifies the resources and effort of preservation.</p>
+      <p>Practical considerations also complicate the picture. A building with genuine structural problems, accessibility deficiencies, or prohibitive maintenance costs presents a real dilemma. Yet these are often questions of investment and political will rather than architectural irrelevance. Rudolph&#x27;s buildings have always been expensive to maintain; that was true when they were new. The solution to underfunding is not demolition but rather a serious commitment to stewardship.</p>
+      <p>Communities should not be forced to maintain buildings against their wishes, but neither should they be encouraged to view preservation as mere nostalgia. The Goshen building&#x27;s problems—leaky roof, mold—are technical challenges, not evidence that the building lacks value. Demolishing it would solve an immediate problem while destroying something that, once gone, cannot be recovered. That trade-off deserves more careful consideration than officials eager to replace &quot;ugly&quot; architecture with something more conventionally palatable seem willing to give.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (40 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The Orange County government building is not a victim of changing tastes. It is a victim of bad architecture. Let us be honest about Brutalism: it was a style born of ideology rather than humanity, and most of its surviving specimens demonstrate exactly why. They leak. They sweat. They funnel wind into pedestrian-hostile plazas. They turn raw concrete — a material that ages catastrophically in any climate with freeze-thaw cycles — into the dominant visual experience of civic life. Paul Rudolph&#x27;s Goshen building checks every one of those boxes.</p>
+      <p>Preservationists like to frame demolition as cultural philistinism, but that framing assumes the building in question is performing the basic functions of a building. A structure with chronic mold, failed ventilation, and a leaking roof is not &quot;significant architecture having a rough patch.&quot; It is a failed object. Orange County taxpayers have been asked to fund the upkeep of a workplace that made its occupants sick. The notion that they owe Rudolph&#x27;s reputation another forty years of expensive remediation is a peculiar inversion of who serves whom in a democracy.</p>
+      <p>There is also a category error at the heart of the save-it-all argument. Significance is not the same as worthiness of preservation in situ. We have photographs, drawings, models, and scholarly monographs documenting Rudolph&#x27;s work. The Yale Art and Architecture Building survives. The Goshen building can be recorded in HABS-quality documentation, salvaged for fragments that can enter museum collections, and then released. Architectural history will not lose Rudolph. It will lose one mediocre Rudolph.</p>
+      <p>The deeper question is who gets to decide. Architecture critics tend to live in cities far from Goshen, write about buildings they never have to work in, and treat local communities as unsophisticated when those communities reject what was imposed on them. Goshen did not commission a Brutalist landmark; it commissioned a county office. After half a century of trying to make the thing work, the community has earned the right to start over.</p>
+      <p>Some buildings are mistakes. Acknowledging that is not vandalism — it is maturity. The truly ugly thing would be forcing a small county to subsidize an architectural reputation in perpetuity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Every generation hates the architecture of the one before it. Victorians demolished Georgian terraces. Modernists tore down Victorian piles by the thousand, dismissing them as fussy, dishonest, and unhygienic. Penn Station — now mourned as one of the great civic crimes of the twentieth century — was bulldozed in 1963 by people who found it gloomy and obsolete. If we had let popular opinion in 1963 decide what survived, we would have lost most of what we now consider the irreplaceable fabric of American cities.</p>
+      <p>This is the context in which the Orange County building should be judged. Brutalism is roughly where Victorian Gothic was in 1930 or where Art Deco was in 1965: out of fashion, associated with discredited ideas, expensive to maintain, easy to mock. That is precisely the moment when buildings are most vulnerable, and precisely the moment when preservation has to do its hardest work. By the time consensus comes around — and with Brutalism it is already beginning to, as a younger generation rediscovers Rudolph, Goldberg, and the Smithsons — the best examples are usually gone.</p>
+      <p>The Goshen building is not just any Brutalist box. Paul Rudolph was one of the most consequential American architects of the postwar period, chair at Yale, mentor to Norman Foster and Richard Rogers. His civic work is rare; most of his commissions were institutional or private. Losing the Orange County government center subtracts something specific and unrepeatable from the record.</p>
+      <p>The maintenance problems are real but not unusual for any fifty-year-old public building that has been deferred-maintained for decades. The leaks and mold did not happen because Rudolph designed them in; they happened because successive county administrations chose patch jobs over investment. Demolition is being framed as a forced choice, but it is a political choice dressed up as engineering necessity.</p>
+      <p>We do not have to love a building to recognize that we are not its last custodians. The Goshen building will outlive the current taste for cul-de-sac vinyl-clad civic centers, just as Penn Station&#x27;s memory outlived the Madison Square Garden that replaced it. The question is whether it will outlive it as a building or only as a regret.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The debate over the Goshen building keeps getting framed as a contest between aesthetics and significance, as if those were the only two values in play. But there is a third value, and it is the one that ought to govern public architecture: usefulness to the public that paid for it.</p>
+      <p>A county government building exists to house the offices, records, and meetings of local government. When it cannot do that — when employees are getting sick, when records have to be moved out, when the public has to conduct its business in trailers — the building has failed at its primary job. Architectural significance does not exempt a structure from this basic accountability. If anything, civic buildings carry a higher obligation to serve, because they are not optional. Citizens cannot take their business elsewhere.</p>
+      <p>I do not think this means every troubled landmark should be flattened. It means preservation arguments have to take seriously the cost of preservation, and who bears it. In Goshen, that cost falls on a county of roughly 380,000 people, many of them not wealthy, who never asked for a Paul Rudolph in the first place. The renovation estimates that have circulated run into the tens of millions of dollars, and even then would not produce a building as functional as new construction at similar cost. Asking residents to pay a premium so that architecture students and critics elsewhere can have a study object is a hard sell, and it should be.</p>
+      <p>There are middle paths. Partial preservation — retaining a wing, a facade, or the dramatic interior staircases — could honor the building&#x27;s significance without committing to the full carrying cost. Adaptive reuse by a private buyer, with public functions relocated, is another option that has worked elsewhere with Brutalist structures. These compromises take imagination, but they exist.</p>
+      <p>What I resist is both extremes: the reflexive demolitionist who treats the entire postwar period as a mistake to be erased, and the absolutist preservationist who treats every signed building as untouchable regardless of cost. Goshen deserves a serious cost-benefit conversation, not a moral one. The building&#x27;s ugliness is beside the point; its functionality, and the price of restoring it, is not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>I want to defend a slightly heretical position: ugliness itself can be a reason to preserve a building.</p>
+      <p>Most of what we save, we save because we already like it. Beautiful buildings, charming buildings, beloved buildings — these have constituencies that lobby for them. The harder and more interesting question is whether a society can preserve things it finds difficult, alienating, or even repellent, because they tell the truth about a moment in its history.</p>
+      <p>Brutalism is one of those truths. It was the architectural language of postwar public ambition: universities expanding to absorb the baby boom, cities building new civic centers, governments asserting through raw concrete that they were modern, serious, and permanent. The style failed in many ways — it ignored climate, it ignored pedestrians, it ignored the fact that concrete weathers badly — but its failures are themselves historically eloquent. They tell us what midcentury Americans believed about authority, transparency (Rudolph loved the visible structure), and the relationship between government and citizen.</p>
+      <p>Demolishing the Goshen building because it is ugly is a way of pretending that period never happened, or that we have always had the tastes we have now. It is the architectural equivalent of editing the family album to remove the awkward decade. A mature culture keeps the awkward decade.</p>
+      <p>I would extend this further. We routinely preserve Civil War battlefields, slave quarters, tenement museums, and Cold War missile silos precisely because they are unlovely. Their discomfort is the point. Brutalism is not morally analogous to those things, of course, but the principle holds: significance is not synonymous with beauty, and a preservation regime that only saves the pretty is not a preservation regime at all — it is just curated nostalgia.</p>
+      <p>None of this requires Goshen to swallow a non-functional building forever. Fix the roof. Fix the ventilation. Treat it as you would treat any aging public asset with character: invest, adapt, and live with it. The argument that it is too ugly to be worth fixing is, in the end, an argument that we should only invest in what already pleases us. That has never been how a serious culture treats its inheritance.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The question &quot;are some buildings too ugly to survive?&quot; smuggles in an assumption worth challenging: that &quot;ugly&quot; is a stable category we can act on. It isn&#x27;t. Within living memory, brownstones were ugly, cast-iron facades were ugly, Art Deco was kitsch, and the Eiffel Tower was a national embarrassment that prominent Parisians petitioned to remove. Aesthetic verdicts are the least durable thing about a building. The roof, the steel, and the concrete will all outlast our opinions about them.</p>
+      <p>That said, I do not think this means anything significant should be saved automatically. The honest answer to the Goshen question requires separating three issues that critics keep tangling together.</p>
+      <p>First, the functional issue. A building that cannot be made habitable for a reasonable sum is a different problem from a building that is merely unloved. The Orange County government center&#x27;s condition is the result of decades of deferred maintenance more than of Rudolph&#x27;s design, but the bill for catching up is real, and it is fair for a community to weigh it.</p>
+      <p>Second, the significance issue. Rudolph is a major figure, and Goshen is a substantial example of his civic work. There are not many of these. If we are going to have a meaningful record of mid-century American architecture in fifty years, buildings like this are the evidence. Documentation alone is not a substitute, any more than a photograph of a painting is a substitute for the painting.</p>
+      <p>Third, the democratic issue. Local communities do have standing to shape their own civic spaces, and outsiders should be humble about telling Goshen what to keep. But democratic legitimacy is not unlimited; we do not, for instance, let every generation revote on whether to keep Independence Hall. Some things belong to a longer conversation than a county budget cycle.</p>
+      <p>My own view: find a way to keep it. Not because it is beautiful — I do not find it so — but because the cost of being wrong about demolition is irreversible, and the cost of being wrong about preservation is only money and inconvenience. We can always tear it down in twenty years if we still want to. We cannot bring it back. Asymmetry of regret should guide us when taste cannot.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>We often confuse ugliness with unfamiliarity. The Victorian Gothic piles we now treasure were once reviled as monstrous. The Eiffel Tower was decried as a “tragic lamppost.” Today’s unloved brutalist behemoths may yet follow the same arc into grace. The Orange County Government Center in Goshen, N.Y., designed by Paul Rudolph, is a case in point. Yes, its concrete façades are hulking, its cantilevers jarring, its interior a labyrinth of leaked roofs and mold. But we do not tear down a significant Goya because we find its subject matter grotesque, nor do we discard an early Dickens novel because its serialized plot meanders. A work of civic architecture by a master like Rudolph is a cultural artifact, and its “ugliness” is inseparable from its meaning.</p>
+      <p>Rudolph’s building embodies a moment when government aspired to be monumental, to express democratic ambition through bold form, not mere bureaucratic efficiency. The interconnected volumes, the play of light and shadow across textured concrete, the spatial complexity—these are not accidents of vanity; they are an architectural language that challenged the bland glass box. The roof leaks not because of the style, but because of decades of deferred maintenance and construction compromises. Mold and faulty ventilation are failures of stewardship, not of design. Every landmark building requires costly care; the cathedrals of Europe would have crumbled centuries ago had communities been unwilling to invest in lead roofs and buttresses.</p>
+      <p>The question is not whether the building is unpopular today, but whether it possesses enduring artistic and historical significance. It does. It is a key work of Brutalism’s second generation, a rare civic commission from an architect who reshaped American modernism. If we permit the demolition of significant architecture because a current majority finds it ugly, we set a dangerous precedent. The taste of the moment becomes a wrecking ball. Preservation law exists precisely to defend the cultural record from such transitory judgments. The Orange County building can be repaired, repurposed, and even adapted—adaptive reuse is not desecration—but its presence, its challenging forms, should remain as a testament to a complex chapter of our built heritage. A building too ugly to survive today may be irreplaceable tomorrow.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>Let’s be blunt: architecture is not an art form to be sealed in a vitrine; it must shelter, function, and, yes, not oppress the people who use it daily. The Orange County Government Center fails on all counts. Paul Rudolph’s concrete labyrinth leaked from the start, its ventilation system bred mold, and its baffling internal geography made even simple errands an ordeal. Now shuttered, it drains public funds while doing nothing. Nostalgia for Brutalism’s heroic period cannot justify forcing a community to inhabit a sick building that its own employees and residents overwhelmingly despise. We should document it thoroughly, salvage its best architectural fragments, and then clear the site for a structure that serves the living.</p>
+      <p>There is a fundamental arrogance in the preservationist argument. It assumes that the judgments of architectural historians and a small cohort of design connoisseurs should override the lived experience of the people who must work in, visit, or pay for the building. The “significance” of the Rudolph building is real, but it is a scholarly significance, a footnote in a doctoral thesis. That does not entitle it to perpetual physical existence. We do not preserve every Model T Ford in situ simply because it marked a turning point in industrial design; most rust away, while a few are kept in museums. A municipal office building is not a museum artifact. It is a tool. When the tool is broken and actively harmful—leaking roofs compromising records, mold aggravating asthma—the community has every right to replace it.</p>
+      <p>Moreover, the notion that ugliness is merely a phase misunderstands how buildings communicate. Brutalism’s fortress-like massing, its unrelieved grayness, its disregard for pedestrian scale, strike many as authentically hostile. This is not the temporary shock of the new; it is a permanent aesthetic of intimidation. Goshen residents did not need a campaign by critics to tell them the building was ugly; they felt it in their bones. Demolishing an “architectural mistake” does not erase history. It acknowledges that even great architects can produce deeply flawed works, and that a healthy city is one that can correct its course. Let us keep the drawings, the photographs, the scholarly essays. Let the building itself, mercifully, go.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The Goshen debate has been framed as a clash between elite taste and popular will, but the real issue is neither ugliness nor significance—it is stewardship. A building can be both a masterpiece and a disaster, as Paul Rudolph’s Orange County Government Center painfully demonstrates. The brutalist icon is undeniably significant: its cascading volumes and corduroy-concrete walls represent a visionary attempt to make democratic governance spatially dramatic. Yet it is also undeniably failing, with water intrusion that predates the recent roof troubles and an interior plan so dysfunctional that it impeded the very civic engagement it meant to symbolize. The question should not be “Should we save it at all costs?” but “Can we save it, and to what end?”</p>
+      <p>The binary of preservation versus demolition misses the far more constructive middle ground of adaptive reuse. The building’s problems are, to a large extent, technical, not inherent to its brutalist form. A new roof membrane, updated mechanicals, and a careful reconfiguration of interior partitions could solve the functional crises while preserving the sculptural exterior and the most dramatic public spaces. This is not an untested model: Boston’s City Hall, another brutalist monument, has been the subject of serious rehabilitation studies, and Yale’s Rudolph-designed Art and Architecture Building underwent a celebrated restoration after a devastating fire. The cost would be higher than a generic box, but not necessarily higher than demolition, abatement, and new construction. The choice is not between a moldy relic and a clean slate; it is between a thoughtless write-off and a creative reinvestment in civic memory.</p>
+      <p>That said, preservation cannot become an absolute. If a rigorous engineering analysis shows that the concrete structure is itself compromised beyond repair, or if the cost of truly making it watertight and accessible proves genuinely prohibitive for this small county, then a respectful demolition may be the only honest path. In that case, the site should host a design competition that explicitly engages Rudolph’s legacy—perhaps a new building that incorporates salvaged elements or echoes the original’s spatial drama. The goal should never be to simply bulldoze an “ugly” mistake, but to engage with architectural history as a living, adaptable dialogue. A building’s survival should hinge not on whether it pleases the eye of a passerby, but on whether its fabric can be made to serve the future while honestly acknowledging the past.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Every generation has architecture it loves to hate, and every generation is certain its contempt is final. The brutalist civic buildings of the 1960s and ’70s are our current bêtes noires—unloved, weathered, and often damp. The Orange County Government Center by Paul Rudolph is a textbook example. But before we consign it to landfill, we must ask: who gets to define ugliness, and for how long? The very qualities that provoke revulsion today—rough concrete, aggressive massing, complex geometry—are the deliberate expressions of a philosophy that rejected the sleek, corporate anonymity of postwar modernism in favor of authenticity and monumental civic presence. To demolish Rudolph’s building because it is “too ugly to survive” is to confuse aesthetic prejudice with objective failure.</p>
+      <p>Rudolph was no minor figure. He was the chair of Yale’s architecture school during its most influential period and a designer of extraordinary spatial imagination. The Goshen building, with its interlocking roof forms and internal “streets,” was an attempt to create a democratic agora in concrete. Its flaws are real: the original single-pane glazing and flat roofs invited leaks from day one, and the county’s chronic underfunding of maintenance turned small problems into a crisis. Yet these are failures of detailing and care, not of conception. The Pompidou Centre in Paris was despised when it opened; now it is beloved. The Victorian Houses of Parliament were called a national disgrace. Time has a way of turning outrage into awe, provided the structure survives the storm.</p>
+      <p>The argument that a community should be able to “eliminate architectural mistakes” is a declaration of cultural amnesia. Architecture is not like a bad haircut that can be regretted and regrown. Significant buildings are irreplaceable records of their era’s ambitions, anxieties, and technologies. The Rudolph building tells us what America thought of its government in the 1960s: that it was bold, complex, and not afraid to be challenging. Erasing it would be an act of historical cowardice, a decision made not because the building cannot be fixed, but because we are currently uncomfortable with the story it tells. Conservation is an act of humility. We owe it to the future to preserve the difficult chapters of our built heritage, not just the pretty ones. Fix the roof, scrub the mold, and let the building live long enough to change minds.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The fight over the Orange County Government Center is often cast as a culture war between egghead preservationists and shortsighted philistines. That framing is a dodge. The central question is simpler and more democratic: should the people who live with a building and pay for its upkeep have the final say over its fate, or should that power rest with a self-selected group of architectural experts? If democracy means anything, the answer must be that a community can decide to retire a public building that it finds not just ugly, but functionally and symbolically hostile.</p>
+      <p>The Rudolph building is indeed an important work of Brutalism, but “importance” is not a deed of perpetual ownership over a public site. A building can be significant and also a mistake. The two are not mutually exclusive. The Goshen center was a flawed experiment from the start. Its radical interior made wayfinding a nightmare. Its concrete envelope, in the Northeast climate, turned the structure into a mold incubator. The employees who fled the building in 2011 were not unsophisticated yokels; they were rational actors responding to a workplace that made them ill. To tell them and their elected officials that they must spend millions to restore a building they loathe because a coterie of critics in New York finds it intellectually stimulating is the height of anti-democratic paternalism.</p>
+      <p>Preservation law is an important tool, but it should be wielded with restraint. It exists to protect truly irreplaceable landmarks from private greed or neglect, not to straitjacket a county’s ability to provide basic services. A municipal office building is not Independence Hall. If the local community, through its legitimate political process, studies the alternatives and decides that the best use of public money is a new, efficient, healthy building—even a modest one—that decision deserves respect. Architecture is a social art. A building that fails socially is, by definition, a failure, regardless of what the magazines say. Let the scholars mourn, publish their monographs, and preserve the blueprints. Goshen should be free to build itself a home for its government that its citizens can enter without a sense of dread. That is not cultural vandalism; it is civic health.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Taste is famously fickle, but the wrecking ball is permanent. When we debate whether to demolish Paul Rudolph’s Orange County Government Center—or any controversial midcentury building—we must remember that our current aesthetic judgments are not the final word on history.</p>
+      <p>In the 1950s and 60s, Victorian architecture was widely considered hideous, gloomy, and utterly disposable. Because of that prevailing attitude, countless masterpieces of the 19th century were lost to urban renewal. The demolition of the original Pennsylvania Station in 1963 stands as the original sin of the modern architectural preservation movement. At the time, proponents of its demolition argued it was outdated, inefficient, and too expensive to clean. Today, we mourn its loss as a civic tragedy.</p>
+      <p>We are currently in a similar trough of appreciation for Brutalism. The exposed concrete, complex geometries, and monumental scale of the 1960s and 70s are currently out of fashion, viewed by many as cold or alienating. But to demolish Rudolph’s work in Goshen simply because it is currently unpopular would be a grave mistake. Rudolph was a master of space and light, and the Goshen complex is a prime example of a distinct, optimistic era in American civic architecture that sought to modernize government through bold design.</p>
+      <p>Yes, the building has functional problems. Leaky roofs and faulty HVAC systems are serious issues. But these are failures of maintenance and engineering, not of inherent architectural worth. Any 40-year-old building that has suffered from deferred maintenance will have a leaky roof. We must decouple the challenge of fixing bad plumbing from the historical value of the structure itself. Future generations will not forgive us if we erase the architectural record of the mid-20th century merely because we lacked the imagination and patience to restore it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Architecture, unlike painting or sculpture, is an applied art. A building is not merely an object to be admired by critics in a museum; it is a machine for human use. When a building fails its users as spectacularly as the Orange County Government Center has, it forfeits its right to exist, regardless of the pedigree of its architect.</p>
+      <p>The defenders of Paul Rudolph’s Brutalist complex in Goshen point to its historical significance and its complex, interlocking spaces. But what good are complex interlocking spaces if the roof leaks on the people trying to do their jobs? What is the value of monumental concrete if it breeds mold and compromises the respiratory health of county employees? A government building must first and foremost serve the public and the civil servants who occupy it.</p>
+      <p>The public’s distaste for this building is not just a matter of subjective &quot;ugliness.&quot; It is a visceral reaction to a structure that is inherently hostile to human comfort. Brutalism’s fatal flaw was its arrogance—its insistence that abstract architectural theory was more important than the lived experience of the occupants. The Goshen building is a labyrinthine fortress with dozens of separate roof levels (hence the endless leaks) and tiny, slit-like windows that deprive workers of natural light.</p>
+      <p>Local officials are entirely justified in seeking to demolish it. To force a community to spend millions of taxpayer dollars to preserve a dysfunctional, deteriorating, and widely loathed structure just to appease a vocal minority of architectural historians is absurd. Communities should not be held hostage by the failed architectural experiments of the past. If a building cannot be made to function safely, comfortably, and economically, the most responsible course of action is to tear it down and build something better.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The debate over the Orange County Government Center presents a false dichotomy: we are told we must either freeze a flawed Brutalist relic in amber or bulldoze it completely. In reality, the most responsible solution—both economically and environmentally—lies in the middle ground of adaptive reuse.</p>
+      <p>Before we declare a building &quot;too ugly to survive,&quot; we must consider the immense environmental cost of demolition. The greenest building is the one that is already built. Demolishing Rudolph’s massive concrete structure would require sending thousands of tons of debris to local landfills, while simultaneously expending vast amounts of energy and raw materials to construct a replacement. In an era where carbon footprints and sustainability must be at the forefront of municipal planning, throwing away the embodied energy of the existing structure is incredibly wasteful.</p>
+      <p>Furthermore, &quot;ugly&quot; is often just a lack of imagination. Buildings like the Goshen center have incredibly strong bones. Their structural grids and expansive volumes offer a blank canvas for creative renovation. We have seen successfully adapted Brutalist structures where the addition of modern glazing, warmer materials like wood, and updated landscaping have completely transformed the perception of the building.</p>
+      <p>Instead of tearing the complex down, Orange County should strip the building back to its concrete skeleton. Fix the engineering flaws—redesign the problematic rooflines to stop the leaks and overhaul the HVAC systems to eliminate the mold. Then, reskin and reimagine the interior spaces to bring in more natural light and make the layout more intuitive for the public. We can respect the architectural heritage of Paul Rudolph without being enslaved by his original, flawed execution. A thoughtful renovation can solve the functional problems, soften the aesthetic edges, and save the county the environmental and financial costs of starting from scratch.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>When analyzing the fate of the Orange County Government Center, we must strip away the lofty architectural theory and look at the cold, hard numbers. Municipal governments in 2012 are facing unprecedented budget crises. Property tax revenues are strained, pension obligations are rising, and essential services are on the chopping block. In this economic climate, indulging in the preservation of a perpetually failing piece of experimental architecture is a luxury taxpayers simply cannot afford.</p>
+      <p>The issue with Paul Rudolph’s Goshen complex is not simply that it is visually unappealing; it is a financial black hole. The building’s very design—with its 87 different roof levels and vast expanses of single-pane glass—makes it a nightmare to heat in the winter and cool in the summer. The complex geometry practically guarantees structural failures and water intrusion. For decades, Orange County taxpayers have poured millions of dollars into a futile effort to maintain a building that was fundamentally flawed from the day it opened.</p>
+      <p>Preservationists argue that the county should spend the estimated $40 million to $50 million required to gut and restore the structure. But why should local residents foot a massive bill to save a building that they inherently dislike and that fails to meet their needs? For a fraction of that cost, the county could build a modern, energy-efficient, and structurally sound facility that costs significantly less to operate over the next fifty years.</p>
+      <p>Civic buildings are built with public money to serve the public trust. Goshen is a working county seat, not an open-air museum for midcentury architectural curiosities. If private architectural societies wish to purchase the building and maintain it out of their own pockets, they should be welcome to do so. But taxpayers should not be forced to subsidize an expensive, mold-ridden architectural mistake simply because it has a famous name attached to it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The aesthetic debate surrounding Brutalist structures like the Orange County Government Center often misses a deeper, more important point: what a civic building communicates to its citizens. The argument for demolishing Paul Rudolph&#x27;s Goshen complex isn&#x27;t just about mold or leaky roofs, though those are damning enough. It is about the fundamental incompatibility of Brutalist ideology with democratic values.</p>
+      <p>Architecture is a language. When a government builds a courthouse or an administrative center, it is making a statement about the relationship between the state and the individual. Traditional classical architecture, for all its grandiosity, communicated stability, civic pride, and an aspiration toward justice. Modern glass structures, whatever their faults, attempt to communicate transparency and accessibility.</p>
+      <p>Brutalism, by contrast, communicates fortress-like intimidation. Characterized by heavy, oppressive masses of raw concrete, defensive slit windows, and confusing, maze-like entrances, buildings like the Goshen center look less like public squares and more like bunkers designed to repel a riot. They are psychologically heavy and profoundly unwelcoming. For a citizen arriving to pay their taxes, contest a ticket, or serve on a jury, a government building should not induce a sense of dread or alienation.</p>
+      <p>The &quot;ugliness&quot; that the public reacts to in Brutalism is not a lack of sophistication; it is a very accurate reading of the architecture&#x27;s inherent hostility. Paul Rudolph and his contemporaries were fascinated by dramatic sculptural forms and the manipulation of scale, but they frequently treated the actual human beings who had to navigate their creations as mere afterthoughts.</p>
+      <p>We should not preserve mistakes out of a misguided sense of historical obligation. Civic architecture must serve the community, not just physically, but spiritually. It is time to tear down these crumbling concrete fortresses and replace them with civic spaces that are open, welcoming, and reflective of a government that serves the people, rather than one that hides from them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Architecture is distinct from sculpture in one crucial, unavoidable respect: it must be inhabited. When we evaluate the worth of a building, we cannot look solely at its aesthetic ambition or its place in the timeline of architectural theory. We must ask whether it serves the human beings who work inside it and the community that paid for it. By that metric, Paul Rudolph’s Orange County Government Center is a spectacular failure, and it does not deserve to survive.</p>
+      <p>The defense of this building, and of Brutalism more broadly, rests on the idea that these structures are &quot;significant.&quot; But significant to whom? To architectural historians, perhaps. To the people of Goshen, New York, the building is a dreary, leaking, mold-infested labyrinth. For decades, employees have had to contend with faulty ventilation, drafty windows, and a roof that seemingly cannot keep the water out. To force public servants to work in an unhealthy, failing structure simply to preserve an example of a mid-century design trend is a profound misplacement of priorities.</p>
+      <p>When a building reaches the point where it is actively harming the productivity and morale of its occupants, its &quot;significance&quot; becomes irrelevant. Buildings are not museum pieces meant to be preserved in amber; they are tools. If a tool is broken beyond repair, you discard it.</p>
+      <p>Furthermore, &quot;ugly&quot; is not a trivial complaint. Public architecture should aspire to uplift the public realm. Brutalism’s aggressive, heavy, and fortress-like concrete masses often communicate hostility rather than democratic transparency. The people of Orange County are the ones who must look at this building, pay to maintain it, and conduct their civic lives within it. They should not be held hostage to the aesthetic experiments of the 1960s. If they wish to tear down a dysfunctional, unloved structure and replace it with something welcoming and functional, they have every right to do so. Let the historians keep it in their textbooks; let Goshen have a working building.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>We have been here before, and we usually live to regret it. In the middle of the twentieth century, Victorian architecture was widely considered hideous—dark, fussy, and embarrassingly out of date. Countless magnificent structures were demolished in the name of urban renewal because the prevailing taste of the era deemed them &quot;ugly.&quot; The most tragic example, the 1963 demolition of New York’s original Pennsylvania Station, sparked the modern preservation movement precisely because we realized, too late, that aesthetic judgments are fickle, but demolition is forever.</p>
+      <p>Today, Brutalism is the victim of the same generational myopia. Structures like Paul Rudolph’s Orange County Government Center are currently at the nadir of their popularity. Their raw concrete facades and complex, interlocking geometric volumes clash with the sleek, glass-box aesthetic currently in vogue. Because they are 40 or 50 years old, they are also suffering from delayed maintenance, which manifests as leaky roofs and failing HVAC systems.</p>
+      <p>But we must separate the issue of maintenance from the issue of architectural merit. A leaky roof is a plumbing and engineering problem, not a reason to erase a masterwork of modernism. Rudolph was one of the most important American architects of the twentieth century. The Goshen complex is a prime example of his spatial genius, designed to break down the monolithic scale of government into human-sized, interacting components.</p>
+      <p>To destroy it because it is currently unfashionable would be an act of profound cultural vandalism. In twenty or thirty years, when the pendulum of taste inevitably swings back, a new generation will look at the photographs of the Orange County Government Center and wonder how we could have been so shortsighted. Historic preservation cannot merely be a popularity contest. Its very purpose is to protect significant works of architecture during those awkward decades when they are unappreciated, ensuring that our built environment retains the complex, multi-layered history of our cultural evolution.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The debate over the Orange County Government Center is not really about architecture; it is about democracy. It is a conflict between the local citizens who must live with a building and the distant critics who merely theorize about it. In this conflict, the rights of the community must reign supreme.</p>
+      <p>Whenever a prominent, unpopular building is threatened with demolition, a familiar script plays out. Prominent architecture critics, preservationists, and academics rally to its defense. They draft petitions and write impassioned essays in national newspapers explaining why the unwashed masses simply fail to understand the brilliance of the raw concrete and fragmented floor plans. What is notably absent from these defenses is any empathy for the county clerks, taxpayers, and local officials who actually interact with the building daily.</p>
+      <p>It is easy to admire the &quot;heroic proportions&quot; of a Brutalist masterwork when you are looking at a black-and-white photograph in a Yale classroom. It is entirely different to work forty hours a week in a dark, moldy room with inadequate ventilation, or to navigate a confusing, hostile plaza to pay your property taxes.</p>
+      <p>Architecture is fundamentally a public art. Unlike a painting, which one can choose not to look at, public architecture is imposed upon a community. Therefore, the community must have the ultimate say in its fate. If an overwhelming majority of the people who use and fund a government building find it oppressive, dysfunctional, and ugly, that collective judgment is entirely valid. The citizens of Goshen are not stewards of a Paul Rudolph museum; they are a community that needs a functional center for local government.</p>
+      <p>Forcing a town to endure millions of dollars in renovation costs just to placate the aesthetic sensibilities of architectural elites is profoundly undemocratic. We should not preserve buildings that fail the fundamental test of serving their communities. Let the local voters and their representatives decide. If they vote for the wrecking ball, it is their right to swing it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>As we debate the aesthetic merits and historical significance of Brutalist buildings like the Orange County Government Center, we are completely ignoring the most urgent issue of our time: the environmental impact. In an era defined by the looming threat of climate change and the need for sustainable practices, demolishing a massive concrete structure simply because it is perceived as &quot;ugly&quot; or has maintenance issues is environmentally reckless.</p>
+      <p>The greenest building is the one that is already built. This is a foundational principle of modern sustainable architecture. The sheer volume of concrete, steel, and glass in the Goshen building represents an enormous amount of &quot;embodied energy&quot;—the energy that was required to extract, manufacture, and transport those materials to the site in the first decade of its life.</p>
+      <p>When we demolish a building like this, we do two catastrophic things to the environment. First, we send thousands of tons of concrete and debris into local landfills. Second, we demand the expenditure of massive amounts of new energy and resources to manufacture the steel and concrete required for the replacement structure. No matter how many LEED-certified solar panels or low-flow toilets the new government center might have, it will take decades to offset the carbon debt created by demolishing the old one.</p>
+      <p>Yes, the building has a leaky roof, mold, and poor ventilation. These are serious problems, but they are solvable problems. We have the engineering capabilities to strip a building down to its structural skeleton, remediate the mold, install modern, energy-efficient HVAC systems, and replace the roof.</p>
+      <p>We must stop treating commercial and civic buildings as disposable commodities. We can no longer afford the luxury of tearing down structurally sound buildings just because architectural tastes have shifted. Preserving the Orange County Government Center isn&#x27;t just about saving Paul Rudolph’s legacy; it is about taking environmental stewardship seriously and recognizing that true sustainability means working with what we already have.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The debate over Brutalism usually falls into a predictable trap: a binary choice between pristine preservation and total demolition. The Orange County Government Center requires a third way. We should treat these mid-century structures not as untouchable relics or irredeemable mistakes, but as robust frameworks ripe for adaptive reuse and radical renovation.</p>
+      <p>Both sides of the current debate have valid points. The preservationists are right that Paul Rudolph was a visionary architect and that the building’s complex, interlocking masses possess a genuine sculptural power that cannot be easily replicated today. But the building&#x27;s critics are equally right: the structure has failed functionally. The uninsulated concrete is energy-inefficient, the roof leaks persistently, and the brutalist aesthetic can feel alienating and dark.</p>
+      <p>The solution is not to bulldoze the site, but to creatively hack it. What if we kept the spectacular concrete skeleton but replaced the failing, dark windows with expansive, highly efficient modern glass? What if the oppressive, leaky rooflines were capped with green roofs or luminous glass additions that brought natural light deep into the county offices? What if the harsh concrete interiors were softened with wood paneling and improved lighting?</p>
+      <p>We have seen this approach work brilliantly elsewhere. Old factories and warehouses that were once considered civic blights have been transformed into highly sought-after spaces precisely because developers retained their raw structural power while aggressively updating their systems and aesthetics. Brutalism is perfectly suited to this kind of intervention. Because the buildings are essentially massive grids of poured concrete, they are incredibly strong and can support dramatic structural modifications.</p>
+      <p>We must stop viewing historic preservation as a strict mandate to freeze a building exactly as it was on opening day. We can respect Rudolph&#x27;s spatial genius without being enslaved to his 1960s material choices. By embracing a bold, adaptive redesign, Orange County could solve its mold and maintenance issues, retain an important piece of its architectural heritage, and create a truly unique, modern civic center.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The question should not be whether the Orange County Government Center is ugly. Many important buildings were called ugly before they were understood. The question is whether a public work by a major architect, representing a major movement in postwar architecture, can be destroyed simply because its first generation of users has grown tired of it. If the answer is yes, preservation will always arrive too late.</p>
+      <p>Paul Rudolph&#x27;s building is not a minor curiosity. It belongs to a moment when architects believed public buildings could be more than polite envelopes for bureaucracy. Brutalism, at its best, tried to make institutions visible: heavy, textured, civic, uncompromising. One may dislike the concrete, the massing, the internal complexity. But dislike is not the same as insignificance. We preserve Victorian courthouses, cast-iron warehouses and early modern houses not because every citizen finds them charming, but because they record an argument about what a city or county thought it could be.</p>
+      <p>The practical objections are serious. A leaky roof, mold and poor ventilation are not aesthetic quibbles. A county cannot ask employees to work in an unhealthy building, nor can taxpayers be expected to fund a museum piece that does not function. But those failures are also partly failures of maintenance and alteration. Modernist buildings are often judged after decades of deferred care, while older buildings are allowed the dignity of restoration. We do not demolish every nineteenth-century structure because its plumbing failed.</p>
+      <p>Preservation need not mean freezing the building in amber. The county should commission a rigorous independent study of repair, adaptation and partial reuse before demolition is treated as inevitable. It may turn out that the cost is genuinely unreasonable. But the burden of proof should be high, especially for a public building by an architect of Rudolph&#x27;s stature.</p>
+      <p>Ugly buildings sometimes deserve to survive because beauty is a poor short-term test of cultural value. A community inherits not only its prettiest monuments but its experiments, arguments and mistakes. To erase every difficult building is to produce a flatter, safer, less honest public memory.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>Architectural significance is not a magic shield against democratic judgment. The Orange County Government Center is a public building, not a sculpture in a private garden. It exists to serve the people who pay for it, work in it and visit it to obtain public services. If it leaks, breeds mold, ventilates badly and is widely disliked by the community it serves, then officials are not philistines for considering demolition. They may simply be doing their job.</p>
+      <p>Preservationists often speak as if the future will certainly thank them for saving today&#x27;s rejected buildings. Sometimes that is true. But this confidence can become a form of aesthetic paternalism. The residents of Orange County are told that their own experience of the building is less important than the judgment of specialists who admire Paul Rudolph and Brutalism. Yet architecture is not only an art historical category. It is also a daily environment. A courthouse or county office imposes itself on clerks, taxpayers, jurors and neighbors in a way that a painting does not.</p>
+      <p>Nor is &quot;significant&quot; the same as &quot;obligatory to keep.&quot; Many things are significant because they mark an error. Urban renewal plans were significant. Superblocks were significant. Highways driven through city neighborhoods were significant. We can document them, study them and learn from them without requiring the public to preserve each physical example at great expense. If a building is expensive to repair, inefficient to operate and alienating to its users, a community should be allowed to conclude that the experiment failed.</p>
+      <p>This is especially true for local government, where budgets are finite. Money spent rescuing a troubled building is money not spent on schools, roads, health services or a new public facility that might be more accessible and durable. Preservationists should be candid about that tradeoff. They are not merely asking people to appreciate concrete; they are asking them to pay for it.</p>
+      <p>Before demolition, the county should document the building thoroughly and salvage what can be salvaged. But the final decision should rest with the community and its elected officials. Architecture serves public life. When it stops doing so, even a famous building may have reached the end of its useful life.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The most revealing word in this debate is &quot;mistake.&quot; To call the Orange County Government Center an architectural mistake may be emotionally satisfying, but it ends the inquiry too soon. Buildings are rarely simple mistakes. They are bundles of ambition, technology, fashion, politics, maintenance and use. The wiser question is not &quot;save or raze?&quot; but &quot;what kind of public value can still be made from this difficult object?&quot;</p>
+      <p>Brutalist buildings are especially vulnerable because their virtues and defects are often the same. Their weight, texture and complexity can feel powerful when cared for and hostile when neglected. Their interiors can be spatially adventurous or confusing. Their concrete can look noble in good light and grim under stains. That ambiguity is precisely why the Orange County building deserves more imagination than a binary verdict.</p>
+      <p>A responsible path would begin with an honest diagnosis. Which problems are inherent to Rudolph&#x27;s design, and which are the result of age, water intrusion, past repairs or deferred maintenance? Which parts are indispensable to its architectural character, and which could be altered? Could the county retain the most significant portions while replacing failing systems, adding daylight, improving entrances and making public circulation clearer? Could some functions move elsewhere while the building takes on a mixed civic, cultural or administrative use?</p>
+      <p>This approach will frustrate purists on both sides. Preservationists may resist changes that soften Rudolph&#x27;s intent. Demolition advocates may see adaptation as an expensive compromise. But public architecture often requires compromise. A building that cannot be used safely is not truly preserved; it is merely defended as an artifact. A building demolished without serious study, however, is not a practical solution so much as an act of impatience.</p>
+      <p>There is also a civic lesson here. Communities inherit decisions they did not make. Some are beloved; others are awkward. The mature response is not to pretend every inheritance is precious, nor to destroy what embarrasses us. It is to ask whether transformation can produce value that demolition cannot.</p>
+      <p>If careful analysis shows that reuse is fiscally absurd, demolition may be justified. But the county should first test adaptation seriously. A hard building sometimes needs a better second life, not a wrecking ball.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>We should be careful about turning Brutalism into a martyr. The fact that a building is unfriendly, disliked and physically failing does not automatically mean the public has misunderstood it. Sometimes the public understands a building quite well. It understands that the entrance is forbidding, the rooms are unpleasant, the concrete has aged badly, and the building seems to express power over citizens rather than service to them.</p>
+      <p>The Orange County Government Center may be significant as a Paul Rudolph work, but its significance should sharpen criticism, not silence it. Rudolph was a gifted architect, and many of his drawings and spaces have real force. But postwar architectural ambition often came with a troubling indifference to ordinary users. The heroic language of concrete could make public institutions look monumental while making daily life inside them harder. In a government building, that matters. Citizens coming to resolve a tax matter, attend a hearing or get assistance should not feel as if they are entering a fortress designed to impress other architects.</p>
+      <p>Preservation debates often privilege the visual and historical record over lived experience. A building is praised for its sculptural massing, its boldness, its place in a movement. Meanwhile, the receptionist sitting under a leak or the visitor trying to navigate a confusing plan becomes secondary. That hierarchy is backward for civic architecture. The test of a public building is not only whether it photographs well or appears in architectural histories. It is whether it supports public dignity.</p>
+      <p>Of course, demolition should not be casual. The building should be documented, and its defenders should have a chance to propose a financially credible rescue. But there is no public duty to keep every major architect&#x27;s difficult work standing at full scale. Museums, archives, models, drawings and photographs can preserve the record. The county&#x27;s obligation is to its citizens first.</p>
+      <p>Beauty is not the only issue. A building can be ugly and lovable, ugly and useful, ugly and historically indispensable. But when ugliness joins dysfunction and public resentment, the case for preservation weakens. Communities should be allowed to correct architectural choices that no longer serve them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The Orange County Government Center should not be saved because all significant buildings deserve survival. That standard is too broad. Nor should it be demolished simply because many people dislike Brutalism. That standard is too shallow. The right principle is conditional preservation: the more culturally significant a building is, the stronger the obligation to explore repair and reuse; the more costly, unhealthy and unusable it is, the stronger the case for replacement.</p>
+      <p>This may sound procedural, but procedure matters because architectural taste changes quickly. In the 1950s and 1960s, many Americans cheerfully demolished Victorian buildings that later generations came to value. In the 1970s, Beaux-Arts train stations and old commercial blocks were often treated as obsolete clutter. We now recognize that the public can make lasting mistakes when it confuses current taste with permanent judgment. Brutalism is now passing through that dangerous middle age: too old to seem new, too young to seem safely historic, and burdened by decades of stains, leaks and institutional neglect.</p>
+      <p>At the same time, preservationists lose credibility when they minimize practical realities. Mold and faulty ventilation are not inconveniences. A county government has legal and moral duties to provide safe workplaces and accessible services. If saving the building would require extraordinary sums for a result that still functions poorly, taxpayers are entitled to object.</p>
+      <p>The county should therefore set out a transparent test. First, establish the building&#x27;s architectural importance with independent expert review. Second, obtain realistic cost estimates for restoration, major alteration, partial preservation and full replacement. Third, evaluate public use: accessibility, energy performance, maintenance, employee health and service delivery. Fourth, invite proposals from preservation groups that include funding, not merely admiration.</p>
+      <p>If preservation can produce a safe, useful building at a cost reasonably close to replacement, the county should save it, even if many residents still call it ugly. Public culture requires some patience with challenging works. But if the gap is large and no viable reuse emerges, demolition is defensible.</p>
+      <p>The hard part is accepting that both values are real. Communities need memory, including memory of unpopular architectural experiments. They also need buildings that work. Neither ugliness nor fame should decide the case by itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Ugly is not a sufficient reason to condemn a building, especially when “ugly” is often a temporary verdict rendered by the generation that inherited it. Victorian buildings were once derided as fussy monstrosities; Art Deco was dismissed as commercial frosting; early modernism itself was treated by many as cold and inhuman. Today we preserve examples of all of them because architectural history is not a beauty contest conducted by the present majority.</p>
+      <p>Paul Rudolph’s Orange County Government Center is not just any old difficult building. It is a major work by a major American architect, and it embodies a serious moment in civic architecture: the belief that government buildings need not look like marble temples to legitimacy. Brutalism’s concrete, angular complexity, and sculptural massing reflected a midcentury confidence that public institutions could be modern, experimental and forward-looking. That experiment may now look forbidding to many residents, but its historical significance remains.</p>
+      <p>The strongest argument for demolition is not ugliness but failure: leaks, faulty ventilation and mold. No one should be asked to work in an unhealthy building in the name of architectural theory. But deterioration is often used as a rhetorical shortcut to justify neglect. Buildings do not “age badly” in the abstract; they are maintained well or poorly, altered intelligently or carelessly, repaired promptly or allowed to decline until replacement seems inevitable. Many beloved historic structures would have been lost if leaky roofs were treated as proof of architectural worthlessness.</p>
+      <p>Preservation does not require freezing every wall and office exactly as Rudolph left it. Significant buildings can be rehabilitated, adapted and made functional. The question should be whether the public value of the building’s design and historical importance warrants a serious preservation study and a good-faith exploration of reuse. In this case, it does.</p>
+      <p>Communities have rights, but they also have responsibilities. A county owns the building, but it also holds a piece of cultural history in trust. If every unpopular building is erased before its reputation has time to mature, the public record of 20th-century architecture will be reduced to the safest and prettiest examples. That would be a dishonest history. Some buildings are too important to be demolished merely because they are hard to love.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>Yes, some buildings are significant. No, significance should not become a life sentence imposed on the public that must use, maintain and pay for them. The Orange County Government Center may be a notable example of Brutalism and a work by Paul Rudolph, but it is also, by the account of local officials, a building with a leaky roof, faulty ventilation and mold. A government building is not primarily a museum object. It is a workplace and a public service facility.</p>
+      <p>The preservation argument often treats local dislike as philistinism. Residents are told that they do not understand the architect’s intentions, that their distaste will fade, that future generations may thank the experts who saved the building. Sometimes that is true. But there is a democratic arrogance in assuming that a community must continue to inhabit a building it experiences as hostile, inefficient or depressing because architectural historians admire it.</p>
+      <p>Brutalism in particular raises this problem sharply. Its defenders praise mass, honesty of materials, sculptural force and urban drama. Its critics see bunker-like forms, dark interiors, confusing circulation and an anti-human scale. Those reactions are not simply ignorance. Public architecture must answer to ordinary users as well as professional critics. If a courthouse, library or government center is widely perceived as alienating, that is not an irrelevant aesthetic complaint; it is a civic failure.</p>
+      <p>Of course demolition should not be casual. A serious building by a serious architect deserves documentation, public debate and perhaps salvage of drawings, models and important elements. Alternatives should be priced honestly. But preservationists must also be honest about costs. Rehabilitation can be expensive, and the result may still be compromised: a landmark that fails as an office building and drains funds from other public needs.</p>
+      <p>Architectural mistakes happen. So do maintenance mistakes, planning mistakes and preservation mistakes. The mere fact that a building represents an important style does not make it untouchable. If Orange County can demonstrate that repair is impractical, that the building no longer serves its governmental function and that replacement would better serve residents, it should be allowed to proceed. A community should not be forced to live indefinitely with an architectural experiment that, for that community, has failed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The debate over the Orange County Government Center is usually framed as a choice between two absolutes: save Paul Rudolph’s building or raze it. That framing is too crude. The right answer is neither automatic preservation nor gleeful demolition, but a demanding middle course: prove what can be saved, what must change and what public purpose the building can still serve.</p>
+      <p>Brutalist buildings are especially vulnerable because they often combine historical importance with practical difficulty. Their concrete surfaces weather badly. Their mechanical systems are old. Their interiors can be hard to adapt. Their public image is frequently terrible. Yet these are also among the defining civic structures of the postwar period. If we demolish every difficult example, we will leave a false architectural history, as if the 1960s and 1970s produced only glass boxes and suburban campuses.</p>
+      <p>At the same time, preservationists weaken their case when they behave as if authorship settles everything. Paul Rudolph’s name matters; it does not make mold harmless or leaks acceptable. Public employees and citizens deserve a healthy, usable building. Preservation must be more than moral scolding from people who do not have to work there.</p>
+      <p>A sensible process would begin with an independent assessment, not one commissioned to justify a foregone conclusion. What are the real costs of repairing the roof, removing mold, replacing mechanical systems and improving energy performance? Which parts of the design are essential to its architectural significance? Could the building be partly preserved and partly altered? Could additions or interior reconfiguration make it more legible and humane? Could a new government complex incorporate the most important portions of Rudolph’s structure?</p>
+      <p>This approach will satisfy neither purists nor demolition advocates. But cities and counties often need hybrid answers. We routinely preserve facades, adapt factories into housing, convert train stations into markets and insert new systems into old envelopes. Modern buildings deserve the same creativity we bring to older ones.</p>
+      <p>The question is not whether ugly buildings deserve to survive. Some do, some do not. The question is whether we are willing to distinguish between ugliness, neglect and obsolescence. If the Orange County building is demolished only because it is unpopular, that would be a cultural failure. If it is preserved without regard to function, that would be a public failure. The task is to avoid both.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>Calling a building ugly can be a way of ending a conversation just when the conversation should begin. The Orange County Government Center may be disliked, but its unpopularity tells us as much about changing public taste as about the building itself. Brutalism is now an easy target: heavy, concrete, difficult, associated with bureaucracies and urban renewal. Yet that is precisely why it deserves a more thoughtful defense.</p>
+      <p>The best Brutalist buildings were not designed to be decorative. They were attempts to make architecture monumental without classical costume, public without sentimentality, modern without sleek corporate blandness. Their rough concrete and interlocking forms expressed a belief in structure, material and institutional seriousness. One may dislike the result, but it is not the same thing as a strip mall, a banal office park or a cheaply built box. Rudolph’s work was ambitious. Ambition should count.</p>
+      <p>There is also a social dimension to architectural memory. We tend to preserve what flatters us: charming main streets, elegant houses, heroic monuments. We are less eager to preserve the buildings that remind us of postwar bureaucracy, social planning and the turbulent politics of the 1960s and 1970s. But history includes those things too. A county government center from that era is a record of how public power imagined itself. Erasing it because it makes us uncomfortable risks turning preservation into nostalgia.</p>
+      <p>That does not mean every concrete megastructure must be saved. But the burden of proof should be high for destroying a significant work by an architect of Rudolph’s stature. Leaks and mold are serious, but they are problems to be analyzed, not slogans. Many buildings become “unrepairable” only after years of deferred maintenance. If the county has neglected the structure, it should not be rewarded with an easy demolition permit.</p>
+      <p>The deeper issue is patience. Buildings often pass through an awkward age. They are too old to seem current and too young to seem historic. Brutalism is in that dangerous interval now. In another generation, we may better understand which examples were failures and which were masterpieces. Until then, the prudent course is to preserve the strongest works where possible. We should be careful before letting today’s dislike destroy tomorrow’s heritage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The question should not be whether some buildings are too ugly to survive, but who bears the cost of keeping them alive. Preservation debates often become symbolic contests between “culture” and “the people,” but the practical issue is stewardship. A building can be historically significant and still be an unreasonable burden for its owner or community. Conversely, an owner’s inconvenience should not automatically justify destroying an irreplaceable public artifact.</p>
+      <p>For public buildings, I would apply three tests. First, is the building truly significant? Not merely old, unusual or beloved by a narrow professional circle, but important in the career of its architect, in the history of its style or in the civic development of its place. The Orange County Government Center appears to meet that threshold. Paul Rudolph was not a minor figure, and the building is a substantial example of a controversial but important movement.</p>
+      <p>Second, is there a feasible path to continued use? Feasible does not mean cheap. Historic buildings often require investment. But it does mean that repair costs, code upgrades, environmental remediation and long-term maintenance must be weighed against realistic alternatives. A preservation plan that ignores mold, ventilation and public access is not preservation; it is wishful thinking.</p>
+      <p>Third, who pays? If the broader architectural community believes this building is a landmark, then the burden should not fall solely on Orange County taxpayers. State grants, preservation tax incentives where applicable, philanthropic support, or a reuse partnership should be part of the conversation. It is too easy for outsiders to demand preservation while local government absorbs all costs and political blame.</p>
+      <p>This framework allows for demolition in some cases. There are buildings whose significance is modest, whose repair needs are overwhelming, or whose design fatally obstructs their public mission. Communities should be allowed to correct genuine architectural and planning mistakes. But demolition should come after transparent analysis, not after a campaign that equates public dislike with objective worthlessness.</p>
+      <p>The Orange County case matters because the next wave of preservation will involve buildings many people do not yet like: concrete civic centers, late-modern campuses, urban renewal complexes. If we save only what is charming, preservation becomes decoration. If we save everything with a famous name attached, preservation becomes tyranny. The hard work is judgment: sober, public, evidence-based judgment about value, cost and use. Some ugly buildings deserve to survive. Some do not. The decision should be earned.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>Yes, some buildings are ugly enough to be unpopular, but that is not the same as being unworthy of survival. The Orange County Government Center should not be judged as if it were a worn-out appliance. It is a major work by Paul Rudolph, one of the most important American architects of the postwar period, and it represents a serious civic experiment: fragmented volumes, interlocking spaces, rough concrete, a government building meant to be complex rather than bland.</p>
+      <p>That experiment may not please everyone. Brutalism rarely does. But preservation exists precisely because public taste is unstable. New Yorkers demolished McKim, Mead &amp; White’s Pennsylvania Station because it seemed expendable in the 1960s; the loss is now treated as a civic wound. Cast-iron SoHo, Victorian houses, and industrial waterfront buildings were once widely dismissed as obsolete or ugly. A community that destroys every unpopular building leaves future generations only what happened to be fashionable at the moment of demolition.</p>
+      <p>The legitimate objections to the Rudolph building are not aesthetic but practical: leaks, ventilation problems, mold and maintenance costs. Those must be taken seriously. A government office cannot be a shrine to architectural theory while employees breathe bad air. But roof failure and mechanical failure are not, by themselves, arguments for demolition. Many beloved historic buildings have leaked, cracked, or performed badly before being restored. Rudolph’s own Art and Architecture Building at Yale, long despised by some, was recently renovated and renamed Rudolph Hall, a reminder that difficult modern buildings can be repaired and reinterpreted.</p>
+      <p>The stronger public question is whether Orange County has explored preservation honestly. Is rehabilitation truly more expensive over the long run than demolition and replacement? Have adaptive uses been considered? Could the building be repaired, altered and made more energy-efficient without erasing its architectural identity? If the answer is no, preservationists should not merely say “save it” and walk away. They should help produce a feasible plan.</p>
+      <p>But the default should be caution. Demolition is irreversible. Ugliness is often temporary. Significance is not. If public architecture is to mean more than immediate convenience, communities must sometimes preserve buildings that challenge them, annoy them and require imagination. The Orange County Government Center may be difficult, but difficulty is not a defect sufficient to justify erasure.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>A county government building is not a sculpture garden. It is a place where citizens apply for permits, pay taxes, attend hearings and expect public employees to work in safe conditions. If the Orange County Government Center has a leaky roof, faulty ventilation and mold, the first obligation of local officials is not to Paul Rudolph’s reputation. It is to the people who must use the building.</p>
+      <p>Architectural significance matters, but it cannot be an all-purpose veto over public judgment. Preservationists too often speak as if demolition were a moral failure and survival a moral triumph. Yet buildings are also tools. Some tools are badly designed, expensive to maintain or unsuited to their purpose. A community should have the authority to say that a building has failed it, even if scholars can explain its importance.</p>
+      <p>Brutalism is especially prone to this conflict because it often asks ordinary users to endure the architect’s idea of civic drama. Massive concrete forms can be powerful, but they can also be cold, confusing and hostile. When such a building ages badly, the problem is not merely cosmetic. Water infiltration, dark interiors, awkward circulation and expensive repairs become part of the lived experience of the architecture. The public does not owe indefinite patience to a design that has never earned its affection.</p>
+      <p>Of course, demolition should not be casual. The county should document the building thoroughly, preserve drawings and photographs, and perhaps salvage distinctive elements. It should publish honest cost comparisons between renovation and replacement. If preservation advocates believe the building can be saved, they should present a financially credible alternative, not simply an appeal to guilt or prestige. If private donors, foundations or state agencies want to underwrite restoration, that changes the calculation.</p>
+      <p>But absent such a plan, local government must retain the power to replace an unhealthy and unpopular facility. The phrase “architectural mistake” sounds harsh, but mistakes happen even when talented architects make them. We should not confuse the history of architecture with a command to preserve every important example at full public expense. Sometimes the most democratic decision is to let a community build something that serves it better.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The choice between saving the Orange County Government Center and demolishing it is too crude. A building can be significant and still need major change. A community can dislike a building and still owe it more than a wrecking ball. The question should not be “ugly or historic?” but “what combination of preservation, alteration and replacement best serves the public?”</p>
+      <p>Paul Rudolph’s building deserves respect because it belongs to a distinctive period in American civic architecture. Brutalism was not simply a taste for concrete. It reflected ambitions about public life, institutional seriousness and expressive structure. The Orange County building is part of that story. Even people who dislike it should be wary of erasing an entire chapter of postwar design because it has fallen out of fashion.</p>
+      <p>At the same time, preservation cannot mean embalming every corridor and concrete surface. If the roof leaks, the air is unhealthy and the plan no longer suits county functions, a responsible solution must address those problems fully. Public employees and residents should not be conscripted into an architectural exhibit. A restored building that remains unpleasant to use is not a success.</p>
+      <p>A sensible process would begin with an independent assessment: the actual cost of repair, the cost of replacement, the value of embodied energy in the existing structure, the possibility of phased renovation, and the feasibility of additions. The county should ask what parts of Rudolph’s design are essential. Is it the massing? The façade? The internal spatial complexity? The relationship to the site? Once those values are identified, compromise becomes possible. Perhaps the most significant sections can be restored while damaged or less important portions are replaced. Perhaps a new wing can provide efficient offices while the Rudolph building is adapted for public meeting rooms, archives or cultural uses. Perhaps the building can be altered more boldly than purists would like but still remain recognizably itself.</p>
+      <p>Both sides need humility. Officials should not use maintenance failures as a convenient excuse to remove an unpopular building without studying alternatives. Preservationists should not treat every alteration as vandalism. The best outcome would be neither nostalgia nor revenge, but stewardship: keep what is valuable, fix what is broken, and allow the building to evolve into something the county can actually use.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>“Ugly” is a dangerous word in preservation debates because it sounds like a verdict when it is often only a mood. The Orange County Government Center may look strange, severe or forbidding to many residents, but those reactions do not settle its value. The history of architecture is full of buildings that were hated before they were understood. The Eiffel Tower was denounced by artists and writers. Brownstones, cast iron warehouses and modern glass towers have all passed in and out of favor. Public taste is real, but it is not infallible.</p>
+      <p>Brutalism is now at a low point in that cycle. Its concrete has weathered poorly, its institutional clients have often neglected maintenance, and its social ambitions have been overshadowed by memories of urban renewal and bureaucratic bigness. Yet the best Brutalist buildings possess qualities that contemporary architecture often lacks: weight, texture, spatial complexity and a belief that civic buildings should be more than background. Paul Rudolph was not a minor figure. His work demands attention, and the Orange County building is part of a national legacy that includes both admiration and controversy.</p>
+      <p>That controversy is precisely why it should be preserved. If we save only charming buildings, preservation becomes decoration. The built environment would be reduced to what flatters us. A mature society also preserves difficult evidence: of past ideals, failed assumptions, technical experiments and changing public values. The Government Center tells us something about the confidence of mid-20th-century public architecture. To demolish it because it does not look like a courthouse from a postcard would narrow our civic memory.</p>
+      <p>None of this excuses mold or leaks. A building that makes people sick must be repaired or vacated. But the existence of deferred maintenance should not be converted into an aesthetic indictment. Many modern buildings were designed with experimental materials and complex forms; they require specialized care. Neglect them long enough and then announce that they have “failed,” and demolition becomes a self-fulfilling prophecy.</p>
+      <p>The county should pursue restoration and adaptation, with public explanation rather than architectural scolding. Residents deserve to understand why the building matters, and preservationists must acknowledge its problems. But unpopularity is not enough. The buildings most in need of preservation are often the ones we have not yet learned how to love.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>The debate over the Orange County Government Center should begin with a question that architecture arguments often skip: who bears the cost of the decision? If a famous architect’s building is saved, county workers and residents must live with the repaired version. If it is demolished, taxpayers pay for the new building and the community loses a piece of architectural history. Neither outcome is automatically virtuous.</p>
+      <p>There is something troubling about preservation campaigns that arrive only when a building by a celebrated designer is threatened. The people who spent years navigating bad ventilation, leaks or confusing public spaces may feel that outside experts care more about Paul Rudolph than about them. That resentment is not anti-intellectual; it is democratic. A public building should be judged partly by how it treats the public.</p>
+      <p>But demolition also has its own politics. Calling a building “ugly” can become a convenient way to avoid harder questions about maintenance, procurement, construction waste and public spending. New buildings are often promised as cleaner, cheaper and more efficient than they prove to be. Tearing down a large structure also discards embodied energy and materials, an environmental cost that should matter more in 2012 than it did a generation ago. Replacement may be necessary, but it should not be sold as if it were free of tradeoffs.</p>
+      <p>The right standard is not beauty or pedigree alone. It is public value. The county should ask whether the Rudolph building can be made healthy, accessible, energy-conscious and functional at a reasonable cost. It should compare that cost with a realistic—not politically massaged—estimate for demolition and replacement. It should include employees, residents, preservationists, architects and fiscal watchdogs in the discussion. And it should be honest about what is being preserved: not just concrete forms, but a record of a particular moment in American government and design.</p>
+      <p>If rehabilitation can produce a humane, usable building, then the county should save it, even if many still find it unattractive. If it cannot, then significance alone should not condemn the community to permanent dysfunction. Buildings are public responsibilities, not just public symbols. The goal should be neither to punish Brutalism nor to worship it, but to make a decision that respects history while serving the people who must walk through the doors.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>The impulse to demolish buildings we find ugly is understandable but ultimately short-sighted. Buildings like the Orange County government building in Goshen represent a specific moment in architectural history—a bold attempt to redefine public space and express civic ambition through raw, honest materials. Dismissing such structures as mere &quot;architectural mistakes&quot; reveals a troubling anti-intellectualism in how we approach our built environment.</p>
+      <p>Brutalism, despite its current unpopularity, emerged from genuine artistic conviction. Paul Rudolph and his contemporaries believed that honest exposure of concrete and structural systems constituted a moral architecture, free from the decorative dishonesty they saw in earlier styles. Whether or not we share that philosophy, acknowledging its historical significance seems basic to any educated understanding of twentieth-century culture. Our libraries are full of books discussing Brutalism&#x27;s rise and influence; should we allow the physical evidence to disappear while preserving only the scholarly commentary?</p>
+      <p>The &quot;ugly, unpopular buildings&quot; that deserve scrutiny are not necessarily the architecturally significant ones. The real architectural mistakes of any era tend to be the bland, derivative structures that merely echo whatever style happens to be fashionable at the moment. Rudolph&#x27;s building, for all its problems, has genuine identity. It was designed, not merely assembled. It has a point of view.</p>
+      <p>Preserving significant structures also means preserving options for future generations. Attitudes toward Brutalism may shift again—we&#x27;ve seen renewed appreciation for Art Deco, once similarly maligned. Demolition is irreversible; preservation allows for future reevaluation and adaptive reuse.</p>
+      <p>Communities should certainly participate in these decisions, but the standard should not be popular aesthetic preference alone. Significance, originality, and historical context must weigh heavily. The Goshen building deserves serious preservation efforts before we consign a Paul Rudolph masterpiece to the wrecking ball.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-36">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-36" style="display:none;">
+      <p>Property rights matter, and when they conflict with architectural preservation, the balance should favor the owner&#x27;s legitimate interests. In the case of the Orange County government building, we are not discussing a private mansion or a merchant&#x27;s warehouse—we are talking about a functional government facility that has become a liability. A leaky roof, faulty ventilation, and mold are not aesthetic preferences; they are concrete problems affecting real people who work in and visit that building.</p>
+      <p>The building&#x27;s Brutalist pedigree does not exempt it from the practical demands of its function. Paul Rudolph may have been a distinguished architect, but his design choices—however historically significant—created a building that apparently does not work well for its intended purpose. Buildings exist to serve human needs, and when they fail at that fundamental task, we should not preserve them at taxpayer expense purely for architectural scholarship.</p>
+      <p>The preservation community often romanticizes significant architecture while leaving others to bear the costs of maintenance and dysfunction. Who will pay to restore the Goshen building to proper working condition? Will preservationists fund the ongoing costs, or does that burden fall on Orange County residents who may have no particular attachment to Brutalism?</p>
+      <p>There is also something patronizing about the suggestion that communities should be denied the right to eliminate what they genuinely consider mistakes. Democratic societies allow communities to make aesthetic choices about their shared spaces, including the decision to replace structures that have outlived their usefulness. The building in Goshen is not a irreplaceable natural wonder; it is a human creation that the community owns and should control.</p>
+      <p>Historic preservation has its place, but it cannot become a veto that overrides all other considerations—especially functional failures that affect public health and safety. Sometimes buildings deserve to disappear.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-37">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-37" style="display:none;">
+      <p>The tension between architectural preservation and demolition reflects a broader question about how we value the built environment—a question that admits no easy answers because both sides have legitimate claims. The Goshen building presents this dilemma clearly: Paul Rudolph&#x27;s design is genuinely significant, architecturally and historically, yet it has also failed in practical ways that make its continued use difficult.</p>
+      <p>A thoughtful approach requires separating several distinct considerations. First, is the building&#x27;s significance sufficient to warrant preservation efforts? For Rudolph&#x27;s Goshen work, the answer seems likely yes—he is a major American architect, and this is among his significant commissions. Second, can the building be feasibly restored to functional condition? This requires honest assessment rather than either dismissal or excessive optimism. Third, who bears the costs of preservation, and is that distribution equitable?</p>
+      <p>The preservation movement sometimes oversells the &quot;ugly buildings deserve to survive&quot; argument by conflating all architectural significance. Not every old building merits preservation, and not every significant building requires preservation in its original form. Adaptive reuse—finding new functions for old structures—often provides the best path forward, allowing architectural heritage to survive without imposing ongoing dysfunction on building occupants.</p>
+      <p>For the Goshen situation specifically, I would suggest exploring alternatives before demolition: partial renovation, selective demolition of problematic additions, or conversion to a different use that accommodates the building&#x27;s particular characteristics. Government facilities have specific requirements, but other public or institutional uses might prove more compatible with Rudolph&#x27;s design.</p>
+      <p>The question of whether communities should control their architectural environment is legitimate, but that control should be exercised thoughtfully, with genuine consideration of long-term heritage alongside short-term convenience. Demolition decisions should require meaningful review, not because aesthetic preferences should override all else, but because irreversibility demands careful process.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-38">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-38" style="display:none;">
+      <p>Let me offer a pragmatic perspective on this question, grounded in what we know about building economics and urban development. The Goshen building presents not merely an aesthetic dilemma but a fiscal one: millions of dollars in deferred maintenance have accumulated, and the costs of bringing the facility to modern standards likely exceed the costs of replacement. In such circumstances, principle must confront reality.</p>
+      <p>Preservation advocates often underestimate the true costs of maintaining aging structures, particularly those built with innovative but expensive-to-maintain systems. Brutalist buildings frequently feature complex facade details, integrated mechanical systems, and material choices that resist simple repairs. What appears as a preservation argument sometimes becomes a prescription for perpetual underfunding and eventual neglect—hardly an honorable outcome for significant architecture.</p>
+      <p>The most successful preservation efforts typically combine heritage values with economic realism. Adaptive reuse, where a building serves a function different from its original purpose, often provides the path forward. A renovated Rudolph building might serve as a cultural center, museum, or institutional facility that can accommodate its distinctive spatial character while accepting that some original design intentions will be modified.</p>
+      <p>We should also consider opportunity costs. Resources spent on preserving one building are unavailable for other purposes. When a community chooses preservation, it makes a collective decision about resource allocation that affects schools, infrastructure, and services. That choice deserves scrutiny, not deference.</p>
+      <p>My point is not that significant buildings should be casually demolished. Rather, preservation arguments must engage with practical realities rather than assuming that architectural significance automatically trumps all other considerations. The Goshen community deserves honest analysis of options and realistic cost estimates before making a decision that, once made, cannot be unmade.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-39">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-39" style="display:none;">
+      <p>Architecture has always been a battleground of competing values—function against beauty, permanence against change, individual vision against collective taste. The question of whether ugly buildings deserve preservation ultimately asks us to consider what we want the built environment to teach future generations about our own era.</p>
+      <p>Paul Rudolph&#x27;s Orange County government building may offend contemporary sensibilities, but that offense itself tells us something important about mid-century modernism&#x27;s ambitions and limitations. The building is an artifact of its moment, representing both the confidence and the blind spots of postwar architectural ideology. Removing it would remove evidence of that historical moment, making our understanding of it less tangible and more abstract.</p>
+      <p>Brutalism has been particularly vulnerable to critical dismissal, yet the very qualities that generate hostility—raw concrete, bold massing, uncompromising geometric forms—also constitute its historical significance. These buildings represent a serious attempt to create an architecture appropriate to an industrial age, stripped of historical ornament and willing to express structural truth. Whether or not we approve of that project, we should recognize its importance.</p>
+      <p>The concept of &quot;architectural mistakes&quot; also deserves interrogation. Buildings that seem ugly to one generation often become beloved to another. Victorian architecture was considered tasteless by early modernists; Art Deco was dismissed as garish before its rehabilitation. A building&#x27;s ultimate standing cannot be determined by contemporary fashion without creating a self-fulfilling prophecy of destruction.</p>
+      <p>Preservation is never merely about saving bricks and concrete. It is about preserving the evidence of human creativity, ambition, and error that constitutes our shared cultural inheritance. The Goshen building may be uncomfortable, inconvenient, and unpopular—but it is also significant. Significance should count for something.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

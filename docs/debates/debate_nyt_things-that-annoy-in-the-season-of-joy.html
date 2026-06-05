@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Things That Annoy in the Season of Joy · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Society · Open-ended</div>
+  <h1 class="debate-title">Things That Annoy in the Season of Joy</h1>
+  <div class="question-body"><p>It’s the season of giving and joy, but inevitably there’s also plenty to complain about — be it traffic or crazy relatives. What’s most annoying about the winter holidays?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_1.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the social mandate to perform and document constant joy, which has become an exhausting and prolonged obligation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_2.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the excessive and misplaced anxiety surrounding political correctness and inclusive greetings.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_3.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the overwhelming financial pressure and commercialization that transforms a season of joy into a stressful audit of spending power.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_4.html">
+      <td class="arg-text">The most annoying aspect of the holiday season is the societal expectation that kindness and generosity should be concentrated into a specific time of year rather than practiced year-round.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_5.html">
+      <td class="arg-text">Workplace Secret Santa exchanges are the most annoying part of the holiday season because they create social pressure and unnecessary stress for employees.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_6.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the logistical nightmare of travel, which combines poor weather and high crowds with the rigid pressure of tradition.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_7.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is their excessive length and the way they have expanded to consume the entire final two months of the year.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_8.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the way the season&#x27;s moral vocabulary of generosity is used to mask a system of exhausting, expensive, and compulsory social obligations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_9.html">
+      <td class="arg-text">The most annoying aspect of the holidays is the forced expectation of family harmony that ignores the reality of deep-seated political and social disagreements.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_10.html">
+      <td class="arg-text">The most significant annoyance of the holiday season is not the physical difficulty of travel, but the internal emotional gridlock caused by family obligations and unresolved past dynamics.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_11.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the performative and predictable culture of complaining that people use to signal their personal identities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_12.html">
+      <td class="arg-text">The common annoyances and imperfections of the holiday season are actually its best features because they create shared experiences and lasting memories.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_13.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the chaotic and stressful experience of navigating air travel.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_14.html">
+      <td class="arg-text">The most significant and troubling annoyance of the winter holidays is the massive increase in environmental waste generated by our culture of material consumption.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_15.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the commercialization of affection, which transforms the genuine impulse of love into a stressful and compulsory shopping experience.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_16.html">
+      <td class="arg-text">The most annoying aspect of the winter holidays is the logistical stress of travel caused by a societal structure that forces millions of people to migrate simultaneously.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_things-that-annoy-in-the-season-of-joy_arg_17.html">
+      <td class="arg-text">The most annoying aspect of the holidays is the pervasive myth that festive traditions happen by magic, which obscures the reality that they are built on disproportionate and invisible labor.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Aparna Nancherla</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/12/23/things-that-annoy-in-the-season-of-joy/aparna-nancherla" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Bob Garfield</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/12/23/things-that-annoy-in-the-season-of-joy/bob-garfield" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Dara Mathis</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/12/23/things-that-annoy-in-the-season-of-joy/dara-mathis" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Nashwa Khan</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/12/23/things-that-annoy-in-the-season-of-joy/nashwa-khan" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The most exhausting thing about the winter holidays isn&#x27;t the traffic, the in-laws, or even the relentless loop of Mariah Carey in every drugstore. It&#x27;s the performance of joy itself — the social mandate that one must be merry, and visibly so, from roughly Black Friday through New Year&#x27;s Day.</p>
+      <p>This mandate has metastasized in recent years. The &quot;holiday season&quot; now begins in early November, with Starbucks cup controversies and premature Christmas creep elbowing Thanksgiving aside. By the time December 25 actually arrives, most of us are already spent — financially, emotionally, and caloriewise. Then comes the second act: the awkward week between Christmas and New Year&#x27;s, when no one knows whether to work or vacation, and the obligatory reflection on what we accomplished this year (not enough) and what we&#x27;ll do differently next year (nothing).</p>
+      <p>Social media has made all of this worse. Every gathering must be photographed, every gift artfully arranged, every tree compared against Pinterest&#x27;s impossible standard. The pressure to document joy has begun to crowd out the experience of it.</p>
+      <p>And yet I&#x27;ll admit the season&#x27;s genuine annoyances — the airport delays, the Aunt Mildred who asks why you&#x27;re still single, the fruitcake — are also, oddly, what binds it together. Complaining about Christmas is itself a beloved Christmas tradition. The real grinches are the people who insist we aren&#x27;t allowed to.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The most grating aspect of the winter holidays is not the traffic jams or the awkward family dinners, but the relentless, commercially enforced cheer that transforms a season of reflection into a mandatory happiness contest. What should be a time of genuine connection and quiet renewal has been hijacked by an unspoken rule: you must be merry, and you must perform that merriment for others.</p>
+      <p>The evidence is everywhere. Retailers start piping in carols before the Thanksgiving plates are cleared, creating a sonic wall of forced jollity. Social media feeds become a parade of curated perfection—twinkling trees, matching pajamas, and artfully staged feasts—that silently judges anyone whose reality falls short. This gap between expectation and experience is not just a cultural quirk; it fuels a well-documented spike in anxiety and depression. The American Psychological Association regularly notes that the pressure of holiday obligations and the &quot;happiness mandate&quot; are top stressors, leaving people feeling isolated in their fatigue. When your authentic mood clashes with the required festive script, the dissonance is exhausting.</p>
+      <p>This annoyance cuts deeper than logistics because it corrupts the very purpose of the season. The demand to be joyful becomes a performance, draining the energy that could be spent on actual warmth and empathy. A delayed flight can be laughed off, and an overcooked roast can be salvaged with a joke. But the quiet shame of not feeling “enough” cheer while everyone around you seems to be winning at Christmas lingers long after the decorations come down. The most annoying part of the holidays, then, is the way they bully us into believing that our real emotional lives are inadequate, making us complicit in our own seasonal sadness.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The traditional winter holiday annoyances—bumper-to-bumper mall traffic, passive-aggressive in-laws, and repetitive retail soundtracks—have been eclipsed by a modern, much more exhausting burden: the pressure of the hyper-curated, digitally broadcast holiday.</p>
+      <p>In recent years, platforms like Instagram and Pinterest have transformed December from a season of cozy, slightly chaotic family joy into a competitive domestic sport. The holidays are no longer simply experienced; they are staged. We are bombarded by artisanal gingerbread houses, matching family pajamas, and elaborate &quot;Elf on the Shelf&quot; tableaux that demand hours of sleep-deprived labor from exhausted parents. The magic of the season has been reduced to a visual arms race, where success is measured in likes and the illusion of domestic perfection.</p>
+      <p>What makes this so uniquely grating is how it hollows out the actual spirit of the holidays. The constant drive to document and filter our celebrations means we are rarely present for them. We force children into uncomfortable poses by the tree, snapping dozens of photos to find the one where everyone is smiling, completely missing the spontaneous, messy joy that the season is supposed to foster.</p>
+      <p>Ultimately, the most annoying aspect of the holidays isn&#x27;t the eccentric uncle in your living room or the endless loop of holiday music. It is the invisible audience we invite into our homes through our smartphones, judging our cheer against an impossible, filtered standard.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The most annoying thing about the winter holidays is not the travel, the music looping in pharmacies, or even the annual argument over whether a coffee cup has sufficiently honored Bethlehem. It is the way the season turns ordinary affection into a series of tests.</p>
+      <p>People who love one another are suddenly asked to prove it on a deadline, in public, with receipts. Did you travel far enough, spend enough, decorate enough, remember the teacher’s gift, mail the cards, tip the super, make the meal, endure the uncle, smile through the office party? A holiday that is supposed to offer rest becomes a performance review for family feeling and civic cheer.</p>
+      <p>This is especially hard because December is not equally merry for everyone. For many people it brings debt, loneliness, bad weather, complicated families, recent grief or the simple exhaustion of working extra shifts while everyone else talks about “taking time off.” Yet the culture insists on brightness. To admit ambivalence can feel like failing at happiness.</p>
+      <p>The cure is not to abolish gifts or gatherings. Rituals matter, and so does generosity. But we should distinguish generosity from obligation and celebration from production. The best holiday moments are usually modest: a call made without guilt, a meal that does not require conquest, a present chosen with attention rather than panic, an afternoon in which no one is keeping score.</p>
+      <p>What annoys me most is compulsory joy. Real joy is better company when it is allowed to arrive unforced.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The winter holidays wear a veneer of goodwill that can hardly contain the friction underneath. Commercial pressure builds to a fever pitch by early December, demanding generosity while exhausting the budgets and patience of ordinary people. The expectation to attend every gathering, purchase every gift on someone else&#x27;s list, and perform unflagging cheerfulness collides with the reality that many families are complicated, and some gatherings amount to an extended exercise in controlled hostility around a table.</p>
+      <p>What strikes me most is not the traffic, though that&#x27;s real, nor the relatives, though they can be challenging. It&#x27;s the false dichotomy between celebration and exhaustion. The cultural script insists this should be the happiest time of year, which means admitting you&#x27;re tired, broke, or lonely carries an extra sting. The pressure to appear festive compounds whatever genuine stress people already carry.</p>
+      <p>Then there&#x27;s the logistical absurdity: airports strained beyond capacity, roads clogged with people making identical trips, services stretched thin by holiday closures. These are predictable patterns, yet every year they catch us unprepared, as if the calendar itself were a surprise. Meanwhile, the advertising insists that solving this stress is as simple as buying the right present, which only deepens the contradiction.</p>
+      <p>Perhaps the deepest annoyance is that the season offers a mirror for everything already difficult in our lives—financial strain, family tensions, isolation—while demanding we perform gratitude anyway.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The most annoying thing about the winter holidays isn&#x27;t the traffic, the relatives, or even the relentless loop of Mariah Carey in every CVS. It&#x27;s the performance of joy itself — the social mandate that you must be merry, and visibly so, from roughly Thanksgiving through New Year&#x27;s Day.</p>
+      <p>For people who are grieving, broke, estranged from family, or simply prone to seasonal depression, the holidays are not a neutral stretch of calendar. They are a six-week obstacle course in which every shop greeter, coworker, and second cousin demands a smile and a story about your plans. Saying &quot;it&#x27;s been a hard year&quot; is treated as a faux pas, like coughing without covering your mouth. So people lie. They invent traditions, exaggerate their enthusiasm, and post photographs calibrated to imply more warmth than they feel.</p>
+      <p>This was tolerable, perhaps, when the performance was confined to the office party and the church pew. Social media has metastasized it. Facebook and Instagram in late December are a parade of matching pajamas, gingerbread architecture, and captions about gratitude. Each post is harmless on its own; aggregated, they constitute a kind of ambient pressure that everyone else is having the holiday you are failing to have.</p>
+      <p>The traditional complaints — Uncle Ron&#x27;s politics, airport security lines, the inexplicable presence of fruitcake — at least have the dignity of being specific. You can roll your eyes at them and move on. The compulsory cheerfulness is harder to name and harder to escape, because complaining about it makes you sound like a Scrooge, which is itself a violation of the rule.</p>
+      <p>The honest fix is small but radical: let people have whatever holiday they&#x27;re actually having. If a colleague says December is rough, don&#x27;t try to talk them into eggnog. If your own holiday is mediocre, say so. The season of joy would be considerably more joyful if joy were optional.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Let&#x27;s be honest about what actually ruins the winter holidays: money. Strip away the carols and the cinnamon candles, and what you&#x27;re left with, for most American families, is a six-week financial panic dressed up in red and green.</p>
+      <p>The numbers are sobering. The National Retail Federation projects holiday spending will average over $800 per household this year. Surveys routinely find that a third or more of Americans go into debt for Christmas, and that many are still paying off last year&#x27;s presents when this year&#x27;s begin to arrive. For lower-income households, the gap between what the culture demands and what the budget allows is brutal. Kids notice when their friends got the new console and they didn&#x27;t. Parents notice too.</p>
+      <p>The irritations everyone loves to list — traffic, relatives, lines at the mall — are downstream of this. Traffic is bad because everyone is rushing to buy things. Relatives are crazy in part because gift exchanges have a way of resurrecting old resentments about who gives generously and who doesn&#x27;t. Even the &quot;magic&quot; of the season, with its Elf on the Shelf and its escalating expectations of Pinterest-worthy domestic display, is a marketing apparatus that has expanded dramatically in the last twenty years.</p>
+      <p>What makes this annoying rather than merely sad is the cheerful denial built into the holiday itself. We are told, with a straight face, that it&#x27;s the thought that counts, while every advertisement, every school gift exchange, and every office Secret Santa enforces a thoroughly material standard. Trying to opt out — proposing a no-gifts year, or a charitable donation in lieu of presents — is met with the same kind of resistance you&#x27;d get from suggesting a vegan Thanksgiving.</p>
+      <p>If the season of joy annoys us, it may be because we sense, but cannot quite say, that we&#x27;ve allowed a holiday about generosity to become an audit of our spending power.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The single most annoying thing about the winter holidays is the War on the War on Christmas — that exhausting, manufactured outrage cycle in which cable hosts and Facebook uncles insist that saying &quot;Happy Holidays&quot; is an assault on Western civilization.</p>
+      <p>This year&#x27;s installment featured red Starbucks cups, which apparently were not sufficiently festooned with snowflakes and reindeer, and which therefore allegedly constituted evidence that secular forces are erasing Jesus from December. One could not parody this if one tried. Starbucks is a chain that sells $5 peppermint mochas during a Christian feast day; the idea that it is the front line of religious persecution is the kind of claim that should embarrass anyone making it.</p>
+      <p>The persistent irritation isn&#x27;t the silliness itself but the way it crowds out actual conversation. The United States is a religiously plural country. Roughly a quarter of Americans now identify as religiously unaffiliated, according to Pew. Millions are Jewish, Muslim, Hindu, Buddhist, or simply not interested. &quot;Happy Holidays&quot; exists because cashiers don&#x27;t know who they&#x27;re talking to, and it&#x27;s a small, kind gesture toward strangers. Treating it as an affront requires the assumption that public space belongs by default to one tradition and that sharing it is a loss.</p>
+      <p>Meanwhile, the people who actually do celebrate Christmas — including, I&#x27;d note, most of the people complaining — face no obstacle whatsoever to doing so. Churches are open. Trees are sold on every corner. Carols play in elevators. Whole television networks devote December to Christmas movies in which improbably wholesome women fall for small-town carpenters.</p>
+      <p>What annoys, in the end, is the bad faith. A holiday rooted in the idea of welcoming a stranger has been conscripted into a culture-war script about which strangers belong. If something is being lost from Christmas, it isn&#x27;t the greeting at Starbucks. It&#x27;s the generosity of spirit that the season is supposed to model.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The traffic is fine. The relatives are fine. Even the fruitcake, in its way, is fine. What I find genuinely insufferable about the winter holidays is their length.</p>
+      <p>There was a time, within living memory, when Christmas occupied roughly the last week of December and Thanksgiving was a discrete event with its own identity. Now the two have fused into a single eight-week commercial weather system that begins, depending on the retailer, sometime in early November. Mariah Carey is on the radio before the Halloween candy is marked down. Inflatable Santas appear on lawns before the leaves are raked. By the time the actual holiday arrives, one is so thoroughly marinated in tinsel that the day itself can only disappoint.</p>
+      <p>This is what economists might call diminishing marginal joy. A short, intense holiday is a delight. A long, diffuse one is wallpaper. The carols I genuinely love — the old ones, the ones in minor keys — become unbearable after the fortieth supermarket airing. Lights that would have charmed me on December 20th merely irritate me on November 15th, when they have been switched on by a neighbor who has clearly given up on autumn entirely.</p>
+      <p>The creep is driven, of course, by retail. Black Friday now begins on Thursday, which is to say, it has eaten Thanksgiving. Cyber Monday colonized the following week. &quot;Holiday season&quot; sales begin in October. The pressure on consumers, and especially on retail workers, to extend the festive performance further and further into the calendar has nothing to do with festivity and everything to do with quarterly earnings.</p>
+      <p>The cure is unfashionable but available: ignore it. Don&#x27;t decorate until mid-December. Don&#x27;t shop on Thanksgiving. Don&#x27;t engage with the season until the season is actually here. A short Christmas, I suspect, would be a much merrier one — and a lot less annoying.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The most grating thing about the winter holidays isn&#x27;t the traffic or the pushy shoppers—it&#x27;s the tyranny of mandatory cheer. From the moment the last Thanksgiving plate is cleared, a societal demand descends: you must be joyful, or at least perform it convincingly. This forced festivity is the season&#x27;s true annoyance, because it silences the full spectrum of human emotion under a suffocating blanket of tinsel.</p>
+      <p>Social media feeds become a parade of matching pajama photos and angelic children by firelight, each post a quiet accusation. &quot;Are you ready for Christmas?&quot; isn&#x27;t a logistical question; it&#x27;s a test of your emotional compliance. For those who are grieving a loss, facing a first holiday after a divorce, or simply navigating the ordinary blues of a dark December, this pressure transforms a difficult season into an alienating one. The expectation to be merry doesn&#x27;t invite participation—it polices sadness. People who can&#x27;t summon the required joy are made to feel broken, or worse, like they&#x27;re spoiling the party for everyone else.</p>
+      <p>It&#x27;s no coincidence that mental health hotlines see a spike this time of year. The gap between the cultural fantasy of perfect togetherness and the messy reality of human relationships can be a chasm. When we insist that everyone wear a smile, we crowd out the genuine connection that might happen if we admitted that holidays can be hard. The most annoying carol isn&#x27;t the one stuck in your head; it&#x27;s the unspoken chorus that says your grief, your loneliness, or your simple exhaustion has no place at the table. This season of joy would be far more generous if it made room for everything that isn&#x27;t joy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Ask anyone what they hate about the holidays and they&#x27;ll tell you about the travel: snaking security lines, winter storms that strand you in a terminal with a bag of overpriced trail mix, highways that become parking lots of brake lights. These physical irritations are real, but they&#x27;re only the surface of a deeper annoyance. The true traffic jam of the holidays is internal—the gridlock of obligation, guilt, and unspoken resentment that we navigate every time we pack a bag and head toward family.</p>
+      <p>The journey home is rarely just a journey through space. It&#x27;s a trip backward through every role you&#x27;ve ever played: the peacemaker, the disappointment, the one who left. A delayed flight is simple; the weight of expectations is not. You sit in your childhood bedroom, now a guest room, and feel the old dynamics closing in like a weather front. The annoyance isn&#x27;t that your aunt will ask why you&#x27;re still single; it&#x27;s that the question reopens a map of criticisms you thought you&#x27;d folded away. The traffic you hit on the interstate is nothing compared to the emotional gridlock that comes from four days of negotiating boundaries that don&#x27;t exist in that house.</p>
+      <p>In this sense, holiday travel annoyances are almost a gift—a convenient, external thing to complain about that stands in for the harder chaos. We can curse the TSA without touching the bruise of a long-ago fight. The madness of the airport is a metaphor we can handle; the madness of family is the one we&#x27;re still trying to survive. So the next time you&#x27;re stuck in holiday transit, consider that the real delays are the ones you carry inside. And maybe, just maybe, the only way out is to stop rerouting and travel straight through the heart of it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The most annoying thing about the winter holidays wears a shiny red bow and comes with a receipt. It&#x27;s the utter commercialization of a season that supposedly celebrates light, generosity, and togetherness—now repackaged as a month-long guilt trip with a credit card minimum. What stings isn&#x27;t just the crowds or the canned carols in every store since Halloween; it&#x27;s the way genuine human connection has been swapped for a transaction that leaves everyone poorer, emotionally and financially.</p>
+      <p>By the time we reach December 23, the machine has been running for weeks. The National Retail Federation expects holiday sales in 2015 to top $630 billion, a figure swollen by the dark art of manufactured urgency. Black Friday now oozes into Thursday, Cyber Monday spawns a week of digital doorbusters, and every inbox buzzes with &quot;last chance&quot; warnings that make you feel irresponsible for saving your money. We buy things we don&#x27;t need for people who don&#x27;t want them, propelled by the fear that a gift&#x27;s price tag is the measure of our affection. The result? January arrives with a hangover of credit card statements and a pile of returns, while landfills absorb millions of tons of wrapping paper and unwanted novelty gifts.</p>
+      <p>And still, we chase it. We watch children tear through a dozen presents in five minutes and ask, with painful predictability, &quot;Is that everything?&quot; That moment—the instant a ritual of giving becomes a tally of getting—is the sound of the holiday spirit collapsing under its own weight. The real annoyance isn&#x27;t the materialism itself, but the way it convinces us that love is something you can wrap and stack. We could choose differently: a shared meal, a handwritten letter, an afternoon walk. But the machine is loud, and it has made simple, free gestures feel insufficient. This season, the most annoying thing is how hard we have to work to remember that they aren&#x27;t.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Let me make a small, unpopular confession: I adore the parts of the holidays that everyone else claims to despise. The tinny, overplayed carols piped into every drugstore aisle. The ugly sweater that your coworker wears with aggressive irony. The 45-minute line at the post office behind a man who hasn&#x27;t taped his box shut. These things, the conventional wisdom says, are the season&#x27;s brambles. But I would argue they&#x27;re the very best part—the grit in the oyster of holiday cheer.</p>
+      <p>Perfection is boring. An immaculate holiday dinner with no spilled wine, no burned rolls, and no tense political aside from an uncle is also a holiday dinner you will never remember. The common annoyances are a social script we all know by heart, a collection of shared grievances that bind us more tightly than any chorus of &quot;Silent Night.&quot; Complaining about holiday traffic is a communion rite; rolling your eyes at the third replay of &quot;All I Want for Christmas Is You&quot; is a way of nodding to the stranger at the coffee shop and saying, yes, we are both stuck in this beautiful mess together. These little frictions create in-jokes, exaggerations, and the stories we retell for years—the year the cat climbed the tree, the year we all got the flu.</p>
+      <p>Take them away, and you&#x27;re left with a sterile display, a catalog photo of a season no one actually lives. The annoyances are proof of life, of too many people crammed into too little time, attempting something enormous: to love each other well, and often failing in funny ways. So I say, bring on the parking-lot gridlock and the fruitcake that no one will eat. May your holiday be perfectly imperfect, and may you complain about it loudly, with people you love, for many years to come.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>For me, the most maddening aspect of the winter holidays is the relentless, ever-expanding &quot;holiday creep&quot; that transforms a season of reflection into a grueling, months-long marathon of consumerism. It used to be that the holiday season began after Thanksgiving. Now, the retail machinery kicks into gear before the Halloween candy has even been cleared from the shelves. Seeing plastic reindeer and pre-lit trees in mid-October is not just aesthetically jarring; it signals a culture that has lost its grip on the present moment in its rush to monetize the future.</p>
+      <p>This commercial expansion reached a grim milestone in recent years, with Black Friday bleeding backward to swallow Thanksgiving Day itself. Instead of gathering around a table to express gratitude for what we have, millions of retail workers are forced to clock in, and millions of consumers are encouraged to abandon their families to fight over discounted flat-screen televisions. The irony of trampling our neighbors to buy gifts that supposedly celebrate peace on earth is entirely lost in the frenzy.</p>
+      <p>By the time late December actually arrives, the joy of the season has been wrung out of us. We are financially depleted, socially exhausted, and sick of hearing the same dozen carols piped through shopping mall speakers. The anticipation that once made the holidays special has been diluted by months of high-pressure sales tactics. The winter holidays are meant to be a quiet time to retreat from the cold, reflect on the year, and connect with loved ones. Instead, we have allowed the retail industry to commodify our traditions, turning a season of joy into a quarter-end sales strategy. The true annoyance isn’t just the traffic or the crowded stores; it is the realization that our cultural priorities have been thoroughly hijacked by the bottom line.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The most grating part of the holiday season is the inescapable, oppressive mandate of forced cheerfulness. From television commercials to office parties, the cultural messaging dictates that December is &quot;the most wonderful time of the year,&quot; and anyone failing to radiate joy is treated as a Grinch. This relentless optimism is not only annoying; it can be deeply damaging to those who are struggling.</p>
+      <p>For a significant portion of the population, the holidays are anything but magical. The shrinking daylight exacerbates seasonal affective disorder. The emphasis on perfect, harmonious family gatherings serves as a painful reminder for those who have lost loved ones, those navigating toxic family dynamics, or those who are simply estranged and spending the season alone. Financial pressures mount, bringing stress rather than joy to parents trying to afford an impossible standard of gift-giving.</p>
+      <p>When the cultural volume of happiness is turned up so high, the contrast makes any personal sadness feel even more profound. People who are grieving or depressed often feel forced to put on a mask, performing a festive mood just to make others comfortable. It is exhausting to constantly reassure colleagues and acquaintances that you are having a &quot;merry&quot; season when you are actually just trying to survive to January.</p>
+      <p>What we need is a cultural permission slip to be authentic during the holidays. We should normalize the fact that the end of the year brings a complicated mix of emotions. A little room for melancholy, quiet reflection, or even just indifference would go a long way in making the season bearable. True compassion—which is supposedly the spirit of the season—means meeting people where they are, rather than demanding they conform to the soundtrack of a cheerful holiday commercial.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>While crowded malls and repetitive music are certainly frustrating, the most deeply troubling annoyance of the winter holidays is the staggering amount of environmental waste we collectively generate. Between Thanksgiving and New Year&#x27;s Day, household waste in the United States increases by more than 25 percent. In our rush to show affection through material goods, we inadvertently participate in an ecological disaster that contradicts the very values of care and stewardship the season is supposed to represent.</p>
+      <p>Consider the lifecycle of a typical holiday gift. It begins with the extraction of resources and manufacturing, often overseas, followed by carbon-intensive shipping. Once purchased, the item is wrapped in glossy, unrecyclable paper, adorned with plastic ribbons, and shipped again. Millions of miles of wrapping paper end up in landfills each year, alongside the plastic blister packaging that requires a hacksaw to open.</p>
+      <p>Beyond the packaging, there is the sheer volume of unwanted items. How many novelty sweaters, plastic gadgets, and duplicate kitchen appliances are bought out of a sense of obligation, only to be discarded or shoved into a closet a few months later? We have normalized a culture of disposable gifting. Add to this the staggering amount of food waste generated by lavish holiday feasts and the millions of cut trees that end up on the curb, and the environmental footprint of our joy becomes terrifying.</p>
+      <p>It is incredibly frustrating that our society has equated generosity with physical excess. We could easily shift our traditions toward sustainability without sacrificing the joy of the season. Giving experiences, homemade goods, or donations to charity; using recycled or reusable wrapping; and planning meals carefully to avoid waste are all viable alternatives. Until we rethink our consumption, the most annoying thing about the holidays will remain the massive pile of garbage we leave behind in the name of good cheer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The most tiresome aspect of the winter holidays is the suffocating assumption of universal participation, and the manufactured outrage that inevitably follows any attempt to acknowledge a diverse society. Every December, the public square is saturated with the symbols and sounds of one specific religious and cultural tradition. For those who do not celebrate Christmas—whether Jewish, Muslim, Hindu, atheist, or otherwise—the season can feel like a month-long reminder of outsider status.</p>
+      <p>What is truly annoying, however, is not the holiday itself, but the aggressive policing of its dominance. The phrase &quot;Happy Holidays&quot; emerged as a polite, inclusive greeting designed to acknowledge that December is a season of many different celebrations. Yet, in recent years, this simple courtesy has been weaponized by politicians and pundits who claim it represents a &quot;War on Christmas.&quot;</p>
+      <p>Just weeks ago, we saw a national uproar over Starbucks releasing a minimalist red cup for the season, which was absurdly decried as an anti-Christian statement. This kind of grievance theater is exhausting. It frames the mere existence of other traditions—or even secular neutrality—as an attack on the majority. When a retail worker says &quot;Happy Holidays,&quot; they are not declaring war; they are just recognizing the demographic reality of a pluralistic society.</p>
+      <p>This manufactured controversy turns what could be a season of shared goodwill into a petty cultural battleground. It demands that everyone, regardless of their own background, cater to the linguistic and cultural preferences of the dominant group, lest they be accused of ruining the season. The winter solstice brings a variety of traditions that bring light into the darkest part of the year. The most annoying part of the season is the loud, defensive insistence that only one of those lights is allowed to shine.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The most annoying thing about the winter holidays is not the crowded mall, the delayed flight or the relative who asks, before dessert, whether you are “still doing that job.” It is the way obligation disguises itself as generosity.</p>
+      <p>By late December, Americans have often spent weeks participating in an elaborate system of compulsory delight. We are expected to buy gifts for people who do not need them, attend parties we do not enjoy, send cards to prove we remembered, decorate as if our homes were auditioning for a catalog, and express gratitude for all of it. The season’s moral vocabulary — giving, family, tradition, togetherness — makes it difficult to admit that much of this is exhausting, expensive and emotionally coercive.</p>
+      <p>This is not an argument against generosity. A thoughtful gift, a meal made with care, a day set aside for children or friends — these are among the best things human beings do for one another. The problem is that the holiday marketplace has learned to imitate love with stunning efficiency. Retailers begin the countdown before Halloween. Ads suggest that affection is measurable in car bows, jewelry boxes and electronics. Even charity can be folded into the same mood of seasonal performance: give now, feel good now, move on in January.</p>
+      <p>The pressure falls unevenly. Parents with little money are asked to create magic. Workers in retail and delivery jobs endure the public’s impatience while everyone else celebrates “time with family.” Women still disproportionately do the remembering, wrapping, cooking and smoothing over. What is presented as joy often depends on invisible labor and visible spending.</p>
+      <p>The antidote is not to become a scold or a minimalist monk. It is to recover permission to do less. Visit because you want to. Give what you can afford. Refuse traditions that have become joyless. The holidays would be less annoying if we stopped treating them as an annual test of love and let them become, more modestly, a chance to practice it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>For me, the chief annoyance of the holidays is travel: the annual national decision to take the worst weather, the shortest days, the most crowded airports and the highest emotional expectations, and combine them into one logistical obstacle course.</p>
+      <p>Holiday travel exposes a strange contradiction. We tell ourselves that the journey is about togetherness, but the process often makes us less humane. Airports in December are packed with people carrying too many bags, too many gifts, too many children, and too little patience. A snowstorm in Chicago or Denver can ripple across the country. One delayed connection turns a family visit into a night on an airport carpet. On the roads, the story is similar: traffic jams, icy highways, distracted drivers, and the grim knowledge that thousands of other people have made the same plan at the same time.</p>
+      <p>What makes this especially irritating is that much of the misery is predictable. We know the roads will be crowded on the day before Thanksgiving, that flying near Christmas is expensive and precarious, that winter storms do not consult airline schedules. Yet the force of tradition is so strong that millions of people submit anyway. To decline is often treated as a statement: you do not care enough, you are breaking the family rhythm, you are choosing convenience over love.</p>
+      <p>Technology has made some parts easier — online check-in, flight alerts, GPS routes around congestion — but it has also sharpened the torment. We can now watch our delay lengthen in real time. We can see the red traffic line stretching for miles ahead. We can receive cheerful texts from relatives asking, “Where are you now?” when the honest answer is: nowhere, spiritually.</p>
+      <p>The solution is not to abolish holiday visits. Some journeys are worth the trouble. But we should be more willing to celebrate in January, rotate years, meet halfway, or treat a video call as a loving compromise rather than a failure. A season built around peace should not require everyone to reenact a minor transportation crisis.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The most annoying feature of the holidays is the family gathering that pretends not to be political while functioning as a political summit with worse food and no diplomatic staff.</p>
+      <p>In theory, holiday dinners are refuges from public life. In practice, they bring together people divided by class, generation, religion, race, region and cable-news habits, then seat them close enough to pass the cranberry sauce. By December 2015, the atmosphere is especially combustible. The presidential campaign is already loud and ugly. Arguments over immigration, terrorism, policing, guns, marriage equality and “political correctness” are not abstractions; they are running on television in the background and in people’s pockets. Someone will bring up Donald Trump. Someone will sigh. Someone will say, “I’m just being honest.” Someone else will go quiet.</p>
+      <p>It is tempting to blame the loud uncle or the sanctimonious niece, but the deeper annoyance is the holiday insistence that family harmony requires pretending serious disagreements are merely breaches of etiquette. We are told not to “ruin Christmas” by discussing politics, as if politics were an optional hobby rather than the name we give to decisions that shape people’s lives. At the same time, holiday gatherings are terrible places for genuine persuasion. Nobody revises a worldview between the ham and the pie after being corrected by a cousin who just came home from college.</p>
+      <p>So we oscillate between two bad options: explosive confrontation or suffocating politeness. Both leave a residue. The first turns dinner into a cable panel. The second asks people directly affected by prejudice or policy to smile through comments that are not harmless to them.</p>
+      <p>A better holiday ethic would not demand either total candor or total silence. It would ask for proportion. Not every provocation deserves a seminar. Not every offensive remark should pass unchallenged. Hosts can set expectations; guests can step away; families can learn the phrase, “I don’t want to fight, but I can’t let that go.”</p>
+      <p>The annoyance, then, is not that relatives disagree. It is that the holidays sell a fantasy of uncomplicated belonging. Real families are complicated. Joy, if it exists, has to make room for that truth.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>What annoys me most about the holidays is the annual competition to be annoyed by the holidays.</p>
+      <p>Every December, Americans seem to divide into rehearsed camps. Some complain that Christmas has become too commercial. Others complain that Christmas is under attack. Some complain about “Happy Holidays”; others complain about the people who complain about “Happy Holidays.” There are laments about Starbucks cups, school concerts, inflatable lawn displays, shopping on Thanksgiving, not shopping on Thanksgiving, overeating, forced cheer, religious sentimentality and secular emptiness. Even the phrase “the season of joy” begins to sound like a dare.</p>
+      <p>This does not mean the irritations are imaginary. The holidays can be financially stressful, emotionally painful and physically draining. For people grieving, estranged from family, unemployed, working double shifts or simply lonely, the constant public merriment can feel cruel. But much of the seasonal grievance industry is less about suffering than identity. To announce what annoys us about the holidays is often to announce what kind of person we are: tasteful, traditional, anti-consumerist, pious, cosmopolitan, overworked, too honest for forced cheer.</p>
+      <p>The result is that irritation becomes one more holiday ritual. We unwrap it every year. Newspapers ask what bothers us; television hosts stage arguments; social media supplies fresh examples. The complaints become as predictable as the songs in the drugstore. We perform our exasperation, then repeat the customs we claim to despise.</p>
+      <p>Perhaps the least annoying holiday posture would be humility. If someone says “Merry Christmas,” accept the kindness. If someone says “Happy Holidays,” accept that too. If a neighbor loves blinking reindeer, close the curtains. If relatives cook badly but mean well, eat before you go. If you hate the office party, stay briefly and leave graciously. If the season hurts, say so, and let others help without demanding that the whole world dim its lights.</p>
+      <p>The holidays do not need to be perfect to be bearable. They might improve if we gave up the pleasure of being so expertly displeased.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The most annoying thing about the winter holidays is not the traffic, the carols on a loop or the relative who wants to litigate Obamacare over pie. It is the way love gets translated into shopping.</p>
+      <p>Every year the season begins earlier, not with Advent or Hanukkah candles, but with “doorbusters,” countdown clocks and email subject lines that imply moral failure if you do not buy immediately. The culture tells parents that good parenting comes wrapped in plastic, tells spouses that affection can be measured by price, and tells friends that a modest card is insufficient unless accompanied by some clever object no one needs. By December, generosity has been replaced by performance anxiety.</p>
+      <p>This is not a complaint about giving gifts. A thoughtful present can be lovely. The problem is compulsory gifting: the office exchange, the teacher gift, the hostess gift, the cousin’s children’s gifts, the gift for someone who will plainly return it. Americans routinely plan to spend hundreds of dollars during the holidays, and many do so while wages are stagnant, rents are high and credit cards are waiting. January then becomes the season of interest charges.</p>
+      <p>Commercial pressure is especially cruel because it exploits decent impulses. People want to be kind. Parents want children to feel wonder. Families want rituals. Retailers and advertisers know this, so they attach emotional meaning to consumption: buy this toy and create magic; buy this diamond and prove devotion; buy this food and become the family everyone imagines.</p>
+      <p>The annoyance is not merely aesthetic. It crowds out the very goods the season claims to honor: time, attention, hospitality, rest, gratitude. A holiday built around obligation produces resentment, waste and debt. A better one would involve fewer packages, more honesty and the courage to say, “I don’t need anything, and you don’t have to prove anything.” That would be a gift.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The most annoying part of the holidays is the annual effort to turn ordinary greetings into evidence of national decline.</p>
+      <p>This year, a plain red Starbucks cup somehow became a culture-war artifact. Every December brings a new version of the same argument: “Merry Christmas” versus “Happy Holidays,” nativity scenes, store signs, school concerts, municipal displays. The controversy is exhausting not because religion is unimportant, but because the outrage is so often manufactured. A cashier saying “Happy Holidays” is not persecuting Christians. A neighbor saying “Merry Christmas” is not declaring theocracy. In almost every case, the person is attempting a small act of seasonal politeness.</p>
+      <p>America’s winter calendar is plural. Christmas is culturally dominant and, for Christians, sacred. But December also includes Hanukkah in many years, Kwanzaa, New Year’s, school breaks, office parties and, for many Americans, no religious observance at all. “Happy Holidays” is not an insult; it is a practical umbrella. “Merry Christmas” is also not an insult; it is usually a sincere wish for joy.</p>
+      <p>What is annoying is the conversion of courtesy into a loyalty test. We have developed a habit of hearing bad faith in every phrase. Some activists on the right treat the absence of explicitly Christian language as hostility. Some secular scolds treat any public religious expression as a civic emergency. Both miss the point of pluralism, which is not that everyone must speak identically, but that we can receive one another’s goodwill without suspicion.</p>
+      <p>The season’s better virtues — humility, generosity, hospitality — are incompatible with this constant grievance. If Christmas means anything in the Christian tradition, it should not require picking a fight with a barista. And if inclusiveness means anything in a diverse republic, it should not require mocking people for loving their holy day.</p>
+      <p>The least we can do in December is accept kindness in the spirit in which it is offered.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The most annoying holiday nuisance is travel, but not simply because airports are crowded or highways become parking lots. The deeper annoyance is that we have designed a society in which millions of people must perform the same frantic migration at the same time.</p>
+      <p>Families are scattered by jobs, housing costs, divorce, college and retirement. Then schools, employers and cultural expectations compress reunion into a few days at the end of December. The result is predictable: expensive flights, overbooked planes, weather delays, packed trains, children melting down in terminals, and drivers inching along interstates while wondering why they ever left home. We blame “holiday traffic” as if it were an act of nature. It is really a scheduling problem on a national scale.</p>
+      <p>Americans also have too little slack. Compared with many wealthy countries, the United States offers limited paid vacation and no guaranteed paid family leave. Many workers cannot simply visit parents in October or take a long weekend in February. Retail, health care, hospitality, delivery and public-safety workers may not get real holidays at all. For everyone else, the end of December becomes the one socially approved window for family obligation. Of course the roads collapse under that pressure.</p>
+      <p>The irritation spills into the family visit itself. People arrive late, exhausted, poorer and already resentful. A minor comment from an uncle feels more offensive after a canceled connection in Atlanta. A small kitchen dispute escalates after eight hours on the New Jersey Turnpike. What we call “crazy relatives” may sometimes be relatives encountering one another under absurd logistical stress.</p>
+      <p>The answer is not just better airline apps or more lanes. It is a less rigid understanding of celebration. Families could spread gatherings across the year. Employers could offer more flexible leave. We could stop treating physical presence on one exact date as the only proof of devotion.</p>
+      <p>Holiday travel is annoying because it turns love into a transportation ordeal. No ritual should require that much time in Terminal C.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The most annoying thing about the holidays is the myth that they happen by magic.</p>
+      <p>In many households, “Christmas” or “the holidays” really means weeks of invisible labor: planning menus, buying gifts, remembering sizes, mailing cards, tracking school events, cleaning guest rooms, wrapping packages, negotiating divorced-family schedules, managing food allergies, soothing offended relatives and making sure no child notices the strain. This work still falls disproportionately on women, especially mothers and daughters, even in families that think of themselves as modern. Everyone enjoys “tradition,” but someone has to produce it.</p>
+      <p>The same is true outside the home. Cashiers endure impatient customers and the same songs for ten hours. Delivery workers race to satisfy last-minute promises made by retailers. Nurses, home health aides, police officers, firefighters, restaurant workers and hotel staff keep working while other people speak sentimentally about family time. Many are paid modestly; many are expected to be cheerful while serving people who are not.</p>
+      <p>This hidden labor creates a particular kind of resentment. The person arranging the joy is often too tired to feel it. She is told to relax while standing over a sink full of dishes. She is told that family is what matters while being left to remember every family obligation. Then, if she objects, she risks being labeled difficult, ungrateful or insufficiently festive.</p>
+      <p>The solution is not to abolish holiday rituals. Rituals can anchor families and communities. But we should stop pretending they are effortless. A fairer holiday begins with asking simple questions: Who is cooking? Who is cleaning? Who bought the presents? Who is working late so we can shop late? Who has been carrying the emotional calendar?</p>
+      <p>Divide the work. Spend less. Tip better. Thank the people behind the counter. Let some traditions die if no one wants to maintain them. Joy is more likely when it is shared not only as a feeling, but as a responsibility.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The most annoying thing about the winter holidays is the relentless commercial pressure that turns what should be a reflective season into an exhausting shopping marathon. By late December, we&#x27;ve already survived weeks of ads, promotions, and &quot;limited time only&quot; warnings. The message is clear: if you don&#x27;t spend heavily, you don&#x27;t care.</p>
+      <p>Black Friday has morphed into Black November, with sales starting before many have even finished their Thanksgiving leftovers. This creeping commercialization erodes the meaning of gift-giving itself. We&#x27;re not sharing tokens of affection; we&#x27;re checking items off lists, racing against shipping deadlines, and stress-spending. The financial anxiety alone is enough to drain any holiday spirit.</p>
+      <p>Then there&#x27;s the performative consumption. Social media amplifies the pressure. We see friends posting elaborate gifts, designer decorations, and perfect family photos. Even if we know these snapshots are curated, the comparison creeps in. Am I doing enough? Does my tree look adequate? Is my dinner impressive enough?</p>
+      <p>What&#x27;s particularly galling is how this commercialism colonizes time that should feel meaningful. The weeks leading up to Christmas become a blur of errands rather than an opportunity to slow down. We&#x27;ve traded contemplation for checkout lines.</p>
+      <p>The irony is that many of us recognize this pattern yet feel trapped by it. Opting out entirely feels like denying something to loved ones; participating feels like betraying our values. So we grumble through the season, wallets thinner, spirits dulled, wondering why December feels less like joy and more like obligation.</p>
+      <p>Perhaps the real annoyance is recognizing what we&#x27;ve let the holidays become, while lacking the resolve to reclaim something better.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The thing that gets to me most during the holiday season isn&#x27;t traffic or commercialization—it&#x27;s the mandatory merriment. There&#x27;s an unspoken expectation that December must be filled with unrelenting joy, and questioning this feels almost unpatriotic.</p>
+      <p>Here&#x27;s the reality: not everyone has a Norman Rockwell family waiting. Some of us have relatives who start arguments as reliably as the turkey gets carved. Others are grieving losses, whether recent or long-standing. Some are simply exhausted by the year&#x27;s end. And yet, we&#x27;re told to &quot;get into the holiday spirit&quot; as if joy were a light switch we control.</p>
+      <p>The pressure to perform happiness is exhausting. At office parties, we paste on smiles. At family dinners, we suppress anxiety. We nod through conversations we&#x27;d normally avoid, smile at relatives whose politics we find troubling, and pretend that being together is enough.</p>
+      <p>What makes this worse is the judgment when we fail to meet expectations. Express fatigue and you&#x27;re &quot;being negative.&quot; Skip a gathering and you&#x27;re &quot;ruining Christmas.&quot; Decline a third serving of pie and somehow you&#x27;ve betrayed the season&#x27;s abundance.</p>
+      <p>I&#x27;d argue that authentic holiday spirit requires honesty about our messy, complicated human experience. Not every December needs to feel magical. Some years we need quiet more than celebration. Some gatherings are genuinely better skipped.</p>
+      <p>The real annoyance is the emotional labor demanded of us during an already demanding time. Can we please normalize a quieter, less performative approach to the season? Not everyone needs to be merry. Sometimes the kindest thing is letting someone simply be.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>Airport chaos. That&#x27;s my answer, and I stand by it.</p>
+      <p>Nothing strips away holiday spirit faster than navigating air travel in mid-December. The terminals are sardine cans filled with stressed travelers, crying children, and people who&#x27;ve given up on basic courtesy. Every gate becomes a competition for overhead bin space. Every delay triggers cascading panic about connections.</p>
+      <p>The crowds alone would be manageable if they weren&#x27;t amplified by everything else. The lines at security stretch around corners, filled with people wearing too many layers because they forgot that checking bags might actually get them to their destination. The TSA agents—underpaid and overworked—become the unwitting faces of holiday frustration.</p>
+      <p>And heaven help you if you need to eat during your journey. Airport restaurants have perfected the art of charging premium prices for mediocre food with glacial service. You&#x27;ll pay fourteen dollars for a sandwich that would cost four elsewhere, and you&#x27;ll wait twenty minutes for the privilege.</p>
+      <p>The worst part is knowing this is predictable. We do this to ourselves every year. We know airports will be packed, delays will happen, and frustration will peak. Yet we show up anyway, hoping somehow this year will be different.</p>
+      <p>What makes this particularly galling is the contrast with where we&#x27;re headed. We&#x27;re traveling to celebrations, to reunions, to moments meant to feel meaningful. Instead, we arrive exhausted, irritable, and already resenting the journey before it even ends.</p>
+      <p>So yes, for me it&#x27;s airport hell that most captures holiday annoyance. The rest is manageable. The terminals are where joy goes to die.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>I&#x27;ll admit something that might be unpopular: I find the forced gratitude of the season more annoying than almost anything else.</p>
+      <p>&quot;Don&#x27;t complain—be grateful!&quot; we&#x27;re told, as if gratitude and annoyance were mutually exclusive. As if acknowledging difficulties somehow diminishes appreciation.</p>
+      <p>Here&#x27;s what actually annoys me: the performative gratitude that surfaces in December. People posting about everything they&#x27;re thankful for, as if the sentiment is only valid when it&#x27;s holiday-themed. The pressure to count blessings while ignoring that life is complicated, that relationships are hard, that the season itself can be genuinely difficult.</p>
+      <p>Real gratitude isn&#x27;t a seasonal emotion. It&#x27;s something that emerges from honest reflection, not mandatory December rituals. When gratitude becomes an obligation—something we &quot;should&quot; feel—it loses authenticity. We end up performing appreciation we don&#x27;t actually experience, which feels hollow.</p>
+      <p>I&#x27;m also tired of the false dichotomy: either you&#x27;re a scrooge who ruins Christmas with your complaints, or you&#x27;re someone who spends December in perpetual, performative joy. What about the middle ground? What about honest, sometimes grumpy, but ultimately meaningful engagement with the season?</p>
+      <p>My real annoyance is the demand that we suppress complexity. The holidays aren&#x27;t uniformly joyful for anyone. We miss people who are gone. We&#x27;re exhausted. We&#x27;re anxious about family dynamics. We&#x27;re broke. These feelings deserve acknowledgment, not erasure.</p>
+      <p>Perhaps the most annoying thing is how little space the season allows for honest ambivalence. We can be grateful and frustrated simultaneously. That&#x27;s not being negative—it&#x27;s being human. And humanity doesn&#x27;t take December off.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

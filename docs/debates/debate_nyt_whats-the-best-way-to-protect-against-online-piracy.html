@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What’s the Best Way to Protect Against Online Piracy? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Science Tech · Open-ended</div>
+  <h1 class="debate-title">What’s the Best Way to Protect Against Online Piracy?</h1>
+  <div class="question-body"><p>In response to online protests on Wednesday, several key Congressional lawmakers withdrew support for two anti-Web piracy measures — the Stop Online Piracy Act and the Protect Intellectual Property Act — both of which have the backing of powerful commercial lobbies. Although the reaction was a victory for new media, online intellectual piracy remains a serious issue.</p><p>What’s the best way to protect against online piracy? Is there a better alternative to these two bills?</p><p>Related  Senate Postpones Vote on Internet Anti-Piracy Bill</p><p>Related in Opinion Op-Ed: The False Ideals of the Web</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_1.html">
+      <td class="arg-text">Instead of pursuing restrictive and harmful legislation like SOPA and PIPA, the best way to combat online piracy is for content industries to provide innovative, convenient, and reasonably priced legal services.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_2.html">
+      <td class="arg-text">The most effective and least destructive way to combat online piracy is to target the financial infrastructure that monetizes illegal content rather than attempting to block domain names.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_3.html">
+      <td class="arg-text">The most effective way to combat online piracy is to reform copyright law to make it more reasonable and accessible rather than implementing broad, punitive enforcement measures like SOPA and PIPA.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_4.html">
+      <td class="arg-text">The most effective way to combat online piracy is through a global enforcement framework built on international diplomacy and multilateral trade agreements rather than unilateral domestic legislation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_5.html">
+      <td class="arg-text">The Stop Online Piracy Act and the Protect I.P. Act are necessary and effective measures to protect American consumers and creators from foreign rogue websites dedicated to content theft.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_6.html">
+      <td class="arg-text">The best way to protect against online piracy is to reject censorship-based legislation like SOPA and PIPA in favor of policies that understand the Internet&#x27;s technical infrastructure and protect the creative innovation it enables.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_7.html">
+      <td class="arg-text">The OPEN Act is a flawed alternative to SOPA and PIPA because it creates an expensive, inaccessible, and unfair legal process that prevents independent artists from protecting their intellectual property.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_8.html">
+      <td class="arg-text">The most effective way to combat online piracy is to prioritize market-driven solutions that make legal content more accessible and affordable while using precise, voluntary industry cooperation to target bad actors.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_9.html">
+      <td class="arg-text">The best way to combat online piracy is through a combination of international law enforcement cooperation, globalized legal distribution models, and domestic legislation that prioritizes due process and proportionality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_10.html">
+      <td class="arg-text">The most effective way to combat online piracy is through a balanced approach that combines public education to shift cultural norms with targeted financial measures against commercial rogue sites.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_11.html">
+      <td class="arg-text">The best way to combat online piracy is through a combination of technical solutions, financial pressure on bad actors, and market-driven innovation rather than legislation that compromises internet infrastructure.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_12.html">
+      <td class="arg-text">The best way to protect against online piracy is to incrementally improve and better deploy existing legal tools and enforcement mechanisms rather than enacting sweeping new legislation like SOPA or PIPA.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_13.html">
+      <td class="arg-text">The government must move past the recent protests to implement refined anti-piracy measures that include international enforcement standards, expedited judicial action, and targeted site-blocking to protect the creative economy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_14.html">
+      <td class="arg-text">The best way to protect against online piracy is to move beyond insufficient domestic legislation toward a combination of international diplomatic pressure, domestic economic accountability for facilitators, and modernized industry distribution models.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_15.html">
+      <td class="arg-text">The most effective way to combat online piracy is to shift from aggressive legal enforcement to evolving economic models and voluntary industry collaboration.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_16.html">
+      <td class="arg-text">The best way to protect against online piracy is to replace lobbyist-driven, secretive legislation with a transparent, inclusive policy-making process that balances targeted enforcement with the expansion of legitimate distribution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_17.html">
+      <td class="arg-text">Congress must draft a revised version of anti-piracy legislation that protects the livelihoods of creative industry workers by providing legal tools to combat foreign-hosted pirate websites.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_18.html">
+      <td class="arg-text">The most effective and balanced way to combat online piracy is through voluntary, private-sector cooperation focused on consumer education and graduated enforcement rather than government intervention.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_19.html">
+      <td class="arg-text">The best way to combat online piracy is through international legal cooperation and targeted enforcement against commercial-scale infringement rather than unilateral domestic web-blocking measures.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_whats-the-best-way-to-protect-against-online-piracy_arg_20.html">
+      <td class="arg-text">The best way to protect against online piracy is to move away from restrictive control measures like SOPA and PIPA toward a mixed system focused on compensation, direct audience support, and targeted enforcement.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Chris Dodd</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/chris-dodd" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Julian Sanchez</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/julian-sanchez" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Maria Popova</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/maria-popova" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Paul Kedrosky</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/paul-kedrosky" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Sandra Aistars</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/sandra-aistars" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Susan Crawford</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/01/18/whats-the-best-way-to-protect-against-online-piracy/susan-crawford" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Yesterday&#x27;s blackout by Wikipedia, Reddit, and thousands of other sites made clear that SOPA and PIPA, whatever their intentions, were broken instruments. Both bills proposed remedies — DNS filtering, payment and ad cut-offs, private rights of action against &quot;facilitating&quot; sites — that are disproportionate to the harm and dangerous to the architecture of the open Internet. DNS redirection in particular is incompatible with DNSSEC, the security protocol the government itself has urged adoption of, and engineers from Vint Cerf on down have said so plainly. A statute that breaks the Internet to save Hollywood&#x27;s distribution model is a bad trade.</p>
+      <p>But the studios and labels are not wrong that commercial-scale infringement on foreign rogue sites is a real problem. The question is what tools actually shrink it.</p>
+      <p>Three approaches are more promising than SOPA-style site blocking. First, follow the money. The voluntary &quot;best practices&quot; agreements that Visa, MasterCard, PayPal, and major ad networks have already entered into with rightsholders can be expanded and given a narrow statutory backstop — limited to sites a court, after adversarial hearing, finds to be dedicated to infringement. This is essentially what the OPEN Act proposed by Senators Wyden and Issa contemplates, routed through the ITC. It targets revenue, not domain names, and preserves due process.</p>
+      <p>Second, prosecute the worst actors directly. The Megaupload indictment unsealed last week shows that existing criminal statutes, mutual legal assistance treaties, and asset seizures can reach even foreign operators. That is a far more surgical tool than asking ISPs to lie about DNS records.</p>
+      <p>Third — and this is the part the content industries resist — compete with piracy on convenience and price. The empirical record from Spotify, Netflix, iTunes, and Steam is consistent: when legal options are cheap, fast, and unbundled from geography, piracy rates fall. Windowing, region locks, and DRM that punishes paying customers are piracy&#x27;s best marketing.</p>
+      <p>Piracy will never be zero. But a regime built on financial choke points, targeted prosecutions, and better legal markets will do more than one that asks ISPs to become censors.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The dramatic collapse of support for SOPA and PIPA this week wasn’t a rejection of copyright enforcement—it was a long-overdue recognition that breaking the internet’s architecture is a dangerously self-defeating cure. The best way to protect creative work isn’t to give courts the power to blacklist entire domains or to force search engines and payment processors into an unworkable censorship role. Rather, it’s to sharpen the tools we already have, target actual bad actors, and accelerate market-based solutions that make piracy less appealing in the first place.</p>
+      <p>The Digital Millennium Copyright Act’s notice-and-takedown system, for all its imperfections, already provides a scalable mechanism that doesn’t destabilize the domain name system. Critics rightly complain it’s slow and occasionally abused, but the answer is to invest in that process—streamlining counter-notices, penalizing fraudulent claims—not to bypass it with site-blocking orders that would set a perilous precedent for speech regulation abroad. The goal should be to starve commercial piracy operations of revenue without asking intermediaries to pre-screen the web. Cutting off payment processing and advertising to sites a court has identified as dedicated to infringement, a more narrowly tailored approach than SOPA’s vague “facilitating” language, can hit criminals where it hurts while leaving legitimate platforms unharmed.</p>
+      <p>At the same time, the most effective anti-piracy force isn’t a legal one; it’s the growing ecosystem of licensed, convenient services. Netflix and Spotify have demonstrated that when content is available at a fair price with minimal friction, many consumers choose legality over the hassles of dubious torrent sites. The content industry should focus its energy on making that access universal and timely, rather than on persuading Congress to deputize every online service as its private police force. The voluntary “six strikes” alert system being rolled out by major ISPs, while not a silver bullet, reflects the right instinct: education and graduated warnings, combined with robust lawful alternatives, address the demand side of piracy without turning ISPs into copyright cops or trampling due process. International cooperation through existing treaties, for all its controversies, remains a more viable path than unilateral, technologically crude interventions. The false ideal is to imagine that a perfect legislative fix exists. Instead, a layered strategy of targeted commercial enforcement, smarter takedown procedures, and an honest commitment to giving audiences what they want, when they want it, is the only path that can protect both creativity and a free internet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The unprecedented online blackouts protesting the Stop Online Piracy Act (SOPA) and the Protect Intellectual Property Act (PIPA) have made one thing abundantly clear: we cannot protect intellectual property by compromising the fundamental architecture of the Internet. The core flaw in these bills was their reliance on Domain Name System (DNS) blocking, a heavy-handed mechanism that threatens cybersecurity, risks censoring legitimate speech, and fractures the global, unified nature of the Web. However, the entertainment industry’s underlying grievance is valid. Foreign &quot;rogue&quot; websites flagrantly profit from stolen American movies, music, and software.</p>
+      <p>If DNS blocking is off the table, what is the alternative? The most viable legislative path forward is a &quot;follow the money&quot; approach, best embodied by the Online Protection and Enforcement of Digital Trade (OPEN) Act, recently introduced by Senator Ron Wyden and Representative Darrell Issa.</p>
+      <p>Instead of forcing Internet Service Providers to alter how the Web resolves addresses, the OPEN Act targets the financial lifeblood of piracy sites: advertising and payment processors. Under this framework, rights holders would petition the International Trade Commission (ITC). If the ITC determines that a foreign site is primarily dedicated to infringement, it can issue a cease-and-desist order to U.S.-based payment processors like PayPal and Visa, as well as ad networks. This starves the rogue sites of revenue without tinkering with the Internet&#x27;s technical infrastructure. By placing the process within the ITC, the OPEN Act also ensures adversarial hearings and proper due process, preventing the shoot-first-ask-questions-later injunctions that made SOPA so terrifying to tech startups.</p>
+      <p>Yet, legislation alone will never completely eradicate online piracy. The most effective anti-piracy tool we have is a better business model. As Gabe Newell of the video game company Valve has famously noted, piracy is almost always a service problem. Consumers generally do not want to navigate malware-ridden torrent sites; they do so when legitimate content is locked behind staggered global release dates, exorbitant prices, or restrictive digital rights management (DRM).</p>
+      <p>The rise of services like iTunes and Netflix proves that when the entertainment industry offers a reasonably priced, convenient, and user-friendly alternative, the vast majority of consumers will choose the legitimate route. Protecting against piracy in the digital age requires a two-pronged strategy. We must use targeted, due-process-oriented trade tools to cut off the financial incentives for foreign counterfeiters. But just as importantly, the entertainment industry must stop fighting the realities of the Internet and instead embrace the innovative distribution models that make piracy obsolete.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Piracy is real, and dismissing it as merely a “new media” talking point is unfair to musicians, filmmakers, software makers and publishers whose work can be copied globally in seconds. But SOPA and PIPA try to solve that problem with tools too blunt for the Internet they would regulate. Orders aimed at domain names, search engines and platforms risk breaking legitimate speech, burdening small sites and weakening the basic architecture that lets users find and trust online information.</p>
+      <p>A better approach should begin with a narrower target: commercial-scale infringement, especially sites organized around trafficking in unauthorized works and profiting from advertising, subscriptions or payment processing. Law enforcement already has tools for fraud, counterfeiting and copyright infringement; Congress can improve them by focusing on operators and money flows rather than imposing broad duties on intermediaries. If a site is truly a pirate enterprise, prosecutors should be able to go to court, present evidence, notify affected parties when possible, and obtain tailored orders against its revenue sources. Payment networks and ad brokers can be required, after a judicial finding, to stop doing business with adjudicated infringers. That is more precise than tampering with DNS or making search engines police the Web preemptively.</p>
+      <p>Second, the law must preserve due process and safe harbors. The DMCA is imperfect, and its notice-and-takedown system is often abused or automated carelessly. But the basic bargain — remove infringing material when notified, do not impose general monitoring obligations on platforms — has allowed both copyright markets and user-generated services to grow. Reform should penalize bad notices, encourage counternotice mechanisms, and distinguish innocent platforms from willful pirate businesses.</p>
+      <p>Finally, copyright owners should compete with piracy by making legal access easier. The success of iTunes, Netflix, Hulu, Kindle, Steam and emerging music services shows that many people will pay when works are affordable, convenient, portable and promptly available. Piracy cannot be eliminated. It can be reduced by combining targeted enforcement, accountable courts and better legal markets — not by giving private industries a veto over the open Web.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The defeat of SOPA and PIPA marks a welcome moment for anyone who cares about both creative industries and internet freedom, but celebrating the bills&#x27; withdrawal should not obscure the genuine problem they attempted, however clumsily, to address. Online piracy remains a serious economic wound, and policymakers will inevitably return to the question. The right answer is not more aggressive legislation but a smarter combination of market-based incentives, international cooperation, and targeted enforcement against the most flagrant commercial pirates.</p>
+      <p>The core problem with SOPA and PIPA was their blunt instrument approach: holding DNS providers and payment processors liable for sites they do not control. This would have amounted to a form of censorship with no judicial oversight and a high likelihood of collateral damage to legitimate speech. The internet blackout on January 18 demonstrated that users understood what was at stake, and Congress was right to listen.</p>
+      <p>The better path forward involves several elements. First, major content industries should be pushed — as iTunes and Netflix have shown they can be — toward offering convenient, reasonably priced access to legal content. Second, enforcement efforts should target the operators of clearly commercial piracy enterprises rather than imposing liability on infrastructure providers. Third, international treaties with meaningful enforcement mechanisms offer a more durable framework than domestic legislation that will be gamed or circumvented.</p>
+      <p>Finally, courts that already have authority to issue injunctions and order asset seizures should be used more aggressively against the biggest offenders. Copyright holders have real tools; the question is whether they will use them wisely rather than demanding a legislative sledgehammer every time a problem arises.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**Piracy Is a Service Problem, Not a Legal One**</p>
+      <p>The Hollywood lobby keeps framing online piracy as a problem of insufficient enforcement. The Stop Online Piracy Act and the Protect IP Act both rest on that premise: if only the government had bigger hammers — DNS blocking, payment cutoffs, search-engine delisting — the infringement would stop. But the past decade tells a different story. Napster was killed in court a decade ago. Grokster lost at the Supreme Court in 2005. The Pirate Bay&#x27;s founders were convicted. LimeWire was shut down. And yet piracy is, by every measure, more widespread than ever.</p>
+      <p>Why? Because piracy persists wherever the legal alternatives are worse than the illegal ones. The clearest test case is music. Once iTunes offered a la carte downloads at a reasonable price, and Spotify offered all-you-can-eat streaming for ten dollars a month, music piracy among ordinary consumers began to fall. People paid because paying was easier than stealing. Compare that with television and film, where rights are sliced up by country, by window, by platform, where a show airs in the U.S. months before it appears in Europe, and where the customer who wants to watch a single episode is told to subscribe to a cable package. BitTorrent thrives in precisely those gaps.</p>
+      <p>The lesson is that the rights holders are not actually competing with theft; they are competing with convenience. The pirate version of &quot;Game of Thrones&quot; is free, available everywhere, in HD, with no DRM, the morning after it airs. The legal version may not exist in your country for a year. The fix is not to break the Internet&#x27;s domain name system or to deputize Visa as a copyright cop. The fix is to license aggressively, release simultaneously worldwide, price reasonably, and abolish the artificial windowing that benefits no one except a handful of incumbent distributors.</p>
+      <p>Congress could help — not by passing SOPA, but by reforming compulsory licensing rules so that legal streaming services can launch faster and operate across borders. The DMCA already gives rights holders a powerful notice-and-takedown regime against domestic infringers. For foreign &quot;rogue sites,&quot; follow-the-money approaches under existing law are surgical and effective. What&#x27;s missing is not authority. What&#x27;s missing is product.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**The Bills Were Bad. The Problem Is Real.**</p>
+      <p>The defeat of SOPA and PIPA this week is being celebrated as a triumph of the open Web over Hollywood. As someone who opposed both bills, I share the relief. But I am uneasy about the triumphalism, because the underlying problem these bills tried, clumsily, to address has not gone away.</p>
+      <p>Foreign sites whose entire business model is the unauthorized distribution of American films, software, books, and music are a genuine harm. They are unreachable by ordinary U.S. process. Their operators face no consequences. Their advertising and payment processing often flow through American intermediaries. Pretending this is not a real problem — or that every download is a sale the studios never would have made anyway — is intellectually dishonest. Creators, including many who are not movie moguls, lose income to commercial-scale infringement.</p>
+      <p>What was wrong with SOPA and PIPA was not their ambition but their architecture. DNS filtering would have fractured the security work being done on DNSSEC and pushed users toward offshore resolvers that the government cannot see at all. The private right of action invited abuse by any rights holder willing to threaten payment processors and ad networks. The vague &quot;facilitation&quot; language would have chilled legitimate user-generated-content sites that already comply with the DMCA. These are design flaws, and design flaws can be fixed.</p>
+      <p>A better bill would do three things. First, it would limit any new remedy to the narrow category of sites that are demonstrably and overwhelmingly dedicated to infringement — the standard the Justice Department already uses for ICE seizures of domestic domains. Second, it would route every action through a court, with adversarial process, before any cutoff of payment or advertising. Third, it would drop DNS-level blocking entirely and stick with the &quot;follow the money&quot; tools that even most critics concede are reasonable.</p>
+      <p>The OPEN Act introduced by Senator Wyden and Representative Issa is roughly that bill. It is narrower, court-supervised, and aimed at commercial intermediaries rather than the Internet&#x27;s plumbing. Critics of SOPA who simply wanted no bill at all should be careful: the next attempt, after the next high-profile infringement scandal, may be less considered than this one. Better to lock in a reasonable framework now than to wait for an angrier Congress.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**Stop Pretending Copyright Is Property**</p>
+      <p>The piracy debate is rigged from the start by a metaphor. We are told that downloading a song is &quot;theft,&quot; that infringement is &quot;stealing,&quot; that rights holders are being &quot;robbed.&quot; This language is so pervasive that even people who should know better repeat it. But copyright is not property in any ordinary sense. It is a time-limited, government-granted monopoly created for a specific public purpose: to encourage the creation and dissemination of works. The framers wrote it that way deliberately.</p>
+      <p>When you frame the question as &quot;How do we stop theft?&quot; you get bills like SOPA and PIPA — bills willing to break the Internet&#x27;s basic architecture, deputize private companies as judges, and impose collateral damage on free expression in the name of protecting &quot;property.&quot; When you frame the question correctly — &quot;Are current copyright rules serving the public interest, and at what cost?&quot; — the answer looks completely different.</p>
+      <p>Consider what we already have. Copyright now lasts the life of the author plus seventy years, a term so long it cannot plausibly motivate anyone to create anything. Statutory damages can reach $150,000 per work, meaning a college student who shares two dozen songs can face a judgment that exceeds a lifetime of earnings. The DMCA already lets rights holders compel takedowns without ever seeing a judge. American customs agents seize domain names on suspicion alone. To call this regime under-enforced is to live in a different universe than the rest of us.</p>
+      <p>Real piracy reform would shorten copyright terms, restore meaningful formalities like registration and renewal, scale statutory damages to actual harm, and create a robust safe harbor for noncommercial use. It would treat large-scale commercial counterfeiting — fake pharmaceuticals, pirated DVDs sold for profit — as the criminal matter it is, while leaving ordinary users and the platforms they use alone.</p>
+      <p>The Wednesday blackout worked because millions of people sensed, correctly, that the entertainment industry was asking Congress to break something they love in order to preserve a business model that has outlived its usefulness. The right response is not a slightly gentler SOPA. It is to ask, finally, whether the copyright system we have is the one we would design today. It almost certainly is not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>**Use the Tools We Already Have**</p>
+      <p>Lost in this week&#x27;s debate is a basic point: the United States already has an extensive legal toolkit for fighting online piracy, and it is being used aggressively. The question is not whether we need new powers. It is whether the existing ones are being deployed well.</p>
+      <p>The Digital Millennium Copyright Act, now thirteen years old, requires online service providers to remove infringing material upon notice from a rights holder. Google alone processes millions of these requests a year. The major user-generated-content platforms — YouTube, Facebook, Vimeo — have built sophisticated content-identification systems, in YouTube&#x27;s case voluntarily and at considerable expense, that automatically detect uploaded copies of registered works. Domestic infringers face civil suits with statutory damages running into six and seven figures.</p>
+      <p>On the criminal side, Immigration and Customs Enforcement&#x27;s &quot;Operation In Our Sites&quot; has seized hundreds of domain names from infringing operations since 2010. Just last week, the Justice Department indicted the operators of Megaupload, one of the largest cyberlocker services in the world, and coordinated arrests across multiple countries. Megaupload was not taken down by SOPA. It was taken down by a federal grand jury, mutual legal assistance treaties, and old-fashioned international police cooperation.</p>
+      <p>That last point matters. The strongest argument for SOPA and PIPA was that foreign rogue sites are beyond U.S. reach. The Megaupload case suggests the picture is more complicated. Many of the worst infringers operate from countries with which the United States has working legal relationships. Those that do not — sites hosted in jurisdictions hostile to American copyright claims — would not actually be stopped by domain blocking either, since users would simply route around it.</p>
+      <p>The right approach is incremental. Expand resources for the FBI&#x27;s intellectual-property crime units and for ICE&#x27;s enforcement programs. Negotiate stronger mutual legal assistance with intermediate jurisdictions. Pursue follow-the-money remedies against U.S. payment processors and ad networks that knowingly serve foreign infringers — a measure that could be done with a narrow, court-supervised statute. Encourage voluntary best-practices agreements like the recent six-strikes deal between ISPs and content owners.</p>
+      <p>None of this is dramatic. None of it requires rewriting how the Internet works. But cumulatively, it is the kind of patient enforcement that actually changes behavior. SOPA tried to be a silver bullet. There is no silver bullet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>**Let the Market, Not Washington, Solve This**</p>
+      <p>The most striking thing about Wednesday&#x27;s blackout was not the protest itself but the message it sent about who actually generates value in the modern economy. Wikipedia went dark. Reddit went dark. Google decorated its homepage. These companies, which between them employ a tiny fraction of the headcount of the major studios and record labels, command an audience and a credibility that no Hollywood lobbying campaign could match. Congress noticed.</p>
+      <p>There is a lesson here that goes beyond legislative tactics. The traditional content industries are asking the government to compensate for their own failure to innovate. The film studios spent the better part of the last decade fighting their own customers in court, suing teenagers and grandmothers for sharing songs, while a generation of consumers learned that the entertainment business viewed them as adversaries. Then those same studios came to Washington asking for legal authority to break the Internet on their behalf.</p>
+      <p>The companies that have done well in the digital era did not lobby. They built. Apple built iTunes. Netflix built streaming. Amazon built Kindle. Spotify, Pandora, Hulu — each of these is now a multi-billion-dollar business that gives consumers what they want at a price they will pay, and each of them has done more to reduce piracy than any law Congress has ever passed. Music industry revenues from digital sales now exceed losses from physical sales. The picture is not as grim as the trade associations claim.</p>
+      <p>The policy implication is humility. Government is bad at picking winners in fast-moving technology markets. SOPA and PIPA were written by people who do not understand how DNS works, on behalf of an industry that has consistently misread the technological future. The bills would have raised the cost of starting a new web business, entrenched incumbents in both content and platforms, and produced incremental, if any, reduction in actual infringement.</p>
+      <p>A more humble Congress would do less. Tighten criminal penalties for genuinely commercial counterfeiting. Streamline international cooperation on the worst foreign offenders. Then get out of the way and let entrepreneurs do what entrepreneurs have already shown they can do: out-compete the pirates with products people actually want to pay for. The market is winning this war, slowly. Washington&#x27;s job is mostly to avoid breaking things.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>**This Is About Free Speech, and Don&#x27;t Let Anyone Tell You Otherwise**</p>
+      <p>The defenders of SOPA and PIPA keep insisting that the bills are about property rights, not speech. That is the argument Rupert Murdoch made when he accused the President of siding with &quot;Silicon Valley paymasters&quot; against the rule of law. It is the argument the MPAA has made all week. It is wrong, and dangerously so.</p>
+      <p>Any law that allows the government, or private parties acting under government authority, to make websites disappear from the Internet on the basis of accusations of infringement is a speech regulation. It does not matter that the targets are alleged pirates. The Pentagon Papers were stolen property too, in a sense. The First Amendment does not lose its force because the underlying conduct is unlawful; it constrains the remedies the state may use.</p>
+      <p>SOPA&#x27;s mechanism — ordering DNS providers, search engines, payment processors, and advertisers to cut off a site identified by the Attorney General — is functionally identical to prior restraint. A site disappears before any meaningful adjudication of whether its content is actually infringing. The &quot;due process&quot; gestures in the bill were thin: ex parte orders, narrow grounds for challenge, and the ability of rights holders to threaten intermediaries directly without ever going to court. This is the same architecture that authoritarian governments use to silence dissidents, dressed in copyright clothing. Indeed, the State Department has spent years criticizing China and Iran for techniques that SOPA would have legitimized at home.</p>
+      <p>The collateral damage would have been enormous. User-generated-content sites, from small forums to major platforms, would have faced liability for failing to police users perfectly. Startups would have needed lawyers before they needed engineers. Whistleblowing and document-sharing sites would have been particularly exposed. The chilling effect would not have been a side effect; it would have been the point.</p>
+      <p>What is the alternative? Narrow criminal statutes, enforced through courts, against people who run commercial-scale piracy operations. Existing DMCA tools against domestic infringement. International cooperation against the worst foreign actors. None of these implicate free expression in the way SOPA did. All of them are available now.</p>
+      <p>The protests this week were not, as Murdoch suggests, the work of pirates. They were the work of people who understand that an Internet without robust speech protections is not worth saving from anything.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The dramatic collapse of support for SOPA and PIPA this week was no fluke; it was a spectacularly clear message that the American public will not tolerate legislation that endangers the open architecture of the internet in the name of copyright enforcement. The question now is not whether we need to fight online piracy—we do—but how to do so without crippling free speech, innovation, and security. The best way forward has nothing to do with judicial blacklists or DNS tampering. It lies in making the legal marketplace so convenient and affordable that piracy becomes a ghost of its former self.</p>
+      <p>The success of Netflix and Spotify provides the blueprint. When the music industry finally embraced streaming, piracy rates for music began to show signs of moderation. Consumers aren&#x27;t inherently thieves; they are drawn to ease and instant access. A fragmented landscape of delayed releases and regional lockouts practically begs for illicit alternatives. The entertainment industry&#x27;s first and most potent weapon is to accelerate the availability of legal, reasonably priced content globally, tearing down the artificial windows between theatrical, physical, and streaming release. Pair that with simple, non-invasive subscription models and you chip away at the pirate&#x27;s user base far more effectively than any federal injunction could.</p>
+      <p>For the remaining stubborn pockets of infringement, a voluntary, multi-stakeholder approach is the smart alternative. Payment processors, ad networks, and domain registrars can and do cut off notorious pirate sites based on clear evidence, without needing the blunt instrument of a law that would let rights holders shut down an entire website based on an allegation. The “follow the money” strategy, executed cooperatively, sidesteps the First Amendment nightmares and technical workarounds that SOPA invited. It is a scalpel, whereas SOPA and PIPA were chainsaws. The Congressional retreat must now give way to that kind of constructive, precise, and market-savvy collaboration. The internet won the battle this week; now it must help build a peace that protects artists without destroying the platform that makes so much contemporary creativity possible.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The collective sigh of relief following the derailment of SOPA and PIPA is understandable, but it obscures a sobering reality: American creators are hemorrhaging jobs and revenue to foreign pirate sites, and the current legal toolkit is an antique in a digital age. The protests rightly highlighted serious flaws in the legislative language, particularly the potential for overbroad domain-name filtering, but the core impulse—to give law enforcement and rights holders meaningful tools against offshore theft—remains entirely valid. The best path forward is not to abandon legislation, but to craft a sharply focused bill that surgically targets the worst actors while embracing robust due process.</p>
+      <p>SOPA’s fatal error was making the site operator, rather than a court, the initial arbiter of infringement. Any new bill must flip that entirely. A targeted statute should allow the Department of Justice, after a full adversarial hearing before a federal judge, to seek orders against foreign websites whose primary purpose is to traffic in infringing goods. The orders could compel domestic intermediaries—payment processors and advertising networks, not internet service providers—to cease doing business with the adjudicated pirate site. This approach avoids the messy, encryption-defeating DNS meddling that so alarmed the technical community and preserves the secure functioning of the domain name system.</p>
+      <p>Crucially, such a law must also protect legitimate intermediaries. Defining a “site dedicated to infringement” needs to be as narrow as possible, explicitly excluding sites with substantial non-infringing uses and platforms that merely host user-generated content. Wikipedia and YouTube would have nothing to fear from a well-written statute; the target is the criminally run, foreign-hosted cyberlocker or streaming hub that makes a mockery of U.S. law. By confining the remedy to cutting off the money supply, we can starve these parasites without damaging the host. The protests weren&#x27;t the end of the debate; they were the necessary, painful correction that can now lead to a law both effective and just.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>The noisy domestic skirmish over SOPA and PIPA has been a distraction from a fundamental truth: online piracy is a transnational problem that cannot be solved by the unilateral, domestically focused mandates of one country, no matter how powerful. Doubling down on American legislation that forces domestic internet companies to act as global copyright police is like trying to fix a leaking roof by rearranging the furniture downstairs. The best alternative to these flawed bills lies in a reinvigorated, muscular effort of international diplomacy and cooperation, leveraging the economic might of the United States to build a global enforcement framework.</p>
+      <p>The primary targets of anti-piracy efforts are not American startups but illicit enterprises operating from jurisdictions that are either unwilling or unable to enforce intellectual property rights. Instead of breaking the internet’s routing system with ill-conceived DNS orders, the U.S. Trade Representative should make robust IP enforcement a non-negotiable pillar of bilateral and multilateral free trade agreements. The Anti-Counterfeiting Trade Agreement (ACTA), though itself controversial, points toward the right mechanism: establishing international standards that require signatory nations to provide strong civil and criminal penalties for online theft. Diplomatic pressure, combined with technical assistance to help countries build competent judicial and customs capacity, can over time shrink the safe harbors that pirate sites rely on.</p>
+      <p>This approach is slower than firing off a private right of action to a credit card company, but it is infinitely more durable. It respects the decentralized architecture of the internet and the sovereignty of nations while directly applying pressure to the root of the problem. Moreover, multilateral treaties can be crafted with input from civil society and technical experts from day one, avoiding the backroom drafting that fatally tainted SOPA. The answer to a global, networked challenge is a global, networked response, anchored not in technological quick fixes but in the grinding, essential work of harmonizing international law. That is the path worthy of America’s responsible leadership.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The cacophony over anti-piracy bills misses a more fundamental shift: technology and consumer behavior are moving so fast that legislation is already a dinosaur chasing a mammal. The best protection against online piracy isn&#x27;t a new federal statute; it&#x27;s the accelerating sophistication of convenient, legitimate services and the quiet evolution of content protection embedded in the media itself. The market is solving the piracy problem from the inside out, and the government’s only job should be to get out of the way.</p>
+      <p>Look at the music industry. Half a decade ago, it was in a state of apocalyptic panic over file sharing. Today, the narrative has changed dramatically. Services like Spotify, Pandora, and iTunes Match have made vast libraries of music accessible on any device for a small monthly fee or a small per-album price. Piracy hasn’t vanished, but its centrality to the cultural conversation has diminished because a superior commercial alternative now exists. The film and television industries are mid-stride in the same race. Netflix, Hulu, and Amazon Prime are rapidly building catalog depth, and the adoption of connected devices in living rooms makes accessing legal content as easy as changing the channel. The studio’s best anti-piracy strategy is to license aggressively and shrink the window between theatrical release and home availability.</p>
+      <p>Alongside this, companies are embedding smarter, invisible digital watermarking in content that can trace the source of pirated screeners without degrading the user experience. This forensic approach targets industrial-scale leakers, not individual downloaders, and creates a powerful disincentive without sparking consumer backlash. The real alternative to a legislative sledgehammer is this combination of forensic smarts and relentless service innovation. Entrepreneurs and engineers, not politicians, will build the environment in which paying for content is simply the path of least resistance. That’s a future worth betting on, not legislating toward.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The dramatic spectacle of millions protesting SOPA has reiterated a timeless lesson: when the government tries to protect a broken business model against the tide of technological change, it invariably makes things worse. The entire premise that we need a “best way to protect against online piracy” through law is flawed. Piracy is a market signal, not a crime wave demanding a state solution. The correct response is for content industries to radically adapt their business models, not to deputize intermediaries as a private censorship and surveillance infrastructure.</p>
+      <p>The digital age has vaporized the scarcity that made the old distribution model profitable. Trying to recreate artificial scarcity through state-enforced digital locks is a fool’s errand that spawns a permanent cycle of technological one-upmanship and erodes civil liberties. The music industry’s original war on Napster was a strategic catastrophe that alienated a generation. Its belated, grudging acceptance of digital sales and then streaming is slowly repairing the damage. The film and publishing industries should learn that lesson faster. The alternative to legislation is entrepreneurial creativity: crowdfunding platforms that finance works before they are created, exclusive live experiences, tiered membership models that give superfans a way to support artists directly, and content that is so cheap and universal that it’s simply not worth the friction of stealing.</p>
+      <p>The irony is that the very internet platforms the MPAA wanted to weaponize are the engine of the greatest explosion of creativity and audience engagement in history. YouTube, Tumblr, and Twitter build audiences that translate into ticket sales and merchandise purchases. The best way to “protect” against piracy is to stop treating your customers as criminals and start treating the file-sharer as a potential patron who hasn’t found the right value proposition yet. Let the market evolve; it works faster and more justly than Congress ever will.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>As a documentary filmmaker, I live with a constant, gutting irony: the very internet that allows my work to find an audience is the same conduit through which it is stolen thousands, sometimes tens of thousands, of times. I am no industry lobbyist; I am a creator who sees that online piracy is a real and devastating drain on a fragile artistic ecosystem. Yet I opposed SOPA and PIPA, not because I am soft on theft, but because those bills were a threat to the web I need to survive. The best alternative is a balanced, education-first approach that protects creators by attacking the supply chain of rogue commercial enterprises, while leaving ordinary internet architecture and users alone.</p>
+      <p>The conversation has to begin with a shift in public norms. A generation has grown up with the mistaken belief that digital content wants to be free. We need a sustained, smart public education campaign that reframes the issue not as corporate greed versus freedom, but as a simple matter of fairness for the writers, musicians, coders, and camera operators who are your neighbors. This kind of cultural suasion worked to change attitudes on drunk driving and smoking; it can gradually re-stigmatize casual digital theft, especially when paired with easy, affordable legal options.</p>
+      <p>The enforcement complement should follow what I’ll call the “fox, not hedgehog” strategy. Instead of one big, internet-breaking law, we need a constellation of precise, interlocking tactics. The most powerful is a “follow the money” approach that is already gaining traction: major credit card companies and ad networks should be encouraged, through voluntary agreement or light-touch regulation, to deny services to foreign sites that are overwhelmingly dedicated to piracy. This starves the commercial beasts while ignoring individual peer-to-peer file sharing. Combined with international pressure on the havens that host these sites, we can drastically reduce the easy supply of pirated material without ever touching the Domain Name System or scaring the engineers. That is an anti-piracy strategy a filmmaker like me can finally get behind.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The massive web blackouts protesting the Stop Online Piracy Act (SOPA) and the Protect Intellectual Property Act (PIPA) have sent a clear message to Washington: breaking the fundamental architecture of the Internet is not an acceptable solution to copyright infringement. But while tech companies and users celebrate this victory, the core question remains of how to address online piracy. The answer, however, does not lie in draconian legislation. The most effective way to protect intellectual property is to out-compete piracy in the free market.</p>
+      <p>As Valve co-founder Gabe Newell famously noted, piracy is almost entirely a service problem, not a pricing problem. When consumers turn to illegal torrent sites or offshore streaming hubs, it is rarely because they refuse to pay for entertainment. More often, it is because the content they want is locked behind geographic restrictions, delayed release windows, or restrictive Digital Rights Management (DRM) software that makes legitimate copies harder to use than pirated ones.</p>
+      <p>We already have proof that this market-based approach works. Look at the music industry. After years of suing individual downloaders and trying to crush Napster and its clones, the industry finally embraced platforms like iTunes, and now, streaming services like Spotify. These platforms provide immediate, high-quality, and organized access to vast libraries of music at a reasonable price. Similarly, Netflix is revolutionizing how we consume television and movies, offering a seamless streaming experience that simply makes torrenting feel like a waste of time.</p>
+      <p>Instead of lobbying Congress for internet censorship bills, Hollywood and the major record labels need to focus their vast resources on innovation. They must abandon archaic licensing models that artificially restrict when and where a paying customer can watch a movie or listen to a song. If the entertainment industry provides consumers with comprehensive, reasonably priced, and user-friendly digital platforms, the vast majority of people will gladly pay for the convenience. Piracy will never be entirely eliminated, but it can be reduced from a systemic threat to a marginal nuisance by simply offering a better service.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The backlash against SOPA and PIPA has successfully demonstrated that the public will not tolerate legislation that compromises the Domain Name System (DNS) or threatens the basic functionality of the open web. However, foreign &quot;rogue websites&quot; dedicated entirely to the distribution of stolen American intellectual property remain a serious economic threat. To protect content creators without breaking the Internet, Congress should focus not on censoring the web, but on starving these illicit operations of their revenue. We must &quot;follow the money.&quot;</p>
+      <p>Piracy on a commercial scale is not a hobby; it is a highly profitable business model. The operators of massive offshore torrent trackers and illegal streaming sites rely on American financial networks and advertising syndicates to monetize their stolen traffic. They process subscriptions and donations through PayPal, Visa, and MasterCard, and they run display ads served by American ad networks.</p>
+      <p>The Online Protection and Enforcement of Digital Trade (OPEN) Act, currently being championed by Senator Ron Wyden and Representative Darrell Issa, offers a much more targeted and constitutional alternative to SOPA and PIPA. Rather than forcing Internet Service Providers to block websites at the DNS level—a move that cybersecurity experts warn could destabilize the web—the OPEN Act empowers the International Trade Commission (ITC) to investigate foreign sites accused of massive copyright infringement. If a site is found to be dedicated to piracy, the ITC can issue cease-and-desist orders directing payment processors and ad networks to cut off business with the infringing site.</p>
+      <p>This approach addresses the root cause of commercial piracy: the profit motive. By severing the financial lifelines of rogue websites, we can effectively shut them down without opening the door to domestic censorship or undermining the technical integrity of the global internet. The entertainment industry deserves protection for its investments, but we do not need to rewrite the rules of the Internet to provide it. Following the money is a surgical, effective, and internet-friendly solution to a complex economic problem.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>While the coordinated blackout of websites like Wikipedia and Reddit has effectively frozen SOPA and PIPA in their tracks, this &quot;victory&quot; for tech giants is a devastating blow to the thousands of middle-class workers in the entertainment industry. The prevailing narrative frames this debate as a clash between Hollywood billionaires and internet freedom, but the true victims of online piracy are the set builders, camera operators, sound engineers, and makeup artists whose livelihoods depend on a profitable creative industry. We still need robust legislation to protect these jobs.</p>
+      <p>The assertion that we should simply rely on &quot;better business models&quot; ignores the reality of competing against &quot;free.&quot; Foreign rogue websites steal millions of dollars of intellectual property, pay nothing for production, and reap massive profits through advertising. It is practically impossible for legitimate businesses to compete with criminal enterprises that have zero overhead.</p>
+      <p>The core objective of SOPA and PIPA—giving law enforcement and rights holders a mechanism to combat foreign-hosted piracy sites that operate outside of US jurisdiction—remains absolutely essential. If the primary objection of the tech community is the use of Domain Name System (DNS) blocking, then Congress should remove that specific technical provision. But we must retain the legal framework that allows copyright holders to obtain swift court injunctions against offshore pirate hubs.</p>
+      <p>A revised bill should maintain provisions that compel search engines to delist sites that a federal judge has determined are dedicated to theft. It should also include a private right of action allowing creators to aggressively pursue the financial networks funding these sites.</p>
+      <p>The Internet cannot remain a lawless frontier where intellectual property is treated as a public resource for hackers to exploit. We regulate physical commerce to prevent the sale of stolen goods, and digital commerce must be held to a similar standard. Congress must return to the drawing board and draft a new bill that respects the technical architecture of the web while finally giving the American creative sector the legal tools it desperately needs to defend its property.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The massive public uprising that halted the progress of SOPA and PIPA is a testament to the power of a free and open internet. But the conversation cannot stop with simply defeating bad legislation. If we want to meaningfully address the issue of online piracy, we need to look inward and reform the very system that created the problem in the first place: our broken and outdated copyright laws.</p>
+      <p>For decades, the entertainment industry has successfully lobbied Congress to continuously extend copyright terms and expand penalties for infringement. Today, copyright lasts for the life of the author plus 70 years, or 95 years for corporate-owned works. This absurdity has locked vast swaths of our cultural heritage out of the public domain, enriching major corporations while stifling new creation and remix culture. Furthermore, the Digital Millennium Copyright Act (DMCA) has criminalized the circumvention of digital locks, even for legitimate, fair-use purposes.</p>
+      <p>Piracy is often a rational response by consumers to an irrational legal regime. When content is artificially scarce, geoblocked so it cannot be viewed in certain countries, or locked down by intrusive Digital Rights Management (DRM) software that treats paying customers like criminals, users will naturally find workarounds.</p>
+      <p>The best way to protect intellectual property is to make copyright reasonable again. We should roll back copyright terms to a sensible duration, perhaps a flat 14 or 28 years, encouraging a richer public domain. We must also strengthen and clarify Fair Use protections in the digital age, ensuring that creators who sample, remix, and comment on existing works are not threatened with ruinous lawsuits.</p>
+      <p>If we establish a copyright system that respects the rights of the public as much as it respects the rights of corporate publishers, the cultural antagonism that drives much of modern piracy will dissipate. People want to support artists, but they resent being exploited by monolithic gatekeepers. Reforming copyright law to foster access and innovation, rather than artificial scarcity and control, is the only sustainable path forward for the digital era.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The collapse of support for SOPA and PIPA in Congress demonstrates the fatal flaw in attempting to solve a global problem with unilateral, domestic legislation. The Internet is a borderless network, and online piracy is inherently an international issue. Foreign &quot;rogue sites&quot; operate in jurisdictions where local laws are lax or enforcement is non-existent. Attempting to build a digital wall around the United States by altering the Domain Name System or censoring search results is both technically dangerous and diplomatically shortsighted. The best way to protect intellectual property is through robust, transparent international agreements.</p>
+      <p>Rather than trying to police the entire globe from Washington, the United States should prioritize building a coalition of nations committed to enforcing intellectual property rights. This means utilizing organizations like the World Trade Organization (WTO) and leveraging bilateral trade agreements to pressure countries that harbor pirate servers. We need to raise the global standard for copyright enforcement so that rogue sites have nowhere to hide.</p>
+      <p>Admittedly, recent international efforts like the Anti-Counterfeiting Trade Agreement (ACTA) have faced intense criticism, largely because they were negotiated in secret without input from civil society or technology experts. To be successful, future diplomatic efforts must be fundamentally different. The State Department and the U.S. Trade Representative must bring tech companies, consumer rights advocates, and internet engineers to the negotiating table alongside content creators.</p>
+      <p>By fostering a transparent multilateral process, we can develop international norms that target commercial-scale piracy without compromising human rights, free speech, or the technical stability of the Internet. We can coordinate cross-border law enforcement actions to take down servers and arrest the operators of criminal syndicates, rather than placing the burden of enforcement on domestic ISPs and search engines.</p>
+      <p>Intellectual property is one of America&#x27;s most valuable exports. Protecting it requires global cooperation, not isolationist internet censorship. By leading a balanced, international diplomatic effort, we can protect our creators while preserving the open architecture of the global web.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>In the polarized debate over online piracy, the extremes have dominated the conversation. On one side, Hollywood lobbies for heavy-handed government intervention like SOPA and PIPA, which threaten to break the Internet. On the other side, some digital activists argue that information &quot;wants to be free,&quot; dismissing the legitimate economic damage piracy inflicts on creators. The most pragmatic solution lies in the middle: voluntary, private-sector cooperation focused on consumer education and graduated enforcement.</p>
+      <p>The vast majority of people who pirate music, movies, or software are not hardened criminals or operators of commercial rogue sites. They are average internet users who often do not fully grasp the legal or economic consequences of their actions, or who simply find peer-to-peer downloading too convenient to resist. Criminalizing these individuals or censoring the websites they visit is an overreaction that breeds resentment.</p>
+      <p>Instead, the entertainment industry and major Internet Service Providers (ISPs) should finalize and fully implement a &quot;graduated response&quot; system. Programs like the forthcoming Copyright Alert System—a collaboration between major content creators and ISPs—offer a highly effective template. Under this system, when a user&#x27;s IP address is detected sharing copyrighted material illegally, the ISP sends a series of educational warnings.</p>
+      <p>These alerts start as simple notifications, informing the user that their account is being used for piracy and directing them to legal alternatives. If the behavior continues, the warnings escalate in severity, eventually leading to mitigation measures, such as temporarily throttling internet speeds or requiring the user to review educational materials about copyright before browsing normally.</p>
+      <p>Importantly, this system does not require internet censorship, DNS blocking, or government surveillance. It does not terminate a user&#x27;s internet access, nor does it subject them to ruinous lawsuits. It simply serves as a digital &quot;speeding ticket&quot; that deters casual piracy by removing the veil of anonymity. By focusing on education and behavioral correction rather than draconian punishment, a graduated response system can dramatically reduce domestic piracy while preserving the open nature of the web.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The best protection against online piracy is not to build a censorship machine and hope it is used only against pirates. SOPA and PIPA have failed politically because they ask the public to trust copyright owners, prosecutors and intermediaries with powers that are too broad for a network whose value depends on open linking, user participation and rapid innovation.</p>
+      <p>That does not mean piracy is imaginary. Movies, music, books and software are expensive to make, and mass infringement can damage legitimate markets. But the right answer starts with a distinction Congress has blurred: going after clearly criminal enterprises is one thing; imposing liability on search engines, hosting services, social networks and payment processors for the behavior of millions of users is another. The former can be done with warrants, adversarial hearings and narrow injunctions. The latter risks turning every platform into a copyright police force.</p>
+      <p>A better alternative would have three parts. First, strengthen targeted law enforcement against commercial-scale infringers, especially sites whose purpose is to profit from unauthorized works. If a site is essentially a pirate bazaar, the government should be able to seize domestic assets, pursue its operators and seek court orders after real due process. But orders should be specific, reviewable and limited to the infringing activity, not an entire domain when lawful speech is also present.</p>
+      <p>Second, “follow the money.” Most pirate sites need advertising, payment processing or subscription revenue. Cutting off those revenue streams is less dangerous than tampering with the domain name system or forcing search engines to disappear lawful links. But even this should be done transparently, with notice and a chance to contest mistakes. Private blacklists are no substitute for law.</p>
+      <p>Third, the entertainment industries should compete with piracy by improving legal access. Apple’s iTunes showed that many people will pay when the product is convenient, fairly priced and available. Netflix and streaming music services point in the same direction. The industry’s old habit of windowing, regional restrictions and delayed digital releases drives consumers toward illegal alternatives.</p>
+      <p>Congress should return to first principles: protect creators without redesigning the Internet around fear of infringement. Copyright exists to promote creativity, not to preserve every incumbent business model. A narrow, constitutional, technically sensible anti-piracy law could command support. SOPA and PIPA did not because they treated the open Web itself as the problem.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The revolt against SOPA and PIPA has been healthy in one respect: it has forced Congress to notice that the Internet is not merely another distribution channel controlled by Hollywood studios and record labels. But the celebration should not obscure the real injury being done to American creators and companies by rogue foreign sites. If lawmakers simply retreat, they will have rewarded the most extreme rhetoric of the protests and left the underlying theft untouched.</p>
+      <p>The United States cannot maintain a serious creative economy if digital piracy is treated as a nuisance rather than a business model. Some sites exist for no meaningful purpose except to distribute stolen films, television programs, music, games and software. They sell advertising, collect subscription fees and hide behind foreign registrars or lax jurisdictions. Suing individual downloaders is both unpopular and ineffective. Asking creators to “adapt” is not an answer when their work is being commercially exploited without permission.</p>
+      <p>Still, SOPA and PIPA were drafted too broadly. The remedy is not surrender but revision. Congress should write a narrower bill aimed only at foreign sites that are overwhelmingly dedicated to infringement. Before any sanction, a rights holder or the government should have to go to federal court, identify the site, show substantial evidence, and give notice where possible. The accused site should have a prompt opportunity to appear. Orders should be limited to specific remedies: barring payment processors and advertising networks from doing business with the site, and requiring search engines to remove links to adjudicated rogue domains.</p>
+      <p>DNS blocking is the most troubling proposal and should be dropped unless technical experts can establish that it will not undermine security or fragment the network. But it is hard to see why Visa, MasterCard, PayPal or American ad networks should be compelled to keep servicing a site a court has found to be a piracy operation. That is not censorship. It is refusing to finance unlawful commerce.</p>
+      <p>The technology companies also need to accept responsibility. Safe harbors were designed to protect good-faith intermediaries, not to enable willful blindness. If Silicon Valley wants to defeat bad legislation, it should help craft better legislation and cooperate in enforcement against genuinely bad actors. Protecting the Internet and protecting intellectual property are not mutually exclusive. A functioning digital marketplace requires both freedom to innovate and confidence that creative work will not be stolen with impunity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The piracy debate is usually framed as a struggle between thieves and owners, but that framing misses why millions of ordinary people have come to see copyright law as remote, punitive and absurd. SOPA and PIPA are symptoms of a deeper problem: copyright has expanded far beyond its constitutional purpose, and the public no longer believes the bargain is fair.</p>
+      <p>Copyright is supposed to encourage the creation and dissemination of culture. Instead, it now often functions as a long-term corporate asset shield. Terms have been extended repeatedly; licensing is fragmented; orphan works remain locked away because no one can determine who owns them; teachers, remix artists and documentary filmmakers operate under uncertainty; and the public domain grows too slowly. Against that background, the entertainment industry’s demand for sweeping enforcement powers looks less like defense of artists than defense of an outdated control system.</p>
+      <p>The best way to reduce piracy is to make lawful access easy, affordable and global, while reforming copyright so that it commands moral respect. People pirate for different reasons. Some do it because they do not want to pay. But many do it because the legal product is unavailable in their country, locked to a device, delayed for months, overpriced, or burdened by digital restrictions that punish paying customers. When music became easier to buy legally through iTunes and later streaming services, many consumers chose convenience over file-sharing. The lesson is obvious: service beats lawsuits.</p>
+      <p>Congress should pursue copyright reform before granting new enforcement powers. Shorter terms, clearer fair use protections, an orphan works solution, and simpler licensing would do more for cultural legitimacy than another round of penalties. Noncommercial sharing should be treated differently from commercial piracy. A teenager posting a clip, a fan making a remix, and a foreign site selling subscriptions to stolen movies are not the same problem and should not be met with the same legal hammer.</p>
+      <p>There is room for enforcement against commercial counterfeiters and large-scale infringers, but it must be narrow, transparent and subject to due process. The danger of SOPA and PIPA is that they try to preserve scarcity by deputizing the architecture of the Internet. That is the wrong direction. A copyright system that people experience as reasonable will be easier to enforce. A system that expands endlessly will require ever more coercive policing, and still fail.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>As a writer, musician or filmmaker, it is easy to feel invisible in the current debate. The public hears about Hollywood lobbyists on one side and Internet freedom on the other. But between those camps are working creators who do not own studios, do not run platforms, and cannot absorb the loss when their work is copied instantly around the world.</p>
+      <p>For them, piracy is not a philosophical abstraction. A small documentary, an independent album or a specialized e-book may depend on a narrow paying audience. If the audience is trained to expect everything free, the result is not a utopia of shared culture. It is fewer advances, fewer risky projects and more dependence on advertising, patronage or day jobs. The idea that creators can simply “tour” or “sell T-shirts” does not apply to novelists, screenwriters, photographers or many musicians.</p>
+      <p>That said, SOPA and PIPA are the wrong instruments. They concentrate too much power in the hands of large rights holders and create too much risk for lawful speech and innovation. A small artist should not have to choose between piracy and a law that might damage the platforms on which independent creators now rely. YouTube, blogs, social networks, Kickstarter, Bandcamp and similar services are not enemies of creativity; for many artists they are the new distribution system.</p>
+      <p>A better approach would combine modest enforcement with creator-friendly markets. First, make takedown procedures faster and fairer. The Digital Millennium Copyright Act notice-and-takedown system often works slowly, and infringing files reappear quickly. Platforms should be expected to respond promptly to repeat infringers, but users must retain counter-notice rights and penalties should exist for abusive claims.</p>
+      <p>Second, develop a graduated response focused on education before punishment. Many users, especially young users, do not understand the economic consequences of infringement. Warnings from Internet providers, without cutting off access or exposing families to ruinous damages, could change behavior while avoiding the excesses of mass litigation.</p>
+      <p>Third, expand legal services that pay creators. Subscription models, direct sales, voluntary collective licensing and easier micro-payments can help align convenience with compensation. The industry must stop making lawful consumption harder than unlawful consumption.</p>
+      <p>The goal should be neither to criminalize a generation nor to pretend art makes itself. The best anti-piracy policy is one that keeps the open Internet open while making sure the people who create the work have a realistic chance to be paid.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>SOPA and PIPA are bad Internet engineering masquerading as copyright policy. That is why the opposition has been so intense and why lawmakers are wise to pause. The proposed use of DNS blocking, search manipulation and broad intermediary liability misunderstands how the network works and threatens collateral damage far beyond the entertainment industry.</p>
+      <p>The domain name system is not a copyright switchboard. It is a core layer of Internet navigation and security. For years, technologists have been trying to improve DNS security so users can trust that when they type a domain name, they reach the intended destination. A law that encourages or requires deliberate interference with DNS responses cuts against that effort. It also invites circumvention: users can switch to foreign DNS servers, use direct IP addresses, or rely on tools that may themselves be insecure. The result could be less respect for law and a less secure network.</p>
+      <p>Search blocking is also less clean than it sounds. Search engines index a messy universe of lawful and unlawful material. Orders that are too broad can erase legitimate speech, commentary, reviews, forums and user-generated content. Once the mechanism exists, other industries and governments will want to use it. Today the target is foreign piracy; tomorrow it may be defamation, leaks, gambling, political extremism or anything else someone with influence wants made less visible.</p>
+      <p>The better path is to target the business layer, not the addressing layer. Commercial piracy at scale depends on money. It needs ad networks, payment processors, hosting providers and sometimes shipping or fulfillment services. Courts can issue narrow orders cutting off those services after an evidentiary showing that a site is primarily dedicated to infringement. Such orders should be public, appealable and limited in time. A mistaken cutoff of payment is serious, but it is less architecturally dangerous than corrupting Internet naming or imposing broad monitoring duties on every platform.</p>
+      <p>We should also improve authentication of rights claims. One reason platforms struggle is that ownership information is fragmented and sometimes disputed. Better registries, standardized licensing and machine-readable rights data would help lawful services flourish and make bad actors easier to identify.</p>
+      <p>Piracy is a real problem, but the Internet is not a machine Congress can safely rewire under pressure from lobbyists. Sound policy should be technically humble. Enforce the law against commercial infringers, follow the money, and preserve the neutral infrastructure on which both free expression and digital commerce depend.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The debate over SOPA and PIPA has been too national in its imagination. Online piracy is a global problem, and that is precisely why American legislation that tries to project power through domestic intermediaries is both tempting and dangerous. A foreign site can injure American rights holders while remaining beyond the easy reach of American courts. But if every country responds by ordering Internet companies to block disfavored foreign sites, the open global network will become a patchwork of national blacklists.</p>
+      <p>The best alternative is a combination of international enforcement, lawful global distribution and restraint at home. The United States should continue to use trade negotiations, mutual legal assistance treaties and cooperation with foreign law enforcement to target criminal piracy operations. Many rogue sites are not romantic communities of sharing; they are profit-making enterprises that exploit creators while contributing little to culture. Their operators should face real consequences, and countries that shelter them should face diplomatic pressure.</p>
+      <p>But enforcement cannot succeed if the legal market remains artificially territorial. Consumers experience the Internet as global, while entertainment licensing often remains divided by country, window and platform. A person who can read about a new American television show instantly but cannot legally watch it for months is being pushed toward piracy. Studios and publishers should make worldwide digital availability a priority. Regional licensing practices may have made sense in an older distribution world; online they increasingly function as an invitation to infringement.</p>
+      <p>Domestic law should focus on due process and proportionality. Any remedy aimed at a foreign piracy site should require a court, a clear evidentiary standard, notice where possible and a remedy tailored to the unlawful conduct. Cutting off advertising and payment services may be appropriate in some cases. Seizing domains, blocking DNS, or imposing broad duties on platforms should be approached with extreme caution. The United States should not create tools it would condemn if used by less democratic governments.</p>
+      <p>Finally, creators and users need a better social compact. Schools should teach that creative labor has value, while copyright owners should acknowledge fair use, libraries, education and transformative expression as legitimate public interests rather than loopholes. The public will support enforcement when it sees copyright as balanced.</p>
+      <p>Piracy will not be eliminated. The realistic goal is to reduce its commercial scale while preserving the architecture and freedoms that make the Internet valuable. That requires international cooperation, better markets and narrower laws than SOPA or PIPA.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The best alternative to SOPA and PIPA is not a softer slogan but a better procedure. Online piracy is real, especially on foreign “rogue” sites built around selling unauthorized movies, music, software and counterfeit goods. But the cure should not be a broad power to make lawful sites disappear, interfere with the domain-name system, or expose platforms to liability for what users post before anyone has had a fair chance to contest the charge.</p>
+      <p>Congress should begin with a narrow, court-centered approach. If a copyright owner believes a foreign site is dedicated to infringement, it should have to make that case to a federal judge, with a clear definition of the target: a site whose primary purpose is infringement, not a search engine, blog, social network, cloud service or payment processor that has some infringing activity somewhere on it. Remedies should be proportional and directed at business relationships rather than at the architecture of the Internet.</p>
+      <p>The most promising path is “follow the money.” Sites trafficking in pirated material often depend on advertising networks, credit-card companies, online payment services and search visibility. A court order requiring major payment and advertising intermediaries to stop doing business with a proven rogue site is much less dangerous than DNS blocking or broad de-indexing mandates. Money is where piracy businesses are vulnerable; the domain-name system is where everyone is vulnerable.</p>
+      <p>Any such law also needs safeguards that SOPA and PIPA lack or blur. There should be notice to the accused site when feasible, an opportunity to respond, penalties for false or reckless accusations, expedited review, and protection for fair use and lawful speech. The law should distinguish between willful commercial piracy and ordinary users remixing, quoting, backing up or sharing in ways that may be legal or at least not comparable to running a counterfeit marketplace.</p>
+      <p>The Internet’s success rests on low barriers to entry. A statute that makes startups screen all user behavior or fear being cut off because of a complaint will protect incumbents more than artists. Piracy enforcement is legitimate, but it must be surgical. We can punish businesses devoted to infringement without giving private parties and prosecutors a switch that can shut down speech, innovation and competition. The answer is due process, narrow targeting and economic pressure—not Internet blacklists.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The central mistake in the piracy debate is treating piracy primarily as a police problem. It is also, and often more importantly, a market problem. People pirate for many reasons, including habit and opportunism, but one of the biggest is that legal access remains fragmented, delayed, overpriced or technically annoying. The best anti-piracy tool is a better legal product.</p>
+      <p>The music industry learned this late and painfully. Lawsuits against listeners did not rebuild trust. What changed behavior was the arrival of convenient stores and services: iTunes, Amazon, Spotify and other licensed platforms that made legal music easier to find and buy. They have not eliminated infringement, but they have shown that consumers will pay when the experience is simple, reasonably priced and available on the devices they use.</p>
+      <p>Film and television should absorb that lesson. Why are viewers still asked to wait months for a show, discover that a movie is available in one country but not another, or juggle incompatible windows among theaters, DVD, cable, streaming and download services? Every delay and artificial scarcity creates an advertisement for piracy. A teenager who can get a clean illegal copy instantly is not going to be persuaded by a studio release calendar designed for 1988.</p>
+      <p>This does not mean copyright law should be abandoned. Commercial pirate sites should face enforcement, especially when they profit from advertising or payments. But enforcement alone will always be a game of whack-a-mole. Shut one site and another appears. Make the legal alternative superior and piracy loses much of its social legitimacy and practical appeal.</p>
+      <p>Content owners should license more broadly, experiment with lower prices, offer global releases, reduce digital-rights-management restrictions that punish paying customers, and make catalogs searchable and portable. Fans should not have to become amateur lawyers to know whether they can watch something on a phone, a tablet or a television. If a customer pays for access, access should be real.</p>
+      <p>SOPA and PIPA reflect the old instinct: control distribution by controlling choke points. The Internet has made that strategy brittle. The better strategy is to compete with piracy on convenience, speed and value. People do not pirate only because they are thieves. Many pirate because the legal marketplace has failed to meet them where they are. Fix that, and enforcement becomes a backstop rather than the whole policy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>The online protest against SOPA and PIPA should not obscure a stubborn fact: large-scale piracy is theft in a modern form, and the United States has been too passive about it. A foreign site that builds a business by offering unauthorized films, music, television shows, games or software is not engaging in free expression. It is exploiting creative labor while hiding behind borders and the technical openness of the Internet.</p>
+      <p>That said, the bills now before Congress have been drafted too broadly and defended too carelessly. The right response is not to abandon anti-piracy legislation but to write a tighter bill. The Digital Millennium Copyright Act was designed for a different era. Notice-and-takedown works tolerably for isolated files, but it is weak against sites that remove one link while immediately posting another, or that operate outside American jurisdiction while selling advertising to American audiences.</p>
+      <p>A better statute would identify foreign sites primarily dedicated to infringement and subject them to fast judicial review. Once a judge makes that finding, American companies should not have to help those sites make money. Payment processors, credit-card networks and ad brokers should be required to cut ties. Search engines could be required, in narrow circumstances, not to promote a site already adjudicated as a pirate enterprise. These are not radical ideas; they are ordinary refusals to subsidize unlawful commerce.</p>
+      <p>Opponents are right to worry about DNS blocking, vague definitions and private censorship. Those provisions should be removed or constrained. But it is not censorship to stop a criminal marketplace from using legitimate American intermediaries. Nor is it an attack on innovation to ask Internet companies to cooperate when a court has found systematic infringement. The technology sector’s rhetoric sometimes treats any obligation as a mortal threat to the Web. That is no more persuasive than Hollywood’s claim that every unauthorized download equals a lost sale.</p>
+      <p>Creative industries employ people far beyond famous actors and executives: set builders, editors, musicians, writers, designers, programmers and small labels. Their work deserves protection. If Congress retreats entirely, it will send the message that organized piracy is an acceptable cost of doing business online. It is not.</p>
+      <p>The answer is a revised anti-piracy bill: narrow definitions, real due process, no DNS tampering, remedies aimed at money, and penalties for abuse. We can defend the Internet without surrendering the rights of creators.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>SOPA and PIPA are symptoms of a copyright system that has not adjusted to the networked public. The best way to reduce piracy is not to build a bigger enforcement machine, but to make copyright law more legitimate in the eyes of the people expected to obey it.</p>
+      <p>For many Americans, copyright now feels less like a bargain and more like a trap. Terms last for generations. Fair use is uncertain. Ordinary acts—sharing a clip, remixing a song, posting a fan video, saving media across devices—can be treated with the same vocabulary used for commercial bootlegging. Meanwhile, automated takedowns often remove lawful speech long before any court weighs in. When law appears unreasonable, people stop distinguishing between respecting artists and obeying corporate control.</p>
+      <p>A serious alternative to SOPA would start with reform. Congress should preserve strong remedies against commercial infringement but shorten and simplify the path for lawful uses. Fair use should be clearer for quotation, parody, education, commentary, accessibility and transformative remix. Orphan works should be usable after a diligent search. Libraries and archives should have broader rights to preserve digital culture. Consumers should have explicit rights to shift formats and make personal backups. These changes would not legalize piracy; they would make the law credible.</p>
+      <p>The DMCA notice-and-takedown system also needs balance. If platforms must remove material quickly, users need equally practical ways to challenge mistaken takedowns. Repeated false claims should carry consequences. Automated copyright enforcement should not become a private censorship system. The Internet has become a central forum for speech, education and politics; copyright enforcement must respect that reality.</p>
+      <p>To target real piracy, enforcement should focus on commercial actors, not general-purpose technologies. A file locker, search engine or social network should not be presumed guilty because some users infringe. Safe harbors are essential for new services. Without them, only the largest companies will be able to afford compliance departments and lawyers, and innovation will shrink.</p>
+      <p>This approach will not satisfy those who want immediate control over every copy. But that control is gone. The realistic goal is a system people view as fair enough to follow and creators view as useful enough to rely on. Copyright must protect authors, not merely preserve old distribution models. Reforming the bargain is a better anti-piracy policy than threatening the open Web.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>SOPA and PIPA try to solve an international problem with an overextended domestic lever. Much online piracy that worries American copyright owners is based abroad, uses servers in multiple countries, shifts domains quickly and depends on weak enforcement in jurisdictions that may not share American priorities. A unilateral blacklist may look decisive, but it risks collateral damage while doing little to change the underlying conditions.</p>
+      <p>The better approach is international, institutional and patient. The United States should strengthen cooperation with countries where large piracy operations are hosted, not merely pressure American intermediaries to make sites harder to reach. That means better evidence-sharing, faster mutual legal assistance, training for investigators and prosecutors, and clearer procedures for seizing assets when an operation is demonstrably criminal. It also means trade diplomacy that focuses on enforcement capacity and corruption, not just maximalist copyright rules.</p>
+      <p>There is a difference between a teenager posting a song and a business that sells advertising against unauthorized movies or distributes counterfeit pharmaceuticals under the cover of a familiar brand. International enforcement should concentrate on the latter. If foreign police and courts can act against commercial-scale infringement, the result is more durable than whack-a-mole blocking from the United States. Removing a domain from American view does not necessarily shut the business; seizing servers, bank accounts and records can.</p>
+      <p>At home, Congress should provide tools that support this strategy without undermining the Internet’s infrastructure. Payment networks and advertising companies should have clear legal authority to terminate relationships with sites identified through reliable legal processes. Rights holders should be able to bring evidence to court, but orders must be narrow, reviewable and limited to sites whose dominant purpose is infringement. DNS manipulation should be avoided because it invites technical workarounds, security problems and imitation by governments with far less benign aims.</p>
+      <p>This is not a call for inaction. It is a call for matching the remedy to the problem. Piracy networks are transnational commercial enterprises. They should be pursued like transnational commercial crimes, with investigators, courts, asset seizures and international agreements. A domestic law that threatens search engines, social networks and startups may create the appearance of toughness, but appearances are not protection.</p>
+      <p>The United States can defend its creative industries without teaching the world that Internet blocking is the normal answer to unwanted content. The real alternative is lawful cooperation across borders.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The piracy debate too often becomes a fight between Hollywood and Silicon Valley, as if the only interests at stake are studios on one side and platforms on the other. Missing from that framing are working creators: the session musician, independent filmmaker, midlist novelist, game designer, photographer or documentary editor who does not have a lobbyist but does need to get paid.</p>
+      <p>For these people, “information wants to be free” can sound like a demand that they work for exposure. But SOPA and PIPA are not the right answer. They would give too much power to large rightsholders and invite enforcement that sweeps in legitimate expression. Independent creators are not helped by a Web where a mistaken complaint can cripple a small platform, a fan community or a new distributor. Many of us depend on those same tools to find audiences without going through old gatekeepers.</p>
+      <p>The best protection is a mixed system built around compensation rather than control. First, legal services should make it easy for audiences to pay small amounts, subscribe, stream, download and support artists directly. Bandcamp-style sales, crowdfunding, digital rentals, subscription platforms and voluntary patronage are not magic, but they show that fans will support creators when the relationship is direct and respectful.</p>
+      <p>Second, we should explore broader licensing models. Radio has long paid through collective systems. Something similar may be possible for certain online uses, especially where individual permission is unrealistic but use is widespread. A well-designed collective license could move money to creators while reducing the need to chase every copy. The challenge is governance: independent artists must not be swallowed by major labels and studios in the distribution of royalties.</p>
+      <p>Third, enforcement should be reserved for bad actors who profit from mass infringement. Commercial pirate sites, counterfeit sellers and repeat exploiters should face real consequences. But fans, classrooms, libraries and remix artists should not be treated as enemies. A culture that criminalizes its audience will not sustain respect for copyright.</p>
+      <p>Finally, creators need transparency from both old and new intermediaries. It is strange to hear giant platforms and giant studios argue about artists while neither always gives artists clear accounting. Anti-piracy policy should be tied to fair contracts, accurate royalty reporting and practical access to audiences.</p>
+      <p>Protecting against piracy means protecting livelihoods. But livelihoods will not be secured by breaking the open Internet. They will be secured by making payment easier, licensing smarter and enforcement narrower.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The withdrawal of SOPA and PIPA support marks a troubling capitulation to mob mentality, not a triumph of reasoned policy. While Wednesday&#x27;s protests were visually striking, they largely misrepresented what these bills actually contained. The entertainment industry invests billions in creating content, and the current legal framework provides no adequate remedy against systematic piracy websites that operate with impunity from foreign jurisdictions.</p>
+      <p>The answer isn&#x27;t to abandon copyright protection but to refine our approach. We need international treaties that establish clear enforcement standards, much like existing frameworks for trademark protection. We also need to empower courts to act quickly against clear infringement rather than forcing rights holders through years of litigation.</p>
+      <p>The tech industry&#x27;s self-serving argument that DNS blocking would &quot;break the internet&quot; lacks credibility. DNS filtering is a targeted tool used by many democratic nations for exactly this purpose. What激怒protesters was largely misinformation about what the bills actually did.</p>
+      <p>We should also recognize that piracy isn&#x27;t a victimless crime. Every job lost in Hollywood affects real workers—camera operators, sound technicians, set designers. The creative economy supports millions of middle-class jobs, and the government has an obligation to protect legitimate business interests.</p>
+      <p>The better path forward requires both parties returning to negotiation with genuine intent. Industry must accept meaningful exemptions for legitimate uses; critics must accept that some form of site-blocking is both legal and necessary. The status quo is unsustainable, and those who profit from it should not dictate policy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>Wednesday&#x27;s backlash wasn&#x27;t about misinformation—it was about recognizing the fundamental threat these bills posed to how the internet functions. DNS filtering is not a minor technical provision; it&#x27;s a mechanism that could fundamentally break the architecture of the web as we know it.</p>
+      <p>The better approach is multi-layered and largely technical. First, we need better digital rights management that doesn&#x27;t punish legitimate consumers while still identifying unauthorized copies. Second, payment processors and advertising networks should bear legal responsibility when they knowingly facilitate piracy sites—this targets the revenue stream without touching infrastructure.</p>
+      <p>Third, and most importantly, we need content industries to embrace legitimate distribution models that compete with piracy on convenience and price. The success of Spotify, Netflix, and Kindle singles demonstrates that consumers will pay for easy access. The record labels spent a decade fighting these services; perhaps that energy would have been better spent building them faster.</p>
+      <p>International cooperation matters, but not through treaties that override domestic civil liberties. We should pressure countries with piracy havens through trade relationships and diplomatic engagement, not through legislation that gives corporations dangerous powers over internet infrastructure.</p>
+      <p>The lesson from Wednesday isn&#x27;t that piracy is acceptable—it&#x27;s that enforcement mechanisms must respect technological architecture and due process. The creative industries will thrive when they compete fairly, not when they receive government-mandated protection from competition.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>Both sides in this debate share more common ground than they acknowledge. No serious person endorses piracy; no reasonable technologist believes the current situation is acceptable. The disagreement is about methods.</p>
+      <p>SOPA and PIPA were flawed because they created broad infrastructure obligations without adequate safeguards. But the anti-SOPA movement sometimes overstated the harms—DNS filtering targeted at specific sites is not equivalent to internet censorship, and comparing these bills to Chinese firewalls was hyperbole that cheapened the discussion.</p>
+      <p>The pragmatic middle path involves several complementary strategies. Targeted court orders against specific piracy sites, similar to those used in the UK against The Pirate Bay, provide due process while enabling action. Industry-led content ID systems like YouTube&#x27;s demonstrate that technology can solve many problems without legislation.</p>
+      <p>Most critically, we need the creative industries to accelerate legitimate distribution. The gap between &quot;released on DVD&quot; and &quot;available digitally&quot; remains absurd. That gap is precisely what piracy fills.</p>
+      <p>Congress should return to this issue with better-drafted legislation that includes sunset provisions, narrow definitions, and meaningful exemptions. The solution isn&#x27;t to pretend piracy doesn&#x27;t exist or to trample the internet trying to stop it—it&#x27;s careful calibration that protects rights without breaking functionality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>This debate often ignores the international dimension that makes domestic legislation insufficient. SOPA and PIPA tried to solve a global problem with national tools, which explains both their appeal and their ultimate inadequacy.</p>
+      <p>The most effective strategy involves building international consensus through existing channels like the World Intellectual Property Organization and bilateral trade agreements. When major trading partners face meaningful consequences for harboring piracy havens, behavior changes. The U.S.-China trade relationship offers particular leverage, given Chinese manufacturing&#x27;s dependence on Western markets.</p>
+      <p>At home, we should strengthen remedies against domestic actors— ISPs, advertisers, payment processors—that knowingly enable piracy. Making it economically painful to facilitate infringement accomplishes more than domain-name tricks.</p>
+      <p>The entertainment industry must also recognize that international piracy stems partly from delayed or unavailable legitimate content. Hollywood releases films internationally weeks or months after domestic premieres, creating artificial scarcity that piracy fills. Harmonizing release schedules would reduce demand for unauthorized copies.</p>
+      <p>None of this offers quick solutions. International cooperation is slow, and business model changes take years to implement. But the alternative—legislation that overreaches domestically while ignoring global realities—solves nothing while creating new problems.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>The SOPA protests revealed something important: many internet users genuinely believe content should be free. This isn&#x27;t ignorance or criminality; it reflects genuine disagreements about intellectual property in the digital age. Ignoring this perspective guarantees perpetual conflict.</p>
+      <p>The most durable solution involves changing the economic model, not the legal framework. We should encourage experimental approaches like voluntary collective licensing, where users pay modest fees for blanket access to content libraries. TheCopyright Clearinghouse and similar entities could expand to offerthis.</p>
+      <p>Platforms that enable infringement must also accept greater responsibility. YouTube succeeded partly because it built robust content identification; other platforms should face similar obligations. But these obligations work best when industry and technology collaborate voluntarily rather than through mandate.</p>
+      <p>We should also distinguish between commercial piracy operations—which clearly harm creators—and casual sharing among individuals, which enforcement resources cannot realistically address. Scaling back enforcement against non-commercial infringement would free resources for genuine bad actors.</p>
+      <p>The creative industries face disruption, but disruption isn&#x27;t inherently destructive. New opportunities emerge when old monopolies weaken. The best protection for creators isn&#x27;t legislative moats around outdated business models—it&#x27;s building new systems where creators can earn sustainable income in changed circumstances.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>Wednesday&#x27;s protests exposed something deeper than policy disagreement: fundamental tensions between corporate interests and internet users that our political system handles poorly. Both SOPA and its opponents have legitimate concerns, but the process that produced these bills—lobbyist-driven legislation drafted in secret, rushed through committee—systematically excluded public input until crisis point.</p>
+      <p>The better approach involves structural reforms to how copyright legislation is made. Require public comment periods for major bills affecting internet infrastructure. Involve independent technologists alongside content industry representatives in drafting enforcement measures.</p>
+      <p>On substance, we need enforcement that targets commercial pirates while respecting individual users. Domain seizure of sites with predominantly infringing content makes sense; requiring ISP-level filtering that affects all users does not.</p>
+      <p>The creative industries should focus their lobbying energy on accelerating legitimate distribution rather than building legal walls. Every day a film is unavailable legally while readily accessible illegally represents a policy failure that no legislation can remedy.</p>
+      <p>Most importantly, we must resist the false choice between &quot;piracy paradise&quot; and &quot;censorship regime.&quot; There is vast middle ground of targeted, effective enforcement that neither destroys the internet nor abandons creators. Finding that ground requires more inclusive policy processes than produced SOPA and PIPA.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

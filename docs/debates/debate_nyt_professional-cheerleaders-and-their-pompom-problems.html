@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Professional Cheerleaders and Their Pompom Problems · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Economy · Open-ended</div>
+  <h1 class="debate-title">Professional Cheerleaders and Their Pompom Problems</h1>
+  <div class="question-body"><p>This week New York became the 35th state to declare high school cheerleading a competitive sport. ESPN wouldn’t argue: it televises the highly athletic college and high school national championships every year.</p><p>But when cheerleaders turn pro their respect gets sidelined. Most cheerleaders for sports teams make less than minimum wage and are subjected to humiliating treatment, according to several recent lawsuits.</p><p>How can cheerleaders keep their competitive edge as they enter the working world?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=5</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_1.html">
+      <td class="arg-text">Professional cheerleaders should form entertainment unions to ensure they are treated as professional performers and compensated fairly for their contributions to the sports industry.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_2.html">
+      <td class="arg-text">While professional cheerleading is not a sustainable standalone career and requires fair compensation, it serves as a valuable platform that equips individuals with professional skills and opens doors to diverse career opportunities.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_3.html">
+      <td class="arg-text">To address the issues facing cheerleaders, we must distinguish between competitive cheerleading as a recognized sport and professional sideline cheerleading as a labor-regulated entertainment industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_4.html">
+      <td class="arg-text">Cheerleading should be recognized and developed as a professional competitive sport to provide athletes with career opportunities after college.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_5.html">
+      <td class="arg-text">Professional cheerleaders should quit their positions because the role subjects them to exploitative labor practices and impossible beauty standards for insultingly low pay.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_6.html">
+      <td class="arg-text">Professional sideline cheerleading in its current form is an inherently exploitative institution that should be abolished rather than reformed.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_7.html">
+      <td class="arg-text">Legal action against professional sports franchises is the primary mechanism for professionalizing cheerleading and ensuring athletes maintain their competitive edge through fair compensation and workplace protections.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_8.html">
+      <td class="arg-text">Professional cheerleaders can maintain their competitive edge by recognizing that their struggle is part of a broader systemic fight against the misclassification of workers and the erosion of labor protections in the modern economy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_9.html">
+      <td class="arg-text">Instead of fighting for better conditions in exploitative professional sports leagues, competitive cheerleaders should pursue careers in the lucrative and respectful private cheerleading industry.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_10.html">
+      <td class="arg-text">Rather than issuing a blanket condemnation of professional cheerleading as inherently exploitative, reform should focus on targeted labor enforcement and professional standards that respect the diversity of experiences within the field.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_11.html">
+      <td class="arg-text">To secure respect and fair treatment for professional cheerleaders, the public and corporate stakeholders must dismantle the misogynistic culture of professional sports leagues that treats women as disposable commodities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_12.html">
+      <td class="arg-text">Professional cheerleaders can achieve workplace equity and respect by framing their struggle as a broader labor classification issue rather than a narrow women&#x27;s rights story.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_13.html">
+      <td class="arg-text">To achieve professional respect and fair pay, professional sports leagues must replace the current model of sideline dancers with elite, co-ed acrobatic stunt teams modeled after competitive college programs.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_professional-cheerleaders-and-their-pompom-problems_arg_14.html">
+      <td class="arg-text">Professional cheerleaders can maintain their competitive edge and professional dignity by demanding transparency, legal labor standards, and exercising economic literacy when evaluating team contracts.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Courtney E. Martin</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/05/01/professional-cheerleaders-and-their-pompom-problems/courtney-e-martin" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Jomo K. Thompson</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/05/01/professional-cheerleaders-and-their-pompom-problems/jomo-k-thompson" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Kate Torgovnick May</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/05/01/professional-cheerleaders-and-their-pompom-problems/kate-torgovnick-may" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Kerrin Hubbard Stokes</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/05/01/professional-cheerleaders-and-their-pompom-problems/kerrin-hubbard-stokes" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Regina Bailey</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2014/05/01/professional-cheerleaders-and-their-pompom-problems/regina-bailey" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The contrast the question draws is real and worth taking seriously. A high school senior who tumbles competitively for ESPN cameras under recognized safety rules can sign with an NFL squad and suddenly find herself earning $5 an hour, paying out of pocket for hair and nails, submitting to &quot;jiggle tests,&quot; and being fined for weight gain. The Raiderettes, Buffalo Jills, and Bengals Ben-Gals lawsuits filed over the past year have laid this out in unflattering detail. The problem isn&#x27;t that cheerleading stops being athletic at age 22; it&#x27;s that pro franchises have classified these athletes as something between hobbyists and hostesses.</p>
+      <p>The fix is mostly unglamorous employment law, not cultural reinvention. Teams worth over a billion dollars cannot credibly argue that the women performing in their stadiums are independent contractors or seasonal amusement workers exempt from wage-and-hour rules. Courts will likely sort this out — the Raiderettes case looks strong under California labor law — but legislatures could move faster by clarifying that game-day performers are employees entitled to minimum wage, overtime, and reimbursement for required expenses. Unionization, modeled on the way dancers organized on Broadway through AGMA, is another avenue, though the short seasons and large applicant pools make it harder.</p>
+      <p>Beyond pay, the appearance-policing deserves scrutiny. Personal grooming policies that require thousands of dollars in mandatory salon visits, or weigh-ins enforced by fines, would not survive in almost any other workplace. Teams should be made to defend them under the same standards applied to flight attendants decades ago.</p>
+      <p>Cheerleaders keep their competitive edge the same way other skilled workers do: by being paid like professionals, organized like professionals, and treated as athletes rather than as decorative extensions of the franchise&#x27;s marketing budget.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The cheers that echo through high school gymnasiums and packed college arenas carry a message that professional sports leagues have stubbornly ignored: cheerleading is an elite athletic discipline, not a sideshow. New York just joined 34 other states in declaring competitive high school cheerleading a sport, a recognition that reflects the tumbling, stunting, and rigorous training that rival gymnastics and dance. Yet the moment a cheerleader signs with an NFL or NBA franchise, that hard-won athletic identity evaporates. The women who fly, flip, and land with precision on the sidelines are rebranded as “entertainers” and handed a pay structure that violates minimum wage laws—sometimes doling out a flat fee per game that, once broken into hours of practice, appearances, and community events, works out to less than $3 an hour. The recent lawsuits from Raiderettes, Buffalo Jills, and Cincinnati Ben-Gals have peeled back the pom-pom curtain, revealing a system where cheerleaders are stripped of their competitive edge not by a lack of talent but by a refusal to see them as athletes.</p>
+      <p>Keeping that edge begins with the cheerleaders themselves rejecting the am-bassadorial label and reclaiming their athletic authority. In the high school and college ranks, they train year-round, compete for national championships, and suffer concussions and fractures just like their male peers on the field. That mindset—the discipline of perfecting a routine under scoreboard pressure—doesn’t vanish when they swap a varsity uniform for a pro one. What vanishes is the structural reverence that protects athletes: minimum salary floors, health benefits, and a voice in working conditions. To carry their competitive fire into the professional world, cheerleaders must collectively insist on those very protections. The federal court decision last month classifying Raiderettes as employees, not independent contractors, is a critical wedge. It means these women are legally entitled to minimum wage and overtime, and it opens the door to demanding the same union representation that players’ associations provide. A collective bargaining agreement wouldn’t just fix the money; it could mandate safe practice facilities, limit the number of unpaid appearances, and establish injury protocols—the scaffolding that lets an athlete focus on performance instead of survival.</p>
+      <p>Critics argue that pro cheerleading is a part-time gig, a stepping stone, and therefore unworthy of a salary akin to professional sports. But that logic dissolves when you watch a squad execute a stunt sequence that requires the trust and athleticism of a competitive partner stunt. The only difference is that nobody pays a high school point guard pennies to suit up for a varsity game. If we are serious about closing the respect gap, fans and team owners must treat the transition from the competition mat to the sideline not as a demotion but as a logical next step for gifted athletes. Cheerleaders can keep their competitive edge by building on the legal victories already in motion, transforming a humiliating workplace into an arena where their prowess—not just their appearance—takes center stage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The paradox of modern cheerleading is glaring: while high school and college cheerleaders are increasingly recognized as fierce competitors executing dangerous, highly athletic routines, their professional counterparts are treated as second-class citizens. The recent wave of lawsuits filed by NFL cheerleaders—including the Oakland Raiderettes, Cincinnati Ben-Gals, and Buffalo Jills—exposes a deeply exploitative system. These women are demanding basic legal protections, and their fight in the courts is the first necessary step to reclaiming their respect in the working world.</p>
+      <p>At the heart of the problem is labor misclassification. Billion-dollar sports franchises often classify professional cheerleaders as independent contractors. This allows teams to skirt minimum wage laws while exerting extraordinary control over the women’s lives. According to recent legal complaints, teams mandate unpaid practices, dictate personal grooming habits at the cheerleaders&#x27; own expense, and subject them to humiliating weigh-ins and &quot;jiggle tests.&quot; A college athlete transitioning to the professional ranks suddenly finds herself stripped of the respect afforded to her sport, reduced instead to underpaid promotional talent.</p>
+      <p>To keep their competitive edge, professional cheerleaders must channel their athleticism into labor organizing. The current lawsuits are a powerful start, but true reform will ultimately require collective bargaining. Unionization would allow cheerleaders to negotiate for fair hourly wages for all hours worked, safe conditions, and an end to degrading personal conduct manuals.</p>
+      <p>The National Football League generates nearly ten billion dollars in annual revenue. The implication that teams cannot afford to pay their cheerleaders a legal minimum wage is absurd. Professional cheerleaders are highly trained athletes and dedicated brand ambassadors. By fighting for employee status and banding together, they can force the sports industry to recognize that their labor is worth far more than the mere privilege of wearing a uniform.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The problem is not that professional cheerleaders lose their discipline after college. It is that the professional leagues often stop treating that discipline as work. A performer who must audition, rehearse, maintain a prescribed appearance, appear at games and charity events, follow detailed conduct rules and risk injury is plainly an employee, not a hobbyist grateful for “exposure.”</p>
+      <p>The first step is legal and simple: pay cheerleaders for every required hour. That means auditions after selection, practices, games, calendar shoots, sponsor appearances, travel time where required, and overtime where law requires it. The recent lawsuits by Raiderettes, Buffalo Jills and others have made visible a business model that depends on glamour to conceal wage theft. In multibillion-dollar leagues, minimum wage compliance is not a financial burden; it is a test of seriousness.</p>
+      <p>Second, teams should professionalize the job in the same way schools are beginning to professionalize the sport. Competitive cheerleading demands strength, timing and coaching. Pro squads should have written contracts, workers’ compensation coverage, medical protocols, safe training standards and independent channels for harassment complaints. Rules about weight, dating players or how to behave in public should be limited to legitimate workplace concerns, not humiliation or control.</p>
+      <p>Finally, cheerleaders need collective power. Whether through unions, guilds or state-by-state legal action, they should bargain over pay, image rights, safety and scheduling. Individual cheerleaders are easily replaced; organized workers are not.</p>
+      <p>Keeping a competitive edge should not mean accepting second-class status. It should mean bringing the athleticism of cheerleading into the workplace with the protections every other professional performer expects: pay, safety, dignity and a real voice in the terms of the job.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The sharp contrast between how cheerleading is celebrated as a sport and how professional cheerleaders are treated in the workplace reveals a troubling disconnect. If ESPN airs national championships and 35 states now classify high school cheerleading as competitive sport, we must acknowledge the athleticism and skill involved. This recognition should extend to the professional realm.</p>
+      <p>The lawsuits exposing subminimum wages and humiliating treatment suggest these workers lack the basic protections other employees receive. Professional cheerleaders face a peculiar power imbalance: their roles are inherently public, tied to high-profile sports franchises, yet they exist in a labor category that seems to deny them standard workplace rights.</p>
+      <p>Maintaining competitive excellence becomes difficult when basic dignity is compromised. Organizations might retain talent better by treating cheerleaders as the skilled professionals their athletic credentials suggest they are. The path forward likely involves both individual advocates speaking out—which the lawsuits represent—and broader industry reform.</p>
+      <p>Cheerleaders&#x27; leverage lies precisely in their dual value: they are both athletes and brand representatives. As public awareness grows through legal action, franchises have incentives to establish fairer working conditions before scrutiny forces their hand.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (30 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Professional cheerleaders are workers, and the law should treat them like workers. That is the simple insight behind the lawsuits filed in recent months by former members of the Oakland Raiders&#x27; Raiderettes, the Cincinnati Ben-Gals, and the Buffalo Jills. The complaints describe pay structures that, when divided by the actual hours of practice, rehearsal, charity appearances, and game-day work, fall well below the federal minimum wage. They describe fines for gaining weight, for forgetting pompoms, for failing to bring the right shade of lipstick. They describe mandatory &quot;jiggle tests.&quot; If any other category of employee in a billion-dollar industry were treated this way, the case would already be over.</p>
+      <p>The &quot;competitive edge&quot; framing in the question is a distraction. These women are not asking to be respected as athletes in some abstract cultural sense; they are asking to be paid for the hours they work and not to be charged for the privilege of being employed. The NFL likes to describe cheerleading as a part-time hobby or a community ambassadorship, but the contracts at issue require hundreds of hours of unpaid rehearsal and dozens of unpaid appearances. That is employment, and the Fair Labor Standards Act applies whether the employer calls you an athlete, an entertainer, or an &quot;ambassador.&quot;</p>
+      <p>The structural problem is that cheerleading sits at the intersection of two industries — sports and entertainment — that have both perfected the art of extracting unpaid labor from people who feel lucky to be there. Hollywood has its unpaid interns; sports leagues have minor leaguers and cheerleaders. Both rely on the same logic: there are more aspirants than slots, so the labor market clears at zero. The answer is the one labor law has always given to that logic: a floor below which contracts cannot go.</p>
+      <p>What cheerleaders need is not a pep talk about keeping their edge. They need the wage-and-hour suits to succeed, they need state labor commissioners to investigate, and ideally they need a union. The NFL Players Association cannot organize them, but nothing prevents an independent association of professional cheerleaders from forming, especially now that several squads are litigating in parallel. The women on the sidelines are doing the hard work. The least we can do is recognize that it is, in fact, work.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>There is something a little odd about the premise that pro cheerleading is where the dignity of the craft goes to die. The truth is that cheerleading has always carried two different identities, and only one of them is athletic. Competitive cheer — the kind ESPN televises, the kind New York just recognized as a sport — is a discipline of tumbling, stunting, and pyramid work judged on technical execution. Sideline cheer for a professional sports team is something else entirely: it is entertainment marketing. The women on an NFL sideline are not competing against anyone. They are selling a product, and the product is a particular vision of glamour aimed at the ticket-buying demographic.</p>
+      <p>This matters because the two roles attract different talent, demand different skills, and exist in different labor markets. Many NFL and NBA dancers have never done competitive cheer; they come from dance studios, drill teams, or pageant circuits. Conversely, many elite competitive cheerleaders go on to coach, to perform with all-star gyms, or to college programs — not to pro sidelines, which would be a step down athletically.</p>
+      <p>So the question of how cheerleaders &quot;keep their competitive edge&quot; in the pros conflates two problems. The athletic recognition problem is largely being solved: state athletic associations, the NCAA&#x27;s emerging acrobatics and tumbling category, and ESPN coverage are all moving in the right direction. The pro sideline problem is a labor problem, and it has nothing to do with competitive edge. It has to do with the fact that NFL teams have figured out they can pay $125 a game to women who would do it for free, and then fine them when their fingernails are the wrong color.</p>
+      <p>The right response is to stop pretending these are the same issue. Champion competitive cheer as a sport on its own terms, with scholarships, governing bodies, and Title IX recognition. And separately, hold pro franchises to the same wage laws that govern every other entertainment employer. Conflating the two only helps the NFL, which gets to bask in the athletic glow of cheerleading while paying its own cheerleaders like extras in a community theater production.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>I will say what other commentators are tiptoeing around: professional sideline cheerleading, as currently practiced by NFL franchises, is not a job worth saving. The handbooks that have surfaced in litigation read like artifacts from another century — rules about which utensils to use at dinner, instructions on tampon hygiene, prohibitions on socializing with players paired with the expectation that cheerleaders attend events where players will be drinking. Women are weighed weekly and fined for being &quot;soft.&quot; They are required to attend golf outings where they are auctioned off as companions to sponsors. They are paid, in some cases, a few hundred dollars for a season of work that the team markets as glamorous full-time employment.</p>
+      <p>You cannot reform this by giving the cheerleaders a raise. The structural purpose of the NFL cheerleading squad — the reason it exists in the form it does — is to provide a controlled supply of attractive young women whose subordination is part of the entertainment. Pay them minimum wage and the weigh-ins remain. Pay them a living wage and the &quot;jiggle test&quot; remains. The problem is not just the wage; it is the institution.</p>
+      <p>The honest question is whether pro sports franchises should employ sideline cheerleaders at all in 2014. Six NFL teams already don&#x27;t, and nobody seems to miss them. The Pittsburgh Steelers, the Chicago Bears, and the New York Giants have managed to win Super Bowls and sell out stadiums without a dance team. The argument that cheerleaders are essential to game-day atmosphere is undermined by the league&#x27;s own indifference, which is precisely what allows the wage abuses to continue.</p>
+      <p>If a team wants to put a professional dance company on the field, fine — hire them through a legitimate entertainment contract, with union scale, professional choreographers, and no handbook telling grown women how to insert a tampon. If a team wants to highlight athletic cheer, sponsor a competitive squad and televise it. What no team should be allowed to do is run a beauty pageant disguised as a job and call the participants lucky to be there. The lawsuits are doing the league a favor by forcing it to choose.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The wage lawsuits against NFL cheerleading squads are righteous, but they will not by themselves change very much. To understand why, you have to understand the economics. Each NFL team rosters between 25 and 40 cheerleaders. Tryouts routinely attract several hundred applicants for a few dozen spots. The &quot;wage&quot; the teams are paying, in the labor-market sense, is not the cash compensation; it is the cash plus the value of the position itself — the calendar, the appearances, the social media following, the springboard to modeling, broadcasting, or fitness careers. That non-cash value is enormous, and as long as it is, the supply curve will keep clearing at humiliating cash wages.</p>
+      <p>This is the same dynamic that produces unpaid internships in fashion and media, $200-a-week production assistants in film, and minor-league baseball salaries below the poverty line. Where the job itself is the prize, employers extract rents. Labor law exists precisely to set a floor under this dynamic, which is why the FLSA suits matter — they force employers to pay for time worked regardless of how prestigious the role is. Good. But once the floor is set at minimum wage plus overtime, the rest of the abuse — the weigh-ins, the etiquette rules, the unpaid &quot;voluntary&quot; charity appearances — will simply migrate to the edges of what the law touches.</p>
+      <p>Real change requires collective action. Cheerleaders need an association. They are scattered across thirty-odd squads, they cycle out after a year or two, and most are reluctant to litigate because they fear blacklisting. Those are exactly the conditions under which workers historically have needed an outside organizer to step in. SAG-AFTRA, which already covers some sports broadcasting work, would be a natural home. So would an independent guild modeled on the freelance organizations now emerging in journalism and the gig economy.</p>
+      <p>In the meantime, what cheerleaders can do individually is document everything — hours, fines, mandatory appearances — and refuse the cultural script that says complaining makes you ungrateful. The current lawsuits exist because a handful of women decided that being grateful was no longer a sufficient compensation package. They are right, and the more who follow them, the faster the math changes for the teams.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Let&#x27;s widen the lens. The plight of NFL cheerleaders is not an anomaly in American labor; it is a particularly photogenic example of a much broader trend. Across the economy, employers have learned to reclassify workers as independent contractors, &quot;ambassadors,&quot; interns, or part-time gig laborers in ways that let them escape minimum wage laws, overtime rules, and benefits obligations. FedEx drivers are suing over it. Uber drivers are starting to. Adjunct professors are organizing about it. Restaurant servers fight the same battle over tip credits and side work. The Raiderettes happen to wear sequins, so they get the headlines, but the legal architecture being tested in their case is the architecture of low-wage America in 2014.</p>
+      <p>This framing should change what we think a successful outcome looks like. It is not enough for a court to order the Raiders to pay back wages to a particular class of plaintiffs. The deeper question is whether the Department of Labor and state labor commissioners are willing to treat misclassification as a systemic enforcement priority. The Obama administration has gestured in that direction — the DOL has stepped up wage-and-hour enforcement and recently signaled scrutiny of unpaid internships — but enforcement remains case-by-case and reactive. Cheerleaders sue; the agency follows.</p>
+      <p>There is also a gender dimension worth naming. The industries where this kind of wage suppression has flourished most aggressively — cheerleading, modeling, fashion retail, hospitality, certain branches of entertainment — are heavily female. The cultural script that tells young women they should feel lucky to be chosen, that complaining is unfeminine, that the work is its own reward, is doing real economic work for employers. It is not coincidence that the NFL cheerleading handbooks read like finishing-school manuals. The infantilization is the wage suppression mechanism.</p>
+      <p>So how do cheerleaders keep their competitive edge? By recognizing that their fight is not really about cheerleading. It is about whether the American workplace is going to continue carving out categories of workers — disproportionately young, disproportionately female, disproportionately aspirational — from whom the protections of basic labor law can be quietly withheld. Win that argument, and the pompoms take care of themselves.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>To keep their competitive edge, professional cheerleaders must first be treated like the athletes they are—and that means unionizing. The recent lawsuits against NFL teams, including the Oakland Raiders and Buffalo Bills, have exposed a system in which cheerleaders are routinely paid less than minimum wage, forced to pay for their own uniforms and travel, and subjected to degrading appearance rules. No self-respecting competitive cheerleader would tolerate such conditions, and the reason so many do at the professional level is simple: they lack collective bargaining power.</p>
+      <p>The competitive cheer world, now recognized as a sport by 35 states, thrives on rigorous training, complex stunts, and a clear athletic identity. When athletes from that pipeline enter the professional ranks, however, that identity is stripped away. They are rebranded as &quot;ambassadors&quot; or &quot;entertainers,&quot; a sleight of hand that allows teams to classify them as independent contractors or volunteers and skirt labor laws. Unionizing would give cheerleaders the leverage to demand minimum wage, overtime pay, and protections against harassment—the very baseline that would allow them to focus on athletic excellence rather than survival. If the players can have a union, so can the cheerleaders. Only then will their competitive fire be met with professional respect, not exploitation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The question itself misunderstands the nature of professional cheerleading. High school and college cheerleading have evolved into a genuinely acrobatic, competitive sport—stunting, tumbling, and pyramid-building require immense skill and deserve every bit of recent recognition. But the women and men dancing on the sidelines of professional football and basketball games are not engaged in that same sport. They are performers, brand ambassadors, and community-relations specialists. Asking how they can &quot;keep their competitive edge&quot; assumes the two worlds ought to merge, when in fact the path forward is to separate them entirely.</p>
+      <p>Competitive cheerleaders should channel their athleticism into the growing ecosystem of club gyms, all-star teams, and college scholarships. Those who want the spotlight of professional sports should understand that they are entering an entertainment role that emphasizes dance, appearance, and public relations over athletic competition. That doesn’t mean they should be exploited—teams absolutely must pay lawful wages and stop humiliating practices—but expecting a pro-cheer gig to feel like a national championship is a category error. The competitive edge belongs in the gymnasium and on the spring floor, not on the fifty-yard line. If we want cheerleaders to be respected as athletes, we should stop conflating sideline dancing with the sport of cheerleading and invest in the actual sport instead.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>The lawsuits are already doing the heavy lifting. By dragging the NFL’s cheerleader pay and treatment into court, the athletes are forcing a public reckoning that will ultimately allow them to keep their competitive edge by professionalizing the entire endeavor. In 2014, class-action suits in California and New York have made it impossible for teams to pretend that women leaping, dancing, and stunting for hours a week are merely hobbyists. The legal pressure will compel franchises to reclassify cheerleaders as proper employees, paying at least minimum wage, covering expenses, and establishing clear workplace protections.</p>
+      <p>Once that baseline is secured, cheerleaders can push for something more ambitious: performance standards tied explicitly to athletic skill. If teams are forced to treat cheerleaders as employees, they can also be expected to provide safe training facilities, injury insurance, and off-season conditioning programs—just as they do for players. That infrastructure would let the competitive spirit thrive. A cheerleader who knows her hip-hop routine is backed by a professional strength coach and a guaranteed wage can focus on elevating her craft, rather than worrying about whether she can afford the mandatory tanning sessions. The courtroom, not just the playing field, is where respect is being won. When the dust settles, the edge will be sharper than ever.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>Professional cheerleaders can keep their competitive edge by treating their squad work not as a dead-end job but as a platform. The modern competitive cheerleader has been trained in elite gymnastics, dance, and teamwork—skills that transfer far beyond the sidelines. The smartest move for a young woman entering the pro cheer world is to build a personal brand as a fitness expert, choreographer, or stunt instructor, leveraging the NFL’s visibility while the opportunity lasts.</p>
+      <p>This doesn’t excuse team owners from paying fairly, but it does recognize a stubborn reality: professional cheerleading, as currently structured, is not a career. It’s a part-time, seasonal gig with a short shelf life. The competitive edge, then, lies in using the experience to launch a sustainable profession. Many former cheerleaders have already done this, opening dance studios, becoming stunt doubles in Hollywood, or transitioning into sports broadcasting. To foster that, teams should offer career-development workshops and networking opportunities rather than focusing solely on appearances at charity golf tournaments. The edge comes from seeing the uniform not as a final destination but as a springboard—one that requires both personal initiative and institutional support.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The most durable solution is a cultural one: we must finally accept that cheerleading, in all its forms, is serious athletic labor. The reason professional cheerleaders lose their competitive edge isn’t just low pay; it’s the deep-seated perception that what they do is frivolous, a beauty pageant rather than a physical discipline. Changing that perception starts with the very recognition New York just granted high school cheerleaders—calling it a sport—and extends all the way to the sidelines of the NFL.</p>
+      <p>When the public, team owners, and the media begin to see the professional cheerleader as an athlete first, the humiliating treatment chronicled in recent lawsuits will become culturally unacceptable. Sponsors will not want to be associated with a team that treats its athletes as decorations. Fans will demand better. And the cheerleaders themselves, no longer forced to conform to degrading stereotypes, will be free to infuse their routines with the same explosive athleticism they displayed in competition. This shift won’t happen overnight, but it is already underway. The lawsuits are a catalyst, but the real victory will come when a young girl watching a game can see the women on the field and say, “They’re athletes, just like the players.” That is how the competitive edge returns—by making it so obvious that it cannot be ignored.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The stark contrast between the athletic rigor of competitive high school cheerleading and the humiliating labor conditions of professional sideline cheerleaders is not a failure of the athletes. It is a failure of basic labor rights in professional sports. If professional cheerleaders want to maintain their competitive edge and secure the respect they deserve, they must pivot from courtrooms to collective bargaining. They need a union.</p>
+      <p>Right now, a wave of class-action lawsuits is rocking the NFL. Members of the Oakland Raiderettes, the Cincinnati Ben-Gals, and the Buffalo Jills have bravely stepped forward to expose a culture of wage theft, sub-minimum wages, and draconian personal appearance policies. These women are performing highly synchronized, physically demanding routines for billion-dollar sports franchises, yet many are paid less than the teenagers selling hot dogs in the stadium concourse.</p>
+      <p>While the current lawsuits are a necessary first step to recover stolen back wages and end the absurd misclassification of these women as independent contractors, lawsuits alone will not change the culture. The NFL and other professional leagues have historically only respected one thing: organized, collective power.</p>
+      <p>The players on the field do not rely on the goodwill of team owners to ensure a fair minimum salary, safe working conditions, or health benefits; they rely on the NFL Players Association. Referees have their own association to negotiate their contracts. Professional cheerleaders need to recognize that their &quot;pompom problems&quot; are, at their core, labor problems.</p>
+      <p>By forming a national union for professional cheerleaders and dancers, these women could establish a collective bargaining agreement that mandates living wages, paid rehearsal time, comprehensive health insurance for workplace injuries, and the abolition of degrading &quot;jiggle tests.&quot; Until they organize as a united workforce, billionaire owners will continue to treat them as easily replaceable ornaments rather than the skilled professionals they are.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>To understand why professional cheerleaders are treated so poorly, we have to acknowledge a fundamental truth: the NFL and NBA do not actually employ &quot;cheerleaders&quot; in the athletic sense of the word. They employ dancers and models.</p>
+      <p>When New York recently recognized high school cheerleading as a competitive sport, they were acknowledging the intense gymnastics, tumbling, and high-flying stunting that define modern competitive cheer. You see this on ESPN during the college championships. It is a dangerous, thrilling, and highly athletic endeavor.</p>
+      <p>But when you look at an NFL sideline, you do not see elite stunting. You see choreographed dance routines performed by women selected primarily for their physical appearance and ability to fit into a two-piece uniform. The professional leagues have stripped the actual &quot;sport&quot; out of cheerleading, leaving behind a Vegas-style revue. Because the franchises treat the role as mere sideline eye candy, they feel justified in paying the performers in &quot;exposure&quot; and &quot;glamour&quot; rather than a professional athletic salary.</p>
+      <p>If cheerleaders want to keep their competitive edge in the working world, the job itself must be redefined. Professional sports teams should abandon the outdated 1970s model of the sideline dancer and replace them with co-ed, acrobatic stunt teams modeled after the elite college programs.</p>
+      <p>If an NFL franchise hired a genuine competitive cheerleading squad—featuring male and female athletes executing basket tosses, pyramids, and elite tumbling passes—the conversation would instantly change. The athletes would be undeniable assets to the game-day entertainment, recognized for their specialized physical skills rather than their measurements. Until the professional leagues are forced to value the athletic substance of cheerleading over its aesthetic appeal, the women on the sidelines will never be granted the respect, or the paychecks, of true athletes.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The recent lawsuits filed by professional cheerleaders against their NFL teams have exposed a shocking reality about the glamorous world of the professional sidelines. But for young women currently competing in the highly athletic, newly sanctioned sport of high school and college cheerleading, the takeaway should not be to fight the NFL. The takeaway should be to walk away from it entirely.</p>
+      <p>The simple economic reality is that the supply of young women who want to be an NFL or NBA cheerleader vastly outstrips the demand. Because of the perceived prestige and glamour associated with the shield and the pom-poms, teams have a bottomless pool of applicants willing to work for pennies. Franchises exploit this dynamic, knowing that if one woman refuses to work for less than minimum wage, a hundred others are waiting to take her place.</p>
+      <p>True competitive cheerleaders should realize that professional sideline dancing is a dead-end career for a serious athlete. If you want to keep your competitive edge and earn a living in the working world, the rapidly expanding All-Star cheerleading industry is where the actual money and respect lie.</p>
+      <p>Private cheerleading gyms, coaching, choreography, and event production are booming businesses. Elite college cheerleaders are leveraging their skills to open their own training facilities, run profitable summer camps, or work as commentators for networks like ESPN. They are becoming entrepreneurs in a multi-million-dollar youth sports ecosystem.</p>
+      <p>Why subject yourself to a degrading team handbook that dictates the color of your nail polish and pays you $50 a game when you could be making a six-figure salary directing a competitive cheer program? The best way for female athletes to preserve their dignity and capitalize on their hard-earned skills is to boycott the exploitative professional sports leagues and build their own empires within the sport they actually love.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The crisis facing professional cheerleaders is a textbook example of corporate exploitation masquerading as &quot;opportunity.&quot; The solution to ensuring these women are treated with respect as they enter the working world does not require a complex cultural shift; it requires aggressive enforcement of the Fair Labor Standards Act.</p>
+      <p>For years, professional sports franchises have gotten away with paying their cheerleaders flat, sub-minimum wage rates per game—often amounting to $2 or $3 an hour when mandatory rehearsals and promotional appearances are factored in. They achieve this by misclassifying the cheerleaders as independent contractors rather than employees. This legal sleight-of-hand allows billionaire owners to dodge minimum wage laws, overtime pay, workers’ compensation, and basic workplace protections.</p>
+      <p>The current lawsuits against teams like the Buffalo Bills and the Oakland Raiders are finally dragging this practice into the light. The details emerging are appalling: women forced to pay for their own mandatory uniforms and hair styling, subjected to humiliating weight ins, and expected to appear at corporate events for free. No other industry would be allowed to operate this way.</p>
+      <p>The path forward is strictly legal and legislative. State labor boards and the federal Department of Labor must step in and audit these franchises. Courts must establish a definitive precedent that if a team dictates a cheerleader&#x27;s schedule, controls her uniform, mandates her rehearsal times, and uses her image for team marketing, she is a W-2 employee. Full stop.</p>
+      <p>Once cheerleaders are legally classified as employees, the protections of the modern working world immediately apply. They will be entitled to minimum wage for every hour worked, time-and-a-half for overtime, and protection against arbitrary and discriminatory workplace rules. Keeping a competitive edge is impossible when you are being financially starved and legally marginalized. Only when the law forces sports franchises to treat these women as legitimate employees will the exploitation end.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The ongoing debate about high school cheerleading becoming a &quot;real&quot; sport misses the forest for the trees when we look at how professional cheerleaders are treated. The problem isn&#x27;t about the definition of sports; it is about the deeply entrenched misogyny of professional athletics, particularly within the National Football League.</p>
+      <p>We have built a sports culture where men are celebrated for their physical prowess, given multi-million dollar contracts, and granted endless second chances when they run afoul of the law. Meanwhile, the women sharing the same field are treated as disposable props. The lawsuits filed earlier this year by NFL cheerleaders reveal a culture that doesn&#x27;t just underpay women, but actively seeks to humiliate them. Manuals dictating hygiene, &quot;jiggle tests&quot; to monitor body fat, and unpaid mandatory mingling at sponsor events highlight a toxic environment where women are viewed purely as subservient commodities.</p>
+      <p>How can cheerleaders maintain their edge and demand respect? By realizing that the leagues they work for are fundamentally broken in their view of women, and demanding an overhaul from the outside in.</p>
+      <p>The burden should not rest solely on the cheerleaders to sue their employers for basic dignity. It rests on the fans, the sports media, and the corporate sponsors. If brands that pour millions into NFL advertising truly care about female consumers, they should threaten to pull their sponsorships until teams guarantee their female employees a living wage and humane working conditions.</p>
+      <p>Furthermore, female fans—who make up nearly half of the NFL&#x27;s viewership—must vocalize their disgust. When the public stops viewing these women as lucky girls who should be grateful just to wear the uniform, and starts viewing them as exploited workers suffering under a sexist corporate regime, the pressure on the owners will become insurmountable. Respect in the working world requires dismantling the patriarchal attitudes that built these sports empires in the first place.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>If cheerleading is athletic enough for state athletic associations and ESPN, it is certainly labor enough for a paycheck. The problem for professional cheerleaders is not that they lose their competitive edge after high school or college; it is that teams have learned to treat that edge as decoration rather than work.</p>
+      <p>The recent lawsuits by cheerleaders for the Oakland Raiders, Cincinnati Bengals and Buffalo Bills have exposed a basic contradiction. These women are required to attend practices, games, charity events and promotional appearances; they must comply with detailed rules about hair, weight, clothing, nail polish, fraternization and even how to behave in public. Yet some reportedly earn only a flat fee per game, are not paid for many required hours, and must buy or maintain parts of their own uniforms. That is not glamour. It is wage theft dressed up in sequins.</p>
+      <p>The answer begins with the law. If teams control the schedule, appearance and conduct of cheerleaders, then those cheerleaders look very much like employees, not casual volunteers or independent contractors. They should be paid at least the minimum wage for all required work, reimbursed for necessary expenses, and protected from arbitrary fines that push their compensation below legal floors. This is not a radical demand. It is the baseline for restaurant workers, retail clerks and stadium ushers.</p>
+      <p>But minimum wage should be the floor, not the aspiration. Professional teams, especially in the N.F.L., are multimillion- and multibillion-dollar enterprises. They sell tickets, television rights, sponsorships and branded merchandise partly by creating a live entertainment spectacle. Cheerleaders are part of that product. If teams can pay mascots, drum lines, security guards and concession contractors, they can pay dancers and cheerleaders fairly.</p>
+      <p>Cheerleaders also need collective power. Whether through a union, a guild, or a league-wide professional association, they need standard contracts, grievance procedures and clear rules on pay, safety and appearance policies. Individual cheerleaders are easily told that hundreds of other women would take their place. A collective organization can answer that the job has standards.</p>
+      <p>Professional cheerleaders can keep their competitive edge by insisting that professionalism cuts both ways. If teams demand discipline, training, beauty, stamina and loyalty, they must respond with wages, dignity and respect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The professional cheerleading controversy is often framed as a minimum-wage scandal, and in part it is. But the deeper problem is that pro teams have preserved the image of cheerleaders as “lucky girls” rather than recognizing them as athletes and performers. That cultural demotion begins the moment a college tumbler, dancer or stunter enters the professional sports world.</p>
+      <p>In high school and college competition, cheerleading is judged on difficulty, synchronization, tumbling, lifts, precision and risk. The best squads train like gymnasts and dancers. When New York designates high school cheerleading a sport, it is acknowledging what many parents, coaches and emergency rooms already know: this is physically demanding work. But most professional teams do not ask cheerleaders to do much competitive cheerleading. They ask them to smile, pose, dance on the sideline, appear at sponsor events and represent the brand.</p>
+      <p>If we want cheerleaders to keep their competitive edge, the job itself should be redesigned. Professional squads should be treated more like performance teams than promotional ornaments. Let them compete. Let leagues sponsor serious dance and cheer competitions among professional squads. Put more athletic routines at halftime. Include coed stunt teams where appropriate. Reward training, choreography and technical excellence, not just marketability.</p>
+      <p>This would not eliminate the labor questions. Pay still matters. Safety still matters. Women should not be subject to humiliating weigh-ins, unpaid appearances or rules that would be laughable if imposed on male athletes. But a purely legal response may leave the old model intact: low-paid glamour work, only with better accounting. The bigger opportunity is to change what fans expect.</p>
+      <p>Teams often underestimate fans. People who watch a receiver make an acrobatic catch can also appreciate a basket toss, a sharp dance line or a difficult tumbling pass. ESPN’s coverage of cheer championships proves there is an audience for the athletic version of cheer. Professional franchises should build on that instead of flattening cheerleaders into background scenery.</p>
+      <p>The professional cheerleader of the future should be neither a mascot nor a swimsuit-calendar accessory. She, and sometimes he, should be a trained entertainer whose skill is visible and valued. Competitive edge is preserved when competition, athleticism and craft remain central to the job.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>There is a danger in discussing professional cheerleaders only as victims. Many cheerleaders are adults who knowingly audition for a job that offers visibility, networking, performance experience and access to a world they enjoy. Some have other careers. Some value the platform more than the paycheck. It would be condescending to pretend they have no agency.</p>
+      <p>But agency is not a waiver of labor law. The fact that many people want a job does not allow an employer to ignore minimum wage, misclassify workers or impose unpaid mandatory duties. Journalism, politics, fashion, sports and entertainment all have versions of this problem: prestigious work is treated as compensation in itself. “Exposure” becomes the currency offered to people who are expected to be grateful. That arrangement is especially common in female-coded work.</p>
+      <p>So the sensible answer lies between two extremes. Professional cheerleading should not be abolished because some teams have behaved badly, nor should teams be allowed to hide behind the idea that cheerleaders are “ambassadors” or “volunteers.” The relationship should be made explicit. If a squad member is required to attend rehearsal, report to games, follow a handbook, appear at charity or sponsor events, and accept discipline for noncompliance, she is doing a job. Pay her for every required hour. Publish the compensation structure before auditions. Spell out expenses. Put appearance requirements in writing, and subject them to ordinary standards of reasonableness.</p>
+      <p>Transparency would help both sides. A woman considering an audition should know whether she is being offered a serious part-time job, a seasonal performance opportunity, or essentially a costly hobby with a uniform. Teams should not be able to advertise glamour while burying the economic reality in fines, unpaid rehearsals and mandatory appearances.</p>
+      <p>There is also room for experimentation. Some teams might create elite dance squads paid at higher rates. Others might use fewer cheerleaders but compensate them better. Still others might move toward community ambassadors with clear hourly wages. What should disappear is the fiction that prestige cancels out pay.</p>
+      <p>Cheerleaders can keep their competitive edge by demanding a professional bargain: high standards from them, honest contracts from teams. Respect does not require turning every cheerleader into a full-time athlete. It does require treating her as a worker when she is working.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The current controversy should make us ask whether professional cheerleading, as it exists in many franchises, is worth saving. Not cheerleading as a sport: competitive cheer is difficult, dangerous and impressive. Not dance: dancers train for years and deserve serious respect. The question is whether the sideline model used by many men’s professional sports teams is too entangled with sexist expectations to be repaired by a higher hourly wage.</p>
+      <p>The allegations in recent lawsuits are revealing not only because the pay is low, but because the control is so intimate. Cheerleaders have described rules about weight, appearance, social contact, public behavior and personal presentation that go far beyond ordinary workplace standards. They are expected to be alluring but not sexual, visible but not powerful, disciplined but replaceable. They help sell a masculine sports spectacle while being denied the status of athletes or even properly paid employees.</p>
+      <p>This is not an accident. The professional cheerleader’s role has often been to reassure male fans and sponsors that women belong in the stadium as adornment. She may be talented, educated and hardworking, but the product being sold is not primarily her athletic achievement. It is a fantasy of availability, enthusiasm and decorative femininity. That is why teams can simultaneously demand perfection and pay almost nothing: the labor is disguised as privilege.</p>
+      <p>Legal reforms are necessary. Minimum wage should be enforced. Unpaid mandatory appearances should end. Harassing and humiliating rules should be challenged. But reform should not stop us from imagining a better model. Replace ornamental cheer squads with gender-inclusive performance teams, drum lines, acrobatic troupes and competitive exhibitions. Put dancers and stunt athletes on the field as performers with names, bios, contracts, safety protections and real pay. Let fans admire skill instead of consuming anonymity.</p>
+      <p>Some will say this takes the fun out of sports. But whose fun depends on underpaid women smiling through indignity? The most exciting stadium experiences do not require exploitation. They require music, movement, spectacle and crowd energy. All of those can be provided by workers treated as professionals.</p>
+      <p>Cheerleaders can keep their competitive edge only if the job stops dulling it into decoration. The path forward is not nostalgia for pompons on the sideline. It is a new public understanding: women’s athletic and performance labor is labor, not a perk granted by men’s teams.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>Professional sports leagues should be embarrassed that this issue has reached the courthouse before it reached the commissioner’s office. The amounts of money involved are tiny by the standards of major sports, but the symbolism is large. A league that can negotiate billion-dollar television contracts should not have teams whose cheerleaders allege they are paid less than minimum wage.</p>
+      <p>The practical solution is league-wide standards. Leaving each franchise to improvise has produced a race to the bottom hidden by glamour. A team can tell cheerleaders that the job is an honor, that appearances are part of the opportunity, and that anyone who complains can be replaced. That is precisely why the league should set a floor no club may go below.</p>
+      <p>A basic code would be straightforward. Cheerleaders should receive hourly pay for rehearsals, games and required appearances; reimbursement for required expenses; workers’ compensation protection for injuries; written contracts before the season; clear anti-harassment procedures; and limits on fines and appearance rules. If a team wants strict grooming standards, it should pay for the time and costs those standards impose. If it wants community appearances, it should schedule and compensate them as work.</p>
+      <p>This is not merely a matter of kindness. It is brand management. Professional sports teams spend heavily to present themselves as civic institutions. Cheerleaders visit hospitals, appear at charity events, entertain children and represent the franchise in the community. They are often the most accessible public face of a team. Treating them poorly undermines the family-friendly image the leagues work so hard to cultivate.</p>
+      <p>Nor would fair pay bankrupt anyone. Even if compensation rose substantially, cheerleader payroll would remain a rounding error compared with player salaries, coaching staffs, stadium operations and executive compensation. Teams regularly spend more on a single marginal roster decision than on an entire cheer squad. The issue is not affordability. It is priority.</p>
+      <p>The designation of high school cheerleading as a sport in New York points in the right direction, but professional teams must take the next step. They need not make cheerleaders identical to players. They do need to recognize that disciplined performance, public representation and physical training are valuable. A league-wide labor standard would preserve the spectacle, reduce lawsuits and, most important, treat cheerleaders like the professionals teams already claim them to be.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Cheerleaders can keep their competitive edge by doing what other professional athletes eventually had to do: organize. The problem described in the recent lawsuits is not simply that cheerleaders are underappreciated. It is that teams have treated highly trained women as if glamour were a substitute for wages.</p>
+      <p>The Oakland Raiderettes’ suit, the Buffalo Jills’ complaints and similar claims point to a familiar pattern: mandatory practices, game-day appearances, rehearsals, photo shoots, charity events and strict behavioral rules, all wrapped in a contract that may pay a flat seasonal stipend. When that stipend is divided by the hours required, it can fall below the legal minimum wage. Fines for minor infractions, unpaid travel and out-of-pocket costs for hair, makeup and uniforms can push compensation even lower.</p>
+      <p>No one would accept this arrangement for the men on the field, the mascot in the costume, the stadium security staff or the concession workers. The law should not accept it for cheerleaders.</p>
+      <p>The first step is proper classification. If teams control schedules, appearance standards, choreography, discipline, public conduct and assignments, then cheerleaders are employees in every meaningful sense. They should be paid for practices, games, public appearances and required promotional work. They should receive overtime when the law requires it, workers’ compensation when injured and reimbursement when the team requires specific expenses.</p>
+      <p>The second step is collective representation. Cheerleaders do not need to be folded into a players’ union to bargain collectively; dancers, actors and other performers have long had labor organizations. A professional cheerleaders’ association could set model contracts, provide legal advice to rookies, publish pay standards and make it harder for teams to play eager applicants against one another.</p>
+      <p>The third step is cultural. Calling cheerleading a sport in high school but treating it as a decorative hobby in the pros reveals the contradiction. Professional cheerleaders are not asking to be paid quarterback salaries. They are asking not to subsidize billion-dollar sports businesses with unpaid labor.</p>
+      <p>Athleticism and poise are part of their competitive edge. But in the working world, the sharper edge is solidarity. A cheerleader who knows her rights is harder to exploit than one who is told she should feel lucky just to wear the uniform.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The best way to help professional cheerleaders is to stop blurring two different things. Competitive cheerleading, as recognized by New York and many other states, is a sport. It has tumbling, stunting, lifts, pyramids, scoring, injuries, coaching and year-round training. Much of what happens on professional sidelines, however, is closer to dance-team entertainment, modeling and brand promotion.</p>
+      <p>That distinction is not an insult. Dance is skilled work. Promotional modeling is work. Public appearances are work. But when pro teams borrow the prestige of athletic cheerleading while paying sideline performers like volunteers, they get the best of both worlds: the symbolism of sport without the obligations of employment.</p>
+      <p>So there are two honest paths. If a team wants a true professional cheer squad, let it look like the sport ESPN televises: competitive routines, elite stunts, proper mats, medical support, coaching, salaries and a schedule built around performance rather than decoration. Fans might respond to a halftime product that actually showcases the athleticism of cheerleading instead of reducing it to brief sideline dances.</p>
+      <p>If, instead, a team wants dancers and ambassadors, then it should say so and pay them accordingly. The contract should resemble other entertainment contracts: hourly pay for rehearsals, appearance fees, travel reimbursement, workplace protections and rules against harassment. Nobody should be required to pretend that “exposure” is compensation.</p>
+      <p>This matters because the phrase “professional cheerleader” currently promises status but often delivers dependency. Young women spend years training, then enter an industry where the prize is not a career but a costly part-time job with strict rules and low pay. The athletic pipeline ends in a marketing department.</p>
+      <p>Cheerleaders keep their competitive edge by demanding a real professional field, not merely a famous sideline. Some will choose to be dancers. Some will want to compete. Some will use the platform for other careers. All of those choices are legitimate. What is not legitimate is using the language of sport to recruit disciplined athletes and then using the economics of unpaid glamour to avoid treating them as workers.</p>
+      <p>Respect begins with clarity. Is this a sport? Then build a professional sport. Is it entertainment? Then pay professional entertainers.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>Team owners should not wait for courts to tell them how to treat cheerleaders. The business case for reform is already obvious.</p>
+      <p>Professional cheerleaders are among the most visible representatives of a franchise. They appear at games, charity events, military tours, youth clinics, sponsor promotions and media shoots. They help sell the family-friendly image of teams whose players are often distant from ordinary fans. Yet the lawsuits now being filed suggest that some organizations have treated these ambassadors as disposable, imposing strict control while offering tiny compensation.</p>
+      <p>That is bad law, but it is also bad branding. A franchise that spends millions on free agents, luxury boxes and video boards looks absurd when it argues that it cannot afford minimum wage for the women wearing its logo.</p>
+      <p>The solution is a leaguewide employment code, whether adopted voluntarily or required through litigation. Every cheerleader should receive a plain-language contract before auditions are complete. It should specify hourly wages, practice schedules, game-day requirements, appearance rates, overtime policies, travel reimbursement and deductions. Required uniforms, cosmetics or maintenance should not become hidden wage cuts. Fines for trivial mistakes should be eliminated or strictly limited; no employer should balance its books by penalizing workers for a misplaced pompom.</p>
+      <p>Workplace safety must also be part of professionalization. Cheerleaders need access to trainers, safe rehearsal spaces, injury reporting and workers’ compensation. If they are sent to sponsor events, golf outings or private functions, teams should provide clear security rules and a supervisor who is accountable for their safety. A complaint process should exist outside the immediate squad director, because the person assigning appearances should not be the only person hearing grievances.</p>
+      <p>Finally, teams should rethink the tone of their rulebooks. Appearance standards are common in entertainment, but rules that infantilize adult women or police their private lives more harshly than athletes’ conduct invite resentment and ridicule. Professionalism should mean reliability and performance, not humiliation.</p>
+      <p>These reforms would not bankrupt major sports. Even a meaningful hourly wage for practices, games and appearances would be a rounding error in the budget of an N.F.L. or N.B.A. franchise. The real obstacle is habit: teams have been able to rely on prestige, scarcity and women’s enthusiasm to keep costs low.</p>
+      <p>But prestige is not a payroll system. If cheerleaders are valuable enough to put on posters, calendars and community events, they are valuable enough to pay and protect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The “pompom problem” is really a power problem. Cheerleaders have already proved that they can train, compete and perform under pressure. What they have not been granted, in many professional settings, is control over their labor, their bodies or their public image.</p>
+      <p>The allegations emerging in recent lawsuits are striking not only because of low pay, but because of the kind of control described: weigh-ins, grooming requirements, unpaid appearances, strict rules about socializing, and public events where women are expected to be charming while absorbing whatever attention fans or sponsors direct at them. A man who plays professional sports is celebrated for physical excellence and paid handsomely for the risks of the job. A woman who performs beside him may be told that the privilege of proximity is payment enough.</p>
+      <p>That is a deeply gendered bargain. It depends on the idea that young women should be grateful for visibility, even when the visibility is packaged and sold by someone else. It also depends on silence. Many cheerleaders are replaceable in the eyes of management because there is always another talented applicant who hopes the job will open doors.</p>
+      <p>Keeping a competitive edge, then, requires more than better choreography. It requires refusing the old script. Cheerleaders should have written contracts, wage protections and anti-harassment procedures, but they also need a voice in defining the work. Who decides what uniforms communicate? Who writes the rules about body size? Who assigns public appearances? Who protects a cheerleader when a sponsor, fan or executive crosses a line?</p>
+      <p>Those decisions should not be made solely by team executives or squad directors whose job is to preserve the brand. Cheerleaders need representation in the room: elected captains with real authority, alumni advisory boards, access to outside counsel and, where possible, collective bargaining. Employment law can establish the floor; self-governance can change the culture.</p>
+      <p>It is encouraging that states are beginning to recognize cheerleading as a sport at the school level. But recognition in adolescence means little if adulthood brings a return to ornamental status. The test of respect is not whether a cheerleader is praised for being fit, pretty or spirited. The test is whether she can say no, report mistreatment, negotiate pay and still keep her job.</p>
+      <p>Professional cheerleaders do not need rescue from cheerleading. They need protection from an industry that has too often mistaken discipline for docility.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>The answer is not to pretend that every professional cheerleading job can become a lucrative athletic career. Many sideline squads are part-time entertainment and promotion jobs in a market with far more applicants than openings. That reality will not disappear because states recognize high school cheerleading as a sport.</p>
+      <p>But market reality is not a license to break labor law. A restaurant cannot pay servers less than the law allows because many people want restaurant jobs. A fashion company cannot avoid wages by saying models receive “exposure.” Sports teams should be held to the same standard. If they require rehearsals, game appearances, calendars, promotional events and strict conduct rules, then they should pay for the time they control.</p>
+      <p>A more honest system would begin before auditions. Applicants should receive a realistic estimate of required hours, expected expenses and likely pay. If the job pays a seasonal stipend, the team should translate that into an hourly figure. If dancers must buy certain products, maintain particular styling or pay for travel, that should be disclosed. No one should have to win the spot before learning that the prize costs money.</p>
+      <p>Cheerleaders also need to be strategic. The prestige of an N.F.L. or N.B.A. logo can cloud judgment. A young woman with elite dance or cheer training may have other options: coaching, choreography, college programs, fitness instruction, commercial dance, teaching, or independent performance groups. Teams have bargaining power because applicants treat the uniform as priceless. The more cheerleaders compare opportunities and share information, the less power secrecy will have.</p>
+      <p>Some franchises may decide that paying legal wages and providing protections makes a squad less attractive financially. If so, that is not a tragedy. A business that cannot exist without underpaid labor should change or disappear. Fans attend games for the game; if cheerleaders are retained, it should be because the team values them enough to compensate them openly.</p>
+      <p>The competitive edge cheerleaders need in the working world is not just a sharper toe touch or cleaner routine. It is economic literacy: read the contract, count the hours, ask what the opportunity costs, and be willing to walk away from a famous brand that offers applause instead of pay.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The lawsuits emerging from professional cheerleading squads have exposed a troubling labor dynamic that mirrors other gig-economy exploitation: women performing highly skilled, physically demanding work while being classified in a legal and cultural gray zone that denies them basic protections. We should not be debating whether professional cheerleaders can &quot;keep their competitive edge&quot; — we should be asking why the multi-billion-dollar sports industry has been allowed to treat them as ornamentation rather than workers.</p>
+      <p>The &quot;competitive edge&quot; framing in the question itself reflects the problem. Cheerleading, at both amateur and professional levels, requires extraordinary athleticism: tumbling passes, pyramid construction, stunting that rivals gymnastics in technical difficulty. The ESPN championships broadcast to millions prove this. Yet the moment these athletes turn professional, they are reclassified in the public imagination as decorative props rather than competitive performers. The pay discrepancy — less than minimum wage for roles that require perfect physical presentation, long hours, and constant public engagement — is not incidental. It is the product of gendered wage suppression that has defined service industries forever.</p>
+      <p>The solution lies not in helping cheerleaders &quot;adapt&quot; their competitive drive to an unfair system, but in restructuring that system entirely. Cheerleaders should be classified as employees with full labor protections, benefits, and wages commensurate with the skill and time they contribute. Some organizations have already moved toward treating squad members more fairly, and the lawsuits are pushing others to follow. The cultural shift required is simple: stop treating women&#x27;s athletic labor as inherently less valuable than men&#x27;s. When professional sports teams pay referees, trainers, and other support staff a living wage, they can extend the same consideration to the women on the sidelines.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>A closer reading of the situation suggests the cheerleaders themselves are not a monolithic group seeking a single solution, and any serious response must account for the diversity of their aspirations. For some, professional cheerleading is a stepping stone — a way to build a public profile, network with influential people, and open doors to broadcasting, fitness entrepreneurship, or sports media careers. For others, it is an end in itself: a meaningful stage in a shorter athletic career. These are not mutually exclusive, but they point to very different relationships with the work.</p>
+      <p>The lawsuits are real and legitimate concerns, particularly around wage theft and workplace harassment. But the legislative and contractual remedies being pursued in courts are not the only — or even the primary — tool available to these athletes. The most successful professional cheerleaders have leveraged their platforms aggressively, building personal brands through social media, fitness coaching, and other ventures that multiply the value of their visibility. Those who treat the role primarily as a credential and a stage, rather than a lifelong vocation, tend to navigate the financial and professional limitations most successfully.</p>
+      <p>This does not excuse exploitative practices. But it suggests that the cheerleaders who thrive are those who approach the role with entrepreneurial savvy — treating the exposure, community connections, and performance opportunities as capital to be invested elsewhere. For organizations that resist meaningful labor reform, the market consequence may simply be higher turnover and less exceptional talent. Cheerleaders should be encouraged to negotiate collectively, yes, but also to think strategically about what they control: their own brand and career trajectory.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>There is something almost comedically backward about a society that celebrates cheerleading&#x27;s athleticism in high school gymnasiums while tolerating its systematic devaluation in professional contexts. The New York classification of high school cheerleading as a competitive sport is a milestone, but it is only a milestone — it does not resolve the fundamental tension between the athletic community&#x27;s growing respect for cheerleading and the commercial world that continues to exploit its practitioners.</p>
+      <p>The lawsuits referenced — and they are numerous and credible — detail patterns that would be immediately recognizable to anyone who has studied labor exploitation in other industries: work weeks that far exceed stated hours, compensation structures that conveniently exclude training time, and management cultures that treat workers as disposable assets. The response from team organizations has often been to character attack individual plaintiffs rather than address systemic concerns, which tells us everything about where institutional loyalty lies.</p>
+      <p>The path forward requires coalition-building with broader labor movements. Professional cheerleaders share structural vulnerabilities with other contingent, appearance-focused, female-dominated workforces. Modeling unions, fashion industry worker organizations, and domestic worker advocacy have all faced similar challenges in gaining recognition, and the strategies that have worked there — legislative advocacy, public campaigns, strategic litigation — are directly applicable. The &quot;competitive edge&quot; that makes great cheerleaders exceptional athletes can also make them effective advocates. The question is whether they choose to channel that competitive drive toward changing their circumstances rather than merely enduring them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>Let me offer a slightly contrarian note that complicates the dominant narrative. While the labor lawsuits are serious and the wage issues are real, we risk overgeneralizing about a field that encompasses enormous variety. Not all professional cheerleading organizations are equally exploitative, and not all cheerleaders experience their work the same way. Some squads — particularly those associated with smaller-market teams or organizations with strong leadership — provide meaningful compensation, professional development, and supportive environments. Attacking the entire institution uniformly may undermine efforts to reform it from within.</p>
+      <p>Furthermore, the premise that professional cheerleaders need to &quot;keep their competitive edge&quot; as they enter the working world assumes a tension between competitive athleticism and professional employment that may not be as sharp as the question implies. Many professional cheerleaders are simultaneously pursuing other careers — in nursing, education, law, and business — and they bring competitive discipline to those fields. The skill set developed through cheerleading — teamwork under pressure, precision performance, physical conditioning — is transferable in ways that are genuinely valuable.</p>
+      <p>What reform should look like is targeted: stronger labor enforcement for the worst abuses, clear contractual standards for compensation and working conditions, and organizational cultures that treat cheerleaders as professionals rather than interchangeable aesthetics. Blanket condemnation of professional cheerleading as inherently exploitative serves neither the athletes who enjoy and choose the work nor the reformers seeking incremental improvement.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>The timing of this debate — set against a growing national conversation about workplace harassment and equity — gives professional cheerleading a rare opportunity for real change, but only if advocates resist the temptation to frame it purely as a women&#x27;s rights story, however true that dimension may be. The underlying issue is labor classification, and that is a fight that wins by building broad coalitions, not narrow sympathies.</p>
+      <p>Consider the legislative momentum around misclassification of independent contractors, a issue affecting millions of workers across industries from trucking to tech. Cheerleaders&#x27; demands for proper wage and hour protections fit neatly within this larger framework. The legal arguments being developed in their lawsuits — that training hours must be compensated, that uniform and appearance requirements constitute compensable work time, that squad members are employees rather than volunteers — have implications that extend far beyond the sideline.</p>
+      <p>The competitive edge the question references is precisely what makes cheerleaders valuable advocates in this larger fight: they are visible, articulate, and working in industries — professional sports — that the public watches closely. When a linebacker advocates for better contracts, people listen. When cheerleaders do the same, there is a tradition of dismissal that has allowed the exploitation to persist. Breaking that dismissal requires both legal remedies and cultural storytelling — showing that the women on the sideline are athletes, workers, and citizens entitled to dignity. That story, told well, can change more than cheerleading.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

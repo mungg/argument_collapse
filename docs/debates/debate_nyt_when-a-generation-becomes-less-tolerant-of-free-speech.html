@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When a Generation Becomes Less Tolerant of Free Speech · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Justice · Open-ended</div>
+  <h1 class="debate-title">When a Generation Becomes Less Tolerant of Free Speech</h1>
+  <div class="question-body"><p>Free speech and the willingness to discuss uncomfortable ideas is under threat on college campuses where “trigger warnings” and “safe spaces” are becoming increasingly common. Even President Obama has raised concerns about university students  being “coddled and protected from different points of view.” And recently, a provocative essay in a Wesleyan University student newspaper nearly led to the demise of the 150-year-old publication.</p><p>What does this say about this generation of young people and what they will become as future leaders of this country?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_1.html">
+      <td class="arg-text">Today&#x27;s college students are not becoming less tolerant of free speech, but are instead thoughtfully navigating its complexities and boundaries in a modern context.</td>
+      <td><span class="humans-pill ">3</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_2.html">
+      <td class="arg-text">The increasing tendency of college students to insulate themselves from uncomfortable ideas through trigger warnings and safe spaces threatens their intellectual development and the future of American democracy.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_3.html">
+      <td class="arg-text">The perceived decline of free speech on campus is driven by risk-averse administrative bureaucracies rather than the inherent intolerance of the current generation of students.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_4.html">
+      <td class="arg-text">Universities must distinguish between genuine danger and intellectual discomfort to ensure that student well-being and free speech reinforce each other rather than undermine education.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_5.html">
+      <td class="arg-text">Universities must resist the urge to suppress offensive speech because eroding First Amendment protections for some groups inevitably endangers the free expression rights of all future movements.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_6.html">
+      <td class="arg-text">The growing intolerance for uncomfortable ideas on college campuses is a symptom of societal polarization that threatens to create a future of even deeper, more unproductive division.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_7.html">
+      <td class="arg-text">The current debate over campus speech conflates psychological fragility with political intolerance, but these are distinct phenomena that will likely impact future institutions in different ways.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_8.html">
+      <td class="arg-text">While some current campus activism is genuinely illiberal, the skepticism of the younger generation is a nuanced civic virtue that poses less of a threat to free speech than the systemic actions of state and corporate powers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_9.html">
+      <td class="arg-text">The perceived decline of free speech on college campuses is a distraction from the far more significant structural threats to expression, such as government surveillance, corporate control, and the criminalization of dissent.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_10.html">
+      <td class="arg-text">The current student movement is not a rejection of free speech, but a strategic effort to challenge systemic power imbalances and de-platform harmful ideologies in favor of true justice.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_11.html">
+      <td class="arg-text">While students are right to challenge campus injustices, they must fiercely defend free speech because the power to suppress offensive ideas will ultimately be used against marginalized groups and movements for equality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_12.html">
+      <td class="arg-text">The perceived decline in free speech tolerance among the current generation is less a unique generational failure and more a reflection of institutional leadership and broader societal polarization.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_when-a-generation-becomes-less-tolerant-of-free-speech_arg_13.html">
+      <td class="arg-text">The perceived decline in tolerance for free speech on campuses is not a generational defect of students, but a result of universities prioritizing risk management, customer service, and administrative compliance over educational friction.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Alfie Kohn</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/alfie-kohn" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Bryan Stascavage</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/bryan-stascavage" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Eugene Volokh</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/eugene-volokh" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Julie Lythcott-Haims</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/julie-lythcott-haims" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Kathleen McCartney</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/kathleen-mccartney" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Katie Byron</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2015/11/02/when-a-generation-becomes-less-tolerant-of-free-speech/katie-byron" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The premise of the question deserves a little scrutiny before we draw conclusions about an entire generation. Yes, there have been notable flashpoints recently — the Wesleyan Argus controversy over a column critical of Black Lives Matter, the disinvitations of speakers like Condoleezza Rice at Rutgers and Ayaan Hirsi Ali at Brandeis, the spread of trigger warnings, the campaign at Mizzou. Greg Lukianoff and Jonathan Haidt argued in The Atlantic two months ago that &quot;vindictive protectiveness&quot; is reshaping campus discourse. But Pew&#x27;s polling this year also showed that 40 percent of millennials think government should be able to prevent speech offensive to minorities — a higher share than older cohorts, but still a minority. We are talking about a tendency, not a transformation.</p>
+      <p>Even granting the trend, the framing of &quot;intolerance&quot; obscures what is actually happening. Today&#x27;s students did not invent the impulse to police speech. The campus speech codes of the 1980s and 1990s, the Hays Code, McCarthyism, and the long tradition of community pressure against unpopular ideas all predate them. What is distinctive now is who is doing the pressuring — students themselves, often from the left — and the therapeutic vocabulary they use. The shift from &quot;this speech is dangerous to the republic&quot; to &quot;this speech is harmful to me&quot; reflects a real change in moral grammar, one rooted in the broader expansion of concepts like trauma and microaggression.</p>
+      <p>That deserves criticism, and Obama was right to offer it. A university that cannot tolerate Christina Hoff Sommers or a sophomoric op-ed is failing at its core function. Students who graduate believing argument is a form of violence will struggle in workplaces, courtrooms, and legislatures where it isn&#x27;t.</p>
+      <p>But the leap from &quot;some loud undergraduates&quot; to &quot;future leaders of this country&quot; is too fast. Most twenty-year-olds in any era hold opinions they will revise. The more honest worry is whether faculty and administrators — the adults — have the nerve to defend unfettered inquiry when students demand otherwise. The generation will be shaped by that answer.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The uproar at Wesleyan and the broader campus conversation about trigger warnings and safe spaces has been cast as a generational retreat from the First Amendment. But to frame it simply as “intolerance” misses a deeper, more familiar story. Today’s students are not rejecting free speech; they are contesting its boundaries and demanding that it be paired with a responsibility to avoid foreseeable harm—a tension that has defined every generation’s free-speech fights.</p>
+      <p>The current flashpoints echo earlier battles. In the 1990s, campus speech codes were the alleged threat to liberty, yet that generation went on to lead a vibrant democracy. Before that, civil rights activists were accused of being too sensitive when they challenged racist rhetoric as harmful. What looks like coddling is often a moral awakening to the injuries that language can inflict on marginalized people. When a student requests a trigger warning before a graphic depiction of sexual assault, she is not silencing the professor; she is asking for the cognitive space to engage without being ambushed by trauma. That is a strategy for inclusion, not censorship.</p>
+      <p>Of course, some student activism has veered into illiberal territory. Attempts to defund the Wesleyan student newspaper for publishing a provocative essay crossed a line from protest to prior restraint. Yet it is a mistake to extrapolate from the angriest voices on a few campuses to an entire generation. Most young people are navigating a difficult balancing act: they online, where unmoderated hate speech is rampant, while also learning in diverse classrooms that their words have consequences. They are experimenting with norms that make rigorous debate possible for those who historically had the most to fear from “uncomfortable ideas.” As future leaders, they will not abandon free expression; they will—like every generation before them—renegotiate its limits based on the knowledge that speech can both liberate and wound. That negotiation, however messy, is a sign of democratic vitality, not its collapse.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The current panic over a &quot;coddled&quot; generation of college students often misses the underlying motivation behind the push for safe spaces and trigger warnings. When Wesleyan University students petitioned to defund their campus newspaper over a provocative op-ed, critics understandably saw a generational abandonment of the First Amendment. However, to understand what this means for our future leaders, we must recognize that these students are not acting out of malice, but out of a deeply felt—if sometimes clumsy—commitment to inclusivity.</p>
+      <p>Today’s undergraduates are part of the most diverse generation in American history. For many of them, the drive to police offensive speech stems from an acute awareness of historical marginalization. Trigger warnings and safe spaces initially emerged to protect students who had experienced genuine trauma, serving as tools of empathy in environments that have not always been welcoming to minorities, women, or LGBT individuals. In this light, the impulse to shield peers from deeply offensive rhetoric suggests that our future leaders will be highly attuned to equity and psychological well-being.</p>
+      <p>Yet, the danger lies in conflating emotional comfort with intellectual safety. When the desire to protect marginalized voices morphs into the censorship of unpopular ideas, it undermines the foundational purpose of a university. The Wesleyan incident is troubling not because students protested an article they found offensive—protest is a hallmark of free expression—but because they sought to dismantle the platform that published it. If students graduate believing that institutional power should be used to silence uncomfortable viewpoints, they will be ill-equipped to navigate the messy realities of democratic governance.</p>
+      <p>As these young people transition into leadership roles, their profound empathy will undoubtedly be an asset to the country. But if they cannot separate ideological disagreement from personal harm, their effectiveness will be severely limited. A functioning pluralistic society requires the resilience to confront hostile ideas with better arguments, rather than shutting down the forum entirely. Our task is not to dismiss this generation as overly fragile, but to guide them in reconciling their pursuit of justice with the indispensable friction of free and open debate.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>It is too easy to turn a few campus controversies into a sweeping indictment of an entire generation. Today’s students are not uniquely fragile, nor are older Americans consistently brave defenders of dissent. Every era has its orthodoxies. What is distinctive now is that students have grown up amid social media, economic insecurity and a sharper public vocabulary for racism, sexual violence and mental illness. They are often less willing than their predecessors to treat speech as an abstract exercise detached from power and harm.</p>
+      <p>That instinct has real moral force. Universities have too often told marginalized students to endure humiliation in the name of “debate” while doing little to ensure that they were full participants in campus life. A request for a trigger warning is not always censorship; it can be a modest notice that allows a veteran or assault survivor to prepare for difficult material. A “safe space” can mean a necessary refuge in an institution where some students still feel isolated.</p>
+      <p>But the same impulse becomes dangerous when it tries to punish, defund or silence views rather than answer them. The Wesleyan newspaper episode is troubling precisely because student journalism exists to test arguments in public. A bad essay should be met with better essays, reporting, protest and criticism—not with efforts that make editors fear publishing controversial opinions. If students learn that the proper response to offensive speech is institutional suppression, they will carry a thin-skinned politics into workplaces, media, government and civic life.</p>
+      <p>The answer is not to sneer at students, but to teach liberal habits more deliberately. Colleges should protect protest and protect speakers; support vulnerable students and insist that discomfort is part of education. Future leaders will need empathy, but also resilience. A democratic culture depends on both.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The debate about free speech on college campuses raises legitimate concerns but risks oversimplifying complex generational and cultural shifts. While trigger warnings and safe spaces have become more common, characterizing an entire generation as intolerant of free speech misreads both the phenomenon and the young people it purports to describe.</p>
+      <p>Trigger warnings, at their most basic, represent an attempt by individuals to control their exposure to potentially distressing content—an exercise of autonomy rather than an attack on speech itself. Most students encountering trigger warnings are not demanding that the triggering content be banned, but simply requesting advance notice so they can make informed choices about their engagement. This is not fundamentally different from content warnings that have long appeared in educational settings.</p>
+      <p>Safe spaces, similarly, often reflect students creating voluntary communities with shared norms rather than demanding institutional censorship. The line between choosing one&#x27;s associations and demanding conformity is blurry. That young people seek spaces of relative comfort among peers is hardly novel—what might be new is the explicit articulation of that desire in these terms.</p>
+      <p>The more troubling incidents—efforts to disinvite speakers, calls for professor discipline over controversial ideas—do deserve scrutiny. But these tend to be the exceptions that generate headlines rather than the rule. Such behaviors reflect a particular political moment where intensity on both left and right sometimes overwhelms norms of civil discourse. This is not exclusively a youth problem.</p>
+      <p>What does seem true is that this generation approaches questions of speech, harm, and community differently than its predecessors. Having come of age in a world of social media and heightened awareness of systemic inequality, many young people genuinely believe that some speech causes concrete harm and that communities have legitimate interests in setting norms. Whether one agrees with that view or not, it emerges from a coherent moral framework rather than simple intolerance.</p>
+      <p>The Wesleyan incident, rather than epitomizing suppression, actually demonstrated that student journalists could rally in defense of editorial independence. That response received far less attention than the initial controversy, but it suggests institutional cultures remain capable of protecting expressive freedom even under pressure.</p>
+      <p>If this generation has different attitudes toward speech boundaries, perhaps the appropriate response is sustained engagement rather than alarm. These young people will indeed become future leaders, and they will learn that democratic society requires negotiating disagreement. The skills they develop navigating these tensions—argumentation, empathy, the willingness to revise positions—may serve them well. College has always been a place where discomfort with ideas can be transformed into deeper engagement with them.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The hand-wringing over campus &quot;coddling&quot; has become a genre unto itself, and like most genres it deserves some skepticism. Yes, the Wesleyan Argus episode was ugly, and yes, some demands for &quot;safe spaces&quot; shade into demands for ideological conformity. But before we extrapolate from a handful of incidents to a generational indictment, we ought to ask whether the data actually support the panic.</p>
+      <p>The General Social Survey, which has tracked attitudes toward controversial speakers for decades, consistently shows that younger Americans are more tolerant of letting communists, atheists, militarists and homosexuals speak in public than their parents and grandparents were at the same age. Millennials are not, by historical standards, a censorious cohort. They are, however, the first cohort to argue out their disagreements on Twitter, where every undergraduate&#x27;s worst tweet is preserved and amplified for a national audience hungry for proof of decline.</p>
+      <p>What has actually changed is not tolerance but salience. Universities have admitted more women, more students of color, more first-generation students, more openly LGBT students than ever before. These students arrive with grievances their predecessors did not have the standing to voice, and they voice them. Sometimes clumsily, sometimes illiberally, occasionally with real menace toward dissenting professors. But the alternative to their voicing those grievances was not a golden age of Socratic dialogue; it was their absence from campus altogether.</p>
+      <p>President Obama&#x27;s comments were measured and correct: students should not be protected from ideas that make them uncomfortable. But the same president has been pilloried by the same students for deportations, drone strikes and Wall Street coziness. They are hardly a generation that shrinks from confrontation with power. What they shrink from, sometimes, is confrontation with each other — and that is a problem internal to youth, not unique to this one.</p>
+      <p>The honest worry is narrower than the cultural-decline narrative suggests. It is that a small set of elite campuses has developed local norms — disinvitations, formal speech codes, administrative bloat eager to adjudicate hurt feelings — that train future lawyers and journalists in habits of mind ill-suited to a pluralistic democracy. That is worth criticizing. But criticizing it requires distinguishing the genuine illiberalism of certain administrative regimes from the ordinary, healthy noise of young people learning to argue. Conflating the two flatters our nostalgia and tells us very little about what these students will actually become.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>There is a real problem on campus, and pretending otherwise is its own kind of denial. When students at Wesleyan move to defund their newspaper because a single op-ed criticized Black Lives Matter, when Brandeis rescinds an honorary degree to Ayaan Hirsi Ali, when faculty at Yale are shouted down for suggesting that adults can choose their own Halloween costumes — these are not isolated absurdities. They are symptoms of an emerging campus culture that treats disagreement as harm and harm as something authorities must prevent.</p>
+      <p>The trigger warning, in its origin, was a reasonable accommodation for trauma survivors. But on many campuses it has metastasized into a presumption: that students have a right to be insulated from any material that unsettles them, and that professors who fail to provide such insulation are committing a kind of assault. &quot;Safe space,&quot; likewise, began as a refuge and has become, in too many instances, a veto.</p>
+      <p>What is most striking is not that young people hold strong views — they always have — but that they increasingly frame disagreement as a threat to their wellbeing. This is a category mistake with serious consequences. A democracy depends on citizens who can hear arguments they find odious without claiming injury. A liberal education depends on professors who can assign Ovid, Twain and Nabokov without being reported to a Title IX office. A free press depends on student journalists who are not driven from their newsrooms for printing the wrong opinion.</p>
+      <p>The generational question the prompt asks is the right one. These students will, in twenty years, be running newsrooms, courtrooms, HR departments and government agencies. If they carry with them the conviction that uncomfortable speech is violence and that institutional power should be deployed to suppress it, the consequences will not stay on campus. We are already seeing previews in the corporate world, where employees are fired for ill-judged tweets and executives apologize preemptively for offenses no one has yet taken.</p>
+      <p>None of this means today&#x27;s students are villains. Most are decent, anxious young people responding to genuine incentives — universities that market themselves as therapeutic communities, social media that punishes nuance, administrators eager to manage risk. But responding to bad incentives produces bad habits, and bad habits, once institutionalized, are hard to dislodge. We should worry, and we should say so plainly.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>Every generation of elders has discovered, to its horror, that the young are doing democracy wrong. In the 1950s, students were too conformist. In the 1960s, too radical. In the 1980s, too greedy. Now, apparently, too sensitive. The diagnosis changes; the diagnostician&#x27;s certainty does not.</p>
+      <p>I am not persuaded that &quot;this generation&quot; is uniquely intolerant of free speech. I am persuaded that the technological and institutional environment in which they argue has changed dramatically, and that we are mistaking the new acoustics of disagreement for a new pathology of mind.</p>
+      <p>Consider Wesleyan. A student wrote a critical op-ed about Black Lives Matter. Other students objected. A petition circulated. The newspaper&#x27;s funding was debated. Eventually, after much public scrutiny, the paper survived in modified form. In an earlier era, the same dispute would have unfolded over a few weeks in letters to the editor and dining-hall arguments and would have left no national trace. Now it becomes a case study in The New York Times. The dispute is not bigger; the audience is.</p>
+      <p>Consider trigger warnings. Most professors who use them treat them as a courtesy, like noting that a film contains graphic violence. The fraction of cases in which they are used to suppress assigned material is small and largely anecdotal. Yet the anecdote travels because it confirms a story older readers want to believe about younger ones.</p>
+      <p>I will grant the critics this much: there is a strain of campus activism that genuinely confuses speech with violence and disagreement with injury, and it deserves intellectual pushback. But the right response is argument, not the moral panic currently on offer. When we lump trigger warnings, safe spaces, disinvitations, microaggression complaints and one student newspaper controversy into a single generational portrait, we are not analyzing; we are venting.</p>
+      <p>What will these students become as future leaders? Probably much like prior generations: a mix of the principled and the opportunistic, the rigid and the flexible, shaped more by the institutions they enter than by the slogans they chanted at twenty. The 1960s radicals became, variously, senators and stockbrokers and schoolteachers. Today&#x27;s allegedly fragile undergraduates will, I suspect, turn out to be more durable than their critics assume — and more willing to defend speech they care about than the current discourse credits them for.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The free-speech debate on campus is not really about free speech. It is about who gets to define the terms of legitimate disagreement, and that is a question about power.</p>
+      <p>For most of American higher education&#x27;s history, certain views were simply unthinkable in the classroom: that slavery was a national crime, that women belonged in the professions, that homosexuality was not a pathology, that the canon might be parochial. The exclusion of these views was not enforced by trigger warnings or safe spaces. It was enforced by the quieter mechanisms of who got hired, who got published, who got admitted, and what counted as a serious question. We did not call that censorship. We called it standards.</p>
+      <p>Now the demographic composition of the university has changed, and with it the range of views that students are willing to press. Some of those pressing tactics are admirable; some are illiberal; many are both. But the framing in which a relatively powerless 19-year-old demanding a content warning constitutes a &quot;threat to free speech&quot; — while a trustee quietly killing a program, or a donor pulling funds from a controversial center, does not — tells us more about whose speech we are accustomed to protecting than about any new generational vice.</p>
+      <p>The Wesleyan episode is instructive precisely because it cuts against the easy narrative. The students did not silence the op-ed; it was published. They responded with their own speech: petitions, debates, demands. The newspaper was not destroyed. The system, in other words, worked roughly the way a system of contesting speech is supposed to work, and the contest produced more discourse, not less.</p>
+      <p>That does not mean every campus controversy is benign. Shouting down a speaker is not argument, and demanding that professors be disciplined for assigned readings is genuinely corrosive. Students who do these things deserve to be told so, by their professors, their peers and the press. But the conversation should be conducted with some humility about how recent — and how partial — our supposed campus tradition of open inquiry actually is.</p>
+      <p>If these students become tomorrow&#x27;s leaders, they will be leaders trained to notice whose voices have historically been excluded and to ask whether current arrangements perpetuate that exclusion. That is not the death of liberal democracy. It is, with all its excesses and missteps, one of the things liberal democracy was supposed to produce.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Watch carefully and you will see two different anxieties bundled together in the current campus speech debate, and they need to be unbundled before we can think clearly.</p>
+      <p>The first anxiety is psychological. It concerns the apparent fragility of young people: the rising rates of reported anxiety and depression on campus, the demand for therapeutic accommodations, the language of &quot;harm&quot; applied to ideas as well as actions. This is a real phenomenon and it has roots that go far beyond the university — overscheduled childhoods, the smartphone, helicopter parenting, the long shadow of the 2008 recession. It deserves serious attention from clinicians and sociologists, not just op-ed writers.</p>
+      <p>The second anxiety is political. It concerns the willingness of some campus activists to use institutional power — student government, Title IX offices, social-media campaigns — to penalize speech they find objectionable. This is a question about norms of discourse and the proper limits of administrative authority, and it has roots in the proliferation of university bureaucracies as much as in student temperament.</p>
+      <p>The two anxieties overlap but they are not the same. A student who asks her professor for a trigger warning before a discussion of sexual assault is not necessarily the same student who demands the firing of a colleague for an unfortunate email. The first is, at worst, asking for a courtesy. The second is participating in something more troubling. Treating them as one phenomenon — call it Coddled Youth — flattens distinctions that matter.</p>
+      <p>What does this say about the generation? Honestly, I think it says less than the punditry suggests. Surveys of young people consistently find them more supportive than older cohorts of letting unpopular speakers be heard. Surveys also find them more anxious, more medicated and more screen-bound. Both things are true. The question is which tendency will dominate as they age into institutional power.</p>
+      <p>My guess — and it is only a guess — is that the political habits acquired in college will fade as graduates enter workplaces where peers do not share their priors and where firing a colleague for an op-ed has real costs. The psychological tendencies will be harder to shed and will reshape institutions in subtler ways: more HR, more wellness, more cautious communication. Whether that is a tragedy or merely a change is a question I am not prepared to answer yet.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>We should be honest about what is being mourned. The college campus of the older critic&#x27;s imagination — a marketplace of ideas where any view, however heterodox, could be advanced and tested — never quite existed. It was always shaped by the prejudices of those in charge, the donors they courted, the trustees they answered to. The current generation has not invented intolerance on campus. They have, however, changed who is asked to tolerate whom, and the change is unsettling to people who liked the old arrangement.</p>
+      <p>That said, I will not pretend everything is fine. Some of what passes for activism in elite universities right now is genuinely illiberal. Demanding that a student newspaper be defunded over a single op-ed is illiberal. Trying to force the resignation of professors who urge students to handle their own Halloween costumes is illiberal. Listing trigger warnings on Ovid is, at best, faintly ridiculous. These habits, if carried into adult life, will produce timid editors, litigious managers and politicians who confuse offense with injury.</p>
+      <p>But here is the harder truth. The most powerful threats to free speech in America today do not come from college sophomores. They come from state legislatures passing laws to restrict what can be taught about racism in public schools, from billionaires using libel suits to bankrupt unfriendly publications, from police departments arresting journalists at protests, from a surveillance state that monitors activists&#x27; communications. If we are worried about future leaders being friendly to free expression, we might worry less about whether they request content warnings and more about whether they will resist subpoenas, fund investigative reporting and defend whistleblowers.</p>
+      <p>The generation now in college has grown up in a period of unusual transparency about American failures: the Iraq war, the financial crisis, Ferguson, Snowden. They are skeptical of institutions partly because the institutions have earned the skepticism. The same skepticism that makes them suspicious of a provocative op-ed also makes them suspicious of state power, corporate power and the press&#x27;s complicity with both. That skepticism is, on balance, a civic virtue, even when it leads them into errors that older citizens did not commit at twenty.</p>
+      <p>What will they become? Probably leaders who define the borders of legitimate speech differently than we do — sometimes worse, sometimes better. The same has been true of every generation that ever took over.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The moral panic over “coddled” students fundamentally misunderstands what free speech has always required: an audience that can actually listen. Trigger warnings and safe spaces are not rejections of uncomfortable ideas; they are mechanisms that allow marginalized students — those who&#x27;ve historically been told their pain doesn&#x27;t matter — to stay in the room long enough to engage. When a veteran with PTSD is warned that a class discussion will include graphic violence, we don&#x27;t accuse him of being intolerant. We recognize that a brief notice lets him prepare psychologically, making genuine debate possible. So why, when women of color ask for the same consideration before a seminar on sexual assault, are they suddenly threats to the First Amendment?</p>
+      <p>The Wesleyan student newspaper controversy is instructive, not because a provocative essay nearly killed a publication, but because it revealed that many students wanted to *debate* the ideas, not silence them. Yes, some called for defunding — and they were wrong. But framing the entire generation as anti-speech because a few voices overcorrect ignores the hundreds of students who wrote letters, hosted forums, and wrestled publicly with views they found abhorrent. That is the very definition of intellectual engagement, the kind of messy, passionate discourse that a genuinely free culture produces.</p>
+      <p>What critics miss is that speech doesn&#x27;t exist in a vacuum. For decades, marginalized groups were expected to bear the psychic costs of “robust debate” while their own voices were systematically excluded. Safe spaces and trigger warnings are an attempt to level that playing field — to say that if you want to argue about race, gender, or trauma, you must acknowledge the humanity of those most affected. This isn&#x27;t coddling; it’s a more mature, honest form of free expression that refuses to pretend we all start from the same emotional or social position. The future leaders emerging from this generation are not fragile — they are teaching the country that free speech without empathy is just another form of tyranny. And that, perhaps, is exactly what makes their elders so uncomfortable.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>A democracy that cannot withstand offense is a democracy that cannot survive. The growing demand for trigger warnings, safe spaces, and the policing of campus discourse does not reflect a generation’s heightened moral sensitivity — it signals a retreat from the very habits of mind that sustain pluralism. When Wesleyan’s student government debated whether to cut funding for the *Argus* after it published an op-ed critical of Black Lives Matter, they weren’t practicing robust rebuttal; they were threatening the existence of a dissenting platform. Multiply that instinct by thousands of campuses and you glimpse a future leadership class that equates speech it dislikes with violence, and silence with safety.</p>
+      <p>President Obama was right to warn against being “coddled and protected from different points of view.” His comments tapped into a deeper liberal tradition: the idea that the cure for bad speech is more speech, not less. Yet on many elite campuses, the opposite logic prevails. Students demand that administrators cancel controversial speakers, place warnings on syllabi that might include *Oedipus Rex* or *The Great Gatsby*, and create physical spaces where disagreeable ideas are literally barred at the door. The consequence is not a more inclusive academy; it’s an intellectual monoculture where the worst ideas fester unchallenged because no one learns to dismantle them with argument.</p>
+      <p>The long-term stakes are immense. Future judges, legislators, and CEOs who internalize the belief that discomfort is a form of harm will be ill-equipped to govern a fractious nation. They will recast political disagreement as a safety issue, justifying censorship in the name of emotional well-being. History teaches us that the most effective silencers always claim benevolent motives — protecting the vulnerable, maintaining community harmony. A generation trained to fear speech rather than engage it may well become the very architects of the censorship they now think serves justice. That would be a tragedy not just for free expression, but for the marginalized voices that flourish only when the marketplace of ideas remains genuinely open.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>We have been here before, many times. Socrates was executed for corrupting the youth, and elders in every era have wrung their hands over the next generation’s intolerance. In the 1960s, college students were denounced as hysterical radicals who couldn’t handle dissent when they protested speakers who defended segregation. In the 1990s, the same panic erupted over political correctness and speech codes. Today’s alarm about trigger warnings and safe spaces is just the latest iteration of a cycle that confuses the noise of transition with the death of liberty.</p>
+      <p>The data tells a more complicated story. Recent surveys, including those from the Pew Research Center and the Higher Education Research Institute, show that today’s young people are more supportive of racial diversity, LGBTQ rights, and religious pluralism than any previous generation. They are not fleeing from disagreement; they are renegotiating the terms on which disagreement happens. When a first-generation college student asks for a warning before a graphic depiction of sexual violence, she is not demanding censorship — she is asserting her right to be present, prepared, and fully engaged. That is not fragility; it is agency.</p>
+      <p>The Wesleyan newspaper crisis is a perfect example of the panic’s myopia. Yes, a small number of students wanted to defund the paper. But what received less attention was the massive counter-response: students and alumni who fiercely defended the publication’s right to exist, even as they condemned its content. The institution survived. In fact, it came out stronger, having stewarded a real, if painful, conversation about race and journalism. Framing this as a generation’s illiberal turn ignores the robust debate that actually occurred.</p>
+      <p>The future leaders shaped by this moment will not be snowflakes who dissolve at the first sign of controversy. They will be people who understand that inclusive democracy requires constantly negotiating between wounding and healing, between the right to speak and the responsibility to listen. That negotiation is hard. It looks messy. But it is the opposite of intolerance — it is the difficult work of building a society where free speech means something deeper than the liberty to be cruel.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Stop blaming the students. The real driver of campus illiberalism is the administrative machinery that has metastasized over the last two decades. When Wesleyan students called for defunding the *Argus*, the pushback and the ultimate preservation of the paper were led, in large part, by other students. The same is true across the country: surveys consistently show that while a vocal minority of undergraduates endorse speech restrictions, the majority still supports open debate. It is the adults in the room — the deans, the diversity bureaucrats, the risk-averse presidents — who translate student discomfort into rigid policies, speech zones, and speaker disinvitations.</p>
+      <p>Consider the origin of trigger warnings. They began as grassroots, informal tools used by feminist bloggers to alert readers to potentially distressing content. Faculty who voluntarily adopted them saw them as pedagogically useful. But the proliferation of mandatory, administrative-level warning policies is a different phenomenon entirely. It is driven by a confluence of legal liability, marketing imperatives, and the expansion of student services offices that need to justify their budgets. A student&#x27;s offhand complaint about a class discussion becomes a Bias Incident Report, which feeds a data dashboard, which spawns a new mandatory training module. The student never asked for a speech code; the system provided one.</p>
+      <p>This distinction matters enormously when we project into the future. The generation currently in college is not being trained to censor by their peers. They are being conditioned by institutional structures that teach them that speech is a hazard to be managed, not a skill to be practiced. When these young people become leaders, they won&#x27;t necessarily bring the illiberal instincts of the campus left. They will more likely bring the corporate and bureaucratic habits of the institutions that shaped them: the instinct to mitigate reputational risk, to quiet dissent through process, to treat all controversy as a PR crisis.</p>
+      <p>If we are serious about preserving free speech, the target of our criticism should be the administrators, trustees, and legislators who turn the fleeting furies of adolescence into permanent, risk-averse architecture. The students are often more resilient than the systems built in their name.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The debate over campus speech has become a funhouse mirror, distorted by the amplifying logic of social media. What we call a “generation less tolerant of free speech” is actually a generation navigating a radically new information environment, where a single inflammatory op-ed or a poorly phrased argument can become a national conflagration in hours. The Wesleyan saga is a case in point: a student newspaper column that might once have sparked a few letters to the editor became, via Twitter and Facebook, a symbol for both the racial insensitivity of elite institutions and the alleged fragility of young activists. The truth of what happened on the ground — a campus that had messy, imperfect, but ultimately ongoing conversations — was flattened into a simplistic culture-war headline.</p>
+      <p>Digital platforms reward moral outrage and unambiguous stances. Students, like the rest of us, are learning to speak in the language of harm and safety because that is the dialect the public sphere now understands. When a coalition of students insists that a speaker’s presence creates an “unsafe environment,” they are often employing a strategic vocabulary borrowed from therapeutic and activist traditions, not necessarily calling for the abolition of the First Amendment. The majority still believe in debate; a 2015 Knight Foundation survey found that 78% of college students say free speech rights are more important than protecting others from being offended. The viral extremes distort the center.</p>
+      <p>What this means for the nation&#x27;s future leadership is less dire than the panic suggests. These students are, in fact, deeply engaged with questions of power, identity, and justice. They are learning how to negotiate speech in a context where words can go global before they&#x27;re fully understood. As they mature, many will develop a more nuanced vocabulary and a thicker skin for the necessary friction of democratic life. The risk is not that they will become censors, but that the permanent digital record will trap them in their most extreme utterances, denying them the space to grow and change — a problem that afflicts adults far more than the young people we fear they will become.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Focusing on trigger warnings and campus newspapers is like monitoring a paper cut while the patient hemorrhages from a severed artery. If we truly care about the future of free expression, we should be looking not at students but at the National Security Agency’s mass surveillance, the aggressive prosecution of whistleblowers, the corporate consolidation of media, and the economic precarity that makes people terrified to speak out at work. A generation of college students debating how to discuss race and trauma is a sideshow to the structural forces that actually chill speech in America.</p>
+      <p>The average student who requests a trigger warning will graduate into an economy where employers routinely monitor social media and where contract workers can be fired for a single tweet. The very same politicians and pundits who decry campus “snowflakes” are often the ones cheering laws that restrict protests, expand government secrecy, and treat journalists as criminals. Where is the moral panic about the erosion of speech in those realms? The silence is telling.</p>
+      <p>The Wesleyan controversy ended with the newspaper still standing, a student body that had aired a painful argument, and a campus that continued to function. That messy resolution — full of shouting, writing, and voting — was free speech in action, not its collapse. In contrast, the true threats to discourse are quiet and legal, not loud and adolescent. If we want the next generation to lead a free country, we should model that freedom by fighting the surveillance state, corporate censorship, and the criminalization of dissent. The kids on campus are doing fine. It’s the adults in power who need a lesson in what speech is worth.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The recent alarm over &quot;trigger warnings&quot; and &quot;safe spaces&quot; on college campuses is not merely a conservative talking point; it is a profound psychological and civic concern. When President Obama warns against coddling students, he is recognizing a fundamental truth about human development: resilience is built through exposure to adversity, including intellectual adversity. We are currently witnessing the rise of a generation that is being taught to equate emotional discomfort with physical danger, a conflation that bodes poorly for the future of American leadership.</p>
+      <p>The push to sanitize college campuses of challenging or offensive ideas relies on a concept known in psychology as &quot;vindictive protectiveness.&quot; It operates on the assumption that students are fragile and must be shielded from words or ideas that might cause them distress. But the real world does not come with trigger warnings. The global economy, international diplomacy, and the messy reality of domestic democratic politics require leaders who can engage with hostile actors, negotiate with ideological opponents, and navigate profound disagreements without suffering a breakdown.</p>
+      <p>By demanding safe spaces and the retraction of provocative articles—such as the recent uproar over a dissenting column in the Wesleyan Argus—students are demanding an intellectual cocoon. If this generation carries these expectations into the workplace and the public square, our institutions will suffer. A democratic society relies on the friction of opposing ideas to generate progress. If our future leaders view disagreement as a form of trauma and dissent as an act of violence, they will lack the cognitive flexibility required to solve complex problems. We are not raising a generation of empathetic leaders; we are raising a generation of fragile ones, entirely unequipped for the rigors of the world they are about to inherit.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The panic over the supposedly closing American mind is entirely misplaced. What critics dismissively label as &quot;coddling&quot; is, in reality, a long-overdue evolution in empathy. The current generation of college students is simply the first to fully recognize and articulate the deep, lasting impacts of trauma, systemic racism, and marginalization.</p>
+      <p>For decades, the concept of &quot;free speech&quot; on college campuses implicitly meant the freedom of a privileged majority to debate the humanity and rights of marginalized groups without consequence. A safe space is not an intellectual panic room; it is a necessary sanctuary for students of color, LGBTQ students, and survivors of sexual assault who navigate a society that is often fundamentally hostile to their existence. Trigger warnings are not demands for censorship; they are basic acts of courtesy, akin to the ratings on movies or the content warnings on television shows. They allow individuals to prepare themselves for difficult material so they can engage with it on their own terms.</p>
+      <p>When critics point to incidents like the backlash at Wesleyan University, they miss the broader picture. These students are not running away from the world; they are actively trying to reshape it into a more equitable place. If this generation of young people carries these values into the future, we will have a cohort of leaders who prioritize inclusivity over abstract, unyielding dogma. We will have leaders who understand that words have real-world consequences and who recognize that true open discourse is only possible when all participants feel safe enough to speak. This is not the end of free expression; it is the beginning of a more compassionate and truly democratic society.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>Every few decades, older generations look at college students and declare that the sky is falling. In the 1960s, student radicals were going to destroy the fabric of American society. In the early 1990s, the panic was over &quot;political correctness,&quot; with critics warning that speech codes and multiculturalism would mean the end of Western civilization. Today, the boogeymen are &quot;trigger warnings&quot; and &quot;microaggressions.&quot; We must view the current outcry for what it is: a manufactured moral panic driven by an aging establishment anxious about its waning cultural dominance.</p>
+      <p>The narrative that a whole generation is hostile to free speech is largely built on a handful of highly publicized anecdotes, amplified by media outlets that thrive on culture war outrage. For every Wesleyan Argus controversy, there are thousands of college campuses where students quietly and rigorously debate contentious issues every single day. The idea that universities have become totalitarian left-wing madrassas is a caricature.</p>
+      <p>What is actually happening is a demographic shift. Universities are more diverse than they have ever been. With that diversity comes friction, as new constituencies demand a voice in how their communities are run and what values they uphold. This friction is a sign of a healthy, functioning democratic process, not a crisis of free speech. The young people protesting today are exercising their own First Amendment rights to criticize institutional power. As future leaders, they will not be the fragile dictators their critics fear. Instead, they will be pragmatic managers of a deeply pluralistic society, entirely accustomed to the messy, loud, and constant negotiations that diverse communities require.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The current conflict on college campuses is not a debate over free speech, but a battle over power and platform. The older generation, including figures like President Obama, wrings its hands over students being &quot;coddled,&quot; fundamentally misunderstanding the political awakening happening before their eyes. What young people today understand is that the &quot;marketplace of ideas&quot; is not, and has never been, a level playing field.</p>
+      <p>For centuries, the rules of acceptable discourse were set by wealthy, white men. When students today protest a provocative essay in the Wesleyan Argus, or demand that bigoted speakers be disinvited from campus, they are not rejecting the First Amendment. They are rejecting the premise that hate speech and systemic bigotry deserve equal time and institutional funding. Freedom of speech protects citizens from government censorship; it does not guarantee anyone a taxpayer-subsidized podium, nor does it protect anyone from the social consequences of their words.</p>
+      <p>This generation recognizes that speech can be a mechanism of oppression. They are choosing to use their own collective voice—through protests, boycotts, and petitions—to de-platform ideas that actively harm vulnerable members of their community. This requires immense courage, not fragility. As future leaders, this generation will not be paralyzed by the need to placate every bad-faith actor under the guise of &quot;neutrality.&quot; They will be morally uncompromising. They understand that true justice sometimes requires shutting down the megaphones of those who wish to perpetuate inequality, ensuring that marginalized voices can finally be heard over the din.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The narrative surrounding the decline of free speech on campus often focuses on the supposed ideological radicalism of the student body. However, this entirely misses the structural reality of the modern American university. The rise of &quot;safe spaces,&quot; speech codes, and trigger warnings is not primarily a Marxist intellectual project; it is the logical endpoint of the corporatization of higher education.</p>
+      <p>Over the past two decades, universities have transitioned from operating as academic institutions to operating as luxury resorts and credentialing businesses. In this model, the student is a consumer, paying exorbitant tuition fees—often financed through massive debt—for a specific product. When students demand trigger warnings or protest offensive newspaper columns, they are acting exactly as aggrieved customers do when a product fails to meet their expectations. And university administrators, acting as risk-averse middle managers, swiftly capitulate to protect the brand and ensure the continued flow of tuition dollars.</p>
+      <p>The real danger here is not that students are becoming left-wing totalitarians, but that they are being conditioned to view all social and intellectual friction as a customer service failure that authorities must resolve. If these young people are to become our future leaders, we should be deeply concerned about their reliance on bureaucratic intervention. They are being trained to appeal to human resources departments and administrative committees rather than hash out differences independently. Our future leaders will not be activists; they will be highly compliant corporate subjects who prioritize brand safety and risk mitigation above all else.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>To claim that the current generation of college students is intolerant of free speech is to profoundly misread the nature of their activism. What critics deride as a rejection of the First Amendment is, in fact, an explosive and deeply engaged exercise of it. The students at Wesleyan University who organized a boycott of the student newspaper, the Argus, were not deploying state power to censor the press. They were using collective action, petition, and economic pressure—the most classic tools of American civic participation—to express their dissent.</p>
+      <p>The irony of the current hand-wringing by older commentators is that they are criticizing students for speaking too loudly. A generation that supposedly demands to be &quot;coddled&quot; would retreat into apathy and quietude. Instead, today&#x27;s students are organizing, writing demands, staging sit-ins, and forcing uncomfortable conversations about race, gender, and power onto the front pages of national newspapers. If they are demanding &quot;safe spaces,&quot; they are doing so highly publicly, battling fiercely in the arena of public opinion to establish new norms of basic decency.</p>
+      <p>What does this say about these young people as future leaders? It suggests they will be the most politically active and civically engaged cohort we have seen since the Civil Rights era. They do not accept the status quo as a given, and they are willing to endure intense public scrutiny and national backlash to fight for their values. A generation willing to loudly challenge the institutional norms of their universities will not be a generation of passive, fragile adults. They will be fierce, active participants in the democratic project, holding American institutions to the high ideals they profess.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The most troubling thing on campus today is not that students are too sensitive. It is that some have begun to treat disagreement as a form of harm and institutional punishment as the proper answer to bad argument. That shift matters because universities are supposed to be the place where citizens learn the difference between rebutting an idea and suppressing it.</p>
+      <p>The Wesleyan episode is a useful example. A student newspaper published an essay critical of aspects of Black Lives Matter. Many students found it ill-informed or offensive. They had every right to say so, to write letters, to boycott, to publish counterarguments, to demand better editing. But the campaign to cut the newspaper’s funding moved from criticism to coercion. A newspaper that has existed for generations should not face financial strangulation because it printed an unpopular opinion. If that becomes the norm, student editors will learn the safest lesson: avoid controversy.</p>
+      <p>Trigger warnings and safe spaces are not all the same thing. A professor who alerts students that a novel contains sexual violence is not necessarily betraying liberal education. A campus group that reserves a room for students to recover after a racist incident is not abolishing the First Amendment. But the language surrounding these practices increasingly blurs discomfort, offense, trauma and danger. Once offense is treated as injury, the case for restricting speech becomes much easier to make.</p>
+      <p>This does say something about the formation of future leaders. Not that today’s students are uniquely weak; every generation has tried to silence something. Earlier students demanded loyalty oaths, bans on communists, restrictions on obscenity or crackdowns on antiwar radicals. But it does suggest that a portion of this generation is being educated into a cramped understanding of pluralism. They are learning to value diversity of identity while sometimes mistrusting diversity of thought.</p>
+      <p>That is a dangerous combination for a democracy. Future legislators, judges, executives, editors and nonprofit leaders will face ideas they consider not merely mistaken but cruel. They will be tempted to use rules, budgets, licensing and professional norms to push those ideas out of respectable life. The better habit is harder: answer speech with speech, protect even foolish expression, and trust that adults can hear ugly claims without being destroyed by them.</p>
+      <p>Universities should not sneer at students’ moral seriousness. But they should insist that moral seriousness includes intellectual courage. If campuses cannot model that, the country will be poorer for it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The premise that a generation has become “less tolerant of free speech” is too simple. What we are seeing on campuses is not primarily a youth revolt against liberty. It is a demand that institutions take seriously the fact that speech is not distributed equally and that some students have long been expected to endure humiliation as the price of admission.</p>
+      <p>When students ask for trigger warnings, many are not asking to ban books. They are asking for advance notice about material involving rape, suicide, war or racial terror so that they can prepare themselves to participate. A veteran in a literature class or a survivor of sexual assault is not “coddled” because she wants a syllabus to be candid. The real question is whether professors use warnings as an excuse to avoid hard material. They should not. But a warning can be a bridge into difficult discussion, not a wall against it.</p>
+      <p>Safe spaces are also caricatured. To outsiders, the phrase sounds like a padded room where no challenging thought may enter. In practice, many safe spaces are simply places where students who are isolated on campus can speak without having to defend their basic humanity. Black students at mostly white colleges, gay and transgender students, Muslim students after terrorist attacks: these students often know perfectly well how to argue with hostile views. They are asking for some settings where the burden is not always on them.</p>
+      <p>The Wesleyan newspaper controversy was more complicated. Efforts to defund a newspaper because of an offensive essay should make us nervous. Student journalism needs independence, including the freedom to publish bad arguments. But critics of the essay were also engaging in speech. They said the paper failed in its responsibilities to a diverse campus. Readers do not owe a publication money or trust simply because it invokes free expression.</p>
+      <p>What this generation may become depends on whether adults respond with contempt or guidance. If students are told that any objection to racist or sexist speech proves they hate freedom, they will conclude that free speech is just a shield for the powerful. If instead universities teach that equality and free expression are mutually dependent, students can become better leaders than their predecessors.</p>
+      <p>A genuinely democratic campus should protect controversial speech and also criticize it fiercely. It should not confuse comfort with justice, but neither should it confuse cruelty with courage. The rising generation is not rejecting debate; it is arguing over the conditions under which debate can be fair.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>Before diagnosing an entire generation, we should ask how much evidence we really have. The current panic about intolerant students rests heavily on a handful of vivid anecdotes: a disinvited speaker here, a trigger warning controversy there, the fight over the Wesleyan Argus. These incidents deserve attention, but they do not prove that millions of young Americans have turned against free speech.</p>
+      <p>College campuses have always produced moral crusades, linguistic fashions and theatrical protests. In the 1960s, student activists occupied buildings and shouted down administrators. In the 1980s and 1990s, fights over political correctness and speech codes produced claims very similar to those we hear now. Long before that, universities excluded radicals, atheists, women, black students and suspected homosexuals with far less hand-wringing about open inquiry. If today’s students sometimes behave censoriously, they did not invent censorship.</p>
+      <p>There is also a selection problem. We notice elite campuses because journalists graduated from them and like writing about them. Wesleyan, Yale, Oberlin and Columbia become stand-ins for “this generation,” even though most young people attend community colleges, regional public universities or no college at all. Many are working jobs while studying, worrying less about microaggressions than debt, rent and whether their degree will lead to employment. It is reckless to infer national character from the loudest debates at the most visible schools.</p>
+      <p>That said, the language of harm on campus is worth scrutinizing. When students describe a newspaper op-ed, a visiting lecturer or a classroom text as making them “unsafe,” they sometimes expand the concept of safety beyond usefulness. Physical safety and equal access to education are fundamental. Emotional insulation from bad ideas is not. Universities should make that distinction clearly.</p>
+      <p>But older commentators should make distinctions too. A trigger warning is not censorship. A protest is not censorship. A demand is not automatically censorship. Students have free speech rights as well, including the right to say that a speaker is wrong, bigoted or undeserving of a platform. The line is crossed when they seek to use institutional power to prevent others from speaking or publishing.</p>
+      <p>So what does this say about future leaders? Probably that they will resemble past leaders: principled in some moments, hypocritical in others, shaped by institutional incentives more than generational essence. The task is not to lament “kids today.” It is to build campus rules and habits that protect expression while teaching why protection is necessary even when speech offends.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>A generation that learns to call disagreement violence will not become a generation of tolerant leaders. It will become a generation of regulators, human resources officers and public officials eager to police language in the name of compassion.</p>
+      <p>The campus battles over trigger warnings, safe spaces and student newspapers reveal a deep confusion about the purpose of education. College is not therapy. It is not a four-year guarantee that one’s moral and political assumptions will be affirmed. It is supposed to be an encounter with what one does not already know, including arguments that are unsettling, even offensive. If a student can graduate having never heard a serious challenge to his worldview, the university has failed.</p>
+      <p>The Wesleyan case is especially alarming because the target was not a government propagandist or a paid provocateur. It was a student newspaper that published a controversial opinion about Black Lives Matter. The proper response would have been obvious: write a better article, expose factual errors, persuade classmates. Instead, activists moved toward defunding the publication. That instinct — do not answer, punish — is precisely what free speech norms are designed to resist.</p>
+      <p>President Obama was right to warn students against being coddled. Coming from a liberal Democratic president, the warning should be harder to dismiss as conservative nostalgia. He understands that social progress has depended on the right to offend prevailing opinion. Abolitionists, suffragists, civil rights demonstrators, labor organizers and gay rights activists all needed free speech because the respectable majority often considered their demands dangerous or indecent. The people most certain that they are on the right side of history should remember that the machinery of censorship never remains in their hands alone.</p>
+      <p>Some defenders of campus activism argue that marginalized students are simply demanding dignity. Dignity is important. Universities should punish threats, harassment and discrimination. But dignity cannot mean immunity from criticism. No movement, religion, identity or ideology should be placed beyond debate. A campus that treats certain subjects as too sacred to question is no longer a university in the fullest sense.</p>
+      <p>If these habits follow students into public life, the consequences will reach beyond campus. Employers will monitor opinions, officials will pressure institutions to disinvite dissenters, and citizens will self-censor to avoid social ruin. The First Amendment may still exist formally, but the culture that sustains it will weaken.</p>
+      <p>The answer is not cruelty. It is confidence: confidence that young adults can hear wrong ideas and defeat them, rather than needing authorities to make them disappear.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The debate over student intolerance often assumes that free speech and student well-being are opposing values. In a well-run university, they should reinforce each other. Students cannot learn if they are genuinely threatened or excluded. But they also cannot learn if difficult ideas are removed whenever they cause distress.</p>
+      <p>The distinction between discomfort and danger is therefore crucial. A campus must respond firmly to stalking, threats, targeted harassment or a pattern of discriminatory conduct that denies students equal participation. No serious defender of free speech needs to defend a swastika on a dorm-room door or sexual intimidation in a classroom. But a controversial essay, a provocative invited speaker or a painful work of literature is different. These may be upsetting; they are also part of education.</p>
+      <p>Trigger warnings illustrate the need for moderation. Used carefully, they are ordinary pedagogical information. Teachers already tell students when a course includes graphic films, disturbing historical documents or explicit novels. But if warnings become invitations to opt out of central material, or if faculty avoid subjects because they fear complaints, the practice undermines education. The goal should be preparation, not avoidance.</p>
+      <p>Safe spaces also have legitimate and illegitimate forms. A cultural center, counseling office or student meeting can provide support to people who feel isolated. That is not a threat to free speech. But when the whole campus is imagined as a safe space from unwelcome ideas, intellectual life shrinks. The university as a whole must be safe for argument, not safe from argument.</p>
+      <p>The Wesleyan newspaper dispute shows how quickly this balance can collapse. Students offended by the op-ed had every right to criticize it and organize against it. But threatening the financial viability of the student paper because it published an unpopular view sends the wrong lesson to young journalists and readers alike. The remedy for a bad op-ed is a better op-ed, not a weaker press.</p>
+      <p>What does this say about the generation now in college? It says they are morally alert, impatient with old exclusions, and sometimes too ready to seek administrative solutions to political disagreements. Those traits could produce leaders who are more attentive to inequality than their predecessors. They could also produce leaders too comfortable with bureaucratic control.</p>
+      <p>Universities should stop flattering students by pretending every hurt is an emergency, and stop dismissing them by pretending every complaint is childish. The harder responsibility is to teach democratic habits: listen carefully, argue fiercely, protect the rights of opponents, and reserve punishment for conduct that truly crosses the line.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The question asks what campus speech controversies reveal about young people. They may reveal more about institutions. Universities have spent decades marketing themselves as protective communities while also promising radical personal transformation. They recruit students with brochures celebrating belonging, diversity and support, then seem surprised when students ask administrators to enforce those promises.</p>
+      <p>This does not excuse every demand made in the name of safety. It explains why the demands arise. Students today arrive on campus after years of adult supervision, anti-bullying campaigns, online reputation management and high-stakes competition for credentials. They also live inside social media, where offense spreads instantly, outrage is rewarded, and a local argument becomes a national morality play before anyone has time to think. The result is a campus politics that is fast, emotional and administrative: identify harm, mobilize peers, demand an official response.</p>
+      <p>Free speech suffers in that environment because it is slow. It asks people to tolerate the existence of bad arguments long enough to answer them. It requires faith that open debate will produce correction, or at least that suppression is more dangerous than error. That faith is hard to sustain when students believe institutions have ignored racism, sexual assault or homophobia for years. To them, calls for “more debate” can sound like delay.</p>
+      <p>Still, the faith is necessary. A university newspaper cannot do its job if a single controversial article can trigger a funding crisis. A classroom cannot do its job if professors fear that teaching disturbing material will be treated as misconduct. A student cannot become intellectually mature if every encounter with a hostile view is converted into a complaint process.</p>
+      <p>The answer is to separate support from censorship. Universities should provide counseling, cultural centers, disability accommodations and clear protections against harassment. They should also adopt strong free-expression rules that prevent administrators and student governments from punishing protected speech. Those commitments are not contradictory. They tell students: you belong here, and so do arguments you may hate.</p>
+      <p>As future leaders, today’s students will inherit a country that is diverse, unequal and angry. They will need more than sensitivity; they will need resilience, restraint and a principled respect for the rights of adversaries. But older generations should not merely scold them. Adults built the therapeutic, bureaucratic and digital world in which these habits formed. If we want different leaders, we need to teach and model a better kind of freedom now.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>President Obama is right to worry. The most troubling campus trend is not that students object to offensive arguments. They should object, answer, protest, parody and organize. The trouble begins when disagreement becomes a demand that an argument disappear, that a newspaper be financially punished, or that a classroom be reorganized around the avoidance of distress.</p>
+      <p>The Wesleyan case is a warning because the student newspaper did exactly what a newspaper is supposed to do: publish a controversial opinion and invite response. If the essay was wrong about Black Lives Matter, the proper answer was a better essay, a teach-in, a letter, a boycott by readers or a competing publication. But trying to cripple the paper because it printed a provocative view teaches the worst possible civic lesson: that the existence of an argument is itself an injury.</p>
+      <p>This does not mean all concern about campus climate is childish. A “trigger warning” can be a modest courtesy. A “safe space” can be a useful refuge for students who spend much of their time defending their dignity in hostile settings. But when these ideas expand from support for students into a veto over curriculum and debate, liberal education loses its purpose. College is not merely a credentialing service or a therapeutic environment. It is one of the few places where young adults should be expected to encounter serious, unsettling claims under conditions of reasoned argument.</p>
+      <p>Nor should critics flatter themselves that only one ideology is capable of intolerance. Conservatives, liberals, administrators, donors and alumni have all tried to suppress speech when it offended them. Still, the current language of “safety” gives censorship a new moral prestige. It converts intellectual disagreement into a form of harm and casts the censor as protector.</p>
+      <p>What does this say about the next generation of leaders? Not that they are uniquely bad, but that they are being taught a dangerous habit: to confuse the management of discomfort with justice. A country as diverse as the United States cannot be governed by people who expect moral consensus before debate begins. Future legislators, judges, journalists, executives and activists will have to hear foolish, cruel and wrong ideas without reaching first for institutional punishment.</p>
+      <p>The answer is not to mock students as fragile. It is to teach them that courage and compassion belong together. A university that truly respects its students should trust them to answer speech with speech.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>The premise that this generation is “less tolerant of free speech” is too easy. It mistakes a change in who gets to object for a decline in liberty. Students from groups long treated as marginal are no longer silently accepting jokes, syllabi, traditions or editorials that depict them as problems to be managed. That is not the death of free speech. It is more speech.</p>
+      <p>A safe space, properly understood, is not an attempt to turn the whole university into a padded room. It is a place where students who are often asked to defend their identity can gather without doing that labor for a while. A trigger warning, properly used, does not ban “The Bluest Eye,” “Beloved,” Ovid or a film about war. It gives a student with trauma a chance to prepare rather than be blindsided. We routinely give notice before showing graphic material; calling that courtesy “coddling” is overwrought.</p>
+      <p>The Wesleyan controversy is more complicated. Students who denounced an op-ed about Black Lives Matter were exercising speech, too. They had every right to criticize the paper, organize petitions, withdraw support and argue that the editors made a grave mistake. Free speech does not mean freedom from social consequences. A newspaper can be challenged fiercely without anyone’s constitutional rights being violated.</p>
+      <p>Still, the critics went too far if their aim was to make the publication unable to exist. A campus paper should not be destroyed for publishing an unpopular argument. The lesson should be editorial responsibility, not financial strangulation. Students who care about justice should also care about institutions that allow minority opinions to be published, because one day the minority opinion may be theirs.</p>
+      <p>What this generation may become as leaders depends on whether adults caricature them or engage them. Many young people are asking institutions to take racism, sexual violence and exclusion seriously. That is not weakness. A future workplace, court, legislature or newsroom led by people attentive to dignity may be better than one led by people who confuse cruelty with toughness.</p>
+      <p>But dignity and debate must be learned together. The best answer is not to sneer at “safe spaces,” nor to treat every offense as violence. It is to build campuses where students can both find support and face challenge.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>There are two bad answers to the campus speech debate. One is to say that students are delicate children who should simply toughen up. The other is to say that any speech causing distress has no legitimate place in a university. Both answers avoid the hard work of democratic education.</p>
+      <p>Universities should distinguish among discomfort, insult, harassment and threat. Discomfort is often the beginning of learning. A student who never hears a serious challenge to her politics, religion, assumptions about race or views about sex has not received a liberal education. Insult may be ugly, but it is often protected and must usually be answered rather than banned. Harassment and true threats are different; they can deprive students of equal access to education and should be addressed firmly. The problem on many campuses is that these categories are collapsing into one another.</p>
+      <p>Trigger warnings and safe spaces illustrate the danger of arguing by slogan. A professor who tells students that a film contains a graphic rape scene has not surrendered academic freedom. A veterans’ center or black student union can provide a form of safety that makes broader participation possible. But if warnings become a right to avoid assignments, or if “safety” becomes a general demand that dissenting views be excluded, the university has betrayed its intellectual mission.</p>
+      <p>The Wesleyan newspaper episode is a useful test. Students were entitled to condemn the essay, accuse it of misrepresenting Black Lives Matter, and demand better editorial judgment. But a 150-year-old student publication should not be threatened with extinction for printing one contentious piece. The better remedy for bad opinion journalism is better opinion journalism.</p>
+      <p>What does all this say about the current generation? Less than people think. Young people are not born knowing how to argue across difference. Neither were their parents. They learn from institutions. If colleges reward outrage, administrative complaint and public shaming, students will use those tools. If colleges reward evidence, patience, courage and rebuttal, students will learn those instead.</p>
+      <p>Future leaders will need more than abstract devotion to the First Amendment. They will need the capacity to hear anger without panicking, to protect dissenters without endorsing their views, and to recognize when power makes “just debating” less innocent than it sounds. They will also need the humility to be offended and still listen.</p>
+      <p>The goal should not be a campus without pain. It should be a campus where pain is not the end of argument.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>Every generation thinks the next one is ruining freedom. Before today’s students were accused of needing safe spaces, earlier students were accused of being communists, degenerates, rioters, ingrates, radicals or conformists. American universities have seen loyalty oaths, bans on controversial speakers, crackdowns on antiwar protest, donor pressure, administrative censorship and moral panics over books and sex. There is nothing new about the temptation to suppress speech.</p>
+      <p>What is new is the speed with which campus disputes become national symbols. A student newspaper controversy that might once have been a local argument is now held up as proof of generational decline. Social media rewards the most dramatic interpretation: students are fascists, professors are cowards, activists are mobs. The reality is usually more ordinary. Young people are testing moral ideas, sometimes clumsily. Administrators are trying to avoid bad publicity. Commentators are looking for a trend.</p>
+      <p>That does not mean there is no problem. When students seek to defund a newspaper because it published an objectionable essay, they display a thin understanding of press freedom. When a demand for inclusion becomes a demand for intellectual insulation, it undermines the university. A society cannot train citizens for pluralism by teaching them that being offended is an emergency.</p>
+      <p>But the older generation should be modest. It has not exactly modeled brave toleration. Politicians gerrymander districts to avoid disagreement. Cable news thrives on ideological safe spaces. Donors pressure universities. Legislatures threaten funding over disfavored research. Adults who have built a polarized country should hesitate before blaming 19-year-olds for noticing that politics is cruel.</p>
+      <p>The best historical lesson is that free speech survives through practice, not nostalgia. Students should study how abolitionists, labor organizers, civil rights activists, feminists, religious minorities and gay-rights advocates depended on the right to speak when majorities found them offensive. They should also study how speech can be used to intimidate and exclude.</p>
+      <p>This generation will become what its institutions teach it to become. If colleges panic, censor and placate, students will learn fragility. If colleges defend open debate while taking equality seriously, students may become better democratic leaders than their critics expect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The campus speech crisis is less a story about spoiled Millennials than about the institutions adults have built for them. Students are not inventing the culture of risk management; they are learning it from universities that increasingly present themselves as customer-service providers, brand managers and liability-avoidance machines.</p>
+      <p>Tuition is high, debt is frightening, and admission to selective colleges is sold as a promise of belonging and success. In that environment, it is not surprising that students describe unwelcome experiences as failures of the institution to deliver what it advertised. Administrators, meanwhile, have every incentive to translate conflict into procedure. A controversial speaker becomes a security problem. An offensive editorial becomes a community-relations problem. A painful classroom discussion becomes a compliance problem. The language of “safety” flourishes because it is legible to bureaucracies.</p>
+      <p>Federal pressure around sexual assault, the growth of diversity offices, the fear of lawsuits, the dependence on donors and the velocity of social media all intensify the pattern. None of these forces is imaginary, and some address real harms. But together they can turn universities away from education and toward containment. The result is a campus where students learn to frame disagreement as administrative injury and administrators learn to placate the loudest constituency.</p>
+      <p>The Wesleyan newspaper controversy should be seen in this light. The question is not whether students had a right to be angry. They did. The question is whether a university community has structures strong enough to protect a newspaper while hosting a serious argument about race, policing and editorial judgment. If the only available tools are petitions, budget threats and public denunciation, the institution has failed before the students have.</p>
+      <p>Future leaders trained in this environment may become adept at complaint systems but poor at persuasion. They may know how to summon an authority but not how to win an argument. That is bad for democracy and bad for social justice, which needs resilient organizers, not merely skilled petitioners.</p>
+      <p>The remedy is institutional clarity. Colleges should guarantee the independence of student newspapers, protect speakers from disruption, and state plainly that offensive ideas are part of academic life. They should also provide counseling, enforce anti-harassment rules and support students facing genuine exclusion. Safety and speech are not enemies. But when universities promise emotional protection as a product, they should not be surprised when students try to collect.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>I am sympathetic to many of the students now being mocked. Racism on campus is real. Sexual assault is real. Homophobia, anti-Muslim prejudice and anti-Semitism are real. A university that tells students simply to “debate” their own humanity has misunderstood equality.</p>
+      <p>Yet precisely for that reason, students committed to justice should defend free speech fiercely. Every movement for equality has depended on the ability to say things that respectable opinion considered disruptive, offensive or dangerous. Abolitionists, suffragists, civil rights marchers, antiwar protesters and advocates for same-sex marriage all needed protection for unpopular speech. Once a community accepts the rule that deeply offensive arguments may be suppressed, it will not be the powerful who suffer most in the long run.</p>
+      <p>That is why the Wesleyan episode matters. Critics of the Black Lives Matter op-ed had every right to answer it and to expose its flaws. They could fill the next issue with rebuttals. They could start another paper. They could organize a public forum. But threatening the survival of the newspaper was a mistake. Today the target is an argument many students consider racially obtuse. Tomorrow it could be a pro-Palestinian group, a queer publication, a radical labor organizer or a religious minority.</p>
+      <p>Safe spaces need not contradict this principle. A caucus, cultural center or support group can help students gather strength for public engagement. Trigger warnings can be humane signals, not gag orders. The line is crossed when support becomes veto power.</p>
+      <p>The future leaders we need are not people who mistake cruelty for candor. But neither should they mistake suppression for liberation. A democratic society requires the capacity to fight hard, answer falsehoods, protect vulnerable people and still leave room for dissent. If this generation can learn that combination, it may lead the country well. If it learns only to punish offense, it will hand a dangerous weapon to whoever holds power next.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The hand-wringing over trigger warnings and safe spaces reveals more about older generations&#x27; discomfort with change than any actual threat to free speech. Every decade brings moral panics about college students destroying civilization — from the 1960s sit-ins to the 1990s political correctness debates — yet American democracy somehow survives and improves. This cycle of anxiety deserves skepticism.</p>
+      <p>Today&#x27;s students are navigating a media environment saturated with information, much of it traumatizing. Asking professors to provide content warnings is not censorship; it&#x27;s a reasonable accommodation that lets students prepare emotionally for difficult material. Most trigger warnings don&#x27;t restrict what can be taught — they simply signal what&#x27;s coming. The conflation of a warning label with the elimination of speech is itself a rhetorical distortion.</p>
+      <p>Similarly, safe spaces function as temporary respites, not permanent exclusions. Students have always formed communities around shared identities and interests. The Gay-Straight Alliance is a safe space. A Black Student Union is a safe space. Nobody called those censorship when they served students we personally approved of.</p>
+      <p>What genuinely concerns me is the growing income inequality on campuses, the crushing debt burden, and the job market facing graduates. If we want to worry about what threatens free inquiry, let&#x27;s discuss how economic anxiety makes students less likely to challenge powerful institutions that employ them. Let&#x27;s examine how donor dollars silence certain topics far more effectively than any trigger warning.</p>
+      <p>The Obama administration&#x27;s concerns, while sincerely meant, participate in a long tradition of adults finding youth culture baffling and worrying it signals decline. It doesn&#x27;t. History suggests the opposite: each generation inherits problems and finds ways to address them that previous generations couldn&#x27;t envision.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>The scenes emerging from American campuses should alarm anyone who values intellectual freedom. We are watching a generation being taught that certain ideas are too dangerous to encounter without protective warnings, that emotional discomfort outweighs the value of challenging discourse, and that the appropriate response to speech you find offensive is to demand its suppression rather than engage it.</p>
+      <p>The Wesleyan incident crystallizes this problem. A student newspaper published a piece arguing that campus activism had gone too far in shutting down speech. The response: calls to defund the paper, threats against its editors, and a near-vote to shut down a publication that had operated for 150 years. This wasn&#x27;t vigorous debate. This was an attempt to silence a viewpoint by destroying its platform.</p>
+      <p>Defenders will say students were simply expressing their own speech by criticizing the newspaper. That&#x27;s true in a narrow sense, but it misses the point. The power of free speech lies not just in the right to speak, but in the norm that controversial ideas deserve a hearing, that truth emerges from competition of views, and that shutting down conversation prevents learning.</p>
+      <p>What concerns me most is the trajectory. Students who learn that triggering content can be banned, that uncomfortable ideas warrant suppression, and that the appropriate response to speech you dislike is institutional punishment — these students will become lawyers, judges, legislators, and executives. The habits formed on campus will shape public life for decades.</p>
+      <p>Universities were founded as spaces where ideas could be tested, even ideas that disturbed powerful interests. That mission requires courage from administrators and faculty, courage that seems in short supply when the loudest voices demand protection from anything challenging. Students deserve to be challenged. That&#x27;s how they grow.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>The debate about trigger warnings and safe spaces often operates at cross-purposes, with opponents and supporters talking past each other. Let me try to identify what the evidence actually shows and where legitimate concerns exist on both sides.</p>
+      <p>First, the phenomenon is real. A significant subset of students and some faculty have adopted practices that prioritize emotional safety over intellectual challenge. Content warnings have expanded from discussions of sexual assault or combat trauma to include almost any uncomfortable material. This represents a shift in campus culture that deserves examination.</p>
+      <p>Second, the threat to free speech is often overstated. Most trigger warnings don&#x27;t prevent teaching of controversial material — they precede it. Safe spaces are typically limited to optional spaces rather than entire campuses. The apocalyptic language used by critics often exceeds the actual practices being criticized.</p>
+      <p>Third, there&#x27;s a genuine pedagogical question that gets lost in political posturing. Do content warnings help students engage more deeply with difficult material, or do they prime students to view themselves as victims requiring protection? The research is mixed, and reasonable educators disagree.</p>
+      <p>What does seem clear is that some students have adopted an expansive definition of harm that includes being exposed to ideas they find offensive. This is philosophically confused — offense at an idea is categorically different from trauma from lived experience. But correcting this confusion requires conversation rather than dismissal.</p>
+      <p>The path forward involves distinguishing between legitimate accommodations for documented trauma and demands that no challenging material ever appear without warning. It involves teaching students that intellectual growth often requires engaging ideas that initially disturb us. And it involves faculty being willing to defend the educational value of discomfort when appropriate.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>The President&#x27;s intervention in campus speech debates raises a question he may not have fully considered: what exactly is the relationship between free speech norms and democratic legitimacy?</p>
+      <p>Free speech doesn&#x27;t protect itself. Norms about tolerating offensive speech emerge from cultural and institutional practices, not just constitutional text. If younger generations are developing different norms about when speech becomes harmful, that&#x27;s not simply a failure of character — it reflects changes in how they understand power, identity, and harm.</p>
+      <p>Consider this: students today have grown up with social media that magnifies the impact of speech far beyond the lecture hall. A racial slur that once might have been confined to a specific context now circulates instantly, causing documented psychological harm. Students aren&#x27;t inventing the connection between speech and harm — they&#x27;re responding to an environment where that connection has become far more visible and immediate.</p>
+      <p>This doesn&#x27;t mean all restrictions on speech are justified. But it does mean we should be curious about why younger people draw lines differently than their elders. Perhaps there&#x27;s something valuable in their sensitivity to microaggressions and ambient racism, even if the terminology seems overwrought. Perhaps they&#x27;re responding to experiences older commentators haven&#x27;t shared.</p>
+      <p>The real question is whether the changes we&#x27;re seeing represent a generational moral progress — greater empathy, stronger communities, more attention to how speech affects vulnerable people — or a retreat into comfort that will produce fragile adults unprepared for the rough-and-tumble of democratic life. The evidence doesn&#x27;t clearly support either conclusion yet.</p>
+      <p>Rather than lamenting moral decline, we should be investigating what exactly is happening and why. That requires listening to students as potential sources of insight, not just objects of concern.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>I keep hearing that students today are uniquely fragile, uniquely intolerant, uniquely coddled. But I&#x27;ve been studying higher education for three decades, and this narrative strikes me as largely wrong — or at least, significantly overblown.</p>
+      <p>Yes, trigger warnings and safe spaces exist. They represent a real change in campus culture. But campus culture changes constantly, often in response to external pressures that older generations don&#x27;t fully appreciate. The 1980s brought you Anita Hill testimony and campus debates about sexual harassment. The 1990s brought multiculturalism debates and challenges to the Western canon. Each generation thought the new development threatened intellectual life. Each generation was partially right and partially wrong.</p>
+      <p>Today&#x27;s students are navigating a world of unprecedented information, including constant exposure to violence, discrimination, and injustice through media. They enter campuses where student debt exceeds $30,000 on average, where job prospects for graduates are uncertain, and where they hear constantly that they need credentials to survive but also that those credentials may not help. Under these conditions, some seek psychological accommodations.</p>
+      <p>This doesn&#x27;t mean they&#x27;ve abandoned free inquiry. Recent surveys suggest young people still support free speech at rates similar to older generations, though they draw the lines differently. They&#x27;re more likely to see certain offensive speech as harmful; less likely to see institutional authority as automatically legitimate.</p>
+      <p>Perhaps what we&#x27;re seeing is a generation that takes seriously the claim that speech causes harm. If that claim is sometimes wrong, the appropriate response is argumentation, not condescension. If it&#x27;s sometimes right, we should update our theories accordingly.</p>
+      <p>The panic around trigger warnings reveals something about us — our anxiety about cultural change, our nostalgia for a past that never quite existed as we remember it, our reluctance to examine our own speech&#x27;s effects. Perhaps the most productive question is not what students will become, but what we will learn from them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>The debate about campus speech has become a Rorschach test for broader political commitments. People see in trigger warnings whatever they already believed about cultural decline, generational weakness, or the corruption of higher education by political correctness.</p>
+      <p>I want to suggest a different frame: maybe we should focus less on student psychology and more on institutional incentives.</p>
+      <p>Colleges have strong financial incentives to keep students comfortable and satisfied. Student satisfaction scores affect rankings, which affect enrollment, which affects revenue. This creates a systematic pressure toward minimizing friction and maximizing comfort — a pressure that manifests in trigger warnings and safe spaces, but also in grade inflation, reduced academic standards, and consumer-oriented definitions of education.</p>
+      <p>Similarly, faculty who challenge students too aggressively may face teaching evaluations that hurt their careers. Administrators who enforce intellectual standards against student objections may face public relations nightmares, donor protests, and media coverage that makes their institutions look bad. The path of least resistance is accommodation.</p>
+      <p>Students, in this analysis, are responding rationally to the incentives their institutions create. If colleges communicated that intellectual challenge was their core mission, if faculty were rewarded for rigor rather than likability, if administrators defended academic standards publicly — students would adapt to those expectations.</p>
+      <p>This doesn&#x27;t absolve students of responsibility for their choices. But it suggests that the problem isn&#x27;t simply that young people are different from previous generations in ways that make them unsuitable for free inquiry. The problem is that institutions designed to promote free inquiry have been corrupted by other pressures.</p>
+      <p>Fixing campus culture requires fixing the incentives that shape campus culture. That&#x27;s harder than writing op-eds about entitled students. But it&#x27;s more likely to produce actual change.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

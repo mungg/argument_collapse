@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do We Still Need Libraries? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Society · Binary</div>
+  <h1 class="debate-title">Do We Still Need Libraries?</h1>
+  <div class="question-body"><p>The New York Times reports that, as big stores like Borders disappear, “many public libraries are seeing an opportunity to fill the void created by the loss of traditional bookstores.”</p><p>Is that the right direction for libraries to take? What are libraries for, and how should they evolve?</p></div>
+  <div class="axis">
+    <div class="axis-side oppose"><span class="axis-tag">Oppose</span>We no longer need libraries</div>
+    <div class="axis-side support"><span class="axis-tag">Support</span>We still need libraries</div>
+  </div>
+  <div class="agg-bars">
+    <div class="bar-row"><span class="bar-label">Humans</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 100%;"></div>
+      </div>
+      <span class="bar-num">n=4</span></div>
+    <div class="bar-row"><span class="bar-label">Vanilla</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 0%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 0%;"></div>
+        <div class="seg ss" style="width: 100%;"></div>
+      </div>
+      <span class="bar-num">n=5</span></div>
+    <div class="bar-row"><span class="bar-label">Diversified</span>
+      <div class="bar">
+        <div class="seg so" style="width: 0%;"></div>
+        <div class="seg wo" style="width: 8%;"></div>
+        <div class="seg n"  style="width: 0%;"></div>
+        <div class="seg ws" style="width: 8%;"></div>
+        <div class="seg ss" style="width: 83%;"></div>
+      </div>
+      <span class="bar-num">n=24</span></div>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_1.html">
+      <td class="arg-text">Public libraries remain essential and more relevant than ever because they are successfully evolving to provide free, democratic access to both traditional information and modern digital resources.</td>
+      <td><span class="humans-pill ">3</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_2.html">
+      <td class="arg-text">Public libraries should evolve into vibrant literary and cultural centers to fill the social and communal void left by the disappearance of traditional bookstores.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_3.html">
+      <td class="arg-text">Libraries have become essential providers of internet access for millions of Americans, but this reliance highlights a problematic digital divide that the nation must address.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_4.html">
+      <td class="arg-text">Libraries remain a moral necessity because they serve as the final public refuge and social safety net for society&#x27;s most vulnerable populations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_5.html">
+      <td class="arg-text">Libraries should reject the model of traditional bookstores and instead reinvent themselves as digital literacy and technology hubs to remain relevant in the 21st century.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_6.html">
+      <td class="arg-text">Public libraries should adapt to the digital age by streamlining their physical infrastructure and focusing on digital services rather than trying to replace failed big-box bookstores.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_7.html">
+      <td class="arg-text">Libraries must remain traditional sanctuaries focused on quiet contemplation and physical books rather than evolving into noisy, retail-style social hubs.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_8.html">
+      <td class="arg-text">Public libraries should not be preserved out of nostalgia but must instead face rigorous scrutiny and justify their existence through specific, measurable value that commercial entities cannot provide.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_9.html">
+      <td class="arg-text">To remain relevant and justify their existence, libraries must evolve from passive repositories of physical books into interactive digital learning hubs and community maker spaces.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_10.html">
+      <td class="arg-text">Libraries should resist the pressure to become all-encompassing community hubs and instead focus on a few specialized services that meet the specific, unmet needs of their local populations.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_do-we-still-need-libraries_arg_11.html">
+      <td class="arg-text">Libraries should evolve selectively by prioritizing their unique role as disciplined guardians of serious collections and quiet study spaces rather than transforming into multipurpose community centers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Buffy Hamilton</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/27/do-we-still-need-libraries/buffy-hamilton" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Luis Herrera</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/27/do-we-still-need-libraries/luis-herrera" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Matthew Battles</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/27/do-we-still-need-libraries/matthew-battles" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Susan Crawford</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/12/27/do-we-still-need-libraries/susan-crawford" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Libraries have never been just warehouses for books, and the temptation to recast them as bookstore replacements misreads both their history and their present. Andrew Carnegie&#x27;s libraries were civic infrastructure: places where immigrants learned English, workers self-educated, and citizens encountered ideas they could not afford to buy. That mission is, if anything, more urgent now than in 1900.</p>
+      <p>Consider what libraries already do that Borders never did. They provide free internet access — a lifeline for the roughly one in four Americans without broadband at home, and increasingly a prerequisite for job applications, unemployment claims, and school assignments. They host story hours, ESL classes, tax-help volunteers, and after-school programs. The Pew Internet study released earlier this year found that the majority of library users value these services as highly as the books themselves.</p>
+      <p>So filling the &quot;void&quot; left by Borders is fine as a marketing line, but it sells libraries short. A bookstore&#x27;s job is to move inventory; a library&#x27;s job is to guarantee access — to information, to literacy, to the digital tools required for modern citizenship, and to a noncommercial public space that is becoming rarer in American life.</p>
+      <p>The right evolution, then, is not toward retail ambience but toward deeper civic function: better e-book lending (the current publisher standoffs are an embarrassment), maker spaces, digital literacy training, and partnerships with schools. Libraries should not imitate the stores that died. They should outlast them by being something stores never were.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The temptation to recast libraries as benevolent bookstores is understandable. As Borders vanishes, a store-shaped hole appears on Main Street, and libraries—with their shelves and reading rooms—seem a natural fit. But to see libraries merely as a replacement for commercial booksellers is to mistake a vital public square for a shop. Libraries are not failed bookstores; they are fundamentally different institutions, and their future lies not in mimicking retail, but in deepening their democratic mission.</p>
+      <p>The core purpose of a library has never been to distribute product. It is to ensure free, equitable access to information, culture, and the tools of self-education. In 2012, this mission is more urgent than ever. For the millions of Americans still without home broadband or the means to purchase e-readers and databases, the library is the only portal to the digital world. It’s the place where a job seeker crafts a résumé online, where a student without a computer completes homework, where a new immigrant learns English in a community class. A bookstore sells you a book or a latte; a library provides you the space and resources to become a more capable citizen.</p>
+      <p>As libraries evolve, they should lean into this role as community infrastructure. Instead of curating a cozy browsing experience with bestseller pyramids, they can become technology hubs offering digital literacy training, workshops on everything from coding to small business planning, and flexible gathering spaces for civic dialogue. The shift means fewer duplicates of the latest James Patterson and more investment in public terminals, broadband capacity, and skilled guidance. Libraries still need books—but they need staff who are knowledge navigators more than they need to be booksellers.</p>
+      <p>The bookstore void is real, but it’s a commercial void. Communities’ deeper need is for neutral, non-commercial spaces where everyone, regardless of income, can access the tools of modern life. Libraries that chase the bookstore model risk abandoning the very people who need them most. They must evolve, but their compass should remain fixed not on the market, but on the public good.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Framing public libraries as mere replacements for defunct big-box bookstores dramatically shortchanges their civic value. While stepping into the physical void left by Borders is a natural short-term reaction to the shifting retail landscape, the library’s survival depends not on mimicking a bookstore, but on doubling down on its role as a democratic public commons.</p>
+      <p>What are libraries for? Fundamentally, they are the great equalizers of our society. As we continue to navigate a sluggish economic recovery, libraries have proven themselves to be essential infrastructure. They are vital hubs for job seekers who lack high-speed broadband or computer access at home. They are safe havens where immigrants learn English, where toddlers encounter early literacy programs, and where citizens access digital databases and e-books that would otherwise sit behind expensive paywalls. A bookstore treats you as a consumer; a library treats you as a citizen.</p>
+      <p>To evolve effectively, libraries must continue to transform from quiet repositories into dynamic community centers. We are already seeing innovative branches adapt by offering digital literacy classes, shared workspaces, and access to new technologies like 3D printers. The disappearance of sprawling retail bookstores is certainly a loss for casual browsing, but libraries should not merely seek to replicate that commercial experience. Instead, they must transcend it. We still need libraries because we desperately need inclusive, non-commercial spaces dedicated to equipping all citizens with the intellectual and technological tools of the twenty-first century.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Libraries should not try to become bookstores with weaker cash registers. The disappearance of Borders leaves a real gap: fewer places to browse, to encounter books serendipitously, and to sit without being hurried along. Public libraries can and should occupy some of that space. But their purpose is broader than retail’s old “third place.” A library is one of the few institutions built on the premise that access to knowledge should not depend on ability to pay.</p>
+      <p>That mission matters more, not less, in a digital age. In 2012, the Internet is abundant but unevenly distributed. Many job applications, government forms, school assignments and health searches now assume broadband access, a working computer and basic digital skill. Libraries provide all three. They also provide trained people who can help patrons distinguish a reliable source from a rumor, a database from a search result, and a book worth reading from an algorithmic suggestion.</p>
+      <p>Libraries should evolve by expanding, not abandoning, their core functions: lending books in print and electronic form; preserving local history; teaching children to read; helping adults learn English, find work or navigate public services; and offering quiet public space. They should experiment with e-books, media labs, lectures, homework help and community programming. They should also defend reader privacy and resist becoming mere distribution points for commercial platforms.</p>
+      <p>The danger is not that libraries will become obsolete. It is that we will misunderstand them as nostalgic warehouses for paper. A good library is public infrastructure for an informed society. Bookstores may come and go with the market. Libraries answer to a different need.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Libraries have always been more than repositories of books, and framing them as competing with bookstores misses their essential purpose. In an era of tightening municipal budgets and digital abundance, the library&#x27;s role as a guarantor of equitable access becomes more critical, not less.</p>
+      <p>Consider what libraries uniquely provide: free public access to information technology, job search assistance, after-school programs, and crucially, curated expertise. Librarians remain invaluable guides through an increasingly cluttered information landscape. The digital revolution has not eliminated information gaps—it has deepened them, as those without home internet access fall further behind.</p>
+      <p>The bookstore comparison is instructive precisely because it illustrates what libraries should not become. Commercial retail thrives on bestseller culture and maximo profits. Libraries serve a different mission: they provide access to the full breadth of human knowledge, including the obscure, the challenging, and the unconventional.</p>
+      <p>That said, libraries must evolve thoughtfully. Embracing digital lending, expanding makerspace facilities, and partnering with community organizations represent productive directions. What they should not do is abandon their core commitment to free, universal access in pursuit of relevance through commercialization.</p>
+      <p>The real question is not whether libraries can compete with bookstores, but whether we as a society value the principle that information access should not depend on purchasing power. Answering yes means supporting libraries not as nostalgic institutions, but as essential democratic infrastructure.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>Libraries Should Not Try to Be Bookstores</p>
+      <p>The temptation for libraries to fill the Borders-shaped hole in American downtowns is understandable, but it would be a strategic mistake. Bookstores failed, in part, because the economics of selling physical books to browsers cannot compete with Amazon&#x27;s warehouses and the Kindle. Libraries that lean harder into &quot;browsing the new releases like at Barnes &amp; Noble&quot; are chasing a business model that the market has already rejected.</p>
+      <p>What libraries offer that bookstores never did is something more fundamental: a non-commercial public space. You do not have to buy anything to sit there. You do not have to be a customer. In an economy where nearly every square foot of indoor space is rented to people with money to spend, that civic function is rare and precious. Teenagers without a car, job-seekers without broadband, immigrants studying for citizenship tests, retirees on fixed incomes — these are not Borders&#x27; lost customers. They are the library&#x27;s actual constituents.</p>
+      <p>The right evolution is to deepen that civic identity rather than mimic retail. That means more reference librarians, not fewer; more programming around literacy, citizenship, and job training; more meeting rooms; better public computers and Wi-Fi; and serious investment in digital lending infrastructure so that patrons without e-reader budgets are not locked out of contemporary reading. The American Library Association&#x27;s recent fights with publishers over e-book lending terms are precisely the right battles — they are about preserving public access in a digital age, not about staging author signings.</p>
+      <p>If libraries try to be cozy bookstores, they will be judged by bookstore metrics — foot traffic, bestseller turnover, café receipts — and they will lose. If they double down on being the last truly public indoor space in most American towns, they have a future that no Kindle can disrupt. The Borders comparison flatters libraries in the short term and misreads their purpose in the long term.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>Yes, Fill the Void — Communities Need Browsing Space</p>
+      <p>There is a strain of library purism that recoils at the idea of libraries acting &quot;like bookstores.&quot; I think that purism is misplaced. The bookstore, at its best, was not just a retail operation; it was a place where people discovered books they didn&#x27;t know they wanted, sipped coffee, attended a reading, ran into a neighbor. When Borders closed in town after town, what disappeared wasn&#x27;t just commerce — it was a particular kind of literary commons. Libraries are exactly the right institution to inherit that role.</p>
+      <p>Consider what bookstores did well that traditional libraries often did not: comfortable seating, late hours, face-out displays, staff recommendations that felt personal rather than bureaucratic, cafés that made lingering acceptable, and event calendars that turned a building into a hub. None of those things compromise the mission of free public access to information. They enhance it. A library that hosts a packed author talk on a Thursday night is doing more for literacy than one that closes at 5 p.m. with its new arrivals shelved spine-out.</p>
+      <p>Some libraries already get this. The new central libraries in places like Seattle and Salt Lake City treat reading as a social activity, not a monastic one. Smaller branches are partnering with local coffee vendors, opening makerspaces, and curating displays the way independent booksellers do. Critics worry this dilutes the &quot;real&quot; library, but the real library has always evolved — from subscription societies to Carnegie reading rooms to lending institutions with DVDs and databases.</p>
+      <p>The risk isn&#x27;t that libraries become too much like bookstores. The risk is that, by clinging to a 1965 model of hushed stacks and overdue fines, they make themselves irrelevant to the very communities whose taxes sustain them. Filling the Borders void is not a betrayal of mission. It is, in many towns, the most direct way left to keep reading a public, shared experience.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The Question Is Wrong</p>
+      <p>&quot;Do we still need libraries?&quot; is the kind of question that gets asked about institutions only after they have already proved indispensable. We do not ask whether we still need fire departments because most houses do not burn down. The Pew Internet survey released earlier this year found that 91 percent of Americans over 16 consider public libraries important to their communities, and use of library computers and Wi-Fi has surged precisely as Borders has collapsed. The premise of the debate is, frankly, a thin one drawn from the assumption that books equal libraries.</p>
+      <p>They never did. Andrew Carnegie did not fund 1,600 buildings so people could borrow novels; he funded them because he believed access to information was a precondition of democratic citizenship. That mission is more urgent now, not less. The digital divide is real: roughly a third of American households still lack reliable home broadband, and that share is much higher among the poor, the elderly, and rural residents. The library is the last reliable on-ramp. During the 2008–2010 recession, librarians effectively became frontline unemployment counselors, walking people through online job applications that no longer accepted paper.</p>
+      <p>So whether libraries should &quot;fill the void&quot; left by Borders strikes me as the least interesting framing available. Borders sold a commodity. Libraries provide infrastructure. The right questions are about funding: why are municipalities cutting library budgets at the exact moment demand is rising? Why are publishers like Macmillan and Simon &amp; Schuster refusing to license e-books to libraries on any reasonable terms? Why is library science as a profession being treated as optional when information literacy has never mattered more?</p>
+      <p>Yes, libraries should evolve — toward broader digital lending, deeper community programming, and more aggressive advocacy for public access in a privatizing information economy. But evolving is not the same as auditioning to replace the mall bookstore. Libraries outlasted Borders. They will outlast the question.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>A Skeptic&#x27;s View: Be Honest About Trade-offs</p>
+      <p>I love libraries, but I am wary of the everything-bagel approach now being marketed as their future. In the span of a single op-ed cycle, libraries are supposed to replace bookstores, close the digital divide, host makerspaces, run job programs, serve as homeless day shelters, lend power tools, and somehow still maintain serious collections. This is not a strategy. It is a wish list, and it is being asked of an institution whose budgets are flat or falling in most of the country.</p>
+      <p>The Borders comparison illustrates the problem. A bookstore had clear metrics — sales per square foot — and still couldn&#x27;t survive. When libraries take on bookstore-like functions (cafés, lounges, bestseller-driven displays), they incur real costs: staff time, space reallocation, capital investment, and a subtle drift in identity that affects how trustees and voters perceive the institution. Every square foot devoted to a café is one not devoted to reference services or quiet study, which happen to be the things patrons consistently rank highest in user surveys.</p>
+      <p>I would push libraries to do less, better. Pick the two or three things your community actually cannot get elsewhere and excel at them. In an affluent suburb with three independent bookstores, that may mean deep research collections and children&#x27;s programming. In a rural county with no broadband provider, it may mean computer access and digital literacy classes — full stop. In an inner-city branch, it may mean a safe afternoon space for kids and serious adult-education partnerships. Few libraries need to be all of these things at once.</p>
+      <p>The danger in framing libraries as Borders&#x27; successor is not that the comparison is undignified. It is that it encourages mission creep at precisely the moment libraries need clarity. Evolve, yes. But evolve toward a defensible purpose, not toward whatever vacancy the retail sector happens to leave behind this year.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Libraries are not merely repositories of books; they are the living rooms of our communities. In an era when Borders and other big-box bookstores are shuttering, we don’t need libraries to become replacements for those commercial chains. Instead, we should recognize that the vacuum left by disappearing bookstores is a call to deepen libraries’ true purpose: providing free, equitable access to knowledge and a physical gathering space for civic life. The right direction isn’t to mimic a retail experience with coffee bars and bestseller displays, but to double down on what makes libraries unique — their democratic mission. Libraries already lend e-books, offer free internet, host job-search workshops, and provide storytimes that create early literacy bonds. They are the rare places where a teenager can do homework without buying a latte, where an unemployed worker can retool skills, and where a senior can attend a lecture and feel less alone. That role as a “third place” — neither home nor work — is more vital as we grow more digitally fragmented. The bookstore model was always transactional; libraries are transformational. By all means, extend hours, add comfortable seating, and make collections more browseable. But don’t lose the soul of the library by chasing a commercial mirage. The goal isn’t to replace Borders; it’s to remind the public that a public library is the one indoor space left where you don’t need a credit card to exist. If we forget that, we might fill a retail void but lose our civic anchor.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The suggestion that libraries should fill the gap left by vanishing bookstores misunderstands both the crisis and the cure. Bookstores failed for a reason: retail is shifting online, and physical media is in decline. Libraries charging into that space risks turning them into yesterday’s solution, burdened with the same overhead that sunk Borders. Libraries have a far more urgent mission: bridging the digital divide. In 2012, nearly one in five American adults still lacks home broadband, and many more lack the skills to navigate an increasingly online world for jobs, health information, and government services. Libraries are already the primary provider of free public internet access in thousands of communities. Instead of building browsing lounges that mimic a defunct bookstore, libraries should be aggressively reimagined as digital literacy centers. That means replacing underused shelving with computer workstations, offering coding classes, creating coworking spaces for freelancers, and providing expert guidance on privacy and information evaluation. The bookstore fantasy distracts from the fact that the library of the future looks less like a Barnes &amp; Noble café and more like a community-operated tech hub. It’s a place where patrons don’t just consume content — they create it, learn to manipulate it, and gain the confidence to participate fully in the 21st-century economy. Libraries that cling to their identity as book-centric public living rooms will find themselves on the same path as Borders. Those that pivot toward access and education in the digital realm will remain indispensable. The retail void is not a sign for libraries to become stores; it’s a warning against built environments that serve only yesterday’s habits.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>We absolutely still need libraries, but not for the reasons most people think. The debate tends to frame libraries as either nostalgic book museums or modern community centers, missing a darker, more essential function. Libraries are among the last spaces in America that offer unconditional refuge to the most vulnerable — and that is the role we should be defending, not prettifying. The homeless, the mentally ill, the lonely, and latchkey kids all rely on libraries for warmth in winter, air conditioning in summer, and a dignified place to simply be without having to buy anything. As storefronts go dark and public benches are removed, libraries remain places of last resort. When we talk about libraries “filling the void” left by Borders, we instinctively imagine middle-class readers browsing novels. But that retail void came with a quiet segregation: bookstores might tolerate lingering, but they were never designed as social safety nets. Libraries are. The question isn’t whether libraries should become something else, but whether society is willing to adequately fund the quiet, unglamorous work they already do. Before we add café spaces and celebrity author events, we need to ensure libraries have the staff, mental health training, and custodial support to serve the patrons who actually show up day after day. Yes, evolve — but evolution should start from the truth that a library’s core user isn’t the hipster with a laptop, but often the person who has nowhere else to go. That mission doesn’t shine in a glossy strategic plan, but it’s the reason libraries remain a moral necessity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Let’s be honest: the question of whether we still need libraries is, for many communities, already answered with a shrug. If libraries are to survive, they must stop seeing themselves as solemn temples of learning and instead embrace a messy, joyous, and unabashedly populist role. The rise of e-books and Amazon doesn’t mean libraries are obsolete; it means they need to be louder, weirder, and more fun. The void left by Borders isn’t just about square footage — it’s about the loss of serendipitous discovery and the social experience of browsing. Libraries can reclaim that by becoming cultural incubators. Host game nights, lend musical instruments or tools, stage local theater, run comic-creation workshops, lend out seeds for community gardens. The “library of things” movement is already proving that the public craves access over ownership. Libraries should be places where you can check out a cake pan, a telescope, or a power drill alongside a murder mystery. Stopping at books is a failure of imagination. This isn’t dumbing down; it’s democratizing resources and building community in an age of isolation. Some purists will shudder, but the libraries that survive the next decade won’t be those with the largest archived collections — they’ll be the ones that locals would chain themselves to protect because the place feels indispensable to daily life. Pragmatically, that means libraries should borrow the best from the retail world: clear sightlines, friendly staff who make recommendations, and the sense that you might stumble onto something delightful. But the product isn’t commerce; it’s curiosity. That’s a model no algorithm can replicate, and it’s why we still need libraries — as vibrant, experimental, deeply human spaces.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>To suggest that public libraries should merely aim to &quot;fill the void&quot; left by defunct retail chains like Borders is to fundamentally misunderstand the civic purpose of the library. Borders was a commercial enterprise designed to sell commodities. A public library, by contrast, is one of the last remaining truly democratic spaces in American society. It does not exist to peddle bestsellers over lattes; it exists to bridge the widening opportunity gap.</p>
+      <p>In the aftermath of the Great Recession, the role of the library has never been more critical, but that role has shifted far beyond printed books. For millions of Americans, the local library is the only point of access to the internet. We live in an era where applying for a job, filing for unemployment benefits, or completing schoolwork requires broadband access—a luxury that many lower-income households still cannot afford. Libraries have become ad-hoc employment centers, where librarians spend hours helping patrons format resumes and navigate online application portals.</p>
+      <p>Furthermore, libraries serve as crucial community anchors. They provide safe, supervised spaces for children after school, offer free English as a Second Language classes, and host early literacy programs that prepare toddlers for kindergarten. A bookstore never offered these public goods, because there is no immediate profit to be made from them.</p>
+      <p>Evolving the library does not mean mimicking the aesthetic of a bankrupt retail giant. It means investing heavily in the civic infrastructure that libraries already provide. We need to expand their broadband capacity, increase funding for community programming, and recognize librarians as the essential front-line social workers and navigators of the digital age that they have become. We still need libraries desperately, not as replacements for commercial bookstores, but as engines of equity.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>The closure of Borders and the struggles of Barnes &amp; Noble are clear market signals about how Americans consume information today. We are rapidly transitioning to a digital ecosystem dominated by Amazon, Kindles, and iPads. Against this backdrop, the idea that local governments should spend taxpayer dollars to transform public libraries into municipal replicas of failed big-box bookstores is fiscally irresponsible.</p>
+      <p>Municipalities across the country are facing agonizing budget deficits. Cities are being forced to cut essential services, from police and fire departments to road maintenance. In this climate, we must look critically at the traditional library model, which requires massive overhead to maintain large, climate-controlled buildings designed primarily to warehouse physical paper.</p>
+      <p>If consumers are choosing the convenience of downloading e-books instantly for a few dollars, why should cities maintain a costly 19th-century infrastructure to loan out physical copies of those same books? The romantic attachment to the physical library is understandable, but sentimentality is not a sound basis for public policy.</p>
+      <p>This is not to say that public funding for literacy and information access should vanish. However, the library of the future needs a much smaller physical footprint. Instead of trying to become &quot;destinations&quot; with cafes and sprawling reading rooms to capture displaced Borders customers, libraries should focus on licensing digital content and expanding e-lending platforms. For the shrinking percentage of the population that genuinely relies on physical libraries for internet access, small, targeted computer kiosks in existing community centers or schools would be far more cost-effective. We must adapt to the 21st century by streamlining the library, rather than expanding its physical ambitions.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>There is a troubling trend in library science today that seeks to treat the public library as a chameleon, constantly adapting to whatever cultural trend is currently in vogue. With the death of the mega-bookstore, many library administrators are rushing to replace quiet reading rooms with noisy cafes, comfortable lounging areas, and bustling &quot;collaboration spaces.&quot; In attempting to be everything to everyone, libraries risk losing the very essence of what makes them valuable.</p>
+      <p>We absolutely still need libraries, but we need them to stand their ground. The core mission of the library is the preservation and dissemination of human knowledge through the written word. It is a sanctuary for quiet contemplation and deep, uninterrupted reading—activities that are increasingly under threat in our hyper-connected, relentlessly noisy digital culture.</p>
+      <p>A Borders store was designed to generate foot traffic and impulse buys. It was inherently loud and distracting. A library is historically designed to cultivate focus. When a library removes its stacks to make room for coffee bars and chatty seating areas, it alienates the patrons who rely on it as a refuge.</p>
+      <p>Furthermore, the rush to embrace e-books and digital media should be handled with caution. Physical books offer a tactile, immersive experience that screens simply cannot replicate. More importantly, physical books in a library are owned by the public in perpetuity. E-books, conversely, are merely leased from publishers under restrictive, expensive licensing agreements that can be revoked at any time.</p>
+      <p>Libraries should not measure their success by how closely they resemble a retail lounge. They should measure their success by how well they connect citizens with deep, challenging literature and history. We need libraries to remain traditional sanctuaries of quiet and printed pages, standing as vital counterweights to the ephemeral, distracted nature of modern life.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>The demise of big-box bookstores isn&#x27;t an invitation for libraries to step backward into a 1990s retail model; it is an opportunity to leap forward into the digital future. The idea that a library is merely a repository for physical books is already obsolete. If we are to justify the continued existence and funding of public libraries in 2012 and beyond, they must evolve into interactive &quot;maker spaces&quot; and digital learning hubs.</p>
+      <p>Information is no longer scarce. Anyone with a smartphone has access to more raw data than the Library of Congress. What is scarce today is the specialized equipment and the technological literacy required to harness that information creatively. The modern library should not be focused on filling the void of a bookstore; it should be focused on filling the void of the high-tech workshop.</p>
+      <p>Forward-thinking libraries are already proving this concept. They are installing 3D printers, audio and video recording studios, and providing access to expensive, industry-standard software suites that the average citizen cannot afford. They are hosting coding bootcamps for teenagers and digital media literacy workshops for adults.</p>
+      <p>In this evolution, the librarian transforms from a passive curator of books to an active digital navigator and technology instructor. The physical space of the library remains vital, but its layout must change. Stacks of reference books that haven&#x27;t been opened in a decade should be digitized or recycled to make room for collaborative workspaces and technology labs.</p>
+      <p>We absolutely still need libraries. But we need them as incubators of community innovation and digital creation. If libraries merely try to replicate the cozy, passive reading experience of a defunct Borders, they will eventually share its fate. By embracing the tools of tomorrow, libraries can remain the most relevant and exciting public institutions in our communities.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Libraries should not try to become bookstores, even if the disappearance of Borders leaves empty storefronts and disappointed browsers. A bookstore is a marketplace. A library is a civic institution. Confusing the two risks making libraries imitate the weakest parts of retail culture just as retail bookselling is proving unable to sustain them.</p>
+      <p>That does not mean libraries should ignore the hunger that bookstores once served. People still want a place to wander among books, discover an author by accident, hear a reading, take children for story hour, or sit in public without being required to buy coffee. In many towns, the library is now the last remaining indoor public space where a person can linger without paying. That is a profoundly important role.</p>
+      <p>But the library’s purpose is broader than replacing Borders. It is to guarantee access: to books, databases, local history, government forms, computers, literacy help, and increasingly to the skills needed to navigate a digital world. The public library is where the unemployed write résumés, immigrants learn English, children without quiet homes do homework, and older residents get help using e-mail or Medicare websites. These services are not nostalgic; they are modern infrastructure.</p>
+      <p>Libraries should evolve by becoming better libraries: more open hours, more librarians, stronger digital collections, shared regional catalogs, public meeting rooms, early-childhood programs, and serious help with information literacy. They should lend e-books, but they should also push back against publishers that make digital lending unnecessarily expensive or restrictive. They should provide Wi-Fi and computers, but also teach people how to evaluate what they find online.</p>
+      <p>The loss of bookstores is sad, and libraries can absorb some of the cultural functions bookstores performed. Yet a library’s great strength is that it is not governed by what sells this week. It preserves the unpopular, the old, the local, the difficult, and the necessary. In an age of Amazon recommendations and algorithmic sorting, that public, noncommercial mission matters more, not less.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>We still need libraries, but we should be honest about how radically their mission must change. The old model—a public warehouse of printed books circulated across a neighborhood—cannot be defended simply by invoking childhood memories or the smell of paper. In 2012, many readers can obtain books instantly, often cheaply, through Amazon, e-readers, used-book websites, or digital subscriptions. Students begin research with Google and Wikipedia. Municipal budgets are strained. A library that defines itself mainly as a place to store printed volumes will lose the argument for public support.</p>
+      <p>The question is not whether libraries should become bookstores. They should not. Bookstores failed in part because they could not compete with online convenience and discounting. Libraries should not imitate a model already under pressure. Nor should they pretend that every branch must offer every traditional function forever. Some communities may need fewer shelves and more terminals; others may need consolidated branches with longer hours rather than many small buildings open only sporadically.</p>
+      <p>The library of the future should be judged by public value. Does it give citizens access to information they otherwise could not obtain? Does it help children read? Does it provide a neutral place for study, meetings and civic life? Does it help people master technologies that government, employers and schools now assume everyone can use? If yes, fund it. If not, change it.</p>
+      <p>This may mean smaller print collections, more digital licensing, shared storage facilities, and staff who are trained less as custodians of books than as guides through information systems. It may also mean difficult choices: charging modest fees for premium services, partnering with schools and community colleges, or using library buildings for multiple public purposes.</p>
+      <p>The sentimental defense of libraries is too weak for the budget battles ahead. The strong defense is practical. In an information economy, unequal access to information becomes unequal access to opportunity. Libraries deserve survival when they address that problem directly. They should evolve not by mourning bookstores, but by proving that public knowledge infrastructure is as necessary as roads, parks or schools.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The disappearance of Borders is not the main reason we need libraries. The main reason is that the digital revolution has not been evenly distributed. To a professional with broadband, a credit card, a laptop and a Kindle, it can seem as if information has become weightless and universal. To a family sharing one old computer, a laid-off worker filling out applications online, or a child whose school library has been cut, the public library is not quaint. It is a lifeline.</p>
+      <p>Libraries are among the few institutions that treat access to knowledge as a right rather than a consumer preference. That matters more as books, job listings, tax forms, college applications and health information move online. A person without reliable Internet access is increasingly locked out of ordinary citizenship. The librarian who helps someone create an e-mail account or distinguish a legitimate source from a scam is performing a democratic function.</p>
+      <p>So yes, libraries can and should fill some of the void left by bookstores: author talks, reading groups, children’s events, staff recommendations and the pleasure of browsing. But their deeper obligation is equity. A community that loses a bookstore loses a cultural amenity. A community that loses a library loses a ladder.</p>
+      <p>This should shape how libraries evolve. They should extend hours beyond the workday. They should protect computer access and Wi-Fi as core services, not extras. They should make children’s literacy programs central, especially in neighborhoods where families cannot easily buy books. They should offer space for tutoring, English classes, tax help and job-search workshops. And they should remain welcoming to teenagers, the elderly and the homeless, even when that makes the building less tidy than a boutique bookstore.</p>
+      <p>There is a temptation to make libraries sleeker, quieter and more marketable to the already educated. That would be a mistake. Public libraries are most valuable when they serve people the market overlooks. Their future is not as government-run Borders. Their future is as the most accessible front door to learning, technology and civic participation that many Americans have.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>Libraries should be bolder about embracing the role bookstores once played. Not as retailers, of course, and not as nostalgic replicas of Borders, but as lively literary centers. One reason people mourn the loss of bookstores is that online buying is efficient but lonely. A search box is useful when you know what you want. It is less good at creating a neighborhood culture of reading.</p>
+      <p>Public libraries are well positioned to do that. They already have the books, the buildings, the children’s rooms, the librarians and the public trust. What they often lack is the confidence to present themselves as active cultural institutions rather than quiet service counters. If a town loses its bookstore, the library should absolutely step forward with new-release displays, staff picks, author nights, poetry readings, local history evenings, teen book clubs and partnerships with small presses and schools. It should be the place where reading is visible.</p>
+      <p>Some will say this is mission creep. I think it is mission recovery. Libraries have never been only about storage. They have always been about connecting people with books and ideas. A good librarian, like a good bookseller, is a matchmaker. The difference is that the librarian’s recommendation is not driven by inventory turnover or publisher co-op money. That independence is a strength.</p>
+      <p>To make this work, libraries need to loosen up. Food and conversation should not be treated as enemies of civilization. Buildings should include comfortable seating, flexible event space and displays that invite browsing. Catalogs should be easy to use, but so should the front door. The library should welcome the person who wants a serious reference work and the parent who wants a Saturday morning story hour.</p>
+      <p>E-books and online databases are essential, but they do not eliminate the need for place. If anything, the more life moves to screens, the more valuable shared cultural spaces become. The public library can be the anti-Amazon: not faster, not cheaper, but more human, more local and more democratic. Filling the bookstore void is not beneath libraries. Done well, it is one of the best ways to remind citizens why libraries matter.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The disappearance of Borders is a reason to value libraries, not a reason to turn them into Borders without cash registers. A bookstore’s job is to sell the books enough people are willing to buy this season. A library’s job is to make knowledge, reading and culture available whether or not they are profitable. That difference matters most when budgets are tight and when more of life — job applications, school assignments, government forms, health information — has moved online.</p>
+      <p>Libraries can and should fill some of the social gap left by bookstores: browsing, recommendations, author talks, children’s story hours, a place to encounter books one did not know one wanted. But their direction should be governed by public purpose, not retail nostalgia. The best library is not a showroom of best sellers. It is a civic institution where a child can discover reading, an unemployed worker can use a computer, an immigrant can improve English, a student can find a quiet table, and a curious adult can get help sorting reliable information from junk.</p>
+      <p>The Internet has not eliminated that need. It has made it more complicated. Many people have access to information but not to judgment, context, privacy or expensive databases. Others do not have reliable broadband at all. Librarians remain valuable because they are not merely custodians of shelves; they are guides through an overwhelming information environment.</p>
+      <p>The immediate challenge is practical. Libraries need fair access to e-books, since some publishers have been reluctant to lend digitally on reasonable terms. They need trained staff, not just more terminals. They need hours that serve working families and spaces that serve both quiet study and community events. And they need to defend reader privacy in a digital age.</p>
+      <p>So yes, we still need libraries. But the justification is not that chain bookstores have retreated. It is that a democratic society needs institutions where access to knowledge is treated as a right rather than a transaction.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Libraries should be careful about treating the death of Borders as an opportunity. Borders did not disappear because Americans stopped needing stories or information. It disappeared because a particular model — expensive retail space, large inventories, and competition with Amazon and e-books — stopped making economic sense. Public libraries should not answer that failure by imitating it at taxpayer expense.</p>
+      <p>That does not mean libraries are obsolete. It means they need a clearer mission. The strongest case for public funding is not free entertainment for people who can afford Netflix, Amazon or a paperback. It is access where the market underserves: poor children, job seekers without home Internet, seniors navigating government forms, students who need research help, communities that need archives and public meeting rooms. A library that is mostly a circulating collection of best sellers and DVDs for the middle class is harder to defend when cities are cutting police, parks and schools.</p>
+      <p>A leaner library system could be a stronger one. Instead of maintaining every branch as if population patterns and technology had not changed, cities should consider regional hubs with longer hours, better broadband, skilled reference staff, children’s literacy programs and serious partnerships with schools and community colleges. Smaller branches might become pickup points, reading rooms or shared civic spaces. Interlibrary loan and electronic catalogs already make it less necessary for every building to own every item.</p>
+      <p>The digital transition also argues for collective bargaining, perhaps even statewide or national licensing of e-books and databases, rather than thousands of local systems negotiating separately. Libraries should spend less energy pretending to be bookstores and more energy solving access problems that neither bookstores nor websites solve well.</p>
+      <p>Nostalgia is a poor guide to public policy. We still need libraries, but we need them because they perform public functions. If they define themselves mainly as a pleasant substitute for vanished retail browsing, they will be both too expensive and too timid.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>A library that thinks its future is simply to lend more books has already misunderstood the moment. Books remain central, but the deeper need is for a public learning platform. In 2012, information is abundant; competence is uneven. One person is drowning in search results, another has no broadband, another wants to take an online course but needs a place, a computer and encouragement. This is exactly where libraries can matter.</p>
+      <p>The old library was often imagined as a warehouse of books. The new library should be a workshop for self-education. That includes story time for toddlers, homework help for teenagers, English classes for immigrants, résumé help for the unemployed, tax-form assistance, local history projects, book groups, public lectures and training in how to evaluate online information. In some cities it may include media labs, digitization equipment or even maker spaces with tools like 3-D printers. These are not gimmicks if they help citizens move from consuming information to creating and understanding it.</p>
+      <p>The fall of Borders does leave a gap, but it is less about inventory than about discovery and community. A good bookstore let people browse, meet authors, ask for recommendations and feel part of a reading culture. Libraries can do that better because they do not have to push the newest hardcover or the most profitable title. They can recommend a novel from 1950, a government report, a children’s classic or a free online course with equal enthusiasm.</p>
+      <p>This shift requires rethinking buildings and staff. Some rooms must remain quiet, but others should be built for collaboration. Librarians should be treated as educators and community organizers, not as clerks. Success should be measured not only by circulation but by literacy, digital access, program attendance, school partnerships and the usefulness of the library as a civic space.</p>
+      <p>The country has fewer noncommercial indoor places where people of different ages and incomes may sit without buying anything. That fact alone is a strong argument for libraries. Their future is not as ersatz bookstores, but as the most open schools we have.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>In the rush to reinvent libraries, we should not forget what would be lost if they became cafes, computer lounges or community centers that happened to contain a few books. The library’s most distinctive contribution is still the disciplined preservation and sharing of a serious collection, available in a place devoted to reading, study and memory.</p>
+      <p>This may sound old-fashioned, but the digital world has made it more important, not less. An e-book is often licensed rather than owned. A database can vanish when a subscription lapses. Search engines reward popularity, advertising and recency. A public library, at its best, keeps what the market neglects: the unfashionable history, the local newspaper on microfilm, the poetry volume, the controversial book, the reference work that no retailer would stock. The collapse of Borders should remind us that commerce is an unstable guardian of culture.</p>
+      <p>Libraries should certainly provide Internet access and teach people how to use it. They should host children’s programs and help job seekers. But if every public institution becomes a multipurpose “space,” no institution will defend silence, concentration and the slow accumulation of knowledge. A teenager without a quiet home needs a reading room, not only a workshop. A serious researcher needs a knowledgeable librarian and a reliable catalog, not only a lively calendar of events.</p>
+      <p>The right evolution is therefore selective, not frantic. Improve catalogs. Strengthen interlibrary loan. Preserve local archives. Buy books in depth, including books that will not circulate instantly. Negotiate better e-book terms, but do not abandon print. Design buildings with separate areas so that public programs do not drive out quiet study.</p>
+      <p>Libraries are not obsolete, and they are not merely replacements for bookstores. They are one of the few institutions that ask citizens to treat knowledge as something more than content and reading as something more than consumption. That is a purpose worth conserving.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The celebration of libraries as community centers or bookstore alternatives fundamentally misunderstands their purpose. Libraries are not about ambiance or social programming—they are about providing universal access to information, a function that remains as vital as ever in an era of growing digital inequality.</p>
+      <p>When a small-town teenager can access the same academic databases as a student at an Ivy League university, that is the library fulfilling its core mission. When a job seeker without a computer can search for employment online, that is democracy in action. The internet revolution has not made this role obsolete; it has made it more critical. Google and Amazon are not substitutes because they serve commercial interests. They curate information based on profit motive and algorithms, not the democratic principle that all citizens deserve equal access to knowledge.</p>
+      <p>The &quot;libraries as community gathering spaces&quot; argument often masks a deeper truth: that institutions are struggling to articulate why they matter beyond nostalgia. Book clubs and knitting circles are pleasant, but they do not justify public expenditure. We should not allow the expansion of coffee shops and maker spaces to obscure the fundamental question of whether libraries are still doing what only they can do.</p>
+      <p>The answer is yes—but only if they resist the temptation to become jack-of-all-trades community centers and instead double down on what makes them irreplaceable: freely available, professionally curated, barrier-free access to the full range of human knowledge and information resources.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The question &quot;Do we still need libraries?&quot; reveals a category error. Libraries were never primarily about buildings full of books—they were about the service of connecting people with information. In 2012, that service has never been more necessary, even as the means of delivering it must evolve dramatically.</p>
+      <p>The digital divide is not shrinking; it is deepening. Wealthy families have high-speed internet, multiple devices, and digital literacy skills. Low-income families often have none of these. The public library stands as the last institution in America that offers comprehensive digital access regardless of zip code. Closing libraries or defunding them would widen this gap in ways that have nothing to do with bookstore competition.</p>
+      <p>Beyond digital access, libraries offer something no commercial entity can: neutrality. A librarian helping you research a medical condition, evaluate a political claim, or explore career options does not have a financial stake in your choices. This non-commercial guidance is increasingly rare in an environment where search engines optimize for advertising revenue and content platforms optimize for engagement.</p>
+      <p>The evolution toward community programming, maker spaces, and expanded digital services is not abandoning the library&#x27;s mission—it is adapting that mission to contemporary realities. A library in 2012 that still looked like 1952 would be failing its community. The institutions that embrace technology, expand their role, and maintain their commitment to free universal access will remain essential for another century.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>I want to push back against the premise embedded in this question. The implicit assumption is that libraries, as traditionally conceived, represent some golden standard worth preserving or evolving. But this assumption deserves scrutiny.</p>
+      <p>Consider what libraries actually do well versus what advocates claim they do. They provide book loans—but Amazon Prime and local bookstores serve this function. They offer internet access—but community centers, schools, and mobile devices increasingly address this need. They host programs—but these are often poorly attended efforts to justify institutional survival rather than genuine community needs.</p>
+      <p>The uncomfortable truth is that many libraries have become expensive monuments to an outdated model. Building maintenance, staff salaries, and collection costs consume budgets while usage declines in many categories. The Borders comparison is telling: traditional bookstores also struggled not because people stopped reading, but because the market found better ways to serve readers.</p>
+      <p>What would justify continued public investment? Three possibilities: serving genuinely underserved populations (rural areas, the very poor) with resources unavailable elsewhere; providing specialized archives and collections that no commercial entity would maintain; and offering truly innovative programming that addresses unmet community needs. But these are specific justifications, not general preservation of the institution as currently configured.</p>
+      <p>Libraries that cannot articulate clear, measurable value beyond nostalgia should face the same scrutiny as any public expenditure. That some libraries serve vital functions does not mean all do, or that the current model is worth preserving intact.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>My position on libraries is unapologetically pro-evolution, and I think the resistance to change reveals a kind of institutional complacency that actually threatens the libraries themselves.</p>
+      <p>Think about what made libraries revolutionary when they emerged: they democratized access to knowledge that had previously been available only to the wealthy and privileged. That mission remains vital, but the technology of knowledge access has transformed completely. A library that cannot help patrons navigate databases, evaluate online sources, create digital content, or access e-books is not serving that democratic mission effectively in 2012.</p>
+      <p>The smart libraries are already transforming. In my city, the main branch has become a hub for job training, small business development, and digital literacy programs. The children&#x27;s section offers early literacy interventions that directly address educational inequality. These are not distractions from the library&#x27;s mission—they are that mission, updated for contemporary realities.</p>
+      <p>The critics who worry about &quot;mission creep&quot; misunderstand how institutions survive. Libraries that retreat into traditional collections and reference services will find themselves increasingly irrelevant, defunded, and eventually closed. Libraries that embrace their role as community information centers, digital access points, and learning hubs will remain indispensable for decades.</p>
+      <p>We should judge libraries not by whether they look like our childhood memories, but by whether they serve their communities&#x27; genuine needs in the digital age. By that standard, some libraries are thriving and others are dying—and that&#x27;s exactly as it should be.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

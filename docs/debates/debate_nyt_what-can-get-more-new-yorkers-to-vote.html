@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Would Get More New Yorkers to Vote? · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Politics · Open-ended</div>
+  <h1 class="debate-title">What Would Get More New Yorkers to Vote?</h1>
+  <div class="question-body"><p>The number of contested Democratic Congressional primaries in New York City on Tuesday was unusual. The result will not be. A tiny fraction of the electorate will once again determine who the city, dominated by the Democratic Party, sends to the House of Representatives.</p><p>What can be done to raise voter interest in elections and get more New Yorkers to the polls?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=6</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_1.html">
+      <td class="arg-text">To increase voter turnout in New York, the government must implement systemic reforms that expand ballot access, improve voter information, and modernize the registration and voting process.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_2.html">
+      <td class="arg-text">New York City should adopt a nonpartisan, open primary election system to increase voter turnout and attract better candidates.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_3.html">
+      <td class="arg-text">To increase voter turnout in New York City, the focus must shift from procedural reforms to rebuilding a robust civic infrastructure that connects politics to the daily lives of ordinary residents.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_4.html">
+      <td class="arg-text">To increase voter turnout in New York, the city must address the collapse of local political journalism and the resulting information vacuum rather than focusing solely on procedural voting reforms.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_5.html">
+      <td class="arg-text">New York should implement compulsory voting to ensure that the government reflects the entire public rather than a narrow slice of the electorate.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_6.html">
+      <td class="arg-text">To reverse the decline in voter turnout and combat public disaffection, New York must leverage community-based mobilization and digital information dissemination.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_7.html">
+      <td class="arg-text">New York should replace the current primary system with instant runoff voting to consolidate elections into a single high-turnout event.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_8.html">
+      <td class="arg-text">Increasing voter turnout in New York requires moving beyond administrative reforms to address the cultural and communicative failures that make elections feel irrelevant to citizens.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_9.html">
+      <td class="arg-text">To increase voter turnout in New York congressional primaries, the state should implement a small-donor public financing system that reduces candidate dependence on wealthy donors and political gatekeepers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_10.html">
+      <td class="arg-text">Low voter turnout in congressional primaries is not a crisis, and efforts should focus on structural competitiveness rather than procedural reforms to increase participation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_11.html">
+      <td class="arg-text">To significantly increase voter turnout in New York, the state must address structural barriers by ending partisan gerrymandering and opening the primary system to more voters.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_12.html">
+      <td class="arg-text">To increase voter turnout in New York, political engagement must shift from top-down media campaigns to grassroots, year-round community organizing that builds personal trust and connects voting to tangible local issues.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_13.html">
+      <td class="arg-text">To increase voter turnout in New York, the political establishment and media must shift from superficial, scandal-driven coverage and polarizing tactics to substantive, issue-focused engagement that respects the intelligence of the electorate.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_14.html">
+      <td class="arg-text">Instead of focusing on increasing voter turnout through artificial means, New York should prioritize the quality of public deliberation and the depth of voter information.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_15.html">
+      <td class="arg-text">New York should adopt same-day voter registration and modernize its registration systems to significantly increase voter turnout.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_16.html">
+      <td class="arg-text">New York can significantly increase voter turnout by leveraging digital technology and data analytics to modernize outreach and simplify the voting process.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_17.html">
+      <td class="arg-text">To increase voter turnout in New York, the state should move elections from Tuesdays to weekends or designate Election Day as a public holiday to better accommodate modern work schedules.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_18.html">
+      <td class="arg-text">To increase voter turnout, New York must consolidate its disjointed election calendar into a single primary day for both state and federal races.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_19.html">
+      <td class="arg-text">To increase voter turnout in New York City, the state must implement structural reforms that foster competitive elections and eliminate the predictability caused by partisan gerrymandering.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_20.html">
+      <td class="arg-text">To increase voter turnout in New York, the state must end partisan gerrymandering by transferring redistricting power from the legislature to an independent, non-partisan citizens&#x27; commission.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_21.html">
+      <td class="arg-text">Low voter turnout in New York City primaries is not a sign of democratic failure but rather a rational response by voters who perceive minimal ideological differences between candidates or general satisfaction with the status quo.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_22.html">
+      <td class="arg-text">To increase voter turnout and engagement, New York should reform its restrictive primary system to allow more citizens to participate in the city&#x27;s most decisive elections.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_23.html">
+      <td class="arg-text">To increase voter turnout in New York City, the political system must shift from technical fixes to building deep, year-round civic connections and trust within marginalized communities.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_what-can-get-more-new-yorkers-to-vote_arg_24.html">
+      <td class="arg-text">New York should focus on ensuring informed and fair participation through transparency and the removal of bureaucratic obstacles rather than pursuing maximum voter turnout as the sole measure of democratic health.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Basil Smikle</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/basil-smikle" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Ester Fuchs</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/ester-fuchs" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Fred Siegel</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/fred-siegel" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Neal Rosenstein</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/neal-rosenstein" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Randy M. Mastro</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/randy-m-mastro" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Richard H. Pildes</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2012/06/26/what-can-get-more-new-yorkers-to-vote/richard-h-pildes" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The puzzle of New York&#x27;s anemic turnout is not really a puzzle. New Yorkers stay home because, in most districts, the contest that matters has already been decided behind closed doors. When the Democratic line is tantamount to election, and when incumbents face primaries gerrymandered into safety, the rational voter concludes — correctly — that her ballot is decorative. Tinkering with civic-mindedness will not fix a structural problem.</p>
+      <p>The most promising reforms target that structure. First, open the primaries. New York&#x27;s closed system locks out roughly a quarter of the city&#x27;s registered voters, including the fastest-growing bloc, independents. A semi-open or top-two primary, like California is now experimenting with, would force candidates to court a broader electorate and make June elections feel consequential.</p>
+      <p>Second, ease the mechanics. New York remains one of the most restrictive states in the country: no early voting, no no-excuse absentee balloting, a registration deadline 25 days before Election Day, and a separate federal-and-state primary day that confuses even attentive citizens. Consolidating primaries, adopting same-day or automatic registration, and permitting early voting are unglamorous but proven turnout boosters, as Minnesota and Oregon have shown.</p>
+      <p>Third, change what&#x27;s on the ballot. Fusion voting already gives minor parties leverage here; instant-runoff voting in primaries would let voters support insurgents without &quot;wasting&quot; a vote, and would discourage the plurality-winner-with-18-percent outcomes that breed cynicism. Independent redistricting — which Albany again ducked this year — would do more than any get-out-the-vote drive.</p>
+      <p>Finally, civic habit matters. Move municipal elections to even years, invest in real civics instruction, and make the Board of Elections something other than a patronage punchline. Turnout is low because the system has been designed, intentionally or not, to keep it that way.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>New York’s abysmal turnout is not a mystery to be solved with gimmicks or moral pleading. It is the predictable result of an electoral system designed, whether intentionally or through neglect, to discourage participation. If we are serious about getting more New Yorkers to vote, we need to stop treating voting as a privilege that citizens must earn by navigating bureaucratic hurdles and start treating it as a routine act facilitated by a modern, accessible state. The single most powerful change would be to bring New York’s voter registration and balloting practices into the twenty-first century.</p>
+      <p>The current system requires registration a full twenty-five days before an election. In a city of transients, renters, and young people, this arbitrary deadline disenfranchises thousands who become engaged in the final weeks of a campaign—precisely when the media coverage intensifies and conversations with neighbors start to matter. Same-day registration has been adopted in states like Maine and Wisconsin without chaos, and it demonstrably boosts turnout. Allowing eligible citizens to register and cast a regular ballot on Election Day would remove the single biggest administrative barrier to participation. Coupled with portable registration that follows voters when they move within the city, it would enfranchise a significant portion of the nearly two million eligible New Yorkers who sat out last year’s mayoral election.</p>
+      <p>The second hurdle is the relic of the single Tuesday vote. Holding elections on a workday, with polls open from 6 a.m. to 9 p.m., is incompatible with the lives of working parents, shift workers, and the city’s massive service-sector labor force. Early voting is the obvious answer. A fifteen-day early voting period, including weekends, would transform the voting experience. It would shorten lines on Election Day, give flexibility to people with unpredictable schedules, and create a more reflective civic ritual rather than a rushed, end-of-day chore. Voters could fix registration problems or find a convenient site, making the act of voting feel less like a high-stakes compliance test and more like a normal civic function.</p>
+      <p>Skeptics will say that non-voters are simply apathetic, but that misreads the evidence. When brought before boards of elections for driver’s license transactions or public assistance enrollment, millions of New Yorkers do not indicate they wish to forgo registration—they are simply never asked, thanks to poor implementation of the National Voter Registration Act. A truly automated system, where interacting with virtually any city agency prompts a seamless opt-out registration update, would place the burden on the state, not the citizen. It is not the electorate that has failed democracy; it is New York’s clunky, nineteenth-century machinery that has failed the electorate. Removing purposeful friction from the process is the surest way to make the city’s dazzlingly diverse populace feel that their voice belongs inside the voting booth.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>The dismal turnout in New York City’s Congressional primaries is not simply a symptom of voter apathy; it is the predictable result of an electoral system seemingly designed to keep citizens at home. In a city overwhelmingly dominated by one party, the Democratic primary effectively serves as the general election. Yet, structural barriers and an antiquated voting process ensure that only a small, highly motivated fraction of the electorate decides who represents millions of New Yorkers. To fix this, we must radically overhaul both how we vote and how we structure our elections.</p>
+      <p>First, Albany must consolidate the primary calendar. Because of recent federal court mandates, New York now forces voters to endure a federal primary in June, followed by a state and local primary in September, and finally the general election in November. This fractured, exhausting schedule guarantees voter fatigue and wastes millions of taxpayer dollars. Holding a single, unified primary would immediately boost participation by focusing media attention and civic energy onto a single day.</p>
+      <p>Second, New York must modernize its highly restrictive voting laws. It is embarrassing that a progressive bastion lags so far behind the rest of the country in ballot access. We currently lack early voting, we require specific excuses to cast absentee ballots, and our registration deadlines lock out newly interested citizens weeks before an election takes place. Implementing early voting, same-day voter registration, and no-excuse absentee balloting would remove the logistical hurdles that prevent busy, working New Yorkers from participating.</p>
+      <p>Finally, we need to rethink the closed primary system itself. Because New York City is deeply blue, whoever wins the Democratic primary almost certainly goes to Washington. Independent voters and Republicans are entirely marginalized, and candidates need only cater to a narrow partisan base to win. Adopting a nonpartisan, &quot;top-two&quot; open primary system—similar to the model recently implemented in California—would fundamentally alter this dynamic. If all candidates ran on a single primary ballot and the top two advanced regardless of party, the November elections would finally become competitive, forcing candidates to appeal to a broader coalition.</p>
+      <p>Voters will show up when the process is accessible and their votes actually matter. Until we enact these structural reforms, our elections will remain in the hands of the few.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>New York does not have a mysterious apathy problem so much as a design problem. In a city where the Democratic primary is often the real election, we hold decisive contests on a workday in June, after obscure redistricting fights, with little media coverage and rules that exclude many citizens who are registered as independents or missed an early deadline.</p>
+      <p>The first fix is to make participation easier. New York should adopt same-day voter registration, or at least allow registration changes much closer to primary day. States that permit Election Day registration have long posted some of the highest turnout rates in the country. New York should also allow early voting and no-excuse absentee voting. Many New Yorkers work irregular hours, hold multiple jobs, care for children or elderly parents, or commute long distances. A nine-hour window on one Tuesday is not enough, even if polls are technically open before and after work.</p>
+      <p>Second, the state should reconsider closed primaries. If one party dominates a district, the primary is a public election in every meaningful sense. Unaffiliated voters should be able to choose a primary ballot, and voters should not have to anticipate their party preference months in advance. This would not solve every problem, but it would make the decisive election available to more of the electorate.</p>
+      <p>Third, elections must become more competitive and intelligible. Gerrymandered districts, ballot-access games and insider endorsements depress turnout because voters sense that outcomes are prearranged. Independent redistricting, clearer ballot design, timely voter guides and better-run polling places would all help. Public financing, already familiar in city elections, should be strengthened so challengers can reach voters without depending entirely on party organizations and donors.</p>
+      <p>Finally, campaigns matter. Research and experience both show that personal contact — a knock on the door, a call from a neighbor, a union or church reminding members — raises turnout. But citizens will respond only when the system treats their vote as welcome and consequential. New York should stop making voting a test of persistence.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The low turnout in New York City&#x27;s congressional primaries reflects a deeper problem: many residents have concluded that their votes don&#x27;t matter. In a city where registered Democrats outnumber Republicans by overwhelming margins, the real contest often happens in the primary, yet the primary itself draws only a tiny fraction of eligible voters. Reversing this requires addressing both the structural barriers that suppress participation and the cultural attitudes that discourage it.</p>
+      <p>One practical step would be to move New York&#x27;s primary elections to the fall. The current June primary date coincides with the end of the school year, summer vacations, and peak outdoor activity. Voters are simply less focused on politics. Equally important, the state should adopt early voting and same-day registration, measures that have demonstrably increased turnout in other jurisdictions. These reforms reduce the logistical burden on citizens who might otherwise miss Election Day due to work schedules or last-minute decisions to participate.</p>
+      <p>Beyond structural changes, the parties themselves bear responsibility. Incumbent Democratic members of Congress in New York face little real primary opposition partly because the party apparatus discourages competitive races that might expose its candidates to scrutiny. More competitive primaries—with multiple serious candidates and genuine policy debates—would generate the kind of voter interest that low-turnout elections currently lack. The current system protects incumbents while discouraging civic engagement.</p>
+      <p>The media also plays a role. Coverage of local elections, particularly primaries, is minimal. Newspapers have shrunk their political reporting, and television news devotes more attention to national than local contests. This creates a vacuum of information that leaves voters without the basic facts they need to make informed choices. Increased civic journalism, including voter guides and candidate forums focused on local races, could help fill this gap.</p>
+      <p>Finally, there is the question of whether voters have simply lost faith in the system itself. When primary results are predictable and general elections are forgone conclusions, rational citizens may conclude that participation is pointless. Rebuilding that faith requires demonstrating that individual votes produce tangible outcomes—that elected officials actually respond to constituent pressure. This is ultimately a matter of political culture, not just election mechanics. Until New Yorkers believe their participation will make a difference, no amount of reform will fully address the participation gap.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (36 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The simplest way to get more New Yorkers to vote is to give them something worth voting for. Turnout in our congressional primaries is dismal not because New Yorkers are apathetic — they pack community board meetings, march in the streets, and flood council members with calls — but because the outcomes are foregone conclusions. When a 20-year incumbent faces a token challenger in a district drawn to be 80 percent Democratic, the rational voter stays home.</p>
+      <p>The real culprit is the gerrymander. The maps drawn by the Legislature this year, after their usual partisan bargaining, once again carved the city into safe seats for incumbents of both parties. Charles Rangel&#x27;s Harlem district, Jerrold Nadler&#x27;s West Side district, Nydia Velázquez&#x27;s Brooklyn-Queens district — these are not competitive in November, ever. The only election that matters is the June primary, and the only primary that draws interest is one where the incumbent looks vulnerable.</p>
+      <p>Independent redistricting, of the sort Governor Cuomo nominally championed and then traded away, would do more for turnout than any number of &quot;I Voted&quot; stickers or civics campaigns. When voters know their ballot can actually swing an outcome, they show up. California&#x27;s experiment with a citizens&#x27; redistricting commission has produced markedly more competitive races; Iowa&#x27;s nonpartisan process has done the same for decades.</p>
+      <p>Beyond redistricting, New York&#x27;s closed primary system depresses turnout further. Roughly a fifth of city voters are registered as independents or with minor parties, and they are locked out of the Democratic primaries that effectively decide congressional representation. A semi-open primary, allowing unaffiliated voters to participate, would instantly expand the eligible pool by hundreds of thousands.</p>
+      <p>There are smaller fixes worth pursuing. Consolidating the state&#x27;s absurd four-election calendar — presidential primary in April, congressional primary in June, state primary in September, general in November — would reduce voter fatigue and save money. Same-day registration, which a handful of states use successfully, would help the many New Yorkers who only tune in to politics in the final weeks of a campaign. Early voting, which most of the country now permits, would accommodate working people who can&#x27;t make it to a polling place during a 15-hour Tuesday window.</p>
+      <p>But these are tinkering measures. The fundamental issue is structural: when districts are uncompetitive and primaries are closed, low turnout is not a bug but a feature, working exactly as the incumbents who designed the system intend. Fix the maps and open the primaries, and turnout will take care of itself.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>We keep asking what will get New Yorkers to vote, as if the problem were a marketing puzzle. It isn&#x27;t. New Yorkers don&#x27;t vote in congressional primaries because their vote, in any meaningful sense, does not count. And no amount of get-out-the-vote canvassing, celebrity PSAs, or guilt-tripping op-eds is going to change that fact.</p>
+      <p>Consider what a voter in, say, the new 13th District is being asked to do this Tuesday. Wake up early or stay late after work. Find the polling place, which may have moved. Navigate the city&#x27;s notoriously confusing ballot. And for what? To ratify a choice that the district lines, the fundraising imbalance, and the party machinery have effectively already made. Rangel will almost certainly win. The general election is a formality. The voter&#x27;s marginal influence is, to a first approximation, zero.</p>
+      <p>When economists model rational behavior, they sometimes joke that the puzzle is not why so few people vote, but why anyone votes at all. The standard answer is that voting is expressive — a civic ritual, an identity marker. That answer holds up reasonably well in high-salience presidential elections. It collapses in low-information primaries that the media barely covers and the candidates barely contest.</p>
+      <p>So what would actually move the needle? Honest answer: not much, short of structural overhaul. Mailing every registered voter a ballot, Oregon-style, would help — it lowers the cost of voting to near zero. Public financing of campaigns at the congressional level, modeled on New York City&#x27;s successful matching-funds system, would help by surfacing credible challengers who can actually communicate with voters. And ranked-choice voting in primaries would give insurgent candidates more oxygen, since voters wouldn&#x27;t have to worry about &quot;wasting&quot; their ballot.</p>
+      <p>What won&#x27;t work is more of what we&#x27;ve been trying. Voter registration drives in a city where most eligible adults are already registered are largely theater. Civic-education campaigns about the importance of voting assume the problem is ignorance; it isn&#x27;t. New Yorkers know that congressional primaries exist. They have decided, mostly correctly, that their participation will not alter the outcome.</p>
+      <p>The blunt truth is that low turnout is the predictable equilibrium of a system designed by and for incumbents. We can scold voters all we like, but until we change the structure — competitive districts, accessible ballots, real challengers — they will continue to make the rational calculation. Don&#x27;t blame the voters. Blame the design.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>The discussion about low turnout almost always focuses on procedural reforms: early voting, same-day registration, mail ballots, redistricting. These matter at the margins. But they miss something more fundamental about why so many New Yorkers — particularly young people, recent immigrants, and working-class residents in the outer boroughs — never make it to the polls.</p>
+      <p>The deeper issue is that politics in this city no longer feels connected to people&#x27;s daily lives. A young woman working two jobs in Sunset Park, paying half her income in rent, watching the F train break down on her commute — what does she know about her congressional representative? Probably nothing. The representative has not knocked on her door, has not appeared at her church or her child&#x27;s school, has not been mentioned in any news source she reads. Her local political party organization, if one even exists in a meaningful sense, has not contacted her in years.</p>
+      <p>This is a problem of civic infrastructure, and it is one that procedural reforms cannot fix. In the era of Tammany Hall — for all that machine&#x27;s corruption — political clubs were embedded in every neighborhood. They handed out turkeys at Thanksgiving, helped new arrivals navigate City Hall, registered voters by the thousand. The machines were ugly, but they connected ordinary people to electoral politics. Today&#x27;s Democratic Party in New York is largely a hollow vehicle for incumbents, with skeleton county committees and almost no street-level presence in most neighborhoods.</p>
+      <p>Rebuilding that infrastructure is harder than passing a reform bill, but it is more important. The organizations that have shown they can drive turnout — Working Families Party, some of the larger unions, immigrant-rights groups like Make the Road — do it through year-round contact, not just last-minute door-knocking. They build relationships. They connect voting to bread-and-butter issues people actually care about.</p>
+      <p>City government can help by funding civic-engagement programs, expanding language access at polling sites, and bringing voter registration into high schools, naturalization ceremonies, and CUNY campuses. The DOE could make 12th-grade civics class a serious course rather than the afterthought it has become. The Board of Elections — that perennial embarrassment — could finally enter the 21st century with better signage, online tools, and trained workers.</p>
+      <p>But none of this substitutes for organized political life in neighborhoods. Until ordinary New Yorkers are talked with, listened to, and treated as participants rather than spectators, they will continue to do what spectators do: stay home.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Let me offer an unfashionable view: low turnout in congressional primaries is not a crisis, and the standard reform menu would do less good than its advocates claim.</p>
+      <p>The premise of the question is that more voting is automatically better. But what would a higher turnout actually produce? In safe Democratic districts, expanding the primary electorate from, say, 12 percent to 25 percent would not dramatically change the kind of candidate who wins. The marginal voter pulled in by easier registration or early voting is, on average, less informed about the specific contest than the voter who already shows up. There is a reasonable argument that primary electorates — composed of more attentive partisans — produce better-vetted nominees than would a casual mass electorate dragged to the polls.</p>
+      <p>I am not opposed to making voting easier. Early voting and same-day registration are sensible. New York&#x27;s election administration is genuinely shameful — the four separate election dates, the lever machines that lingered for decades, the routine purges and ballot mishaps. Fixing administrative incompetence is a worthy goal in itself.</p>
+      <p>But let&#x27;s not pretend that turnout is the master variable of democratic health. Countries with mandatory voting, like Australia, do not obviously produce better government than countries without. Within the United States, turnout varies more by demographic composition and ballot competitiveness than by the procedural rules states adopt. The much-touted reforms — motor voter, vote by mail, early voting — have produced modest, sometimes barely measurable, increases in turnout.</p>
+      <p>The honest reason congressional primaries draw few voters is that the contests are low-stakes for most voters most of the time. When a primary is genuinely competitive and consequential — Espaillat versus Rangel this year, for instance, in a district reshaped by population shifts — turnout rises noticeably. When it isn&#x27;t, it doesn&#x27;t. That is not a failure of civic virtue; it is rational allocation of attention by busy people.</p>
+      <p>If we want to raise the stakes, we should focus on making races genuinely competitive: through independent redistricting, public financing that lets challengers compete, and perhaps open primaries. These are structural changes that affect what&#x27;s on the ballot, not how easy it is to mark one.</p>
+      <p>In the meantime, I&#x27;d rather a New York that votes thoughtfully than one that votes universally. The romance of universal participation can distract from the harder question of whether the choices on offer are worth showing up for.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>If we are serious about raising voter participation in New York, we should stop treating this as a question of individual motivation and start treating it as a question of design. Behavioral research over the last two decades has been remarkably clear: turnout responds powerfully to the structure of the voting environment, and the most cost-effective interventions are not exhortations but defaults.</p>
+      <p>Start with consolidation. New York holds federal primaries in June, state primaries in September, and the general in November — a schedule that confuses even attentive voters, costs taxpayers tens of millions in unnecessary administration, and guarantees that each individual election will draw a sliver of the electorate. A federal court ordered the split this year for technical compliance reasons, but the Legislature could fix it by aligning everything on one September date. One election cycle, one set of campaigns, one trip to the polls.</p>
+      <p>Next, automate registration. The single greatest barrier to voting is not motivation but registration deadlines that pass weeks before anyone is paying attention to a race. Same-day registration, used successfully in Minnesota, Wisconsin, and elsewhere, consistently boosts turnout by 3 to 7 percentage points. Better still would be automatic registration through DMV and other agency interactions, with an opt-out rather than opt-in default. Behavioral economics tells us defaults are powerful; the current default is non-participation.</p>
+      <p>Third, expand the voting window. Tuesday voting is a 19th-century artifact designed around the agricultural calendar. Roughly two-thirds of states now offer some form of early voting or no-excuse absentee balloting; New York is a conspicuous laggard. Allowing two weeks of early voting, including weekends, accommodates the realities of shift workers, parents, and the elderly.</p>
+      <p>Fourth, open the primaries — at least partially. Hundreds of thousands of New York City voters are registered as independents and locked out of the only elections that, in many districts, actually decide who governs them. A modified open primary, allowing unaffiliated voters to choose a party ballot on Election Day, would dramatically expand the meaningful electorate without requiring full fusion.</p>
+      <p>Finally, fix the Board of Elections. Its patronage structure, antiquated practices, and chronic Election Day failures actively suppress turnout. Replacing it with a professional, nonpartisan administrative body, as most large cities have done, is overdue.</p>
+      <p>None of these reforms requires inspiring voters to be better citizens. They require us to design a system that assumes the voters we have, not the ones we wish we had. That is a far more productive frame.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The diagnosis is being botched. Pundits keep blaming voter laziness, the calendar, the closed primary, the Board of Elections. All real problems. But the elephant in the room is that political journalism in New York has collapsed, and without journalism, primary elections become invisible.</p>
+      <p>Quick: who is running against your congressman? What do they stand for? What did your incumbent vote on last month? If you can&#x27;t answer those questions, it is not because you are a bad citizen. It is because no one is telling you. The Times barely covers congressional primaries except in marquee races. The tabloids have largely retreated from substantive political reporting. Local TV news is a wasteland for anything below the mayoral level. Neighborhood weeklies — once the workhorses of New York political coverage — have been gutted or shuttered. The few remaining beat reporters covering Albany or the congressional delegation are stretched impossibly thin.</p>
+      <p>What&#x27;s left? Press releases recycled as articles, scripted candidate forums attended by 40 people, and a thin scattering of blogs read mostly by political insiders. Into this vacuum step the campaigns themselves, but their direct mail and robocalls reach an ever-smaller share of the electorate, and voters reasonably discount what comes from a candidate&#x27;s own team. The result: by Election Day, a typical voter has received virtually no independent information about who is on the ballot or why it matters.</p>
+      <p>This is why reforms aimed at the voting process itself will have limited effect. You can make voting wonderfully easy — mail-in ballots, automatic registration, two weeks of early voting — and turnout in low-information primaries will still be terrible, because the voter at the kitchen table with the ballot in hand has no idea what to do with it. Easy access to a contest you know nothing about is not real participation.</p>
+      <p>What&#x27;s the fix? Some of it requires resources the city government doesn&#x27;t directly control: stronger local journalism, possibly supported by foundations or a public-media expansion modeled on the BBC. Some of it could be public: a substantially expanded Campaign Finance Board voter guide, mailed earlier and in more languages, with candidate questionnaires that actually probe positions. Free airtime on city-licensed cable channels for primary candidates. Robust support for public-access debates, including in non-English media.</p>
+      <p>Until voters have actual information about actual candidates, asking them to vote in greater numbers is asking them to perform a ritual without content. Fix the information ecosystem first.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The simplest way to get more New Yorkers to vote is to stop making it so hard. Right now, the state imposes a registration deadline a full 25 days before an election. If you realize you care about a primary only a week out, you&#x27;re already locked out. New York also lacks early voting and insists that most people show up on a single Tuesday, often standing in long lines at understaffed polling sites. These barriers don&#x27;t protect electoral integrity—they suppress turnout among busy workers, parents, students, and anyone whose life doesn&#x27;t revolve around political calendars.</p>
+      <p>Same-day registration would be transformational. Nine states already permit it, and they consistently see higher participation, with no evidence of fraud. If you can register at the polls with proper ID and proof of residency, you remove the biggest administrative hurdle. Pair that with early voting over a week or two, including weekends and evenings, and suddenly voting fits into people’s schedules instead of competing with them. New Yorkers know how to wait in line for a bagel; they shouldn&#x27;t have to sacrifice a paycheck to cast a ballot.</p>
+      <p>Skeptics will say that convenience reforms don&#x27;t automatically create an engaged citizenry. That&#x27;s true—but they remove the first obstacle. When Connecticut introduced Election Day registration, turnout jumped in the very next cycle. The same dynamic would work here. City and state lawmakers should also automatically register eligible citizens when they interact with the DMV or other agencies, as California has proposed. This shifts the default to participation.</p>
+      <p>Some critics argue that low-turnout primaries are the real problem and that only diehards should choose party nominees. That view is shortsighted. When a tiny, unrepresentative sliver of the electorate picks the de facto winner in a Democratic-dominated city, the entire general election becomes a formality. Making it easier for more people to participate in primaries isn&#x27;t pandering—it&#x27;s making democratic outcomes more legitimate.</p>
+      <p>We don&#x27;t need to bribe New Yorkers with candy or a day off work. We just need to modernize our registration and voting laws to match the rhythms of a 21st-century city. The technology exists, other states have proven it works, and there is no credible constitutional barrier. The only thing missing is political will, which is embarrassing for a city that prides itself on being progressive. If we want a government that actually represents the whole electorate, the first order of business is making it physically possible for the whole electorate to show up.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Getting more New Yorkers to vote isn’t primarily about mechanics like registration deadlines. The real culprit is the profound lack of competitive elections. When the outcome is a foregone conclusion, rational people stay home. In most of this city, a Democratic primary is the only election that matters, and even those are often uncontested or feature an entrenched incumbent running against a token opponent with no resources. Turnout plunges because voters correctly perceive that their ballot won’t change anything.</p>
+      <p>The numbers tell a stark story. Last Tuesday’s primaries, celebrated as “unusually” contested, still drew barely more than 10 percent of registered Democrats in many districts. The general election in November will be a formality, with the Democrat cruising to victory by 40 or 50 points. Gerrymandered districts drawn to protect incumbents make things worse, carving neighborhoods up in bizarre shapes to ensure safe seats for both parties. In such a landscape, political engagement is an irrational act.</p>
+      <p>To spark real interest, we need to reintroduce competition. Independent redistricting commissions, not legislative leaders, should draw district lines based on compactness and communities of interest, not partisan advantage. But that’s a long-term fix. More immediately, New York should adopt nonpartisan primaries, like California’s new top-two system, where all candidates appear on a single ballot and the two highest finishers advance regardless of party. Suddenly, every voter—Democrat, Republican, independent—has a meaningful choice in every round. Candidates would have to appeal beyond their narrow base, making elections more dynamic and less predictable.</p>
+      <p>We might also consider fusion voting reforms that allow minor parties to cross-endorse major-party candidates, giving insurgents a real chance. And we should actively recruit and fund credible challengers, not just leave them to run quixotic campaigns on a shoestring. When voters see a real contest—with clear ideological differences and a chance that the underdog might win—curiosity and investment kick in. Participation isn’t just about duty; it’s about efficacy. Give New Yorkers a vote that actually matters, and they’ll use it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>We talk about getting more New Yorkers to vote as if it’s a problem with a policy knob: turn up early voting, turn down registration barriers. But that mechanical mindset misses something deeper. Voting, at its core, isn’t a consumer experience to be streamlined; it’s a civic act that requires a sense of membership and obligation. You don’t solve a crisis of belonging by making it slightly more convenient to show up. You solve it by rebuilding the cultural infrastructure that makes voting a natural expression of community life.</p>
+      <p>For decades, we’ve systematically dismantled the institutions that taught citizenship. Civics has been squeezed out of school curricula in favor of test-prep. Fewer New Yorkers belong to unions, churches, neighborhood clubs, or even bowling leagues—the kind of mediating structures that once connected daily life to public responsibility. When you don’t know your neighbors and don’t see yourself as part of a shared project, why would you stand in line to choose a district leader? The result is a city of atomized individuals, many of whom are intelligent and informed but feel no personal stake in an anonymous government.</p>
+      <p>We should invest heavily in civic education, starting in middle school, not with dry textbook recitations but with hands-on lessons that include registering students to vote at sixteen and running mock elections that grapple with real local issues. But schools can’t do it alone. Political parties, which have become hollow fundraising operations, need to return to their old role as year-round civic hubs—hosting issue discussions, neighborhood can-vassing, and social events that make politics human. So do libraries, community boards, and even sports leagues. When voting is embedded in a web of relationships and shared norms, turnout isn’t a matter of marketing; it’s a matter of course.</p>
+      <p>The good news is that New York doesn’t lack civic energy. It’s evident in community gardens, block associations, and immigrant mutual aid societies. The challenge is channeling that energy into electoral participation. That won’t happen through a new registration app. It will happen when we stop treating voting as an individual trip to the polls and start treating it as a collective ritual that signals our membership in a city we’re actively shaping together.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Before we launch another crusade to boost turnout, we should ask a basic question: is low voter participation actually a crisis, and would flooding polling places with uninformed, reluctant voters improve New York’s governance? The reflexive answer in polite company is yes, but a candid look at the evidence suggests caution. Low turnout can be a symptom of deep problems, but it can also signal something unremarkable—a reasonably satisfied population that doesn’t see burning issues on the ballot.</p>
+      <p>Many non-voters aren’t alienated or suppressed; they’re simply content enough—or rationally disengaged. In a city where basic services function, public safety is vastly improved over the bad old days, and the economy churns along, the absence of passionate electoral participation may reflect the absence of a perceived emergency. People vote when they are angry or frightened, not when they are mildly pleased. The much-lamented single-digit turnout in some primaries often occurs when an incumbent is well-liked and unchallenged, or when no candidate offers a compelling contrast. Forcing uninterested citizens to choose between two bland Democrats in a safe district doesn’t produce a more responsive government; it produces noise.</p>
+      <p>And let’s not romanticize the highly engaged voter. Research consistently shows that the most regular voters tend to be older, wealthier, and whiter than the population at large, and they often hold more ideologically polarized views. Artificially inflating the electorate with people who have no independent knowledge of the candidates—perhaps owing to a get-out-the-vote celebrity tweet or a free doughnut—can amplify whatever shallow sentiment is in the air without adding reflective judgment.</p>
+      <p>This isn’t an argument for barriers. States should maintain accurate, clean voter rolls and make registration straightforward. But we should resist the urge to treat turnout percentages as the sole measure of democratic health. A better focus is the quality of public deliberation and the degree to which voters, however few, are truly informed. If we want better outcomes, pour energy into serious local journalism, candidate debates that are more than soundbite pageants, and civics instruction that teaches how to evaluate competing claims. A smaller but deeply thoughtful electorate may serve the common good better than a larger, apathetic one that is nudged to the polls by a cute mascot.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The surest way to get more New Yorkers to vote isn’t a top-down policy change—it’s to rebuild political organizing from the street up, neighbor to neighbor, issue by issue. When people feel personally connected to the outcomes of an election and trust the person who asks for their vote, they turn out. That’s the enduring lesson of community organizing, and it’s one that the professionalized campaign industry, with its focus groups and robo-calls, has largely forgotten.</p>
+      <p>In the city’s most politically active neighborhoods, turnout is already decent. In central Brooklyn’s Caribbean communities, for example, clubs and civic associations tied to local schools, immigration status, or housing struggles can mobilize hundreds of voters around a city council race because those voters see a direct link between their ballot and classroom overcrowding or unfair evictions. The same dynamic held during the 2009 mayoral fight over term limits, when anger over Mayor Bloomberg’s maneuver galvanized unlikely voters. People vote when the stakes are tangible and when someone they know, from their own background, makes the ask.</p>
+      <p>So what would scale this up? Fund community-based organizations, not just media buys. Candidates and parties should invest in year-round field operations that don’t vanish after Election Day, building permanent relationships in housing projects, immigrant centers, and union halls. Train local leaders to run voter-engagement drives in their own languages and cultural idioms. And stop treating the “occasional voter” as a swingable consumer to be manipulated with a clever mailer. Instead, incorporate him into a sustained conversation about the concrete problems on his block.</p>
+      <p>Policy can help set the table. Same-day registration and public financing of campaigns—New York City’s matching-fund system is already a model—make it easier for grassroots challengers to mount credible efforts. But the energy has to come from the ground. Politics is a human relationship business, and until we return to that reality, no amount of advertising or SMS reminders will move the needle. Give New Yorkers a personal reason to vote, delivered by someone they trust, and they will vote.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>If you want more New Yorkers to vote, stop insulting their intelligence. The city’s political media and party machines have perfected a style of coverage and campaigning that treats voters as passive consumers to be manipulated with scandal, horse-race gossip, and tribal appeals. It’s little wonder that so many citizens, especially younger ones, have concluded that engaging with elections is a sucker’s game—a choice between two empty suits who will say anything to win and then vanish into a lobbyist-funded fog.</p>
+      <p>Take the typical primary race covered by the tabloids. Voters learn which candidate outraised whom, who got an endorsement from a union leader, and which camp sent a snarky press release at 11 p.m. What they don’t learn is how the candidates differ on zoning policy, school funding formulas, or the future of public housing—the issues that actually shape daily life in the five boroughs. Local TV news is even worse, reducing a six-way council race to a 90-second package about a minor scandal, with no time devoted to a candidate’s housing plan. When the information environment is that impoverished, voting feels like a pin-the-tail-on-the-donkey exercise.</p>
+      <p>Campaigns themselves compound the alienation. Polarizing consultants know that turning out a resentful base is cheaper than persuading the middle, so they flood mailboxes with dark, distorted attack ads that make every opponent seem like a cartoon villain. After a month of that, the natural response isn’t civic excitement; it’s disgust. Voters tune out.</p>
+      <p>Reversing this requires structural changes. Full public financing of campaigns, like the robust system New York City already uses for municipal races, must expand to state legislative and congressional races, reducing the time candidates spend dialing for dollars and giving them the breathing room to run substantive, issue-focused campaigns. At the same time, we need a revival of deep local journalism—perhaps cooperatively owned or publicly funded—that covers governance, not just politics. And broadcasters should be required to provide genuine candidate-centered forums during election season as a condition of their licenses. Give New Yorkers campaigns that respect their minds, and their minds will lead them to the polls.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>To solve the chronic problem of abysmal voter turnout in New York City, we need to address the root structural cause: our closed primary system. In a city where registered Democrats outnumber Republicans by a massive margin, the Democratic primary is the only election that actually matters. Whoever wins the primary is effectively guaranteed a seat in Congress. Yet, our current system shuts out millions of voters from participating in this decisive contest.</p>
+      <p>Because New York operates under a closed primary system, independent voters—who constitute a rapidly growing segment of the city’s electorate—are completely disenfranchised during the most critical phase of the electoral process. Furthermore, registered Republicans are relegated to voting in primaries that, in most districts, are entirely inconsequential to the final outcome. When the vast majority of the electorate knows that the real decision is being made by a small fraction of hardcore partisans in a June primary they aren&#x27;t even allowed to vote in, apathy is the logical result.</p>
+      <p>New York should look to the West Coast for a modern solution. Just this month, California successfully held its first elections under a nonpartisan &quot;top-two&quot; primary system. Under this model, all candidates, regardless of party affiliation, appear on a single primary ballot. All registered voters, whether they are Democrats, Republicans, or unaffiliated, get to cast a vote. The top two vote-getters then advance to the general election in November.</p>
+      <p>If New York adopted a top-two primary, the impact on voter interest would be immediate and profound. Candidates would no longer be able to pander exclusively to the most extreme, highly engaged sliver of their party’s base. They would have to campaign to the entire district, engaging independents and moderates from day one. Voters who currently sit out the primary because they refuse to register with a political party would finally have a voice. Furthermore, the November general election would become fiercely competitive, often featuring two Democrats battling for the center, rather than a sleepy coronation.</p>
+      <p>Voter interest cannot be manufactured with public service announcements or mere moral appeals. People vote when they feel their vote matters. By opening the primary process to everyone, we can ensure that New York’s representatives are chosen by the city as a whole, rather than a tiny partisan club.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>If you want to understand why New Yorkers are staying away from the polls in droves, look no further than the completely dysfunctional and absurd election calendar that Albany has foisted upon the state this year. We are currently asking voters to navigate a sprawling, confusing labyrinth of election dates that would exhaust even the most dedicated civics professor.</p>
+      <p>Because the state legislature failed to agree on a consolidated primary date that complied with the federal MOVE Act—a law designed to ensure military personnel have enough time to receive and return absentee ballots—a federal judge had to step in. As a result, New York’s primary elections have been split in two. We are holding federal congressional primaries right now, at the end of June. Then, voters will be asked to return to the polls in September for state and local legislative primaries. Finally, they will have to show up a third time for the general election in November.</p>
+      <p>This is not just an administrative nightmare; it is a recipe for mass voter fatigue. Campaigns barely have enough resources to turn out voters once, let alone twice in the span of three months. The average working New Yorker, already juggling a career, family, and the daily grind of city life, cannot be expected to track three separate Election Days. When the process is this disjointed, the message sent to the electorate is that the system doesn’t care about their time or their participation.</p>
+      <p>The immediate fix for low voter turnout is astonishingly simple: consolidate the primary schedule. New York needs one single primary day for both state and federal elections. Moving the combined primary to June or August would comply with federal law, save taxpayers tens of millions of dollars in duplicate election administration costs, and dramatically increase voter awareness.</p>
+      <p>When all competitive races—from Congress to the State Senate to the State Assembly—are on the same ballot, campaigns can pool their resources to mobilize neighborhoods. Media coverage is naturally concentrated, elevating the public consciousness about the upcoming vote. Until our state government respects the voters enough to streamline the voting calendar, we cannot feign surprise when a tiny fraction of the public manages to show up.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>New York prides itself on being a beacon of progressive values, but when it comes to election administration and voting rights, our state is stuck in the 19th century. If we genuinely want to get more New Yorkers to the polls, we have to stop blaming the voters for being &quot;apathetic&quot; and start looking at how incredibly difficult we make it for them to actually cast a ballot.</p>
+      <p>Consider the reality of a working-class parent in New York City. Tuesday is a regular workday. Commutes are long, and shifts are often inflexible. Under current New York law, this voter must physically show up at their designated polling place on that specific Tuesday between 6:00 AM and 9:00 PM. If they encounter a delay on the subway, if their child gets sick, or if their boss asks them to stay late, they lose their right to vote.</p>
+      <p>Unlike a majority of states in this country, New York does not have early voting. In states like Florida, Ohio, and North Carolina, voters have weeks to find a convenient time to vote, including weekends. Furthermore, New York maintains an antiquated, restrictive absentee voting system. You cannot simply request an absentee ballot because you prefer to vote by mail; you must provide a state-approved &quot;excuse,&quot; such as being out of the county or having a physical disability.</p>
+      <p>This rigid system actively suppresses turnout. It turns voting from a fundamental civic right into a logistical hurdle that only the most privileged or fiercely partisan citizens have the time to overcome. To raise voter interest and participation, we must modernize our election laws to fit the realities of 21st-century life.</p>
+      <p>First, the state legislature must pass early voting, mandating that polling places be open for at least two weeks prior to Election Day, including mandatory weekend hours. Second, we must adopt &quot;no-excuse&quot; absentee voting, allowing any registered New Yorker to vote by mail securely and conveniently.</p>
+      <p>When voting is restricted to a 15-hour window on a single Tuesday, low turnout is a guaranteed feature of the system. By removing these archaic barriers and treating voters like modern citizens whose time is valuable, we will see a natural and sustained increase in democratic participation across all five boroughs.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The hand-wringing over low voter turnout in New York City&#x27;s Democratic primaries misses the fundamental truth of political behavior: voters are rational actors. When they believe their vote can change an outcome, they show up. When they believe the outcome is preordained by party bosses and backroom deals, they stay home. The crisis of turnout in New York is directly tied to the crisis of uncompetitive elections, which is driven entirely by partisan gerrymandering.</p>
+      <p>Earlier this year, we witnessed yet another shameful redistricting cycle in Albany. The Legislative Task Force on Demographic Research and Reapportionment (LATFOR)—a thinly veiled incumbent-protection racket controlled by the legislature itself—drew the state’s new political maps. While a federal court eventually had to intervene to finalize the congressional lines, the overall political culture of New York remains one where districts are meticulously engineered to protect the status quo.</p>
+      <p>In New York City, lines are drawn to concentrate partisan advantages, ensuring that incumbents face virtually zero threat in the November general election. More insidiously, these lines are often drawn to splinter natural communities of interest to protect favored incumbents from serious primary challenges. When a district is engineered to be a safe fortress for a sitting politician, the primary ceases to be a dynamic contest of ideas and becomes a mere formality.</p>
+      <p>Why should a voter in Queens or Brooklyn take an hour out of their Tuesday to cast a ballot in a race where the incumbent is functionally unopposed, or where the challenger has been structurally boxed out of viability? They shouldn&#x27;t, and they don&#x27;t.</p>
+      <p>If we want robust participation, we need robust competition. The only way to achieve this is to strip the power of redistricting from self-interested politicians and hand it to a truly independent, non-partisan citizens&#x27; commission. We need districts drawn based on logical geographic boundaries and community cohesion, not on the addresses of incumbents and their potential rivals.</p>
+      <p>Until New York enacts binding, independent redistricting reform, the vast majority of our elections will remain uncompetitive. As long as the politicians are allowed to choose their voters, the voters will rightly conclude there is little point in choosing their politicians.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>To boost voter turnout in New York City, we need to stop looking entirely at election mechanics and start looking at our media and civic infrastructure. The structural reforms often touted by political scientists—early voting or consolidated primaries—are worthwhile endeavors, but they do little to solve the underlying information deficit. Voters do not turn out for elections they know nothing about.</p>
+      <p>Today, the political attention of the average New Yorker is heavily skewed toward national politics. In a presidential election year like 2012, everyone has an opinion on Barack Obama and Mitt Romney. The national media landscape, fueled by cable news and the rising influence of social media networks like Twitter and Facebook, heavily incentivizes this nationalization of our political discourse.</p>
+      <p>Meanwhile, local civic engagement is starving. Neighborhood newspapers, which once served as the lifeblood of local political reporting, have been decimated by the shift to digital media. Major city dailies dedicate less column space to the granular realities of House primaries, State Assembly races, and City Council debates than they did a decade ago. As a result, the average voter is bombarded with information about the White House but has absolutely no idea who is running for their local congressional seat, let alone what those candidates actually stand for.</p>
+      <p>If we want to get New Yorkers to the polls for local and congressional primaries, we have to rebuild the civic bridge between the voter and the candidate. This requires a massive investment in grassroots voter education. We need philanthropic and civic organizations to fund hyper-local, non-partisan voter guides that are mailed directly to every household, explaining the stakes of the primary in plain language.</p>
+      <p>Furthermore, we must reintroduce robust civic education in our public schools, teaching the next generation that their day-to-day lives are impacted far more by their local representatives than by the President. We should also leverage new digital tools not just to argue about national issues, but to create neighborhood-level forums where candidates are forced to answer questions directly from their constituents. Turnout is a byproduct of engagement; we must first ensure voters actually know what they are voting on.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>Following every primary election in New York City, political commentators engage in a predictable ritual of lamenting the low voter turnout. We are told that the lack of participation in a June congressional primary is a crisis of democracy, a sign of deep civic decay, and a mandate for sweeping electoral overhauls. But this perspective fundamentally misreads the electorate. Low turnout in a mid-summer primary is not a crisis; it is often a reflection of general voter contentment and a rational assessment of the stakes.</p>
+      <p>We must distinguish between a systemic failure and an electorate that simply chooses not to exercise its voice when the choices are not stark. New York City is overwhelmingly Democratic. The candidates running in these contested primaries generally agree on 90 percent of the issues. They are all going to vote for the Democratic platform, protect reproductive rights, support labor unions, and oppose the Republican agenda in Washington. For the vast majority of voters, the difference between Candidate A and Candidate B in a local House primary is negligible.</p>
+      <p>When voters are genuinely angry, or when there is a massive ideological rift on the ballot, they turn out. We see high engagement during fiercely contested mayoral races or historic presidential elections. But when an incumbent is quietly doing the job they were elected to do, and a challenger offers only a slightly different flavor of the exact same politics, it is entirely reasonable for the average citizen to prioritize their workday over a trip to the ballot box.</p>
+      <p>Efforts to artificially inflate turnout through gimmicks or compulsory measures miss the point. A healthy democracy is not measured solely by raw headcounts in low-stakes elections. The voters who do turn out for these primaries are typically the most engaged, the most informed, and the most active in their communities. There is no shame in allowing the most dedicated citizens to settle the nuances of intra-party disputes.</p>
+      <p>Rather than treating voters like errant children who need to be scolded into the voting booth, we should respect their agency. If politicians want massive turnout, they need to offer stark, compelling visions that demand the public&#x27;s attention. Until then, a quiet primary is just a sign that New Yorkers are generally satisfied with the direction of their local representation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The simplest way to get more New Yorkers to vote is to stop making voting such an unnecessarily difficult errand.</p>
+      <p>New York is not a state that can credibly blame apathy alone. It has some of the least voter-friendly rules in the country. Registration closes weeks before Election Day, long before many occasional voters have begun paying attention. There is no routine early voting. Absentee voting requires an excuse. Party enrollment changes are governed by deadlines so early that they seem designed for insiders, not citizens. Polling places can be confusing, especially after redistricting, and the city’s Board of Elections has a reputation for patronage and clumsiness rather than energetic public service.</p>
+      <p>If we want higher turnout, reform should begin with access. Same-day registration would allow a citizen who becomes interested in a race in its final week to participate. No-excuse absentee voting would help people with long commutes, caregiving obligations, multiple jobs or unpredictable schedules. Early voting over a weekend would make participation more realistic for voters who cannot easily leave work on a Tuesday. Better poll worker training and clearer notices after district changes would reduce the sense that voting is a bureaucratic maze.</p>
+      <p>These changes would not magically turn a sleepy congressional primary into a civic festival. But they would remove the needless friction that especially discourages the least habitual voters: young people, renters, recent movers, naturalized citizens and lower-income workers. The current system is tailored to the person who has lived in the same apartment for 30 years, knows the district leader, reads every mailer and can vote at 10 a.m. That person should vote, of course. But a democracy cannot be satisfied if participation is limited mainly to the already organized and the already available.</p>
+      <p>Some will say that people who care will find a way. But the same argument could be made against polling places themselves. We structure elections because we believe voting is a public good. When the state imposes arbitrary deadlines and narrow voting windows, it is not testing civic virtue; it is rationing participation.</p>
+      <p>New York City’s congressional primaries matter enormously because Democratic nominees often become the de facto winners in November. That makes low turnout especially troubling. A representative chosen by a few thousand primary voters may be legally elected, but the mandate is thin. Make registration modern, voting flexible and election administration competent. Then candidates and parties will still have to inspire people. But at least the rules will no longer be helping them ignore everyone else.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>Low turnout in New York City primaries is not mainly a calendar problem or a polling-place problem. It is a competition problem.</p>
+      <p>In much of the city, the Democratic primary is the election that matters. Yet the path to that primary is shaped by district lines, incumbency, petition rules, party clubs, unions, elected officials and donors who often settle contests before ordinary voters hear about them. A congressional seat opens rarely. When it does, the serious candidates are usually people already known to political organizations. Voters sense, often correctly, that the menu has been prepared elsewhere.</p>
+      <p>The answer is not merely to plead with citizens to be more public-spirited. It is to make elections feel less like internal party proceedings and more like genuine public choices. New York should consider a nonpartisan “top two” primary for congressional and state offices, in which all voters can participate and the two leading candidates advance to November regardless of party. In a city where one party dominates, excluding independents and Republicans from the decisive round makes little democratic sense. If November is mostly ceremonial, then the meaningful election should be open to the electorate as a whole.</p>
+      <p>There are objections. Parties have associational rights. A Democratic primary should select a Democratic nominee. But in districts where the Democratic nominee is almost guaranteed victory, the public function of the primary overwhelms its private-party character. A closed party primary lets a small slice of voters effectively choose an official who will represent everyone. That arrangement may be comfortable for party organizations, but it is hard to defend as democratic representation.</p>
+      <p>Ballot access also needs reform. Petition challenges in New York are notorious for removing candidates on technicalities. A candidate should have to demonstrate real support, but the system should not be a legal obstacle course navigable only by insiders with election lawyers. More candidates are not always better, but more credible competition is. Debates should be routine, publicized and televised or streamed by civic institutions. Voters are more likely to participate when they can see differences among candidates rather than receive a stack of glossy mailers in the final week.</p>
+      <p>Turnout follows stakes. New Yorkers vote when they think something important is being decided and when they believe their vote is part of a real contest. In too many primaries, the dominant message is the opposite: the incumbent is safe, the club has endorsed, the lines are drawn, the petitions are filed, and the electorate is invited to ratify. Open the decisive election, ease ballot access and force public debate. Interest will rise when politics becomes visibly competitive again.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>We should be careful about treating low turnout as if it were a plumbing problem: attach the right reform pipe and civic virtue will flow. New Yorkers are not failing to vote in congressional primaries only because they lack reminders, absentee ballots or weekend hours. Many are staying home because they do not see the election as relevant to their lives, and sometimes because the campaigns have given them little reason to think otherwise.</p>
+      <p>That is not an argument against administrative reform. New York’s election laws are antiquated, and easier registration and absentee voting would help. But convenience alone cannot create interest. Millions of people who will wait in line for a new phone, follow a sports draft or argue about school admissions are capable of finding a polling place if they believe the choice matters. The harder question is why congressional primaries so rarely command that belief.</p>
+      <p>Part of the answer is that Congress itself feels distant and dysfunctional. In 2012, many citizens see Washington as polarized, money-soaked and incapable of solving obvious problems. A primary between candidates whose differences are described in insider language — who has which endorsement, who is “progressive,” who can deliver constituent services — may not break through ordinary cynicism. If candidates want turnout, they should speak plainly about wages, rents, transit, immigration, schools, health care and war, and then explain what a member of Congress can actually do. Voters are not inspired by résumé contests.</p>
+      <p>Local media also bears responsibility. Congressional primaries often receive thin coverage unless there is a scandal, a celebrity candidate or a racial angle. The decline of neighborhood newspapers and the shrinking of city political reporting have left voters with less independent information. Campaign mail is not a substitute for journalism. Civic groups, libraries, colleges, unions, churches and tenant organizations can help by hosting forums, publishing questionnaires and making elections visible in everyday community life.</p>
+      <p>Nor should we romanticize turnout for its own sake. A larger electorate that knows nothing about the candidates is not necessarily a better electorate. Democracy needs participation, but it also needs attention. The goal should be more informed voting, not merely a higher statistic on Wednesday morning.</p>
+      <p>The best answer, then, is cultural as much as procedural. Lower the barriers, yes. But also demand campaigns that treat voters as citizens rather than demographic targets. Demand media that covers primaries before they are over. Demand civic institutions that make elections part of neighborhood conversation. People vote when voting feels like an act of membership in a community. New York has plenty of community; its politics too often fails to ask for it in a serious way.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>If New York wants more people to vote in congressional primaries, it should make campaigns less dependent on large donors and political gatekeepers. Voters tune out when they believe candidates are speaking to contributors, consultants and endorsing organizations rather than to them.</p>
+      <p>New York City already has an important model: its municipal public financing system, which matches small contributions and encourages candidates for city office to seek many modest donors. The system is not perfect, but it has changed the behavior of campaigns. A $20 contribution from a resident matters when it can be matched with public funds. Candidates have an incentive to hold house parties, meet tenant groups, talk to neighborhood associations and build a base beyond the usual wealthy circles.</p>
+      <p>Congressional races do not operate under that city system. They are governed by federal campaign finance rules, and the cost of mail, polling, consultants and media pushes candidates toward donors who can write larger checks. Super PACs and outside groups, newly empowered by recent court decisions, threaten to make the distance between voters and campaigns even greater. In such an environment, why should a resident of Queens or Brooklyn believe that a primary is “theirs”?</p>
+      <p>A small-donor public financing system for congressional elections would not by itself produce huge turnout. But it would change the way candidates campaign. To qualify, they could be required to collect a broad base of small contributions from within the district. Matching funds could amplify those donations. Spending limits, if voluntary and constitutionally permissible, could reward candidates who agree to run people-powered campaigns. At the very least, disclosure should be rapid and clear so voters can see who is trying to buy influence.</p>
+      <p>The link between money and turnout is not always obvious, but it is real. Campaigns mobilize voters. They knock on doors, call phones, send literature, organize volunteers and create public argument. When campaigns are financed by a narrow group, their mobilization often narrows too. They identify reliable voters, court organizational endorsements and ignore those considered unlikely to participate. Small-donor financing would encourage campaigns to expand the electorate because each new supporter could also become a financial resource.</p>
+      <p>Parties and civic groups should add mandatory debates, widely distributed voter guides and neutral online information. But the deeper issue is whether candidates need ordinary voters before Election Day. If they need them only as a final ratification, many voters will stay home. If they need them early as contributors, volunteers, questioners and neighbors, more will feel invested enough to vote. Raising turnout begins long before the polls open; it begins with who campaigns are built to listen to.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The low turnout in New York City primaries is often discussed as if the missing voter were a middle-class citizen who simply forgot. But many of the New Yorkers least likely to vote face practical barriers that are deeply connected to class, language, mobility and distrust of government.</p>
+      <p>Consider a home health aide working irregular hours, a restaurant worker paid by the shift, a parent who has moved twice in three years, or a naturalized citizen who is eligible to vote but uncertain about registration rules. A single Tuesday, with registration weeks in advance and little early voting flexibility, is a system designed for people with stable schedules and stable addresses. New York’s electorate is far more fluid than its election laws.</p>
+      <p>Raising turnout requires meeting people where they are. Registration should be available closer to Election Day, ideally on Election Day itself. Government agencies that interact with eligible citizens should treat registration as a normal service, not a special project. High schools, CUNY campuses, public housing developments, libraries, senior centers and community health clinics should be routine sites of nonpartisan voter registration and education. The city’s extraordinary language diversity also demands more than minimal translation. Voters should be able to understand not only the ballot, but the offices, deadlines and district changes that determine whether they can participate.</p>
+      <p>The Board of Elections must also be professionalized. Too many New Yorkers encounter elections through confusing notices, poorly trained poll workers, changed poll sites and machines that inspire little confidence. Even isolated bad experiences can ripple through families and communities: “Don’t bother; they won’t find your name.” A competent election system is a turnout program.</p>
+      <p>Restoring trust matters especially in immigrant and minority neighborhoods where politics may be seen as closed or transactional. Candidates often appear only during election season, accompanied by endorsements from local power brokers. That is not engagement. Real engagement means year-round constituent service, open forums, collaboration with community organizations and visible responsiveness after the votes are counted. People who never hear from elected officials except through campaign mail are unlikely to believe their vote is powerful.</p>
+      <p>Finally, New York should pay attention to those legally pushed to the margins. Citizens on probation can vote, but confusion about criminal justice status discourages many eligible people. Clear information in reentry programs and probation offices would help. Democracy should not rely on rumor.</p>
+      <p>There is no single missing New York voter. There are students, tenants, workers, immigrants, the elderly, the recently moved and the disillusioned. The common thread is that the system has not been built around their lives. Build it around them — with flexible voting, serious outreach, language access and competent administration — and turnout will rise because voting will finally seem like it belongs to them too.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>New York should consider the reform Americans usually dismiss before discussing seriously: compulsory voting.</p>
+      <p>The phrase sounds harsh, but the practice need not be. Australia has long required citizens to vote, with modest penalties and broad acceptance. The point is not to drag people into ideological enthusiasm. It is to treat voting the way we treat jury duty: a basic obligation of democratic citizenship. A voter should remain free to cast a blank ballot, write in a protest or choose “none of the above.” What should not be optional is participation in choosing the government.</p>
+      <p>This idea is especially relevant in New York City’s Democratic congressional primaries. In many districts, the primary effectively determines the representative. When only a tiny fraction of eligible voters participates, organized interests and habitual voters gain disproportionate power. That does not make their votes illegitimate; they followed the rules. But it does mean that the resulting government reflects a narrow slice of the public. Mandatory participation would force candidates to speak to the whole district rather than only to the most reliable primary electorate.</p>
+      <p>Compulsory voting would also change campaign strategy. Today, campaigns spend enormous energy identifying likely voters and ignoring everyone else. If most citizens were expected to vote, the incentive would shift from turnout micro-targeting to persuasion. Candidates would have to communicate with younger voters, renters, immigrants who are citizens, working-class residents and people alienated from politics. The electorate would look more like the city.</p>
+      <p>Of course, compulsory voting cannot stand alone. It would be unfair to require voting while maintaining New York’s outdated barriers. A mandate would have to be paired with same-day registration, no-excuse absentee ballots, early voting, language access and a professional Board of Elections. Election Day should be made easier, perhaps with weekend voting or a holiday. If the state asks citizens to participate, the state must make participation simple.</p>
+      <p>Critics will argue that forced voting produces uninformed ballots. But our current system does not guarantee wisdom; it guarantees overrepresentation of those with the time, habit or organizational connection to vote in low-salience elections. A broader electorate may include some poorly informed voters, but it will also include many thoughtful citizens who are now excluded by inconvenience, cynicism or the sense that politics is not meant for them. Moreover, compulsory voting would likely create demand for better voter guides, debates and civic education.</p>
+      <p>Americans tend to define freedom as the right to abstain. That right has value. But democracy also depends on shared obligations. We require taxes to fund public goods and jury service to administer justice. Representatives chosen by the public are a public good too. If New York is serious about making its elections representative, it should put compulsory voting on the table — not as a punishment, but as a civic norm.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-24">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-24" style="display:none;">
+      <p>New York does not have a voter enthusiasm problem so much as a voter friction problem. The city asks people who work long shifts, commute long distances and move often to participate in elections on a single Tuesday, under rules that seem designed for a smaller, more settled and less hurried electorate. When the contest is a June congressional primary that even attentive citizens may not have heard about, every added inconvenience becomes a reason to stay home.</p>
+      <p>The first reform should be same-day registration. New York’s deadlines are unforgiving, especially for young voters, renters, new citizens and people who have changed boroughs or neighborhoods. A citizen who learns about a race during the final week should not discover that the legal door has already closed. Registration should be portable within the state, and voters should be able to correct an address at the polls.</p>
+      <p>Second, New York should adopt early voting and no-excuse absentee voting. Many states already give citizens several days, including weekends, to cast ballots. New Yorkers get one long workday. Yes, polls are open from 6 a.m. to 9 p.m., but that does not solve the problem for a home health aide with two jobs, a parent with child-care obligations or a worker whose commute is unpredictable. Voting should not require a lucky schedule.</p>
+      <p>Third, the state should modernize registration. Online registration, automatic updates through motor vehicle and public assistance agencies, and pre-registration for 16- and 17-year-olds would make the rolls more accurate and reduce confusion at polling places. The Help America Vote Act moved the country toward better statewide voter lists, but New York has not treated registration as a public service in the way it should.</p>
+      <p>Fourth, the city Board of Elections needs professional management. Too often elections are administered as a patronage system rather than a customer-service operation. Poll workers should be well trained, poll sites should be easy to find, language assistance should be reliable, and voters should receive plain sample ballots before primary day.</p>
+      <p>None of these changes will make a sleepy race exciting. Candidates still have to give people a reason to vote. But the state should stop compounding apathy with inconvenience. The democratic principle is simple: if a citizen is eligible, the system should bend over backward to make voting possible. In a city where the Democratic primary often decides the congressional seat, administrative barriers are not harmless technicalities. They help determine who gets represented.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-25">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-25" style="display:none;">
+      <p>Low turnout in New York’s congressional primaries is not mainly caused by the absence of reminders, nicer voting machines or patriotic exhortation. It is caused by the absence of meaningful competition. People are more likely to vote when they believe their vote can change an outcome. In much of New York City, voters have learned the opposite lesson.</p>
+      <p>The Democratic primary is often the real election, and even that contest is frequently shaped long before primary day. Incumbents enjoy name recognition, fund-raising advantages, union and club endorsements, and district lines that make defeat unlikely. Challengers have to collect signatures, survive ballot challenges and raise money in a media market where congressional campaigns are expensive and easily ignored. By the time voters are asked to participate, many races feel less like public choices than ratifications.</p>
+      <p>The best way to increase interest is to create elections worth being interested in. New York should strengthen independent redistricting so that politicians are not choosing their voters. Even when courts draw lines, as happened in this cycle after Albany failed to agree, the larger principle remains: district boundaries should respect communities and encourage competition, not protect officeholders.</p>
+      <p>The city’s own campaign finance system also offers a model. Matching small donations has made municipal races more open to candidates who do not begin with wealthy networks. Congressional races are governed by federal law, but New York’s political leaders should press for public financing at the federal level and use party rules to encourage debates, disclosure and broad participation. A candidate who can raise $20 from thousands of constituents should not be drowned out by one who can raise $2,500 checks from a narrow circle.</p>
+      <p>Ballot access should also be simplified. Petition requirements are supposed to demonstrate support; too often they become legal traps used by insiders to knock opponents off the ballot. If a candidate has a genuine following, voters should be allowed to judge that candidate directly.</p>
+      <p>Finally, the parties themselves must do their job. A political party that wants turnout cannot appear only at election time. Democratic organizations should recruit candidates from tenant groups, immigrant communities, churches, unions and neighborhood associations, then stage serious public forums. If the primary is the decisive election, the party has a public responsibility to make it visible.</p>
+      <p>Convenience matters, but convenience without contest will not inspire many people. The cure for low turnout is not just easier voting. It is real choice.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-26">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-26" style="display:none;">
+      <p>If the Democratic primary is the election that matters in much of New York City, then the rules for participating in that primary should reflect that reality. At present, they do not. New York’s closed primary system excludes independents, many new voters and people whose party registration does not match the political facts of their district. In a city where the November result is often a foregone conclusion, that means large numbers of citizens are effectively shut out of the decisive vote.</p>
+      <p>The problem is made worse by New York’s party enrollment deadlines. A voter who decides in the spring that she wants to participate in a June Democratic congressional primary may already be too late if she is registered with another party or with no party. That rule may make sense to party lawyers, but it makes little sense to ordinary citizens. Politics is not frozen a year in advance. Candidates emerge, incumbents retire, district lines change and issues develop. Voters should be able to respond.</p>
+      <p>New York should move at least to a semi-open primary, allowing unaffiliated voters to choose a party ballot on primary day. Better yet, it should allow same-day party enrollment for any voter who wants to participate. The danger of “raiding” by Republicans in overwhelmingly Democratic districts is greatly exaggerated. There are not enough Republican voters in most of these districts to hijack a Democratic primary, and in any case most people do not spend a summer Tuesday casting mischievous ballots in another party’s race.</p>
+      <p>A more ambitious reform would be a nonpartisan primary, in which all candidates appear on the same ballot and the top candidates advance to November. That system has drawbacks, and party labels provide useful information. But the current arrangement also has a serious drawback: it treats a public office as though it were being filled by a private club.</p>
+      <p>If New York opens its primaries, it should pair the change with ranked-choice or instant-runoff voting in crowded fields. Otherwise, a splintered race can be won with a small plurality, which is another way a minority of a minority ends up choosing a representative. Voters should be able to rank candidates, and the winner should demonstrate broad support.</p>
+      <p>Parties matter. They organize ideas and give voters cues. But when one party dominates a city, its primary becomes more than an internal conversation. It becomes the public’s main opportunity to choose representation in Congress. New York should stop telling citizens they missed their chance before they even knew there was a race.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-27">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-27" style="display:none;">
+      <p>The most effective way to get more New Yorkers to vote is to stop treating voting as an optional errand and start treating it as a civic duty. New York should consider compulsory voting.</p>
+      <p>That phrase sounds un-American to many ears, but the idea is neither exotic nor authoritarian. Australia has required voting for decades and regularly achieves turnout above 90 percent. The ballot is secret, and citizens may cast a blank ballot if they wish. What is required is not a government-approved opinion; it is participation in the common decision. We already require jury service, school attendance for children and taxes. Voting for the people who write the laws is at least as central to self-government.</p>
+      <p>Compulsory voting would change campaign behavior immediately. Today, campaigns spend much of their energy identifying “likely voters,” then speaking almost exclusively to them. In a low-turnout Democratic primary, that can mean older, more ideological and more organized slices of the electorate. If everyone were expected to vote, candidates would have to speak to renters as well as homeowners, young voters as well as retirees, the disengaged as well as the party regulars. A broader electorate would produce a broader campaign.</p>
+      <p>Of course, compulsory voting cannot be imposed on top of a cumbersome system. It would have to come with automatic registration, early voting, no-excuse absentee ballots, clear notices and strong language access. The state cannot fairly fine people for failing to vote if it has not made voting easy. The penalty should be modest, more like a parking ticket than a criminal sanction, and exemptions should be generous.</p>
+      <p>The common objection is that compulsory voting would bring uninformed citizens to the polls. But low-turnout elections are not necessarily models of wisdom. They overrepresent people with the time, habit or material interest to participate. A universal electorate would force schools, media organizations and campaigns to do more civic education. It might also reduce the incentive for campaigns to depress turnout through negativity, since everyone is coming anyway.</p>
+      <p>New York’s congressional primaries now allow a tiny fraction of voters to choose representatives for millions. That is legal, but it is not healthy. Democracy should ask something of citizens, and citizens should be able to expect something in return: a system that welcomes them, informs them and counts them. Compulsory voting would not solve every problem, but it would finally take political equality seriously.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-28">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-28" style="display:none;">
+      <p>The question assumes that New Yorkers need to be coaxed to the polls. Many first need to be convinced that politics sees them at all. Low turnout in congressional primaries is not simply a matter of laziness or poor scheduling. It reflects a deeper collapse of civic connection, especially in neighborhoods where residents hear from government mainly through police encounters, housing violations, school closures, immigration anxieties or benefit offices.</p>
+      <p>A reminder postcard will not overcome years of distrust. Nor will a celebrity public-service announcement. People vote when they have been asked by someone they trust, when the stakes are concrete, and when participation feels connected to everyday life. That means the work of increasing turnout has to begin long before primary day.</p>
+      <p>Campaigns should stop writing off “unlikely voters.” The label becomes self-fulfilling: consultants target habitual voters because they are efficient to reach, then congratulate themselves when those voters dominate the electorate. A serious campaign in New York City should be multilingual, door-to-door and rooted in neighborhood institutions. Churches, mosques, synagogues, tenant associations, senior centers, unions, immigrant service groups, CUNY campuses and public housing associations can all be civic bridges. They should not be contacted only for endorsements. They should be partners in explaining what Congress actually does.</p>
+      <p>Issues must also be made local. A congressional primary can seem remote compared with a mayoral or City Council race. Yet Congress decides food stamps, Medicare, immigration enforcement, student loans, transportation money, housing subsidies and war. Candidates should be forced to discuss those questions in neighborhood debates, not just in newspaper interviews or mailers aimed at regular primary voters.</p>
+      <p>Schools have a role as well. Every high school senior who is eligible should leave school registered or pre-registered. Civics should not be a dry unit on the three branches of government; it should include how to read a ballot, contact a representative, evaluate a campaign claim and organize around a local problem. Naturalization ceremonies, public colleges and city agencies should also be routine points of voter registration.</p>
+      <p>Election rules matter too. New York should adopt early voting, simplify registration and improve language access. Confusion about eligibility among formerly incarcerated people should be addressed plainly; people who have the right to vote should be told so. Poll sites in immigrant neighborhoods should have trained workers who can help without intimidation.</p>
+      <p>But the central task is relational, not technical. People participate when democracy is something they experience between elections. If elected officials want more New Yorkers to vote, they should spend less time lamenting apathy and more time showing up in the communities that have learned, often reasonably, not to expect much from politics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-29">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-29" style="display:none;">
+      <p>Before rushing to raise turnout by any means possible, New York should ask a more basic question: turnout for what? A larger electorate is not automatically a better electorate if voters remain uninformed, campaigns remain shallow and districts remain uncompetitive. Citizens have a right to vote, but they also have a right not to vote. Abstention can mean alienation, but it can also mean indifference among people who do not feel strongly about the choices.</p>
+      <p>That is especially true in party primaries. A primary is partly a public election and partly a party’s method of choosing its nominee. If someone has chosen not to affiliate with a party, it is not outrageous that the party’s regular voters have a larger voice in selecting its candidate. Opening every primary to everyone may raise numbers, but it may also weaken the ability of parties to stand for coherent principles.</p>
+      <p>The real goal should be informed and fair participation. New York should remove needless obstacles: allow no-excuse absentee voting, make registration easier, send clear voter guides and operate polling places competently. Nobody should be kept from voting because of a bureaucratic trap, an inaccessible poll site or misinformation about eligibility. But the city should be wary of gimmicks that treat turnout as the only measure of democratic health.</p>
+      <p>We know New Yorkers will vote when they believe the stakes are high. Presidential elections draw far more participation than obscure primaries. Hotly contested mayoral races attract attention. The problem with many congressional primaries is that voters do not see the choice as urgent, and sometimes they are right. If candidates offer few differences beyond biography and endorsements, the public’s lack of excitement is understandable.</p>
+      <p>A better answer is transparency. Every primary should have widely publicized debates, an official nonpartisan voter guide mailed and posted online, easy access to campaign finance information, and sample ballots written in plain language. Local media should cover these contests as decisions about power, not as insider chess matches. Parties should be judged by whether they recruit serious candidates and explain their platforms.</p>
+      <p>Democracy does not require maximum turnout in every election. It requires that every eligible citizen have a genuine opportunity to participate and enough information to make participation meaningful. If New York fixes access, improves information and encourages real competition, turnout will rise where it ought to rise. If it does not, we should not confuse a quiet electorate with a disenfranchised one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-30">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-30" style="display:none;">
+      <p>The most effective way to increase voter participation in New York City is to reform the primary system itself. Currently, most Democratic primaries are closed to voters who are not registered with the party, effectively silencing the large block of independents and minor‑party voters who make up a sizable portion of the city’s electorate. By opening primaries to all registered voters—regardless of party label—we would immediately broaden the pool of eligible participants. This change would not require a constitutional amendment; it could be achieved through state legislation and party rules, and it would send a clear signal that the political establishment values every citizen’s voice.</p>
+      <p>A complementary structural reform is the adoption of instant‑runoff voting (IRV) for primary contests. IRV allows voters to rank candidates in order of preference, eliminating the “wasted vote” fear that discourages many from supporting long‑shot candidates. When voters know their second choice will count if their first choice is eliminated, they are more likely to engage with a wider range of hopefuls. This dynamic encourages more candidates to enter the race, intensifies competition, and gives voters a richer set of choices. Early evidence from cities like San Francisco and states like Maine shows that IRV can boost turnout and reduce negative campaigning, because candidates must appeal to a broader coalition to win.</p>
+      <p>Moreover, opening primaries and adopting IRV would address the “safe seat” problem that makes many races preordained. When a district is overwhelmingly Democratic, the real contest is the primary, yet low voter interest means a tiny, unrepresentative slice of the electorate decides the outcome. By widening participation and making the voting process more expressive, we create a system where candidates must campaign for every vote, not just the party faithful. In short, structural changes that open the doors of the primary process and give voters more meaningful choices are the most direct levers for raising overall turnout in New York City.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-31">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-31" style="display:none;">
+      <p>New York’s voter registration system is a major barrier to participation, especially in low‑turnout primaries. The state currently requires voters to register at least 29 days before an election—a deadline that catches many potential voters off‑guard and effectively disenfranchises those who move, change their name, or simply become interested at the last minute. The solution is straightforward: adopt same‑day voter registration (SDR). Minnesota and Wisconsin have long offered SDR, and their turnout rates consistently exceed the national average. In Minnesota, for example, same‑day registration has been credited with helping the state achieve participation levels above 70 % in presidential years, far outpacing New York’s anemic primary numbers.</p>
+      <p>Implementing SDR would be relatively inexpensive and administratively simple. Election officials could verify identity and residency on the spot, using existing documents like a driver’s license or utility bill. The state could also complement SDR with online voter registration, which New York took a step toward in 2011 but has yet to fully roll out. Online portals would allow residents to register or update their information in minutes, reducing the friction that currently sends many would‑be voters home empty‑handed.</p>
+      <p>Beyond administrative fixes, we need aggressive voter registration drives in neighborhoods with historically low participation. Community organizations, unions, and universities can serve as trusted intermediaries, helping residents navigate the process and reminding them of upcoming deadlines. The key is to meet voters where they already are— workplaces, schools, and community centers—rather than expecting them to seek out information on their own. By lowering the practical hurdles to registration and pairing those changes with robust outreach, New York can dramatically expand the pool of eligible voters and set the stage for higher turnout in every election cycle.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-32">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-32" style="display:none;">
+      <p>A simple, yet often overlooked, remedy for New York’s low voter turnout is to change the day on which elections are held. The United States remains one of the few democracies that schedules most elections on a Tuesday during the workweek, a tradition rooted in 19th‑century agrarian schedules that no longer reflect modern life. For many New Yorkers—especially those working in service industries, retail, or other jobs with rigid hours—finding time to travel to a polling place, wait in line, and vote can be nearly impossible. The result is a systematic exclusion of voters whose schedules do not align with the polling hours.</p>
+      <p>Making Election Day a public holiday would signal the state’s commitment to civic participation, creating a cultural moment akin to Thanksgiving or Independence Day. A day off would allow families to vote together, reduce the logistical barriers for hourly workers, and encourage employers to view voter participation as a civic responsibility rather than an inconvenience. Countries like Australia and Germany, which hold elections on weekends or holidays, consistently achieve turnout rates above 80 percent, illustrating the impact of timing on participation.</p>
+      <p>If a full holiday proves politically untenable, an alternative is to shift elections to the weekend, a reform already adopted in many states for local ballots. Weekend voting would accommodate a broader cross‑section of the electorate without the cost of a national holiday. Either approach would dramatically increase the pool of possible voters, particularly among those who currently sit out primaries because the process feels inconvenient. In a city that prides itself on diversity and inclusion, adjusting the timing of elections is a practical step toward making the franchise truly universal.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-33">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-33" style="display:none;">
+      <p>Increasing voter turnout in New York City requires a long‑term investment in civic education and community engagement, not just quick‑fix policy tweaks. Many New Yorkers—especially young adults and immigrants—grow up without a clear understanding of how local elections work, why they matter, or how their vote can shape policy. This knowledge gap fuels apathy. By integrating robust civic education into public school curricula from an early age, we can demystify the electoral process, teach students how to register and vote, and instill a sense of agency about their role in democracy.</p>
+      <p>Schools can partner with local Boards of Elections to offer hands‑on voter registration drives and mock elections, giving students practical experience before they reach voting age. Community organizations, faith‑based groups, and neighborhood associations also play a critical role. These institutions are trusted voices in their communities and can mobilize voters in ways that partisan campaigns often cannot. For example, a local housing advocacy group can remind residents about upcoming primaries, explain the stakes of down‑ballot races, and provide transportation to polling places.</p>
+      <p>Beyond education, we need to cultivate a culture that celebrates voting. This means public campaigns that highlight the impact of local elections—school board races, City Council decisions, and judgeship appointments—rather than focusing solely on high‑profile federal contests. When New Yorkers understand that local decisions directly affect their daily lives, the incentive to vote grows. A sustained, multi‑pronged effort that combines classroom instruction, community outreach, and public awareness will create a more engaged electorate and ultimately raise turnout across all elections.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-34">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-34" style="display:none;">
+      <p>In the digital age, leveraging technology is a powerful way to draw more New Yorkers to the polls. Modern campaigns already use sophisticated data analytics to identify likely supporters and target them with personalized messages. The same approach can be applied to non‑partisan voter mobilization efforts, helping civic organizations and public agencies reach underrepresented voters with information tailored to their interests and schedules.</p>
+      <p>Social media platforms like Facebook and Twitter offer low‑cost channels to disseminate voter registration deadlines, polling place locations, and candidate information. Short, engaging videos or infographics can cut through the noise of busy New Yorkers’ daily lives. Mobile‑friendly websites that allow users to verify their registration status, find their polling place, and request absentee ballots would reduce the friction that often discourages participation.</p>
+      <p>Beyond outreach, technology can simplify the act of voting itself. New York should expand early voting options, allowing citizens to cast ballots at convenient locations—such as subway stations or grocery stores—in the days leading up to Election Day. An online portal for absentee ballot requests would further reduce barriers for those with mobility issues or work constraints. Additionally, campaigns and civic groups can deploy SMS-based reminder systems, sending text messages that alert voters to upcoming primaries and provide step‑by‑step voting instructions. By meeting New Yorkers where they already spend time—online and on their phones—we can create a more seamless voting experience and ultimately boost participation.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-35">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-35" style="display:none;">
+      <p>The root cause of New York City’s persistently low primary turnout is the lack of competitive districts. Because of partisan gerrymandering, most city districts are engineered to be safely Democratic, meaning the real contest is decided in a primary where the winner is almost assured. When voters perceive that their district is a foregone conclusion, they reason that their individual vote will not alter the outcome, and they stay home. This rational non‑participation is not a sign of apathy; it is a rational response to a system that renders elections uninteresting.</p>
+      <p>The solution is comprehensive redistricting reform. New York should establish an independent, non‑partisan commission to draw district lines, stripping the process from partisan legislators who have every incentive to protect incumbents. Such a commission would prioritize communities of interest, geographic compactness, and competitive elections over partisan advantage. Several states—including Arizona and California—have already moved toward citizen‑driven redistricting, and early evidence suggests that more competitive districts correlate with higher voter interest.</p>
+      <p>In the meantime, state and city officials can take incremental steps to increase competitiveness. Encouraging more candidates to run—through public financing schemes that match small donations or by lowering the signature thresholds for ballot access—would inject choice into otherwise dormant races. When voters see a genuine contest with multiple viable options, the incentive to participate rises dramatically. In short, unless New York tackles the structural problem of uncompetitive districts, other measures—registration reforms, Election Day tweaks, or get‑out‑the‑vote drives—will have limited impact. Making every seat a real contest is the most effective way to ensure that New Yorkers feel their vote matters.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

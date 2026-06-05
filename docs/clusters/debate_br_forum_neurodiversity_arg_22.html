@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>While Chapman correctly identifies the structural failures o... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_br_forum_neurodiversity.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_br_forum_neurodiversity.html">The Future of Neurodiversity</a> · Cluster 22 of 32</div>
+  <h1 class="arg-title">"While Chapman correctly identifies the structural failures of &#x27;Liberal Neurodiversity,&#x27; his proposed &#x27;Neurodivergent Power&#x27; framework lacks the analytical precision and durable institutional focus necessary to achieve genuine liberation."</h1>
+  <div class="arg-meta">0 human · 1 LLM · 1 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"While Chapman correctly identifies the structural failures of &#x27;Liberal Neurodiversity,&#x27; his proposed &#x27;Neurodivergent Power&#x27; framework lacks the analytical precision and durable institutional focus necessary to achieve genuine liberation."</p>
+        <button class="essay-view-full" data-target="full-22-14987">View full essay</button>
+        <div class="essay-full" id="full-22-14987" style="display:none;">
+            <p>Chapman&#x27;s essay offers a compelling diagnosis of what he calls Liberal Neurodiversity&#x27;s limitations, and many of his critiques deserve serious engagement. The analysis of how neurodivergent &quot;strengths&quot; can be mined for corporate profit while the most marginalized remain abandoned is particularly incisive. His observation that accommodations often fail those with complex psychiatric needs—where &quot;reasonable&quot; is determined by profitability rather than genuine inclusion—highlights a structural tension that reformist approaches struggle to address. Yet I want to push back on several aspects of his proposed alternative while affirming much of his underlying critique.</p>
+            <p>The Black Power analogy is instructive but imperfect. Chapman correctly notes that both the civil rights movement and neurodiversity activism had to grapple with co-optation and the limits of legal reform. However, the Black Power movement was never a unified tendency—it encompassed everything from cultural nationalism to Marxist-Leninist organizing, and many of its most lasting contributions came through institutional development rather than revolutionary rupture. The Black Panthers, whom Chapman discusses, built survival programs, community health initiatives, and educational institutions that outlasted the movement&#x27;s peak. This suggests that neurodivergent liberation might similarly require building durable infrastructure—from neurodiversity studies departments to cooperative economic models—rather than simply pivoting toward a revolutionary posture that may prove premature in conditions lacking mass revolutionary consciousness.</p>
+            <p>More troubling is Chapman&#x27;s treatment of intersectionality. While he invokes the concept, his framework tends to subordinate other axes of oppression to a neurodivergent-centered analysis. He acknowledges that &quot;neurotypicals are often little better off,&quot; but this understates how race, class, and disability interact in ways that cannot simply be folded into a neuronormativity-focused analysis. The school-to-prison pipeline he describes disproportionately affects Black and Indigenous neurodivergent people, and addressing it requires sustained alliance with racial justice movements rather than merely drawing parallels to their struggles. Similarly, his discussion of Global South contexts risks treating neurodivergence as a universal category while ignoring how disability and neurodivergence are shaped by colonialism, extractive economies, and neocolonial medical systems in ways that exceed the neuronormativity framework.</p>
+            <p>Chapman&#x27;s concrete demands—freeing incarcerated neurodivergent people, ending homelessness, halting imperialist wars—are admirable, but their relationship to neurodiversity specifically remains unclear. These are demands that virtually all progressive movements share. If Neurodivergent Power is to be more than a rebranding of broader anticapitalist politics, it needs to articulate what is distinct about neuronormativity as a system of domination. The essay gestures toward this with its discussion of &quot;normal subjectivity,&quot; but this concept remains underdeveloped. What specifically constitutes neuronormative domination as opposed to ableism, capitalism, or other intersecting systems? Without this analytical clarity, Neurodivergent Power risks becoming a coalition label rather than a distinct political framework.</p>
+            <p>Finally, Chapman&#x27;s dismissal of &quot;non-hierarchical social movements&quot; and call for a &quot;revolutionary party&quot; deserves scrutiny. The failures he identifies in the 2010s protest wave are real, but the alternatives he suggests carry their own risks. Parties—even ostensibly revolutionary ones—are prone to bureaucratism, exclusion, and the subordination of marginalized constituencies to supposedly universal programs. The history of twentieth-century revolutionary movements offers as many cautionary tales asinspirational ones. A neurodivergent politics worth building would need to grapple with this history rather than simply echoing demands for party organization that have recurred across radical movements without guaranteeing liberation for disabled people.</p>
+            <p>None of this negates Chapman&#x27;s core insight: that individual accommodation within capitalism cannot constitute liberation, and that the neurodiversity movement must develop more collective, structural responses to the systems that produce neuronormativity. The movement needs both the insurgent energy Chapman advocates and the patient institutional building that has characterized other successful liberation movements. What remains to be developed—and what the movement might yet produce—is an analysis precise enough to distinguish neuronormativity&#x27;s specific mechanisms while building alliances broad enough to challenge them.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">The Black Power analogy suggests that liberation requires building long-term community infrastructure and survival programs rather than just adopting a revolutionary posture.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">The essay&#x27;s framework risks subordinating race and class to a neurodivergent-centered analysis, failing to fully account for how colonialism and racial justice intersect with disability.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The proposed political demands are indistinguishable from general progressive goals and fail to articulate the specific mechanisms of neuronormative domination.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">The call for a revolutionary party ignores historical risks of bureaucratism and the potential for such organizations to exclude or subordinate marginalized constituencies.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">A successful movement must balance insurgent energy with patient institutional building and a more precise analysis of how neuronormativity functions alongside other systems of oppression.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Companies should be required to provide standardized, compre... · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-h:  #2d8654;
+    --src-v:  #b85e3a;
+    --src-d:  #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .crumb-context { font-size: 11px; letter-spacing: 0.04em; color: var(--quiet); margin-top: 6px; }
+  .crumb-context a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  h1.arg-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 30px; line-height: 1.25; letter-spacing: -0.01em; margin: 28px 0 14px; font-style: italic; color: var(--ink); }
+  .arg-meta { font-size: 11.5px; color: var(--quiet); letter-spacing: 0.04em; margin-bottom: 40px; }
+
+  .section-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; font-weight: 600; text-transform: uppercase; color: var(--ink); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+
+  .essay-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 2px; }
+  .essay-src.src-h { color: #fff; background: var(--src-h); }
+  .essay-src.src-v { color: #fff; background: var(--src-v); }
+  .essay-src.src-d { color: #fff; background: var(--src-d); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 500; letter-spacing: 0.01em; }
+
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 15.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 14px; }
+  .essay-link { display: inline-block; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-h); border-bottom: 1px solid var(--src-h); padding-bottom: 1px; transition: opacity 0.15s; }
+  .essay-link:hover { opacity: 0.7; }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 5px 14px;
+    font-family: 'Inter', sans-serif; font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer; margin-bottom: 14px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    margin-bottom: 14px; padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px; line-height: 1.6;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .essay-full p:last-child { margin-bottom: 0; }
+
+  .essay-subs { margin-top: 14px; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin-bottom: 10px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 7px; }
+  .sub-list li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px; background: var(--paper-soft); border-left: 3px solid; border-radius: 0 4px 4px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-h); }
+  .sub-list li.src-v { border-left-color: var(--src-v); }
+  .sub-list li.src-d { border-left-color: var(--src-d); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--quiet); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .page { padding: 28px 20px 80px; }
+    h1.arg-title { font-size: 22px; }
+    .essay-quote { font-size: 14.5px; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../debates/debate_nyt_should-companies-tell-us-when-they-get-hacked.html" class="crumb">← Back to debate</a>
+  <div class="crumb-context"><a href="../debates/debate_nyt_should-companies-tell-us-when-they-get-hacked.html">Should Companies Tell Us When They Get Hacked?</a> · Cluster 1 of 20</div>
+  <h1 class="arg-title">"Companies should be required to provide standardized, comprehensible disclosures about security breaches to empower consumers to make informed decisions and reward secure firms."</h1>
+  <div class="arg-meta">3 human · 14 LLM · 17 essays in this cluster</div>
+  <div class="section-head">Main arguments in this cluster</div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Baruch Fischhoff</span>
+        </div>
+        <p class="essay-quote">"Companies should be required to provide standardized, comprehensible disclosures about security breaches to empower consumers to make informed decisions and reward secure firms."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/02/21/should-companies-tell-us-when-they-get-hacked/baruch-fischhoff" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Standardized disclosures prevent transparent companies from being unfairly penalized compared to those that hide security failures.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Providing clear information about overall risk and personal vulnerability allows consumers to accurately assess threats rather than relying on flawed psychological heuristics.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Withholding information about hacking breeds public distrust and undermines the fundamental purpose of transparency.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Leveling with the public enables a market-based solution where consumers can actively choose to support businesses that prioritize data security.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Lee Tien</span>
+        </div>
+        <p class="essay-quote">"Companies should be required to disclose security breaches because robust notification rules are a common-sense way to improve digital privacy and security."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/02/21/should-companies-tell-us-when-they-get-hacked/lee-tien" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Disclosure allows affected individuals to take proactive steps to protect themselves against the increased risk of identity theft.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Mandatory reporting holds businesses and agencies accountable for their data security practices.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Publicizing breaches provides society with a clearer understanding of the overall scope of network security problems.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">Standardized disclosure of the causes of breaches would encourage software patching and help vendors fix vulnerabilities more quickly.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Centralized reporting of incidents would ensure that data breach information is accessible and useful to the public.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-h">Human</span>
+          <span class="essay-by">Lauren Gelman</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches to foster a collective learning environment and prioritize national cybersecurity."</p>
+        <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/02/21/should-companies-tell-us-when-they-get-hacked/lauren-gelman" target="_blank" rel="noopener">Read original ↗</a>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-h"><span class="num">01</span><span class="sub-text">Public disclosure allows citizens to better evaluate the necessary level of government investment in cybersecurity research and response.</span></li>
+              <li class="src-h"><span class="num">02</span><span class="sub-text">Sharing technical details of breaches enables other organizations to learn from incidents and proactively thwart similar attacks.</span></li>
+              <li class="src-h"><span class="num">03</span><span class="sub-text">Mandatory reporting is necessary to overcome the collective action problem where individual companies prioritize their brand image over the public&#x27;s interest in a secure infrastructure.</span></li>
+              <li class="src-h"><span class="num">04</span><span class="sub-text">A standardized disclosure framework would reduce the stigma of being hacked and provide smaller companies with the resources and incentives to invest in security.</span></li>
+              <li class="src-h"><span class="num">05</span><span class="sub-text">Formal information sharing among businesses is required to counter the existing advantage held by hackers who already share and sell vulnerability data.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches when there is a meaningful risk to stakeholders, provided the rules allow for investigative discretion and avoid unnecessary noise."</p>
+        <button class="essay-view-full" data-target="full-1-89734">View full essay</button>
+        <div class="essay-full" id="full-1-89734" style="display:none;">
+            <p>Yes, but the requirement should be smarter than a simple rule that every intrusion must be announced immediately to the world.</p>
+            <p>The strongest case for disclosure is that the harm from a breach often falls on people who cannot see it. If credit-card numbers, passwords, Social Security numbers, medical files or e-mail accounts have been exposed, customers need to change passwords, watch accounts, place fraud alerts or demand new cards. Keeping quiet protects a company’s reputation at the expense of the people whose information it was trusted to hold. That is why many states, beginning with California, adopted breach-notification laws; the basic principle is sound.</p>
+            <p>Disclosure also has a public-health value. Computer attacks spread through reused techniques: malicious attachments, stolen administrator credentials, unpatched software, compromised vendors. If every victim treats an attack as a private embarrassment, other firms remain ignorant and vulnerable. Recent reports about attacks on newspapers, technology companies and government contractors suggest that many incidents are not isolated crimes but part of broader campaigns. Secrecy helps the attackers.</p>
+            <p>Still, disclosure rules must avoid creating noise or making investigations harder. A company should not have to issue a press release every time a firewall blocks a probe or an employee receives a phishing e-mail. Nor should it be forced to reveal technical details while law enforcement is tracking intruders or while systems remain exposed. The trigger should be meaningful risk: unauthorized access to sensitive personal data, material financial impact, major service disruption, or theft of information important enough to affect investors, customers or national security.</p>
+            <p>The rule should require prompt notice, with limited delays approved by regulators or law enforcement, and should include useful facts: what happened, what data may be affected, what customers should do, and what the company is doing now. Silence should not be the default. Companies that collect and profit from data owe the public candor when they fail to protect it.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Disclosure is necessary to protect individuals whose personal data has been compromised, allowing them to take proactive steps against identity theft and fraud.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Publicly sharing information about breaches has a public-health value by alerting other organizations to common attack vectors and broader hacking campaigns.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Mandatory reporting prevents companies from prioritizing their own reputations over the security and interests of the people whose data they hold.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Disclosure requirements should be triggered by meaningful risk rather than minor incidents to ensure that the information provided is significant and actionable.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Reporting rules must be flexible enough to allow law enforcement to track intruders and permit companies to secure their systems before making technical details public.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"The United States should implement a uniform federal mandate for security breach disclosure to replace the current incoherent patchwork of state laws and improve collective defense."</p>
+        <button class="essay-view-full" data-target="full-1-03299">View full essay</button>
+        <div class="essay-full" id="full-1-03299" style="display:none;">
+            <p>Yes — and the case for mandatory disclosure has only grown stronger as breaches have moved from credit-card theft to industrial espionage and journalist surveillance. The recent Mandiant report on &quot;APT1,&quot; the revelations from The New York Times and Wall Street Journal about Chinese intrusions, and the steady drumbeat of incidents at companies like Zappos, LinkedIn, and Global Payments all point to the same lesson: silence serves the breached company at the expense of nearly everyone else.</p>
+            <p>Forty-six states already require notification when personally identifiable information is exposed, and California&#x27;s pioneering 2003 law showed that disclosure regimes can work without sinking the firms they cover. But the patchwork is incoherent — definitions of &quot;breach&quot; vary, triggers differ, and many serious intrusions (intellectual property theft, network compromises that don&#x27;t clearly touch consumer data) fall through the cracks. A uniform federal standard, of the sort proposed in successive versions of the Data Security and Breach Notification Act, would give companies clarity and customers consistent protection.</p>
+            <p>Disclosure also has positive externalities. When firms share indicators of compromise, defenders across an industry can patch faster; this is why the FBI&#x27;s outreach programs and information-sharing groups like the FS-ISAC matter. Mandatory reporting — even confidentially to a body like US-CERT, with public notice when consumers are affected — would convert private pain into collective defense.</p>
+            <p>The counterarguments (tipping off attackers, harming reputations, encouraging frivolous litigation) are real but manageable through reasonable delay provisions and safe harbors for good-faith security practices. What is not defensible is the status quo, in which whether you learn your data was stolen depends on which state you live in and which company lost it.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Existing state-level disclosure laws demonstrate that mandatory reporting is feasible and does not financially ruin the companies involved.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">A federal standard would provide regulatory clarity for companies and ensure consistent protection for consumers regardless of their location.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Mandatory disclosure creates positive externalities by allowing other organizations to identify threats and patch vulnerabilities more quickly.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Current reporting gaps allow serious intrusions like intellectual property theft and journalist surveillance to go undisclosed because they do not involve consumer data.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The potential risks of disclosure, such as reputational damage or tipping off attackers, can be effectively managed through safe harbor provisions and reasonable reporting delays.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches to ensure consumer protection, corporate accountability, and collective digital security."</p>
+        <button class="essay-view-full" data-target="full-1-64196">View full essay</button>
+        <div class="essay-full" id="full-1-64196" style="display:none;">
+            <p>The notion that companies should have a choice about disclosing security breaches rests on an outdated understanding of corporate responsibility. When a business loses control of customer data—credit card numbers, Social Security records, email addresses—it is not merely suffering a private misfortune. It is exposing every affected individual to identity theft, fraud, and phishing attacks that can take years to untangle. Mandatory disclosure is not an unreasonable burden; it is the bare minimum of accountability.</p>
+            <p>At present, disclosure in the United States is a patchwork of state laws, most notably California’s pioneering 2003 statute. The result is that a breach affecting residents of forty-six states may be disclosed in a letter, while residents of the remaining four are left in the dark. A federal standard would end this lottery, ensuring that a citizen’s right to know does not depend on geography. It would also force companies to internalize the true cost of lax security, which today is often passed silently to consumers.</p>
+            <p>Opponents argue that mandatory reporting harms reputations and invites lawsuits. Yet the alternative is a market in which customers cannot distinguish firms that invest in security from those that cut corners. In a world of asymmetric information, voluntary disclosure is a mirage: companies that come forward, as The New York Times did, are penalized precisely because the norm of silence makes them appear uniquely vulnerable. A universal requirement levels the playing field, so that no single firm is punished for honesty while others hide identical lapses.</p>
+            <p>Beyond consumer protection, mandatory reporting generates a public good. The technical details of an intrusion—the malware used, the server misconfiguration exploited—are intelligence that help other organizations patch their own defenses. When a breach is buried, that knowledge is lost, and an adversary can reuse the same tool dozens of times without detection. In this sense, silence is not just a betrayal of customers; it is a gift to the next attacker. For a truly resilient digital society, sunlight is not optional.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Mandatory disclosure is a necessary form of accountability because data breaches expose individuals to long-term risks like identity theft and fraud.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">A federal disclosure standard would eliminate the current patchwork of inconsistent state laws and ensure all citizens have an equal right to information regardless of geography.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">Universal reporting requirements level the playing field so that honest companies are not unfairly penalized for transparency while others hide their security lapses.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Mandatory reporting forces companies to internalize the financial costs of poor security rather than passing those risks silently to consumers.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Sharing the technical details of breaches provides vital intelligence that helps other organizations defend against similar cyberattacks.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches because individuals have a right to know when their data is at risk and transparency fosters better security practices."</p>
+        <button class="essay-view-full" data-target="full-1-04713">View full essay</button>
+        <div class="essay-full" id="full-1-04713" style="display:none;">
+            <p>The case for mandatory breach disclosure rests on a simple principle: those who bear the risk of harm deserve to know about it. When hackers compromise customer data — whether financial information, medical records, or login credentials — the individuals affected are the ones who must change passwords, monitor accounts, or guard against identity theft. They cannot take these precautions unless they know a breach has occurred.</p>
+            <p>Critics argue that disclosure requirements harm companies economically and might even alert future attackers to vulnerabilities. These concerns have merit, but they do not outweigh the public interest in transparency. Economic harm from disclosure is itself a form of accountability — it creates market pressure for better security practices. Companies that invest adequately in protecting customer data have less to fear from disclosure than those that do not.</p>
+            <p>California&#x27;s breach notification law, enacted in 2003, demonstrated that such requirements can function without crippling industry or creating chaos. Today, nearly all states have similar laws, suggesting that a workable framework exists. A federal standard would bring consistency and ensure that customers in less vigilant states receive the same protections as those in California or New York.</p>
+            <p>The objection that disclosure tips off future attackers deserves skepticism. Sophisticated hackers already share intelligence through underground networks; the security community does as well through organizations like the Internet Storm Center. The asymmetry is not between informed attackers and uninformed ones, but between informed companies and ignorant consumers.</p>
+            <p>Companies often resist disclosure not from genuine security concerns but from reputational and legal risk. That self-interest, left unchecked, has produced the culture of silence that makes mandatory disclosure necessary.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Affected individuals cannot take necessary precautions against identity theft or account compromise unless they are informed of a breach.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Mandatory disclosure creates market pressure and accountability, incentivizing companies to invest more heavily in data protection.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">The success of existing state-level breach notification laws proves that a mandatory disclosure framework is practical and does not cripple industry.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">A federal disclosure standard would ensure consistent protection for all consumers regardless of their state of residence.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">Public disclosure does not significantly aid attackers, as hackers already share intelligence through sophisticated underground networks.</span></li>
+              <li class="src-v"><span class="num">06</span><span class="sub-text">The current culture of silence is driven by corporate self-interest and reputational risk rather than genuine security concerns.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-v">Vanilla</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The federal government should implement a unified mandatory disclosure standard for cyber security breaches to protect consumers and strengthen collective economic security."</p>
+        <button class="essay-view-full" data-target="full-1-62942">View full essay</button>
+        <div class="essay-full" id="full-1-62942" style="display:none;">
+            <p>The recent admissions of cyber intrusions by The New York Times, Apple, and Facebook highlight a harsh reality: in today’s digital economy, getting hacked is a matter of when, not if. However, the traditional corporate instinct to hide these breaches only serves to empower the attackers. Mandatory disclosure is essential, not just for consumer protection, but for the collective cybersecurity of our economy. When companies sweep digital intrusions under the rug, they deny their peers vital threat intelligence and leave their users exposed to identity theft and secondary phishing attacks.</p>
+            <p>Currently, we rely on a fractured patchwork of state laws. Forty-six states have distinct breach notification requirements, which creates a complex compliance nightmare for businesses and results in uneven privacy protection for citizens. What we need now is a strong, unified federal standard. This standard must mandate timely public disclosure whenever sensitive consumer data is compromised or when core intellectual property and infrastructure are breached. Sharing this information allows the broader business community to patch vulnerabilities and block specific attack vectors before they can be reused.</p>
+            <p>Critics often argue that forced disclosure will unnecessarily panic the public, punish victims of crime, or permanently damage corporate reputations. But public trust is ultimately lost through cover-ups, not transparency. A thoughtful federal mandate should certainly include a provision allowing a brief delay if law enforcement needs time to track the perpetrators before they scatter. Ultimately, however, the default must be transparency. In an era where digital espionage and cybercrime are sophisticated, persistent threats, sunlight is our most effective disinfectant. Protecting corporate embarrassment should never take precedence over protecting the public.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-v"><span class="num">01</span><span class="sub-text">Mandatory disclosure provides the broader business community with vital threat intelligence needed to patch vulnerabilities and block future attacks.</span></li>
+              <li class="src-v"><span class="num">02</span><span class="sub-text">Transparency protects users from secondary threats like identity theft and phishing attacks that occur when they are unaware their data is compromised.</span></li>
+              <li class="src-v"><span class="num">03</span><span class="sub-text">A unified federal standard would resolve the complex compliance challenges and uneven protections caused by the current patchwork of state laws.</span></li>
+              <li class="src-v"><span class="num">04</span><span class="sub-text">Public trust is better maintained through corporate transparency than through the eventual discovery of a cover-up.</span></li>
+              <li class="src-v"><span class="num">05</span><span class="sub-text">The need to protect the public from sophisticated cyber threats outweighs the desire to shield companies from reputational damage or embarrassment.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches because secrecy unfairly shifts the burden of poor security onto vulnerable stakeholders and prevents necessary public accountability."</p>
+        <button class="essay-view-full" data-target="full-1-05723">View full essay</button>
+        <div class="essay-full" id="full-1-05723" style="display:none;">
+            <p>Yes. Companies should be required to disclose security breaches, because secrecy shifts the cost of bad security onto the very people least able to protect themselves: customers, employees, sources, patients and investors.</p>
+            <p>The usual corporate argument against disclosure is that not every intrusion matters. That is true. A teenager defacing a marketing page is not the same as a criminal ring stealing Social Security numbers, or a foreign intelligence service reading a newspaper’s reporting plans. But that distinction argues for sensible disclosure rules, not for silence. If personal data, payment information, confidential communications or operational systems have been compromised, the affected public deserves timely notice.</p>
+            <p>Breach notification laws already exist in many states, led by California’s 2002 law, and they have changed corporate behavior for the better. Before such laws, companies often had little incentive to admit that they had lost laptops, exposed databases or stored customer data carelessly. Disclosure creates accountability. It lets consumers cancel cards, change passwords, place fraud alerts and watch for identity theft. It also lets competitors and partners recognize common attack patterns. The recent reports of intrusions at media companies are useful not because they embarrass the victims, but because they show others what to look for.</p>
+            <p>The fear that disclosure will “help the hackers” is often overstated. A company need not publish its firewall rules or forensic details in the first announcement. A responsible requirement can say: disclose what happened, when it was discovered, what kinds of information may have been affected, what customers should do, and whom to contact. Technical indicators can be shared with trusted industry groups or law enforcement while still giving the public meaningful warning.</p>
+            <p>Nor is reputational harm a good reason for secrecy. If disclosure causes embarrassment, that is part of the market’s discipline. Security is now a core part of doing business, not an obscure matter for the server room. A bank, hospital, retailer or newspaper that cannot protect sensitive information should expect questions from customers and shareholders.</p>
+            <p>The law should include safe harbors for prompt, good-faith disclosure and should allow short delays when law enforcement can show that immediate notice would seriously compromise an investigation. But the default must change. Hacking is not merely a private inconvenience suffered by companies. It is a public risk created by the way companies collect, store and monetize data. When that risk materializes, silence should not be an option.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Mandatory disclosure empowers affected individuals to take immediate protective actions such as changing passwords, canceling cards, and monitoring for identity theft.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Publicly reporting breaches creates market accountability and incentivizes companies to prioritize security as a core business function.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Sharing information about intrusions helps other businesses and partners recognize common attack patterns and defend against similar threats.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Disclosure requirements can be designed to provide meaningful public warnings without compromising technical security or ongoing law enforcement investigations.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Since hacking represents a public risk created by corporate data practices, companies have a responsibility to inform the public when that risk materializes.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches through a federal standard to protect consumer rights, incentivize better security, and safeguard national interests."</p>
+        <button class="essay-view-full" data-target="full-1-44314">View full essay</button>
+        <div class="essay-full" id="full-1-44314" style="display:none;">
+            <p>Yes, and It&#x27;s Long Past Time</p>
+            <p>When the New York Times revealed last month that Chinese hackers had spent four months prowling its network, the most striking detail wasn&#x27;t the breach itself—it was how exceptional the disclosure felt. Most companies hit by similar intrusions stay silent, and for an obvious reason: bad news is bad for business. That is precisely why disclosure cannot remain voluntary.</p>
+            <p>The case for mandatory reporting rests on a simple principle. When a company collects my credit card number, my medical records, or my login credentials, it is acting as a custodian of information I cannot easily protect myself. If that custodianship fails, I have a right to know promptly so I can change passwords, watch my accounts, or freeze my credit. Forty-six states already recognize this principle in their data breach notification laws, but the patchwork is uneven, riddled with loopholes for &quot;encrypted&quot; data and harm thresholds that let companies decide for themselves whether customers deserve a warning. A federal standard with teeth is overdue.</p>
+            <p>Critics will argue that disclosure tips off other attackers or invites lawsuits. The first concern is overstated: sophisticated attackers usually know what worked; it is defenders who are kept in the dark. The second concern is, frankly, the point. The threat of reputational and legal consequences is what forces firms to invest in security in the first place. A world where breaches are quietly absorbed as a cost of doing business is a world where security budgets stay anemic.</p>
+            <p>There is also a national-security dimension we ignore at our peril. The Mandiant report on PLA Unit 61398, published this week, makes clear that Chinese state-linked actors are systematically siphoning intellectual property from American firms. If companies are not required to report intrusions, policymakers cannot grasp the scope of what is being lost, and other firms cannot learn from a peer&#x27;s compromise. Voluntary information-sharing arrangements like ISACs have value, but they are slow and incomplete.</p>
+            <p>The right framework is straightforward: rapid notification to affected individuals when personal data is exposed; confidential notification to a designated federal authority for serious intrusions regardless of data type; and meaningful penalties for concealment. We require restaurants to report food-borne illness outbreaks and hospitals to report infections. The data economy deserves no less. Sunshine is uncomfortable for the exposed, but it is the only reliable disinfectant we have.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Individuals have a right to know when their personal data has been compromised so they can take immediate steps to protect themselves from identity theft and fraud.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">A federal mandate is necessary to replace the current patchwork of state laws that contain loopholes and allow companies to avoid disclosure.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">The threat of public disclosure and subsequent legal consequences forces companies to prioritize and invest in robust cybersecurity measures.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Mandatory reporting allows the government and other businesses to understand the scope of cyber threats and learn from peer compromises to improve collective defense.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Public health and safety precedents, such as reporting food-borne illnesses, justify similar transparency requirements for the data economy.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">DeepSeek</span>
+        </div>
+        <p class="essay-quote">"Congress should mandate the prompt disclosure of any security breach that exposes sensitive personal data to ensure consumer protection and corporate accountability."</p>
+        <button class="essay-view-full" data-target="full-1-12750">View full essay</button>
+        <div class="essay-full" id="full-1-12750" style="display:none;">
+            <p>We’ve all had that sinking feeling after learning a store we frequent or a service we use was hacked months ago — without a word of warning. When The New York Times and other corporations recently came forward, they broke a code of silence that has long shielded companies from accountability. But voluntary confessions are too rare, too late, and too carefully crafted. Congress should mandate prompt disclosure of any security breach that exposes personal data.</p>
+            <p>The argument for mandatory disclosure is straightforward: when you entrust a company with your credit card number, medical records, or private communications, they assume a duty to protect that information. If a toy manufacturer discovers lead paint on its products, it must alert the public immediately. Why should digital poison be different? The immediate harm from identity theft or financial fraud can be devastating, yet victims often learn about the breach only after the damage is done.</p>
+            <p>Opponents say mandatory disclosure would create panic and reward hackers with publicity. But the opposite is true. Secrecy aids criminals far more than it protects consumers. Hackers already know they’ve succeeded; keeping it quiet just gives them a longer window to exploit stolen data while the company tries to fix the problem quietly. If every breach were promptly announced, the underground market for stolen credentials would be disrupted because consumers could quickly change passwords, cancel cards, and monitor accounts. The window of value for fresh data would shrink dramatically.</p>
+            <p>Moreover, secrecy shields the companies that under-invest in security. A forced walk of shame is a powerful incentive. If a firm knows it will have to publicly admit that it stored passwords in plain text or failed to patch a known vulnerability, it will think twice before cutting corners on security budgets. The embarrassing headlines after a breach can be more effective than any fine.</p>
+            <p>Critics also claim that disclosure mandates would swamp consumers with notices about trivial incidents. But we can design a sensible threshold: any breach that involves sensitive personal information — Social Security numbers, financial data, health records — should trigger a notification. Vague losses of marketing data or internal memos don’t need the same treatment. The goal is to give people the power to act when their core identity is at stake, not to bury them in noise.</p>
+            <p>The New York Times did the right thing by speaking up. But we shouldn’t rely on the journalistic conscience of some corporations. Clear, uniform federal rules that replace the current patchwork of state laws would give consumers the protection they deserve. In the digital age, sunlight isn’t just the best disinfectant; it’s the first line of self-defense.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Companies have a duty to inform consumers of digital risks just as they are required to issue recalls for dangerous physical products.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Prompt disclosure disrupts the underground market for stolen data by allowing victims to secure their accounts before criminals can exploit the information.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Mandatory public disclosure acts as a powerful incentive for companies to invest in robust security measures to avoid the reputational damage of a breach.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A federal mandate would replace the current inconsistent patchwork of state laws with clear, uniform rules for protecting consumer identity.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Establishing a threshold for sensitive personal information ensures that disclosure requirements empower consumers without overwhelming them with notifications for trivial incidents.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Claude</span>
+        </div>
+        <p class="essay-quote">"Companies should be required to disclose security breaches because sharing technical details of attacks allows for a collective defense that protects the entire economy."</p>
+        <button class="essay-view-full" data-target="full-1-20434">View full essay</button>
+        <div class="essay-full" id="full-1-20434" style="display:none;">
+            <p>The Real Audience Isn&#x27;t Customers—It&#x27;s Other Defenders</p>
+            <p>Most arguments for breach disclosure focus on protecting consumers. That&#x27;s understandable but incomplete. The bigger payoff from telling the truth about hacks is collective: every defender learns from every attack. Right now, that learning barely happens, and the country pays the price.</p>
+            <p>Consider what the Mandiant report on APT1, released this week, actually accomplished. By publicly naming Chinese PLA Unit 61398 and detailing its tradecraft—the malware families, the command-and-control infrastructure, the operational patterns—Mandiant gave every American security team a checklist to use tomorrow morning. Logs can be searched. Indicators can be blocked. Patterns can be recognized. That report is more useful to the average CISO than a thousand generic warnings about &quot;advanced persistent threats.&quot;</p>
+            <p>Now imagine that intelligence multiplied across every significant intrusion in the U.S. economy. Imagine that when one defense contractor finds a novel phishing lure, every other contractor sees it within hours. Imagine that when a bank detects a new wire-fraud technique, peer banks are alerted before they are hit. This is not a fantasy; it is roughly what the Financial Services ISAC tries to do, and what other sectors do far less well. The bottleneck is not technology. The bottleneck is the legal and reputational risk attached to admitting a breach.</p>
+            <p>That is why disclosure rules matter, but they need to be designed with sharing—not shaming—in mind. A useful regime would require timely confidential reporting of serious intrusions to a federal coordinator, with mandatory de-identified sharing of technical indicators across affected sectors. Liability protections should accompany the mandate, so general counsels stop treating threat data like radioactive waste. Public disclosure to customers should remain mandatory when their data is exposed, but the broader reporting regime should be oriented toward defenders, not journalists.</p>
+            <p>The legislation now circulating in Washington, including CISPA, gets some of this right and some of it wrong. Civil-liberties concerns about handing private data to intelligence agencies are legitimate and need real guardrails. But the underlying insight—that we cannot defend a networked economy if every defender fights alone—is correct.</p>
+            <p>Disclosure, properly designed, is less about transparency for its own sake than about turning isolated victims into a learning system. That is what the country is missing.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Publicly detailing the specific tradecraft and infrastructure used in hacks provides security teams with actionable intelligence to identify and block similar threats.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The current lack of disclosure creates a bottleneck where defenders fight in isolation rather than learning from each other&#x27;s experiences.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Legal and reputational risks currently discourage companies from sharing vital threat data, necessitating a mandate paired with liability protections.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">A disclosure regime should prioritize the sharing of de-identified technical indicators with a federal coordinator to alert peer organizations before they are targeted.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">While consumer protection is important, the primary goal of disclosure should be turning isolated victims into a networked learning system for national security.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches to protect consumer rights and create market incentives for better security."</p>
+        <button class="essay-view-full" data-target="full-1-14643">View full essay</button>
+        <div class="essay-full" id="full-1-14643" style="display:none;">
+            <p>The case for mandatory breach disclosure is fundamentally a matter of basic consumer rights. When companies collect our personal information—names, addresses, financial data—they become temporary custodians of our digital identities. The moment that custody is compromised, we lose the ability to protect ourselves. We cannot freeze accounts we don&#x27;t know were accessed, change passwords for systems we don&#x27;t know were breached, or monitor credit reports for activity we don&#x27;t know to expect.</p>
+            <p>The current voluntary system has failed. Companies weigh disclosure against reputational damage and shareholder panic, and too often choose silence. The New York Times Company&#x27;s recent admission was admirable, but it came only after evidence became public. Countless other breaches go unreported because no one forces the revelation. This asymmetry—where companies bear the costs of disclosure while customers bear the costs of secrecy—creates perverse incentives that only regulation can correct.</p>
+            <p>Some argue that disclosure requirements would harm businesses and discourage investment in security. This gets the causality backwards. A mandatory disclosure regime would create powerful market incentives for robust security. Companies would compete to avoid the reputational and operational costs of breaches, exactly as they compete to avoid other forms of regulatory failure. The absence of disclosure requirements simply allows inadequate security practices to remain invisible.</p>
+            <p>California proved this model works when it enacted the nation&#x27;s first breach notification law in 2003. Other states followed. Federal legislation would extend these protections and create consistent standards across industries. Customers deserve to know when their data has been compromised, and companies should be required to tell them.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Immediate disclosure is necessary for consumers to take proactive steps to protect their digital identities and financial security.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">The current voluntary disclosure system fails because companies prioritize their reputation and shareholder interests over public transparency.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Mandatory disclosure creates a market incentive for companies to invest in robust security to avoid the public fallout of a reported breach.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Existing state-level laws, such as California&#x27;s notification law, demonstrate that a regulatory model for breach disclosure is both functional and effective.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">MiniMax</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches to protect consumers and create proper incentives for cybersecurity."</p>
+        <button class="essay-view-full" data-target="full-1-73819">View full essay</button>
+        <div class="essay-full" id="full-1-73819" style="display:none;">
+            <p>For those arguing against disclosure mandates, consider the victims: ordinary consumers who have no idea their identities have been stolen until debt collectors call or credit scores plummet. The voluntary system has created a class of people who bear costs they never consented to bear, while the companies responsible for security failures hide behind claims of proprietary information.</p>
+            <p>The argument that disclosure harms business assumes that customers prefer ignorance to knowledge. This misreads human nature. Customers who learn of breaches can take protective action. They can freeze credit, change passwords, monitor accounts, and alert financial institutions. Customers left in the dark cannot protect themselves. The asymmetry in information creates asymmetry in risk that disclosure would correct.</p>
+            <p>Some argue that companies will be deterred from investing in security if disclosure requirements create reputational damage. This gets the incentive structure backwards. The prospect of mandatory disclosure creates incentives for prevention. Companies that currently calculate &quot;breach secrecy is cheaper than breach response&quot; will instead calculate &quot;breach prevention is cheaper than mandatory disclosure.&quot; The market failure we&#x27;re addressing is precisely this misaligned incentive.</p>
+            <p>State laws have created a patchwork that burdens businesses without adequately protecting consumers. A strong federal standard would actually help businesses by creating predictable requirements. California&#x27;s breach notification law was pioneering, but 50 different state standards create compliance complexity without commensurate consumer benefit. Federal action would clarify the landscape for everyone.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Mandatory disclosure protects consumers by allowing them to take immediate action to mitigate identity theft and financial loss.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Public disclosure requirements shift the corporate incentive structure from prioritizing secrecy to prioritizing the prevention of breaches.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A federal disclosure mandate would replace the current inefficient patchwork of state laws with a predictable and clear regulatory landscape for businesses.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">The current voluntary system unfairly forces consumers to bear the costs of security failures while allowing responsible companies to avoid accountability.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">Gemini</span>
+        </div>
+        <p class="essay-quote">"The federal government should implement a strict mandate requiring companies to disclose security breaches to protect consumers and improve corporate accountability."</p>
+        <button class="essay-view-full" data-target="full-1-92808">View full essay</button>
+        <div class="essay-full" id="full-1-92808" style="display:none;">
+            <p>When consumers hand over their personal information to a corporation, they are entering into an unwritten social contract: we provide the data that fuels your profits, and in exchange, you keep it safe. Unfortunately, recent events have shown that companies are failing to uphold their end of the bargain, and worse, they often try to sweep those failures under the rug. A strict federal mandate requiring companies to disclose security breaches is not just necessary; it is long overdue.</p>
+            <p>Currently, we are relying on a patchwork of state laws, pioneered by California over a decade ago, which mandate disclosure when unencrypted personal information is compromised. But these laws are inconsistent and leave massive loopholes. Furthermore, they primarily focus on specific types of data, like Social Security numbers or credit cards. As our digital footprints expand, hackers are increasingly targeting email addresses, passwords, and behavioral data—information that can easily be leveraged for devastating phishing attacks or identity theft across multiple platforms.</p>
+            <p>When a company is breached and stays silent, it protects its stock price and public relations image at the direct expense of its customers. Consumers are left entirely defenseless, blissfully unaware that they should be changing their passwords, monitoring their bank accounts, or putting fraud alerts on their credit files.</p>
+            <p>The argument that disclosure causes undue panic is a paternalistic deflection. Consumers have a fundamental right to know when their digital safety has been compromised. The recent willingness of media and tech giants to admit they were targeted is a positive step, but we cannot rely on the goodwill or public relations strategies of individual corporations. Transparency must be a legal requirement, backed by severe financial penalties for executives who choose silence over customer security. By forcing companies to bring their security failures into the light, we not only empower users to protect themselves, but we also create a powerful financial incentive for corporations to invest heavily in robust cybersecurity before a breach ever occurs.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Current state-level disclosure laws are inconsistent and contain loopholes that fail to cover the wide variety of personal data targeted by modern hackers.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Corporate silence regarding breaches prioritizes a company&#x27;s stock price and public image over the immediate safety and financial security of its customers.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Mandatory disclosure empowers consumers to take proactive steps, such as changing passwords or monitoring credit, to mitigate the damage of a hack.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Consumers have a fundamental right to know when their digital safety has been compromised, regardless of a company&#x27;s concerns about public panic.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Legally requiring transparency creates a strong financial incentive for corporations to invest in more robust cybersecurity measures to avoid the fallout of public disclosure.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches when sensitive information is compromised to protect affected individuals and improve overall cybersecurity accountability."</p>
+        <button class="essay-view-full" data-target="full-1-27383">View full essay</button>
+        <div class="essay-full" id="full-1-27383" style="display:none;">
+            <p>Yes. Companies should be required to disclose security breaches when the breach creates a real risk to customers, employees, investors or business partners. The reason is not that every corporate victim deserves public shaming. It is that the costs of a breach often fall first on people who did not choose the risk and cannot discover it for themselves.</p>
+            <p>If a retailer, bank, hospital, e-mail provider or social network loses control of passwords, Social Security numbers, medical information, credit card data or private communications, the affected people need to know quickly. They may need to change passwords, cancel cards, watch accounts, place fraud alerts or avoid spear-phishing messages that use stolen information. Keeping quiet protects the company’s brand while leaving everyone else exposed.</p>
+            <p>The United States already has experience with this idea. Since California’s breach notification law took effect a decade ago, most states have adopted some version of it. Those laws are imperfect, but they have done something important: they changed data breaches from invisible corporate mishaps into events that customers, journalists, regulators and competitors can evaluate. That transparency has exposed weak security practices that otherwise would have remained hidden.</p>
+            <p>The current patchwork is not enough. A national rule should require prompt notice when sensitive information has been accessed or is reasonably likely to have been accessed. The notice should be written in plain English, identify the categories of information involved, say what the company is doing, and tell affected people what they can do. Companies should also provide technical indicators to a trusted clearinghouse so that other businesses can defend themselves, without publishing a how-to guide for attackers.</p>
+            <p>There should be narrow exceptions. A company should be allowed to delay public notice briefly if law enforcement certifies that disclosure would compromise an investigation or if immediate disclosure would worsen an ongoing attack. But “we are still investigating” cannot become a months-long excuse. Nor should a company be allowed to avoid notice simply because it cannot prove exactly what was taken; attackers rarely leave notarized receipts.</p>
+            <p>Cybersecurity suffers from a classic market failure. Customers cannot easily judge which companies protect data well, and companies have every incentive to minimize bad news. Mandatory disclosure does not solve computer security. But it aligns incentives: collect less data, encrypt what you keep, monitor networks, and tell people when your failure becomes their risk. That is the least a digital custodian owes the public.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Prompt disclosure is necessary so that affected individuals can take immediate actions, such as changing passwords or monitoring accounts, to mitigate personal risk.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Mandatory notification laws transform invisible corporate mishaps into transparent events that allow the public and regulators to evaluate and expose weak security practices.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">A national rule would replace the current insufficient patchwork of state laws with a standardized requirement for clear, prompt, and actionable communication.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Sharing technical indicators of a breach with a trusted clearinghouse allows other businesses to defend themselves against similar threats.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">Mandatory disclosure corrects a market failure by aligning corporate incentives toward better data protection and transparency rather than minimizing bad news to protect a brand.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="essay-item">
+        <div class="essay-meta">
+          <span class="essay-src src-d">Diversified</span>
+          <span class="essay-by">GPT</span>
+        </div>
+        <p class="essay-quote">"Companies should be legally required to disclose security breaches because transparency is essential for public accountability and the collective security of the digital infrastructure."</p>
+        <button class="essay-view-full" data-target="full-1-37364">View full essay</button>
+        <div class="essay-full" id="full-1-37364" style="display:none;">
+            <p>Companies should tell us when they are hacked because secrecy has become part of the problem. The digital economy asks individuals to hand over intimate and valuable information to institutions they cannot meaningfully inspect. We cannot audit a retailer’s network, examine a newspaper’s e-mail security or test a cloud provider’s internal controls. We are told to trust. Disclosure is one of the few ways to make that trust accountable.</p>
+            <p>The argument for disclosure is often framed narrowly: customers need to know whether to cancel a credit card. That is true, but too limited. Breach disclosure also teaches the public how insecure our shared infrastructure really is. It helps researchers and competitors see patterns. It allows journalists to ask why the same mistakes keep recurring. It gives boards of directors a reason to treat cybersecurity as governance rather than plumbing.</p>
+            <p>Other industries have learned this lesson. We investigate plane crashes not because airlines enjoy embarrassment, but because the next crash may be prevented. Hospitals track infections not because every infection is scandalous, but because hidden infections spread. Cybersecurity should move in the same direction. A breach is not just a private misfortune; it is evidence about the health of a system on which others rely.</p>
+            <p>Recent disclosures by the New York Times and other organizations have been valuable precisely because they point beyond a single victim. They suggest coordinated attacks, sometimes apparently tied to state interests, against classes of targets. If each victim stays silent, every company fights alone and the public never sees the campaign. When one speaks, others can compare notes.</p>
+            <p>There are legitimate limits. A company should not be forced to publish exploit code, name unpatched systems or announce an intrusion while attackers are still being expelled. Law enforcement may sometimes need a short delay. But these concerns justify careful disclosure, not nondisclosure. A public notice can state the fact of the breach, the type of information affected, the broad method of attack and the protective steps being taken without providing a manual for criminals.</p>
+            <p>We should also create a public breach registry with standardized information, updated as investigations mature. The first notice can be preliminary; later reports can correct the record. That is better than the current system, in which many incidents surface only through rumor, lawsuits or stolen data appearing in criminal markets.</p>
+            <p>The loss of trust comes less from admitting a breach than from hiding one. If companies want the benefits of collecting and monetizing personal information, they must accept the duty to tell the public when that information, or the systems protecting it, has been compromised.</p>
+        </div>
+        <div class="essay-subs">
+          <div class="sub-head">Sub-arguments</div>
+          <ol class="sub-list">
+              <li class="src-d"><span class="num">01</span><span class="sub-text">Disclosure provides a necessary mechanism for individuals to hold institutions accountable for the intimate data they are required to trust them with.</span></li>
+              <li class="src-d"><span class="num">02</span><span class="sub-text">Publicly reporting breaches helps researchers, competitors, and journalists identify recurring patterns and systemic vulnerabilities that would otherwise remain hidden.</span></li>
+              <li class="src-d"><span class="num">03</span><span class="sub-text">Mandatory reporting encourages corporate boards to prioritize cybersecurity as a matter of high-level governance rather than a minor technical issue.</span></li>
+              <li class="src-d"><span class="num">04</span><span class="sub-text">Sharing information about attacks allows companies to coordinate their defenses against large-scale campaigns rather than fighting threats in isolation.</span></li>
+              <li class="src-d"><span class="num">05</span><span class="sub-text">A standardized public breach registry would provide more reliable and accurate information than the current system of rumors and leaks.</span></li>
+              <li class="src-d"><span class="num">06</span><span class="sub-text">The duty to disclose is a necessary ethical obligation for companies that profit from the collection and monetization of personal data.</span></li>
+          </ol>
+        </div>
+      </div>
+</div>
+<script>
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Improving on the Tax Code’s ‘Marriage Penalty’ · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">NYT Room for Debate · Economy · Open-ended</div>
+  <h1 class="debate-title">Improving on the Tax Code’s ‘Marriage Penalty’</h1>
+  <div class="question-body"><p>Even with marriage in the news this spring, it’s easy to forget that it comes at a price: the “marriage penalty” hits many couples on tax day. Federal tax rates generally discourage dual-income couples from getting married, and encourage single-earner couples to marry.</p><p>Does this mixed message make sense? Is there a better approach?</p></div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=4</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_1.html">
+      <td class="arg-text">The current tax code&#x27;s bias against two-earner married couples is an outdated relic that should be reformed by treating all individuals as single filers to reflect modern economic realities.</td>
+      <td><span class="humans-pill ">2</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_2.html">
+      <td class="arg-text">Congress should prioritize reforming federal tax and transfer policies to eliminate marriage penalties for low-income and working-class families rather than for affluent dual-income couples.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_3.html">
+      <td class="arg-text">To resolve the inequities of the marriage penalty, Congress should implement a secondary-earner deduction that allows dual-income couples to deduct a percentage of the lower-earning spouse&#x27;s income.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_4.html">
+      <td class="arg-text">The tax code&#x27;s marriage penalty is a complex, often exaggerated issue that does not require a fundamental overhaul because current reform proposals would likely create new inequities and fail to address the actual causes of declining marriage rates.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_5.html">
+      <td class="arg-text">While the marriage penalty is an unfair aspect of the tax code, it does not significantly influence marriage rates and is a less pressing issue than systemic tax avoidance by the wealthy and corporations.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_6.html">
+      <td class="arg-text">The federal tax code should be reformed to eliminate the marriage penalty because it creates unfair economic distortions and penalizes dual-income households.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_7.html">
+      <td class="arg-text">The tax code should aim to reduce the sharpest marriage penalties for low- and moderate-income families while accepting that a perfectly neutral system is impossible if we wish to maintain progressive taxation and treat married couples as single economic units.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_8.html">
+      <td class="arg-text">The federal tax code should undergo targeted repairs to address specific marriage penalties rather than a radical redesign, as the current system&#x27;s marriage bonuses are a defensible way to support a socially beneficial institution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_9.html">
+      <td class="arg-text">The federal tax code should be reformed to achieve marriage neutrality, ensuring that joint filers never face a higher tax burden than they would as two single individuals.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_10.html">
+      <td class="arg-text">The federal government should replace the income tax with a progressive consumption tax to permanently eliminate the marriage penalty and create a neutral tax system for family formation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_11.html">
+      <td class="arg-text">The tax code should be reformed by doubling income bracket thresholds for married couples to ensure that tax burdens reflect the actual economies of scale and shared economic capacity of a household.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_12.html">
+      <td class="arg-text">The federal tax code should be modified to eliminate the marriage penalty because it creates significant economic distortions by discouraging secondary earners from participating in the labor force.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_13.html">
+      <td class="arg-text">The federal tax code should be permanently reformed to eliminate the marriage penalty by ensuring all tax brackets and credit phase-outs for married couples are exactly double those for single filers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_nyt_improving-on-the-tax-codes-marriage-penalty_arg_14.html">
+      <td class="arg-text">The federal government should reform the tax code to eliminate the marriage penalty, ensuring that couples are not financially punished for entering into a legally and socially beneficial institution.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Edward J. McCaffery</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/04/14/improving-on-the-tax-codes-marriage-penalty/edward-j-mccaffery" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Joan Entmacher</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/04/14/improving-on-the-tax-codes-marriage-penalty/joan-entmacher" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">W. Bradford Wilcox</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/04/14/improving-on-the-tax-codes-marriage-penalty/w-bradford-wilcox" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Will Wilkinson</span>
+      <a class="essay-link" href="https://www.nytimes.com/roomfordebate/2013/04/14/improving-on-the-tax-codes-marriage-penalty/will-wilkinson" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>The tax code&#x27;s mixed message on marriage is the artifact of trying to satisfy three goals that cannot all hold at once: that the system be progressive, that couples with equal household income pay equal tax, and that a couple&#x27;s tax bill not change when they marry. Pick any two and you must abandon the third. The United States chose the first two in 1948, when joint filing was introduced, and the marriage penalty (and bonus) is the price.</p>
+      <p>The 2001 and 2003 tax cuts, made permanent in this January&#x27;s fiscal cliff deal, narrowed the penalty considerably in the lower brackets by setting the married-filing-jointly bracket thresholds and standard deduction at exactly twice the single levels. But the penalty reappears sharply in the upper brackets — particularly now that the new 39.6 percent rate kicks in at $400,000 for singles but only $450,000 for couples — and it lurks throughout the code in phase-outs for the EITC, education credits, the new Medicare surtax, and the PEP/Pease revival. For low-income working couples, the EITC penalty can run into thousands of dollars and is genuinely a disincentive to marry; for high earners, it&#x27;s an annoyance but unlikely to change behavior.</p>
+      <p>The cleanest fix is the one most other OECD countries have already made: tax individuals, not households. Each spouse files on his or her own earnings, with transferable allowances for dependents. This eliminates both the penalty and the bonus, removes the secondary-earner&#x27;s high marginal rate (a well-documented drag on married women&#x27;s labor supply), and treats marriage as fiscally neutral — appropriate in an era when two-earner households are the norm and the state is being asked to recognize a wider range of marital arrangements.</p>
+      <p>The objection is lost progressivity at the household level: a surgeon married to a homemaker would pay less than two surgeons earning the same total. That&#x27;s a real tradeoff, but a defensible one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>The U.S. tax code sends a bewildering signal: if you both work, you’ll likely pay a marriage penalty; if only one does, you’ll probably get a bonus. This mixed message doesn’t make sense. Designed for a postwar breadwinner-homemaker norm, the code now clashes with the reality of dual-earner families, which account for most married couples. It actively discourages work and penalizes marriage for those who need two incomes most.</p>
+      <p>The mechanics are simple. Joint filing gives married couples rate brackets less than twice as wide as singles’. Two incomes thus get pushed into higher marginal rates than if each partner filed singly. By contrast, a single-earner couple effectively transfers the non-working spouse’s unused lower brackets onto the earner, creating a tax shelter. The result is a hidden tax on working wives, which research has long shown reduces women’s labor supply—a perverse outcome when families are straining and the economy needs all hands on deck. The penalty can cost dual-earners thousands of dollars.</p>
+      <p>A better approach is individual-based taxation. Every adult would file on their own income, regardless of marital status, instantly ending both penalty and bonus and making the tax code marriage-neutral. The United States is an outlier here: most OECD countries already tax individuals separately. To soften the impact on single-earner couples with unequal incomes, we could keep a refundable dependent credit or a transferable personal allowance that phases out at higher levels—preserving progressivity without distorting who marries or who works. Such a system would also simplify filing, ending the need to calculate taxes both ways.</p>
+      <p>Critics may claim joint filing honors a communal view of marriage, but in practice it breeds complexity, invites gaming, and punishes working couples. Marriage should be about commitment, not an I.R.S.-driven financial calculation. A shift to individual taxation would be a far cleaner, fairer reform, respecting both individual autonomy and the way families actually live. It’s time to stop using the tax code to pick winners among family structures.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>As the Supreme Court weighs the legal definitions of marriage this spring, we should also examine the outdated financial architecture awaiting couples who do tie the knot. The federal tax code’s “marriage penalty” is not merely an accounting quirk; it is an economic relic that actively subsidizes a 1950s family model while punishing the realities of the modern workforce.</p>
+      <p>Under our current system, a couple with one primary breadwinner receives a tax “bonus” upon marrying, as the higher earner gains access to wider tax brackets. Conversely, when two individuals with similar incomes marry, their combined income frequently pushes them into a higher tax bracket, resulting in a penalty. This mixed message makes no economic or social sense today. Dual-income households are now the American norm, yet our tax code treats them as an anomaly. Worse, the marriage penalty acts as a regressive tax on the “secondary” earner—who is still predominantly female. By taxing that second income at the couple’s highest marginal rate from the very first dollar earned, the code disincentivizes women&#x27;s labor force participation and hampers broader economic growth.</p>
+      <p>There is a much better approach: marriage neutrality. The tax code should neither encourage nor discourage marriage, nor should it dictate how families structure their employment. The most comprehensive solution would be transitioning to individual taxation, an approach successfully utilized by Canada and several European nations. Everyone is taxed on what they individually earn, eliminating marital penalties and bonuses entirely.</p>
+      <p>Short of a complete overhaul, Congress could mitigate the damage within the current joint-filing system by ensuring that all married tax brackets are exactly twice the size of single brackets, all the way to the highest income levels. A modern tax system should assess a taxpayer’s ability to pay without attempting to engineer domestic arrangements or penalize the choice to work. It is time to align our tax code with the realities of the 21st-century American family.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>The tax code’s mixed message is not a moral statement about marriage so much as the predictable result of trying to satisfy incompatible goals. We want progressive taxation; we want married couples with the same combined income to pay the same tax; and we want two people to owe the same amount whether they marry or not. All three cannot be achieved at once. Joint filing with progressive rates inevitably creates bonuses for some couples and penalties for others.</p>
+      <p>Still, the current arrangement is hard to defend. A one-earner couple often receives a marriage bonus because joint brackets allow the earner to spread income over two people. A two-earner couple, especially when both spouses have similar incomes, can be pushed into higher brackets or lose deductions and credits. For low-income families, the problem can be worse: the Earned Income Tax Credit, Medicaid, housing assistance and other phaseouts can combine to make marriage financially costly. That is a particularly perverse signal, because these are households least able to treat tax penalties as symbolic.</p>
+      <p>The better approach is to stop using marriage as the central tax unit. The income tax should move much closer to individual filing: two workers should not pay more simply because they marry, and a household should not get a large bonus merely because one spouse stays out of the labor market. Concerns about children and caregiving should be addressed directly, through child credits, dependent-care credits, and support for low-income workers, not indirectly through a marital status preference.</p>
+      <p>This would not eliminate every complication. Married couples do share resources, and a spouse who provides unpaid care is contributing real economic value. But those facts do not require a system that penalizes second earners, who are often women, or that treats marriage as a tax shelter for one-earner households. Congress could also reduce the harshest penalties by widening brackets for couples with two earners and smoothing benefit phaseouts, especially in the EITC.</p>
+      <p>As marriage law itself is being reconsidered, the tax system should aim for neutrality. Government may recognize marriage, but it should not make the decision to marry a tax gamble.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>The marriage penalty is one of the tax code&#x27;s more enduring absurdities, and the mixed message it creates deserves serious attention. When two workers with similar incomes marry, their combined income often pushes them into higher tax brackets faster than if they remained single. Meanwhile, a single-income household with the same total earnings may face a lower effective rate. This creates perverse incentives: a dual-career couple faces a tax burden their peers who organize their lives differently avoid.</p>
+      <p>The rationale for this arrangement traces to how progressive tax brackets were designed with individual filers in mind. When the system was adapted for joint returns, the brackets were not adjusted proportionally, leaving married couples with combined incomes exposed to bracket creep that single filers never experience on their own earnings.</p>
+      <p>The case for reform rests on both fairness and efficiency grounds. The current system effectively penalizes labor market participation by the secondary earner in many households—most often women—creating economic distortions. Couples make marital decisions based on love, children, and logistics; they should not have to factor in several thousand dollars in additional tax liability.</p>
+      <p>Several approaches merit consideration. Expanding the income thresholds for married filers, so brackets more closely mirror those for single filers multiplied by two, would directly reduce the penalty. Others have proposed hybrid systems that calculate taxes based on individual rather than household income. Still others suggest moving toward a flat tax or consumption-based system where marriage would become irrelevant to tax liability.</p>
+      <p>Each approach has tradeoffs. Simplifying the code generally argues for moving away from marriage-based distinctions entirely. Yet any reform must contend with the revenue implications and the political difficulty of explaining why some couples would pay more under a new system.</p>
+      <p>The marriage penalty is solvable, but doing so requires deciding what role, if any, the tax code should play in encouraging particular household economic arrangements.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (24 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>The so-called &quot;marriage penalty&quot; is really a symptom of a deeper design problem: the United States tries to tax both individuals and households at the same time, and the two goals are mathematically irreconcilable under a progressive rate schedule. You cannot simultaneously have (1) progressive rates, (2) equal taxation of married couples with equal combined incomes, and (3) tax liability that is unaffected by marriage. Pick any two and you must sacrifice the third.</p>
+      <p>Since 1948, we have chosen the first two, and the result is that two earners who marry often pay more than they did as singles, while a single-earner couple gets a windfall from &quot;splitting&quot; the breadwinner&#x27;s income across two bracket schedules. The Bush-era reforms widened the lower brackets and standard deduction for joint filers to roughly twice the single amounts, which softened the penalty for most middle-income couples. But it kicks in hard at higher incomes, in the phase-outs of credits like the EITC, and now in the new 3.8 percent investment surtax and 39.6 percent top bracket created by ATRA.</p>
+      <p>The cleanest fix is to abandon joint filing and tax every adult as an individual, as most OECD countries already do. Sweden, the U.K., and Canada moved this direction decades ago, and they found that individual filing increases labor-force participation among married women, who currently face very high effective marginal rates as &quot;secondary earners&quot; stacked on top of their husbands&#x27; income. The CBO and Congressional Research Service have repeatedly noted this distortion.</p>
+      <p>Individual filing would also end the absurd situation in which the IRS has to know, and care, about your romantic life. It would simplify withholding, reduce audit complexity around innocent-spouse relief, and remove the federal tax code from the same-sex-marriage debate currently before the Supreme Court in Windsor. Whatever the Court decides about DOMA, the underlying issue — that the federal government writes thousands of rules turning on marital status — would be diminished.</p>
+      <p>The objection, of course, is &quot;horizontal equity&quot;: shouldn&#x27;t two couples with the same combined income pay the same tax? Perhaps, but that principle assumes the married couple is the natural taxable unit, which is increasingly out of step with how Americans actually live. Nearly half of adults are unmarried; cohabitation is common; and dual-earner households are the norm. The tax code should catch up. Tax people, not marriages.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>The mixed message in the tax code is not an accident or oversight — it reflects a genuine conflict between values that Americans hold simultaneously. We want progressive rates. We want couples with equal household income to pay equal tax. And we want marriage to be tax-neutral. As economists have pointed out for decades, you cannot have all three. So the question isn&#x27;t whether to &quot;fix&quot; the marriage penalty; it&#x27;s which value we are willing to give up.</p>
+      <p>I would give up the second one. The premise that two couples with the same combined income should pay the same tax assumes that marriage merges economic lives so thoroughly that the individuals inside disappear. That may have been a reasonable approximation in 1948, when joint filing was enacted and one spouse (almost always the wife) typically had no independent earnings. It is a poor approximation today. Spouses keep separate accounts, separate careers, and often separate financial obligations from prior relationships. Treating them as a single economic blob is increasingly fictional.</p>
+      <p>More importantly, joint filing imposes a real and well-documented cost: it discourages secondary earners — overwhelmingly women — from working. Because the second earner&#x27;s first dollar is taxed at the household&#x27;s marginal rate, a wife considering returning to work after children faces effective tax rates that can exceed 40 percent before payroll taxes, child-care costs, and phased-out credits are counted. Harvard&#x27;s Claudia Goldin and others have linked this to America&#x27;s stagnating female labor-force participation, which has fallen behind that of peer countries that tax individuals separately.</p>
+      <p>A move to individual filing would eliminate both the marriage penalty and the marriage bonus in one stroke. Yes, traditional single-earner households would lose the implicit subsidy they currently enjoy through income splitting. That is not a bug; it is a feature. There is no compelling public reason for the tax code to reward families that concentrate earnings in one spouse over families that share them.</p>
+      <p>If we are worried about families with children, the right instrument is a generous, refundable child credit — not a rate structure that pays homage to a 1950s household model. Individual filing is cleaner, more neutral toward life choices, and more friendly to women&#x27;s economic independence. It is the reform whose time has come, and the current debate over the marriage penalty is an opportunity to advance it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>Before we rush to &quot;fix&quot; the marriage penalty, let&#x27;s get the facts straight. For the large majority of married couples — those in the bottom and middle of the income distribution — there is no penalty at all. Thanks to the 2001 and 2003 tax cuts, which were made permanent for most households by the American Taxpayer Relief Act in January, the 10 and 15 percent brackets and the standard deduction for joint filers are exactly double those for singles. A bonus, not a penalty, is the more common experience: the Tax Policy Center estimates that roughly half of married couples receive a marriage bonus, while about a third pay a penalty, with the rest unaffected.</p>
+      <p>So who actually faces the penalty? Two groups: high-earning couples where both spouses make roughly equal incomes, and very low-income couples whose combined earnings phase out the Earned Income Tax Credit. The first group&#x27;s &quot;penalty&quot; is a feature of progressive taxation; if you believe in higher rates on higher incomes, you can&#x27;t be surprised when two six-figure earners pay more together than two strangers do apart. The second group&#x27;s problem is real and worth fixing — Congress should expand the EITC phase-out range for joint filers, as it has begun doing — but it&#x27;s a problem of credit design, not of the rate schedule.</p>
+      <p>What worries me about the broader debate is the assumption that the tax code should be redesigned to be neutral toward marriage. Marriage is not just another lifestyle option to be treated indifferently by public policy. It is a social institution associated with better outcomes for children, lower poverty, and greater economic stability. Federal policy already subsidizes plenty of activities considered socially beneficial — homeownership, charitable giving, retirement savings. A modest marriage bonus, especially for families raising children on a single income, is defensible on the same grounds.</p>
+      <p>The honest answer is that the current code mostly works. The penalty is real for a minority and could be trimmed at the top brackets and in the EITC. But the larger project of replacing joint filing with individual filing — favored by many economists — would impose significant losses on traditional single-earner families, many of them religious or working-class, in exchange for a theoretical elegance that few taxpayers will appreciate. Targeted repair, not radical redesign, is the right course.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>The marriage penalty debate is usually framed in gender-neutral language about &quot;dual-earner couples&quot; and &quot;single-earner couples,&quot; but the reality is gendered, and we should say so. The penalty falls hardest on wives, and the bonus rewards husbands whose wives stay home. The tax code, in other words, still subtly nudges American families toward the Ozzie-and-Harriet template, more than half a century after most women began working for pay.</p>
+      <p>Here is the mechanism. Under joint filing, the second earner&#x27;s income is stacked on top of the first earner&#x27;s, so her first dollar of wages is taxed at his marginal rate. For a woman married to a man earning $80,000, taking a $30,000 part-time job means her earnings are taxed starting at 25 percent — plus payroll tax, plus phased-out credits, plus child care. Economists have long shown that secondary-earner labor supply is far more elastic than primary-earner labor supply, meaning these high effective rates actually deter work. The Congressional Budget Office has flagged this; so has the OECD in comparing the U.S. with peer countries that have moved to individual filing.</p>
+      <p>Meanwhile, the marriage bonus — which gets less press than the penalty — flows to households where one spouse out-earns the other dramatically. A doctor whose wife stays home pays substantially less under joint filing than he would as a single man with the same income, because his earnings are &quot;split&quot; across two bracket schedules. The tax code is, in effect, paying him to keep his wife out of the workforce.</p>
+      <p>This is not just inefficient; it is regressive and outdated. Lower-income families almost always need two earners to make ends meet, while the income-splitting bonus is most valuable to high-income families who can afford a stay-at-home spouse. We have built a structure that subsidizes the family arrangements of the affluent and taxes those of everyone else.</p>
+      <p>The remedy is to file taxes individually, as the United Kingdom, Sweden, and most of continental Europe now do. Each adult would face her own bracket schedule, regardless of whom she married. The marriage penalty disappears. The marriage bonus disappears. And — not incidentally — the federal government stops underwriting a particular vision of who should be earning the family&#x27;s income. With the Supreme Court currently reconsidering what marriage even means for federal purposes in Windsor, this is exactly the right moment to ask whether marriage should drive tax liability at all.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>The irony is hard to miss: a society that celebrates marriage then taxes it. Every April 15, millions of two-earner couples discover that their wedding vows came with a surcharge — the infamous marriage penalty. The reason is simple. Under the federal income tax, married couples filing jointly don’t simply pay twice what two singles would on the same combined income. Instead, the bracket thresholds for joint filers are less than double the single thresholds, so when two working spouses combine their incomes, more dollars are pushed into higher brackets. At the same time, a couple with one earner gets a marriage bonus because the same total income faces lower joint rates than the earner would face as a single. This mixed message — subsidize one-earner couples, penalize dual-earner couples — makes no sense. The tax code shouldn’t be in the business of picking which family model to encourage.</p>
+      <p>The cleanest solution is to abandon joint filing entirely and move to mandatory individual filing. Under a pure individual system, every adult files on their own income, using the same rate schedule regardless of marital status. Marriage ceases to be a taxable event. Canada, Australia, and many European countries already operate this way, and it eliminates the horizontal inequity where two couples with identical total incomes owe wildly different taxes depending on how earnings are split. To address concerns about dependent spouses or children, we could supplement individual filing with refundable credits. A nonrefundable “dependent spouse” credit could offset the tax liability of a stay-at-home parent, preserving the current treatment of single-earner couples without reintroducing joint brackets. Similarly, a generous child credit would help all families with kids, irrespective of marital structure.</p>
+      <p>Critics often claim that individual filing would unfairly tax single-earner couples who now enjoy a bonus. But that bonus exists only because the joint-filing schedule was designed in an era of predominantly male breadwinners. In a modern economy where most mothers work, penalizing the second earner’s income creates a work disincentive — often for women — at a time when families need two paychecks. A dependent-spouse credit, set roughly at the level of tax reduction the earner currently receives from the joint brackets, could maintain neutrality. The net result: a tax code that is indifferent to marriage, treats all labor equally, and stops sending the perverse message that tying the knot should cost you money or that staying single saves you thousands. Tax day should be about paying your fair share, not about paying for your relationship choices.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>The so-called marriage penalty is often described as a glitch, an unintended consequence of bracket design that unfairly punishes two-earner couples. That description is misleading. A progressive income tax that treats the married couple as the filing unit will naturally produce different tax burdens than two single filers because marriage creates a shared household with significant economies of scale. Two people living together spend less per person on housing, utilities, and food than two people living apart. That enhanced ability to pay justifies taxing a married couple’s combined income more heavily than the incomes of two single individuals with the same total earnings. The real problem isn’t that a penalty exists — it’s that the current brackets were set almost arbitrarily, creating penalties that are far larger than any reasonable equivalence scale would predict.</p>
+      <p>Rather than dismantle joint filing, Congress should adjust the bracket widths to reflect genuine differences in living costs. The simplest reform would be to double the income thresholds for all brackets except perhaps the top one. If a single filer faces the 25 percent rate starting at $36,250, a married couple should reach that rate only on income above $72,500. That single change would eliminate the penalty for most middle-class dual-income couples, while preserving the progressivity that comes from recognizing marriage as a joint economic enterprise. The marriage bonus for one-earner couples would also shrink, but that’s appropriate: a family with a stay-at-home spouse and a child faces higher per-person costs than two working singles, but not so much higher that the earner’s tax should drop by thousands of dollars.</p>
+      <p>Opponents will argue that doubling brackets would be expensive and might tilt the tax code even more toward marriage. But the revenue loss can be offset by a modest rate adjustment, and the principle is sound. Horizontal equity demands that families with equal economic capacity pay equal tax. Today, a dual-earner couple earning $150,000 often pays thousands more than a single-earner couple with the identical income, even though the two-earner family likely faces higher work-related expenses (child care, commuting, wardrobe). A bracket-doubling approach would bring us much closer to treating families with the same total resources alike, regardless of how they divide labor. It wouldn’t eliminate all marriage-related tax differences — that’s impossible under any progressive income tax — but it would remove the most egregious distortions. And it would send a clearer message: we tax the household’s combined ability to pay, not the marital choices that shape it.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>The income tax shouldn’t be an instrument of social engineering. Yet that’s exactly what the marriage penalty and its flip side, the marriage bonus, represent. Congress, perhaps unintentionally, has built a code that nudges some couples toward single-earner arrangements while penalizing those in which both spouses work. The solution isn’t to scrap the family unit as a tax concept or to double down on joint filing. It’s to give married couples a genuine choice — and to offset the specific disadvantage faced by the second earner.</p>
+      <p>The most pragmatic and politically achievable reform is a secondary-earner deduction. Under such a plan, married couples filing jointly could deduct a fixed percentage — say, 20 percent — of the lower-earning spouse’s income, up to a cap. This would directly reduce the marriage penalty for dual-income couples, because the deduction cuts taxable income at the margin where the second earner’s paycheck hits the highest bracket. Because the deduction applies only to the lower earner, it doesn’t create a windfall for single-earner couples, leaving their current treatment largely intact. And because it preserves the option to file jointly, families with a stay-at-home parent aren’t forced into an individual-filing system that would raise their taxes. This approach respects diversity: it acknowledges that some couples choose to have one partner focus on caregiving, while others need or want two incomes, and it refuses to penalize either choice.</p>
+      <p>Critics of the secondary-earner deduction worry it would complicate the code and benefit only relatively affluent families. But a refundable version, or a parallel expansion of the child and dependent care credit for lower-income workers, can ensure progressivity. The real beauty of the deduction is that it addresses the core injustice of the marriage penalty — the high marginal rate on the second earner — without requiring a wholesale restructuring of the tax system. It’s a targeted fix, not a revolutionary one, and that’s exactly what a divided Congress might be able to pass.</p>
+      <p>On tax day, the mixed message of the current code is glaring. Why should two teachers who marry suddenly owe a penalty, while a single-earner lawyer gets a bonus? A secondary-earner deduction would quiet that inconsistency, making the tax system more neutral toward how couples organize their lives. That’s a tax policy worthy of a society that claims to value both family and individual freedom.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>Every April 15, millions of couples discover that their wedding bands came with a hidden tax bill. The marriage penalty is the most visible symptom of a disease: the federal income tax is fundamentally incompatible with neutrality toward family formation. Under a progressive income tax, no single set of brackets can treat singles and married couples identically without creating perverse incentives. Doubling bracket widths, adding deductions, or even moving to individual filing can only patch the problem. The only lasting cure is to scrap the income tax altogether and replace it with a progressive consumption tax.</p>
+      <p>In a consumption tax — whether a national retail sales tax like the FairTax or a two-tiered consumption tax like the Bradford X-tax — households are taxed on what they spend, not on what they earn. Marriage does not change the calculation: a couple’s tax liability depends on their combined consumption, not on the arithmetic of income aggregation. Because savings and investment are not taxed, there’s no need for the convoluted marriage-related rules around capital gains, IRAs, or deductions that now plague the code. A well-designed consumption tax can be made progressive by providing a generous per-person rebate or “prebate,” which would cover consumption up to the poverty level for each family member. Thus, a married couple with two children would receive a larger tax-free allowance than a single person, reflecting their greater needs, but they would never face a penalty simply for combining their lives.</p>
+      <p>Skeptics will rightly note that a transition to a consumption tax poses enormous logistical and political challenges, particularly for older Americans who already paid income tax on their savings. Yet those hurdles are not reasons to abandon the goal. The current income tax, with its marriage penalties and bonuses, its bias against saving, and its mind-numbing complexity, is a relic of an earlier era. Tax day 2013 should be a wake-up call. Rather than tinkering with bracket definitions or adding another deduction, we ought to demand a system that stops treating marriage as a taxable transaction. A progressive consumption tax achieves that — and it does so while encouraging the saving and investment that families need to build a secure future. The marriage penalty isn’t an isolated glitch; it’s a flashing red light telling us the whole engine needs replacement.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>It is time to ask a fundamental question that we rarely pose on Tax Day: why should the Internal Revenue Service care about our romantic lives? The tax code’s marriage penalty—and its counterpart, the marriage bonus—are symptoms of an antiquated system that attempts to use the levers of federal revenue to engineer family structures. The only logical, fair way to improve upon the marriage penalty is to abolish joint tax filing altogether and transition to a system of purely individual taxation.</p>
+      <p>Under the current joint-filing regime, our tax liabilities shift depending on whether we stand at an altar. When two individuals with similar incomes marry, their combined income pushes them into a higher tax bracket, resulting in the dreaded marriage penalty. Conversely, when a high earner marries someone with little to no income, they receive a marriage bonus, as the high earner’s income is spread across wider tax brackets.</p>
+      <p>This mixed message makes no sense in a modern pluralistic society. It acts as a financial deterrent for dual-career couples to marry, while subsidizing single-earner households. The state has no business picking winners and losers in this manner. Two individuals making $50,000 each should not pay more to the federal government simply because they signed a marriage license, nor should they pay less.</p>
+      <p>Many other developed nations, including Canada, the United Kingdom, and several European countries, have already recognized this and moved to individual taxation. In these countries, a person’s tax liability is based solely on their own income, regardless of their marital status. This approach guarantees horizontal equity: individuals with the same income pay the same tax, regardless of their living arrangements.</p>
+      <p>Transitioning to individual filing would drastically simplify the tax code. It would remove the perverse disincentives for marriage among dual-income earners and eliminate the unearned tax breaks given to single-earner couples. In 2013, family structures are more diverse than ever, and dual-income households are the norm, not the exception. By taxing individuals as individuals, we can remove the government’s heavy hand from our private lives and create a tax system that is truly neutral, fair, and blind to marital status.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Whenever April rolls around, politicians invariably decry the &quot;marriage penalty&quot; as an unfair quirk of the tax code. The truth, however, is that this penalty is not the result of an arbitrary legislative mistake. It is an unavoidable mathematical consequence of demanding three competing principles from our tax system: progressive taxation, equal taxation of married couples with equal combined incomes, and marriage neutrality. Economists call this the &quot;tax trilemma,&quot; and recognizing it is the first step toward understanding why our current system, despite its mixed messages, is the most reasonable compromise available.</p>
+      <p>Here is the math: If we want a progressive tax system, higher incomes must be taxed at higher rates. If we want equal taxation of households, a couple making $100,000 must pay the same amount whether one person makes all of it, or both make $50,000. But if we enforce those two rules, we must abandon marriage neutrality.</p>
+      <p>Imagine two single people making $50,000 each. Under a progressive system, they pay a moderate rate. If they marry, their household income becomes $100,000. To keep household taxation equal, they must now be taxed at the higher $100,000 progressive rate, triggering a &quot;marriage penalty.&quot; Conversely, if a single person making $100,000 marries someone making nothing, their combined income stays $100,000, but they now enjoy lower effective rates by filing jointly, creating a &quot;marriage bonus.&quot;</p>
+      <p>You cannot mathematically eliminate both the penalty and the bonus without flattening the tax rate entirely (a flat tax) or treating married couples with identical incomes differently based on who earns what (individual taxation). Neither alternative is politically or socially acceptable. A flat tax would gut the progressive nature of our system, shifting a massive burden onto the poor and middle class. Individual taxation would mean that a household where one spouse earns $100,000 would pay vastly more in taxes than the family next door where both spouses earn $50,000, violating our basic sense of household equity.</p>
+      <p>The current system attempts to strike a balance. Past reforms, like those in the early 2000s, widened the lower tax brackets and standardized deductions for married couples, effectively shielding most low- and middle-income taxpayers from the penalty. Today, the penalty mostly impacts higher-income dual earners. While imperfect, this compromise preserves progressivity and household fairness—the two most important pillars of our tax code.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>The most damaging aspect of the marriage penalty is not just that it arbitrarily punishes couples for tying the knot; it is how it acts as a structural barrier to women’s labor force participation. By penalizing the &quot;secondary earner&quot; in a household, the federal tax code actively discourages dual-income parity and entrenches outdated, single-earner domestic models. A targeted secondary-earner deduction is the most effective way to modernize the tax code and boost economic growth.</p>
+      <p>Because we tax married couples on their combined income, the first dollar earned by the lower-earning spouse—historically and still predominantly the wife—is effectively taxed at the higher-earning spouse’s highest marginal rate. If a primary earner’s income pushes the couple into the 25 or 28 percent bracket, the secondary earner’s wages are taxed at that high rate from the very first hour worked.</p>
+      <p>When you add payroll taxes, state taxes, and the steep costs of childcare and commuting, the secondary earner’s take-home pay is often reduced to a tiny fraction of their gross wages. For many women, working full-time under these conditions simply does not make financial sense. The tax code is quietly nudging them out of the workforce.</p>
+      <p>This &quot;mixed message&quot; is an economic liability. In our current sluggish recovery, we cannot afford to disincentivize educated, capable workers from contributing to the economy. When women drop out of the workforce due to high marginal tax rates, we lose productivity, reduce our tax base, and stall progress on closing the gender wage gap.</p>
+      <p>We do not need to overhaul the entire tax system to fix this. Instead, Congress should introduce a generous secondary-earner deduction. By allowing couples to deduct a significant percentage—say, 20 percent—of the lower-earning spouse’s income from their taxable earnings, we can offset the marginal rate hike created by joint filing.</p>
+      <p>This policy would directly alleviate the marriage penalty for dual-income households, but more importantly, it would increase the return on work for married women. It acknowledges the economic reality of the 21st-century family, where both partners often want or need to work. Reforming the marriage penalty isn&#x27;t just about tax fairness; it is a vital issue of gender equity and macroeconomic growth.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Marriage is the foundational institution of civil society, providing unmatched stability for adults, children, and communities. Yet, astonishingly, our federal tax code treats it as a taxable offense for millions of dual-income Americans. If two professionals decide to commit to one another in matrimony, the IRS often steps in to slap them with a &quot;marriage penalty.&quot; This isn&#x27;t just a mixed message; it is a profoundly anti-family policy that demands immediate, permanent correction through the full expansion of tax brackets for married couples.</p>
+      <p>The marriage penalty occurs because the tax brackets for married couples filing jointly are not uniformly double the size of the brackets for single filers. While Congress took steps a decade ago to alleviate this burden for lower-income brackets—ensuring that the 10 and 15 percent brackets for couples are exactly double those for singles—they failed to extend this logic up the income ladder. Consequently, middle-class and upper-middle-class couples who marry often find themselves pushed into a higher tax bracket than they would face if they simply cohabited.</p>
+      <p>Why should the government financially reward couples who live together out of wedlock, while penalizing those who make a legal and moral commitment to marriage? Public policy should, at the very least, remain neutral toward marriage, and ideally, it should encourage it. It is absurd that an institution that reduces reliance on the social safety net, fosters generational wealth, and improves outcomes for children is treated by the IRS as an opportunity to extract more revenue.</p>
+      <p>The solution is straightforward: full income splitting. Every single tax bracket, all the way to the top marginal rate, as well as all phase-outs for credits and deductions, should be exactly twice as large for married couples as they are for single filers. If the 25 percent bracket kicks in at a certain income level for a single person, it should kick in at exactly double that amount for a married couple.</p>
+      <p>Critics will argue this would cost federal revenue, but we should not balance the budget on the backs of married couples. Eradicating the marriage penalty entirely would send a clear, unified message: America values the institution of marriage and refuses to financially punish those who enter into it. It is time to align our tax code with our social values.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>The marriage penalty is not a quirk; it is the predictable result of a tax code that still cannot decide whether it is taxing individuals or households. For dual-earner couples, especially those with similar salaries, combining incomes can push them into higher brackets than they would face as two single people. For one-earner couples, joint filing often produces a bonus. The message is not merely mixed. It is outdated.</p>
+      <p>The better approach is to move toward individual taxation. Each adult should be taxed on his or her own income, regardless of marital status. Marriage is a personal and legal commitment; it should not be treated as an income-splitting device for some couples and a surcharge for others.</p>
+      <p>This is especially important for women. The marriage penalty falls most heavily on the second earner in a household, who is still often the wife. Her first dollar of earnings is taxed not at her own rate, but at the household’s marginal rate. That makes paid work look less rewarding precisely for the person whose attachment to the labor force may be most affected by child care costs, workplace discrimination and family expectations. A tax system that claims neutrality should not quietly discourage married women’s employment.</p>
+      <p>Individual taxation would also be simpler to justify in a society where households take many forms. Couples cohabit, divorce, remarry, support aging parents, raise children outside marriage and, in some states, marry partners of the same sex while the federal government still refuses to recognize those marriages under DOMA. Using marriage as a major tax boundary is increasingly hard to defend.</p>
+      <p>Of course, moving to individual taxation would create transition problems. Some one-earner couples would pay more than they do now. That should be addressed openly through child allowances, caregiver credits or other benefits aimed at actual dependents and caregiving responsibilities, not by giving a blanket bonus to any couple with one wage earner. If society wants to support children or unpaid care, it should do so directly.</p>
+      <p>The tax code should neither reward nor punish marriage. It should raise revenue fairly from people according to their own income and ability to pay. Marriage already carries emotional, legal and economic consequences. Tax day should not add an arbitrary nudge one way or the other.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>The phrase “marriage penalty” makes the issue sound simpler than it is. In fact, the tax code is trying to reconcile three goals that cannot all be perfectly satisfied: progressive taxation, equal treatment of married couples with the same total income, and neutrality between marriage and nonmarriage. Pick any two, and the third becomes difficult.</p>
+      <p>If we want a progressive income tax, higher incomes must face higher rates. If we also want married couples with the same total income to pay the same tax, then a couple earning $100,000 should owe the same whether the income is split $50,000-$50,000 or $100,000-$0. But once that principle is adopted, marriage will sometimes create bonuses and sometimes penalties compared with remaining single. That is arithmetic, not moral confusion.</p>
+      <p>Joint filing reflects a defensible idea: marriage is an economic partnership. Most married couples pool resources, share housing, make joint decisions and enjoy economies of scale. A spouse with no market income is not necessarily poor if married to a high earner. Taxing that couple as though the earner were a single person with no one else in the household would miss something real about ability to pay.</p>
+      <p>That does not mean the current system is ideal. Congress has repeatedly patched the code to reduce penalties for middle-income couples, but the patches are uneven. The standard deduction and the lower brackets for married couples should be kept close to twice the levels for singles where possible. Policymakers should also be attentive to interactions with the earned income tax credit, child credits and phaseouts, where penalties can be more severe for working-class families than for the affluent couples who usually dominate the discussion.</p>
+      <p>But abolishing joint filing would create its own unfairness. Consider two couples with the same total income, one with two earners and one with a stay-at-home parent caring for young children. Under pure individual taxation, the one-earner couple could pay substantially more, even though the household has no greater ability to pay and may be purchasing less market child care precisely because one parent is providing it. That is not obviously fair.</p>
+      <p>The goal should be modest: reduce the sharpest penalties, especially for low- and moderate-income couples, while recognizing that no tax system can be perfectly neutral about marriage unless it gives up either progressivity or household taxation. The present mixed message is not elegant, but some mixture is unavoidable.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>The debate over the marriage penalty is usually framed as a problem for professional couples who discover in April that two salaries plus one marriage license can mean a bigger tax bill. That is a real issue, but it is not the most urgent one. The harsher penalties are often found lower down the income scale, where taxes and benefits interact in ways that can make marriage financially dangerous.</p>
+      <p>For low-income parents, the earned income tax credit, child tax credit, Medicaid, food assistance, housing subsidies and child care assistance can all depend on household income. When two parents marry, their combined income may reduce or eliminate benefits that each could receive, or that one could receive, while unmarried. These phaseouts can create marginal tax rates far higher than those faced by upper-middle-class couples complaining about brackets. For families living paycheck to paycheck, the issue is not abstract fairness. It is rent, groceries and health coverage.</p>
+      <p>This is why simply widening the married brackets is an incomplete answer. It helps some dual-income couples, but it does little for a mother who risks losing support if she marries the father of her child, or for a low-wage couple whose combined earnings push them out of eligibility for assistance before they are truly self-sufficient. If public policy says marriage is stabilizing for children, it should not punish the very families for whom stability is most fragile.</p>
+      <p>A better approach would begin with benefits reform. The EITC should be adjusted so that low-income married couples do not face large losses merely because they legalize an existing partnership. Phaseouts across programs should be coordinated rather than stacked blindly on top of one another. Eligibility rules should be made more gradual, so families do not fall off cliffs when income rises or household status changes. And child-related support should follow the child, not be used as a crude lever to reward or punish adult relationship choices.</p>
+      <p>This does not require romanticizing marriage. Some marriages are harmful; many unmarried parents are devoted and responsible. But if the law is going to recognize marriage, it should at least avoid placing the largest obstacles before people with the fewest resources.</p>
+      <p>The marriage penalty at the top of the tax schedule is irritating. The marriage penalty in the safety net can be life-altering. Reform should start there.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-15">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-15" style="display:none;">
+      <p>The tax code should stop trying to send messages about marriage altogether. It is bad at it, and it should not be in that business.</p>
+      <p>In 2013, marriage is at the center of a national argument, with the Supreme Court considering cases involving same-sex marriage and federal recognition. That debate concerns equality, dignity, federalism, religion and civil rights. The income tax is a poor instrument for resolving any of those questions. A couple should not be nudged toward marriage by a bonus if one spouse stays home, nor nudged away from marriage by a penalty if both spouses work. Either choice may be sensible, loving or necessary depending on the people involved.</p>
+      <p>The cleanest principle is tax neutrality: people in the same economic position should owe the same tax whether they are married or not. But achieving that is harder than it sounds because the tax code is progressive and households share resources. Still, neutrality should be the guiding aim. Congress should remove the most obvious marriage-based distortions and shift support away from marital status and toward concrete social goals: raising children, caring for disabled relatives, reducing poverty and financing government fairly.</p>
+      <p>One useful reform would be to make more credits and deductions individual or child-based rather than couple-based. A child credit should not depend heavily on whether the parents have married. A caregiver credit should support caregiving, not the legal form of the adults’ relationship. Tax benefits for health insurance, retirement saving and education should be designed so that marriage is not the trigger for a large gain or loss.</p>
+      <p>At the same time, lawmakers should be honest about tradeoffs. Perfect neutrality may be impossible without abandoning progressive rates or ignoring the fact that spouses share income. But imperfection is not an excuse for complacency. Many of today’s rules are not the product of a coherent philosophy; they are the residue of decades of political compromise, temporary fixes and symbolic gestures about the family.</p>
+      <p>A democratic government may decide to support families, but “family” is broader than a married couple filing jointly. It includes children raised by single parents, grandparents supporting grandchildren, unmarried partners, blended households and married couples with very different arrangements. The tax code should reflect that reality.</p>
+      <p>The best message the tax system can send about marriage is no message at all: marry, or do not marry, for reasons better than a line on Form 1040.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-16">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-16" style="display:none;">
+      <p>The cleanest way to improve the marriage penalty is to stop asking the income tax to take a position on marriage at all. The federal code should tax adults as adults, not as half of a couple. Marriage is a legal and social institution with enormous importance, as this spring’s debates remind us. But its importance is precisely why it should not be manipulated through hidden tax rewards and punishments.</p>
+      <p>The current system sends a muddled signal because joint filing tries to do two things at once. It treats a married couple as one economic unit, but it does so under progressive rates. Two teachers earning similar salaries can pay more after marrying than before, while a surgeon married to a stay-at-home spouse can pay less than an unmarried surgeon with the same earnings. That is not a moral philosophy; it is an accident of arithmetic and political compromise.</p>
+      <p>Individual filing would be more neutral and more modern. Each person would get his or her own tax brackets, standard deduction and work-related credits. Marriage would not change the tax bill merely because two people signed a license. If Congress wants to help children, it should provide child benefits. If it wants to help caregiving, it should provide caregiver credits or Social Security credits. Those policies should follow the child or the caregiver, not the marital status of the adults.</p>
+      <p>The strongest objection is that married couples share resources, and therefore have a different “ability to pay” than two unrelated singles. That is often true. But it is also true of many people who live together: elderly siblings, unmarried partners, roommates who pool expenses, adult children supporting parents. The tax code does not and should not audit every household’s emotional and financial intimacy. Marriage is a bright legal line, but it is not a perfect measure of economic capacity.</p>
+      <p>There would need to be rules preventing spouses from shifting business or investment income to the lower-taxed partner. But that is an administrative problem, not a reason to preserve a system that taxes a second earner’s first dollar as if it were the last dollar of the higher earner.</p>
+      <p>A better tax code would be explicit: tax income progressively, assist children and low-income workers directly, and leave marriage neither penalized nor subsidized. The vows should matter to the couple and to the law of family rights and obligations. They should not determine whether April 15 brings a bill or a bonus.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-17">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-17" style="display:none;">
+      <p>The marriage penalty is often described as though it were a drafting error Congress could fix if only it cared enough. In fact, it is the visible symptom of a real conflict among goals that cannot all be satisfied at once.</p>
+      <p>Consider three principles that sound reasonable. First, the income tax should be progressive. Second, married couples with the same total income should pay the same tax, regardless of which spouse earns the money. Third, marriage itself should not change a couple’s tax bill. Those three principles are mathematically incompatible. If two single people earning $50,000 each pay less combined tax than one single person earning $100,000, that is progressivity. But if both couples become married households with $100,000 of income, treating them alike will either give a bonus to the one-earner couple or impose a penalty on the two-earner couple.</p>
+      <p>That does not mean the present code is ideal. It means the debate should be more honest. Joint filing reflects a plausible view that a married household is an economic unit. Spouses share housing, consumption, risk and legal obligations. A family with $100,000 and one earner is not identical to two unrelated singles with $50,000 each. But it is also true that a family with two earners often faces work expenses, child care costs and payroll realities that the one-earner household does not. No filing status captures all of this.</p>
+      <p>The better approach is not to chase perfect marriage neutrality, which would force us either to flatten the tax code or to ignore household sharing altogether. Instead, Congress should reduce the penalties where they do the most damage. The earned-income tax credit is the obvious place to start. Low-income parents should not be told, in effect, that marrying the other parent of their child will shrink a wage subsidy they depend on. Phaseout thresholds for married couples can be adjusted without turning the entire income tax upside down.</p>
+      <p>At the middle and upper end, the case for eliminating every marriage penalty is weaker. Doubling every bracket and every deduction limit for married couples would be expensive and would deliver much of its benefit to households that are not poor. At a time of large deficits and fierce fights over basic public services, that is not the highest priority.</p>
+      <p>The tax code should not be a sermon on marriage, but neither can it be completely indifferent to how households function. A reasonable system preserves progressivity, protects low-income families from the harshest penalties and recognizes that any rule will create some rough edges. The mixed message is not elegant, but it reflects a real trade-off.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-18">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-18" style="display:none;">
+      <p>The federal government should not punish people for getting married. That is the simple starting point. Marriage creates legal responsibility: spouses assume duties of support, form a recognized household and, when children are involved, provide the most stable framework government knows how to recognize. Yet the tax code often tells two working adults, especially modest-income parents, that they may be better off remaining unmarried. That is perverse.</p>
+      <p>The marriage penalty is not merely a problem for affluent professionals comparing brackets. It can be especially painful for lower-income couples whose combined earnings reduce or eliminate benefits such as the earned-income tax credit. For a couple trying to move from insecurity to stability, a few thousand dollars can matter more than a lecture about family values. If public officials say marriage is good for children and communities, they should not design transfer and tax systems that make marriage a financial gamble.</p>
+      <p>Some critics object that removing the penalty creates a “marriage bonus” for one-earner couples. But that phrase can be misleading. A spouse who stays home with young children, cares for an elderly parent or supports a partner’s work is not a nullity. Joint filing recognizes that marriage is a shared economic enterprise. A single earner supporting two people does not have the same ability to pay as a single earner supporting only himself.</p>
+      <p>The most practical reform would be to allow married couples to pay no more than they would have paid as two single filers. Congress could also make married brackets and standard deductions fully reflect two adults, and expand marriage relief in the earned-income tax credit. If the cost is serious, it should be financed by simplifying deductions and broadening the base, not by preserving a penalty on family formation.</p>
+      <p>This spring’s marriage debate has focused on who may enter the institution. That question is important. But for all couples, opposite-sex or same-sex where states recognize them, the logic should be the same: government should not celebrate marriage in speeches and then penalize it in ledgers.</p>
+      <p>The tax code cannot make people marry, and it should not try to coerce them. But it can at least stop making the responsible choice more expensive. Neutrality is the minimum; a modest preference for marriage is defensible. A penalty is not.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-19">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-19" style="display:none;">
+      <p>The phrase “marriage penalty” hides a more specific problem: in many households it is a second-earner penalty. And in America, the second earner is still more often the wife. Joint filing was built around an older model of the family, in which a male breadwinner supported a dependent spouse. The tax benefit for that household remains, while the two-earner couple can be pushed into higher brackets and lose credits more quickly.</p>
+      <p>That matters because the decision of the second earner to work is often sensitive to taxes and costs. Add federal income tax, payroll tax, commuting expenses and child care, and the after-tax return from a second job can shrink dramatically. The result is not just unfairness on April 15. It can reduce women’s labor-force participation, slow career advancement and leave families more economically vulnerable if the primary earner loses a job or the marriage dissolves.</p>
+      <p>A simple call to “support marriage” misses this. The current system already supports a particular kind of marriage: the one-breadwinner household. But today many families need two paychecks, and many women want economic independence as well as family life. A tax code that treats a wife’s first dollar of wages as if it were her husband’s last dollar is not neutral. It is a nudge back toward dependency.</p>
+      <p>One reform would be a revived and improved secondary-earner deduction or credit, aimed at the first dollars earned by the lower-earning spouse. That would reduce the marginal tax rate on entering or expanding work without requiring Congress to abandon progressivity. It should be paired with a more generous, refundable child-care credit, because child care is not a luxury purchase; for working parents, it is a cost of earning income.</p>
+      <p>Over the longer run, individual taxation is attractive. It would treat each adult as a separate economic citizen and would avoid making marriage the trigger for a higher or lower tax bill. But reform should not ignore unpaid care. A parent caring for a child or a worker caring for an elderly relative is also contributing. Caregiver credits and child benefits should be explicit, not smuggled into the code through a bonus for having a nonworking spouse.</p>
+      <p>Marriage law is changing, and the tax code should change with the realities of family life. The goal should not be to reward one household model over another. It should be to let adults marry, work and care for family without facing a tax system designed for someone else’s marriage.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-20">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-20" style="display:none;">
+      <p>The &quot;marriage penalty&quot; is not merely a quirk of tax accounting—it is a structural flaw that penalizes economic partnership and penalizes it unevenly across income levels. When two workers marry and combine their incomes, they frequently discover that their combined tax liability exceeds what they would owe as two single filers. This isn&#x27;t abstract policy theory; it means couples make real economic decisions—about work hours, career choices, and household arrangements—in response to tax incentives they never asked for. That the tax code simultaneously rewards single-earner couples while discouraging dual-earner married couples reveals a fundamental incoherence in how we treat marriage.</p>
+      <p>The most straightforward fix would be to equalize the standard deduction for married filers at twice the single amount, so no couple faces a penalty simply from joining returns. This &quot;marriage bonus&quot; approach was partly attempted in the 1980s and 1990s, but the brackets were never fully adjusted for inflation, and alternative minimum tax provisions have eroded the gains. We should complete the work of marriage neutrality: ensure that any two adults filing jointly face tax obligations that are no greater than the sum of what they would owe separately. This doesn&#x27;t require eliminating marriage from the tax code—it requires making the code indifferent to marital status in terms of overall burden.</p>
+      <p>Critics will argue this is prohibitively expensive or administratively complex, but the current system already requires detailed calculations for every married couple. The real objection seems to be philosophical: that marriage should be encouraged through the tax code. But if we want to encourage marriage, we should do it directly—not by punishing those who choose otherwise. A neutral tax code respects individual autonomy while achieving the same social goals. It&#x27;s time to complete the move toward marriage neutrality that policymakers began decades ago.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-21">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-21" style="display:none;">
+      <p>The marriage penalty debate assumes a premise we should question from the start: why should the tax code treat married and single taxpayers differently at all? The government has no legitimate interest in micromanaging household formation through tax incentives. Marriage is a civil and religious institution; taxation is a fiscal mechanism for funding government. Conflating the two creates exactly the distortions we&#x27;re debating.</p>
+      <p>The ideal tax system would be entirely individual-based. Each person files based on their own income, claims their own deductions, and owes taxes according to their own circumstances. Marital status would be irrelevant to tax liability, just as it is irrelevant to, say, driver&#x27;s license eligibility. This approach eliminates both the marriage penalty and the marriage bonus simultaneously—no taxpayer faces a different burden based on whether they share a bed or a bank account with someone else.</p>
+      <p>Those who defend current treatment often claim that &quot;families&quot; or &quot;households&quot; are the appropriate unit of taxation. But this logic proves too much: it would justify taxing adult children living with parents as a single unit, or penalizing roommates who split rent. The household is not a coherent tax unit when its members have separate incomes, separate financial obligations, and separate economic interests. The only consistent position is individual taxation.</p>
+      <p>Yes, there are practical complications—community property states, joint property ownership, child-related provisions. But these can be addressed through targeted rules without building an entire marital status matrix into the tax code. A properly designed system would handle joint property through capital gains rules and handle children through per-child credits, without making any of it contingent on whether two people are legally married. The marriage penalty is a symptom of a deeper disease: the assumption that the state should engineer private relationships through fiscal policy. The cure is simpler than we think.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-22">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-22" style="display:none;">
+      <p>The marriage penalty is real but often exaggerated. Careful examination of IRS data reveals that roughly 60% of married couples currently receive a marriage &quot;bonus&quot; rather than a penalty—their combined filing reduces their tax burden compared to single filers at equivalent income levels. The penalty concentrates in a specific band: primarily dual-income couples where both spouses earn similar amounts in the middle-to-upper income ranges. For lower-income couples, the earned income credit and other provisions often make marriage advantageous. The real pattern is more complex than either proponents or critics of reform typically acknowledge.</p>
+      <p>Before rushing to &quot;fix&quot; what may not be broken, we should consider the distributional consequences of changes. Eliminating the marriage penalty typically means either raising taxes on single filers to offset the loss, or cutting revenue in ways that benefit higher-income married couples disproportionately. A flat marriage bonus would shower benefits on dual-income households that hardly need tax relief while leaving lower-income families relatively unaffected. This isn&#x27;t obviously good policy.</p>
+      <p>The deeper issue is that we&#x27;re debating tax mechanics while ignoring the real reasons marriage rates have declined in certain communities. Lower-income Americans are marrying less not because of tax penalties but because of economic instability, educational differences, and changing social norms. Tweaking standard deductions won&#x27;t address any of these underlying factors. Meanwhile, the administrative complexity of fundamentally restructuring marital tax treatment would impose costs on the IRS and taxpayers alike.</p>
+      <p>Perhaps the marriage penalty is best understood as one factor among many—not the decisive obstacle its critics suggest nor the benign feature its defenders claim. A more modest reform agenda might focus on reducing complexity rather than pursuing marriage neutrality, which would likely create new distortions while solving the old ones.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-23">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-23" style="display:none;">
+      <p>The marriage penalty creates a specific and measurable economic distortion: it discourages labor force participation by secondary earners, typically women in heterosexual couples, who weigh the marginal tax rate on additional income against household costs. When a married woman considers returning to work or working additional hours, she confronts a higher marginal tax bracket than she would facing as a single filer—her husband&#x27;s income pushes their combined rate higher. This is not a theoretical concern; labor economists have documented the effect extensively.</p>
+      <p>The efficiency costs of this distortion are substantial. Workers who reduce hours or exit the labor force lose lifetime earnings, employer-provided benefits, and career advancement. The economy loses their productive contribution. Estimates of the aggregate GDP impact run into the tens of billions annually. We are making our labor markets less efficient and our workforce less experienced, not for any deliberate policy reason, but as an incidental consequence of bracket design.</p>
+      <p>The solution need not await comprehensive tax reform. Targeted adjustments can reduce the distortion while preserving revenue and distributional goals. Expanding the earned income credit for married couples with secondary earners, adjusting the phase-out ranges for middle-income married filers, or creating a &quot;second earner&quot; deduction could all reduce the marginal penalty on additional work without eliminating progressivity or showering benefits on the wealthy.</p>
+      <p>Critics will argue that these changes are micro-management of private decisions. But the tax code is already full of micro-management—mortgage interest deductions, child credits, charitable deductions. If we&#x27;re going to have a tax system that reflects social choices, we should at least ensure those choices don&#x27;t systematically discourage productive economic activity. The marriage penalty is a known distortion with known costs. We should fix it.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>

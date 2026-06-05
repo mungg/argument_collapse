@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Markets Crowd Out Morals · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support:#b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 50px 40px 120px; }
+  .crumb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--quiet); }
+  .crumb:hover { color: var(--ink); }
+  .topic { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-top: 18px; }
+  h1.debate-title { font-family: 'Newsreader', serif; font-weight: 500; font-size: 40px; line-height: 1.12; letter-spacing: -0.015em; margin: 8px 0 14px; }
+  .question-body { font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; margin-bottom: 28px; }
+  .question-body p { margin-bottom: 12px; }
+  .question-body p:last-child { margin-bottom: 0; }
+
+  .lead-box { background: #fff; border-left: 3px solid var(--src-human); padding: 18px 22px; margin-bottom: 28px; border-radius: 0 4px 4px 0; max-width: 820px; }
+  .lead-head { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--src-human); margin-bottom: 8px; }
+  .lead-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 500; font-style: italic; color: var(--ink); margin-bottom: 12px; line-height: 1.3; }
+  .lead-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .lead-link:hover { opacity: 0.7; }
+
+  .axis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 22px; max-width: 720px; }
+  .axis-side { padding: 10px 0 12px 14px; border-left: 2px solid; font-family: 'Newsreader', serif; font-size: 15px; line-height: 1.35; font-style: italic; color: var(--ink-soft); }
+  .axis-side.oppose { border-left-color: var(--strong-oppose); }
+  .axis-side.support { border-left-color: var(--strong-support); }
+  .axis-tag { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9.5px; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .agg-bars { margin: 0 0 46px; background: var(--paper-soft); padding: 14px 16px 12px; border-radius: 4px; max-width: 720px; }
+  .bar-row { display: grid; grid-template-columns: 78px 1fr 44px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
+  .bar { height: 14px; display: flex; border-radius: 2px; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .args-head { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .args-deck { font-family: 'Newsreader', serif; font-style: italic; font-size: 14.5px; color: var(--quiet); margin-bottom: 14px; max-width: 720px; }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin-bottom: 22px; max-width: 820px; }
+  .ex-item h4 { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 7px; }
+  .ex-item h4.ex-van { color: var(--src-van); }
+  .ex-item h4.ex-div { color: var(--src-div); }
+  .ex-item p { font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Matrix */
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  .matrix th, .matrix td { padding: 8px 4px; font-size: 12px; text-align: center; }
+  .matrix th.arg-head-col { text-align: left; padding-left: 0; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); width: 50%; vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gh-human { font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); vertical-align: bottom; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix th.gap { width: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .matrix th.group-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; color: var(--quiet); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .matrix th.model-row-th { font-family: 'Inter', sans-serif; font-size: 9.5px; color: var(--ink); font-weight: 600; padding-top: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .matrix .arg-col { width: 50%; }
+  .matrix .humans-col { width: 60px; }
+  .matrix .gap-col { width: 12px; }
+  .matrix .model-col { width: 8%; }
+
+  .matrix .arg-row td { padding: 12px 4px; border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 0.12s; }
+  .matrix .arg-row:hover td { background: rgba(0,0,0,0.025); }
+  .matrix .arg-row.expanded td { background: var(--paper-soft); }
+  .matrix .arg-row .arg-text { text-align: left; font-family: 'Newsreader', serif; font-size: 13.5px; line-height: 1.4; color: var(--ink); font-style: italic; padding-right: 8px; }
+  .matrix .humans-pill { display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; color: #fff; background: var(--src-human); font-variant-numeric: tabular-nums; }
+  .matrix .humans-pill.zero { background: var(--line); color: var(--quiet); font-weight: 500; }
+  .matrix .model-dots { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .matrix .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .matrix .dot.v.on { background: var(--src-van); }
+  .matrix .dot.d.on { background: var(--src-div); }
+  .matrix .dot.off { background: transparent; border: 1px dashed var(--line); }
+
+  /* Expanded essay panel */
+  .essay-panel-row td { padding: 0 !important; }
+  .essay-panel { padding: 0 6px 18px; background: var(--paper-soft); }
+  .essay-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .essay-item:last-child { border-bottom: none; }
+  .essay-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .essay-src { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 7px; border-radius: 2px; color: #fff; }
+  .essay-src.src-h { background: var(--src-human); }
+  .essay-src.src-v { background: var(--src-van); }
+  .essay-src.src-d { background: var(--src-div); }
+  .essay-by { font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+  .essay-quote { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.55; color: var(--ink); font-style: italic; margin-bottom: 10px; }
+  .essay-link { display: inline-block; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--src-human); border-bottom: 1px solid var(--src-human); padding-bottom: 1px; }
+  .essay-link:hover { opacity: 0.7; }
+
+  /* All-essays section */
+  .essays-group { margin-bottom: 26px; }
+  .essays-group-head { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; color: var(--quiet); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
+  .essay-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .essay-row:last-child { border-bottom: none; }
+  .essay-row .essay-by { flex: 1; min-width: 140px; font-size: 12.5px; color: var(--ink); }
+  .essay-view-full {
+    background: none; border: 1px solid var(--ink);
+    border-radius: 999px; padding: 4px 12px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .essay-view-full:hover { background: var(--ink); color: var(--paper); }
+  .essay-view-full.open { background: var(--ink); color: var(--paper); }
+  .essay-full {
+    width: 100%; margin: 8px 0 0;
+    padding: 16px 20px;
+    background: var(--paper-soft); border-radius: 4px;
+    border-left: 3px solid var(--quiet);
+  }
+  .essay-full p { font-family: 'Newsreader', serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .essay-full p:last-child { margin-bottom: 0; }
+  .sub-head { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--quiet); margin: 8px 0 5px; }
+  .sub-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .sub-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 12px; background: #fff; border-left: 2px solid; border-radius: 0 2px 2px 0; align-items: baseline; }
+  .sub-list li.src-h { border-left-color: var(--src-human); }
+  .sub-list li.src-v { border-left-color: var(--src-van); }
+  .sub-list li.src-d { border-left-color: var(--src-div); }
+  .sub-list .num { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--quiet); font-weight: 600; }
+  .sub-list .sub-text { font-family: 'Newsreader', serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .page { padding: 28px 20px 80px; }
+    h1.debate-title { font-size: 28px; }
+    .axis { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr; }
+    .matrix .arg-col { width: 60%; }
+    .matrix .model-col { width: 7%; }
+  }
+
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="brand"><a href="../index.html"><b>Argument Collapse</b></a></div>
+  <nav class="nav">
+    <a href="../index.html" class="active">DEBATES</a>
+    <a href="../main_argument.html">MAIN_ARGUMENT</a>
+    <a href="../sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+<div class="page">
+  <a href="../index.html" class="crumb">← All debates</a>
+  <div class="topic">Boston Review · Philosophy · Lead-essay</div>
+  <h1 class="debate-title">How Markets Crowd Out Morals</h1>
+  <div class="lead-box">
+    <div class="lead-head">Lead essay · Herbert Gintis</div>
+    <div class="lead-title">How Markets Crowd Out Morals</div>
+    <a class="lead-link" href="https://www.google.com/search?q=%22Herbert%20Gintis%22%20%22How%20Markets%20Crowd%20Out%20Morals%22%20site%3Abostonreview.net" target="_blank" rel="noopener">Read original on Boston Review ↗</a>
+  </div>
+  <div class="args-head">Main arguments</div>
+  <p class="args-deck">Each row groups essays that converge on the same main argument. Top dot = vanilla, bottom dot = diversified. Click a row to expand all essays in that cluster.</p>
+  <div class="ex-grid">
+    <div class="ex-item"><h4 class="ex-van">Vanilla</h4><p>The basic prompting condition. Each model is given the debate question with no further instruction. We report the most representative essay per LLM family, so vanilla totals five essays per debate.</p></div>
+    <div class="ex-item"><h4 class="ex-div">Diversified</h4><p>The same five models are asked the same question but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p></div>
+  </div>
+  <table class="matrix" id="cluster-matrix"><colgroup>
+    <col class="arg-col"><col class="humans-col"><col class="gap-col">
+    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">
+  </colgroup><thead>
+    <tr><th class="arg-head-col" rowspan="2">Argument cluster</th>
+        <th class="gh-human">Humans</th><th class="gap"></th>
+        <th class="group-row-th" colspan="5"><span style="color:var(--src-van);">Vanilla</span> · <span style="color:var(--src-div);">Diversified</span></th></tr>
+    <tr><th class="gh-human">n=3</th><th class="gap"></th>
+        <th class="model-row-th">GPT</th><th class="model-row-th">Claude</th>
+        <th class="model-row-th">DeepSeek</th><th class="model-row-th">Gemini</th>
+        <th class="model-row-th">MiniMax</th></tr>
+  </thead><tbody>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_1.html">
+      <td class="arg-text">Michael Sandel’s critique of market expansion is based on a fundamental misunderstanding of economic theory and ignores the historical reality that market-based societies actually foster and strengthen moral motivations.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_2.html">
+      <td class="arg-text">While Michael Sandel correctly identifies that markets can corrupt moral norms, his critique is overly broad because money can also support and enable non-market values depending on the social meaning and institutional design surrounding the exchange.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_3.html">
+      <td class="arg-text">While Michael Sandel is correct that markets can corrupt social goods, it is necessary to distinguish between &#x27;constitutive corruption,&#x27; where market motives debase the inherent meaning of a good, and &#x27;instrumental corruption,&#x27; where financial incentives compromise the quality or price of a good.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_4.html">
+      <td class="arg-text">The moral prohibition against marketizing goods like kidneys is more harmful than the markets themselves because it prioritizes abstract revulsion over the tangible preservation of human life.</td>
+      <td><span class="humans-pill ">1</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_5.html">
+      <td class="arg-text">The expansion of markets into all spheres of life must be resisted because commodification corrupts the intrinsic moral and civic norms of social practices and erodes the democratic character necessary for self-government.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_6.html">
+      <td class="arg-text">While markets can sometimes crowd out moral norms, they can also support, protect, and extend them, meaning that the moral limits of markets should be determined by specific institutional harms rather than a general suspicion of commodification.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_7.html">
+      <td class="arg-text">While Sandel correctly identifies the moral limits of markets, his focus on the &#x27;corruption objection&#x27; depoliticizes the issue by framing commodification as a matter of cultural decline and individual etiquette rather than a struggle over power, class, and economic inequality.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_8.html">
+      <td class="arg-text">Sandel’s critique of marketization relies on culturally specific, bourgeois intuitions rather than universal moral truths, leading him to unfairly dismiss the practical and symbolic validity of cash and market-based signals.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_9.html">
+      <td class="arg-text">Michael Sandel’s critique of market overreach is flawed because it prioritizes the philosophical corruption of social goods over the material inequalities and political-economic structures that force people into market relationships.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_10.html">
+      <td class="arg-text">Michael Sandel’s &#x27;corruption&#x27; argument against market expansion is philosophically insufficient because it relies on a contested metaphysics of goods that cannot be easily adjudicated in a pluralistic democracy.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_11.html">
+      <td class="arg-text">Sandel’s critique of market overreach is methodologically flawed because it relies on a circular definition of corruption and fails to recognize that markets often provide the very wealth and freedom necessary for moral and civic life to flourish.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_12.html">
+      <td class="arg-text">While Sandel correctly identifies that markets can corrupt certain social and civic goods, his argument is limited by a context-dependent application of &#x27;crowding out,&#x27; an under-evidenced theory of virtue, and an insufficient focus on how structural inequality shapes market choices.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_13.html">
+      <td class="arg-text">The commodification of social and civic life is not just a moral or personal concern, but a direct threat to democratic self-government that transforms citizens into mere consumers.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_14.html">
+      <td class="arg-text">While Michael Sandel correctly identifies how market reasoning corrupts social goods, his philosophical focus on the nature of goods must be joined with a political analysis of power and inequality to effectively limit the reach of markets.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_15.html">
+      <td class="arg-text">While Sandel correctly identifies that markets can corrupt non-market norms, his argument relies on an underspecified metaphor of moral &#x27;muscles&#x27; and lacks a precise taxonomy of how different types of goods are actually corrupted by commodification.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_16.html">
+      <td class="arg-text">Michael Sandel’s critique of markets relies on subjective moral discomfort and anecdotal evidence rather than a rigorous analytical framework for determining when market expansion actually causes harm.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_17.html">
+      <td class="arg-text">Michael Sandel’s critique of market commodification is fundamentally flawed because it prioritizes abstract moral &#x27;corruption&#x27; over the material realities of economic inequality and structural exploitation.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_18.html">
+      <td class="arg-text">While Michael Sandel correctly identifies that commodification can degrade intimate social goods, he fails to recognize that market mechanisms are necessary adaptations to the inherent limits of human altruism in a complex, global society.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v on"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_19.html">
+      <td class="arg-text">Sandel’s critique of market expansion is flawed because it prioritizes abstract moral purity and symbolic integrity over the practical necessity of using markets to solve large-scale human suffering.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+    </tr>
+    <tr class="arg-row" data-href="../clusters/debate_br_forum_markets_morals_arg_20.html">
+      <td class="arg-text">While Sandel correctly identifies how market reasoning corrupts social goods, resisting market overreach requires more than philosophical argument; it necessitates the active reconstruction of democratic institutions and economic frameworks that sustain non-market norms.</td>
+      <td><span class="humans-pill zero">0</span></td>
+      <td></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d off"></div></div></td>
+      <td><div class="model-dots"><div class="dot v off"></div><div class="dot d on"></div></div></td>
+    </tr>
+  </tbody></table>
+  <div style="margin-top: 56px;"></div>
+  <div class="args-head">All essays</div>
+  <p class="args-deck">Quick access to every essay in this debate. Click <b>Read original</b> for human essays (links to the venue) or <b>View full essay</b> to expand an LLM-generated one in place.</p>
+  <div class="essays-group">
+    <div class="essays-group-head">Humans</div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Elizabeth Anderson</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/anderson-for-profit-corruption/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Herbert Gintis</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/gintis-giving-economists-their-due/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-h">Human</span>
+      <span class="essay-by">Matt Welch</span>
+      <a class="essay-link" href="https://www.bostonreview.net/forum_response/welch-morals-markets/" target="_blank" rel="noopener">Read original ↗</a>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Vanilla (5 representatives, one per LLM family)</div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-v-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-0" style="display:none;">
+      <p>Sandel&#x27;s distinction between the fairness and corruption objections is genuinely useful, and his core empirical claim—that markets are not morally inert—deserves the prominence he gives it. The Swiss nuclear-waste study and Titmuss&#x27;s blood-donation work do seem to show that introducing prices into certain settings can shift the meaning of the transaction itself, sometimes perversely. But I want to press on two places where the argument runs faster than the evidence warrants.</p>
+      <p>First, the muscle-versus-commodity metaphor is doing too much work. Sandel is right that Arrow and Summers offer no real defense of the claim that altruism is depleted by use, and right that Aristotelian habituation is a serious alternative. But &quot;virtues grow with exercise&quot; is also a metaphor, and an under-specified one. Which virtues, exercised how, in which institutional settings? Parents who give freely to their children do not thereby become more generous to strangers; nationalist solidarity does not obviously generalize to cosmopolitan concern. There may be specific moral capacities that strengthen with practice and others that are domain-bounded or even subject to compassion fatigue. Without finer-grained claims, Sandel&#x27;s metaphor risks being only the inverse of Arrow&#x27;s—rhetorically more attractive, but no better grounded.</p>
+      <p>Second, the corruption argument needs an account of when commodification actually corrupts, and Sandel&#x27;s examples slide between cases of quite different structure. The bought wedding toast is corrupted because it depends on deception: revealed, it disappoints precisely because the recipient assumed it expressed something it did not. That is a story about authenticity and false signals, not about money as such. The Swiss villagers&#x27; case is different: there, the offer of cash reframed a civic question as a market question, and the meaning of saying yes changed. The legacy-admissions case is different still—an institutional integrity problem about whose mission a university serves. Lumping these under &quot;crowding out&quot; obscures the distinct mechanisms, and therefore the distinct remedies. Some corruptions can be cured by transparency, others by norm enforcement, others only by refusing the market altogether.</p>
+      <p>This matters because, without that finer taxonomy, the corruption argument can be deployed against almost any market expansion a critic happens to dislike. Sandel rightly insists we deliberate about the meaning of goods, but deliberation requires criteria. Why does paying plasma donors seem tolerable to most when paying whole-blood donors seemed not to? Why do we accept paid childcare but recoil at paid adoption? Presumably because the goods at stake—what we take parenthood, citizenship, friendship to mean—differ in identifiable ways that a fuller theory should articulate.</p>
+      <p>None of this undoes Sandel&#x27;s central provocation. The presumption that markets leave goods unchanged is indeed a faith, not a finding. But replacing it with a counter-faith in moral muscles is not yet the moral inquiry he rightly demands.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-v-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-1" style="display:none;">
+      <p>Michael Sandel’s meditation on the moral limits of markets is a timely and elegant provocation, but it risks overstating the case. His central claim—that market values “crowd out” non-market norms—rests on a series of carefully chosen vignettes that often conflate the crass commercialization of a good with its more thoughtful integration into market frameworks. While I share his unease about the creep of naked cash exchanges into intimate life, I worry that his argument slides too quickly from insightful critique to a blanket suspicion of markets that is neither wholly supported by evidence nor attentive to the ways commercial arrangements can coexist with, and even sustain, moral commitments.</p>
+      <p>Consider the wedding toast example. Sandel is surely right that discovering your best man bought a speech online would taint the moment. But is the problem the market, or the deception? If the best man explained that he lacked the gift of eloquence but wanted to honor you properly, and thus commissioned a speech that he then personally delivered with sincerity, would it still feel corrupt? Many of us already outsource expressions of care—buying a thoughtfully chosen card, hiring a musician for a celebration, or even employing a therapist to help us become better friends. The moral content of the act resides not in the refusal of all market mediation, but in the motives and transparency surrounding it. By focusing on the extreme case of a hidden purchase, Sandel stacks the deck against any commercial involvement in social life.</p>
+      <p>The nuclear waste siting study from Switzerland is more troubling for his thesis. The offer of cash did indeed reduce acceptance, and residents’ indignation at being “bribed” suggests a genuine crowding-out of civic spirit. But the interpretation is fragile. It may not be that the money itself corrupted the moral calculus; rather, the framing of the payment as an individual bribe undercut the collective deliberation that had already taken place. Had the compensation been designed as a community fund voted on through a public process, it might have enhanced the sense of shared sacrifice rather than displacing it. The lesson is not that markets always corrupt, but that the institutional design and narrative around payments matter immensely. A windfall payment to individual households felt like a buyout; a community chest for local schools or environmental monitoring might have felt like recognition of a burden nobly borne.</p>
+      <p>Sandel also leans heavily on Richard Titmuss’s classic comparison of blood donation systems, but by 2012 we have decades more experience. The United States maintains a mixed system—some paid plasma, heavily volunteer whole blood—without evidence that the paid plasma market has eroded the willingness to donate altruistically. In fact, a robust commercial plasma industry coexists with a strong culture of voluntary blood donation, suggesting that moral motivations are not a single, depletable resource. Separating the two spheres can even reinforce altruism by keeping it sheltered from scarcity pressures. The “muscle” analogy Sandel invokes is appealing but not ironclad; virtues can also be sustained by carving out protected domains where they are deliberately exercised, while markets handle the routine provision that might otherwise strain those virtues.</p>
+      <p>Ultimately, Sandel’s corruption argument serves best as a warning against thoughtless commodification, not as a general indictment of markets in morally freighted domains. Markets, like any social institution, can be designed with care for the values at stake. The real task is not to draw a bright line where markets must end, but to engage in the messy, democratic work of shaping market arrangements that respect, rather than dissolve, the norms we cherish.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-v-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-2" style="display:none;">
+      <p>Michael J. Sandel offers a compelling and eloquent diagnosis of a modern anxiety: the creeping encroachment of market values into spheres of life where they do not belong. His distinction between the &quot;fairness objection&quot; and the &quot;corruption objection&quot; provides a highly useful framework for understanding why we instinctively recoil at the idea of buying a friend or auctioning off college admissions. However, while Sandel rightly warns that commodification can degrade intimate and civic goods, his critique of economic reasoning ultimately misinterprets the structural role of markets in a complex society, particularly regarding the limits of human altruism.</p>
+      <p>Sandel takes particular aim at the economic assertion, articulated by Kenneth Arrow and Lawrence Summers, that altruism is a scarce resource that must be conserved. He counters with an appealing metaphor: altruism and civic virtue are not finite commodities like fossil fuels, but rather like muscles that grow stronger with exercise.</p>
+      <p>Yet, even if we accept the muscle metaphor, biological reality dictates that muscles suffer from fatigue and are inherently limited in their capacity. Evolutionary psychology and sociology strongly suggest that human empathy and altruism are bounded. We are highly capable of exercising the &quot;muscle&quot; of altruism toward our family, friends, and immediate community. But we struggle profoundly to extend that same selfless devotion to millions of unseen strangers. Economists do not necessarily believe that exercising virtue depletes a literal reservoir of it in the brain; rather, they recognize that altruism is fundamentally limited in its scope. Markets are indispensable because they allow us to coordinate, cooperate, and distribute resources globally without requiring us to summon a deep, muscular love for people we will never meet.</p>
+      <p>Consider Sandel’s citation of the Swiss nuclear waste study. It is true that introducing financial incentives can sometimes &quot;crowd out&quot; civic duty in local, cohesive communities. But how often can we rely on the pure civic sacrifice of a small village to solve national or global infrastructure problems? While civic virtue is a noble mechanism for a town of 2,100 people, it is rarely sufficient for the staggering logistical demands of a modern global economy.</p>
+      <p>Sandel also leans heavily on Richard Titmuss’s 1970 study of blood donation to argue that commercialization represses altruism. Yet, if we look at the broader landscape of medical science, the limits of the &quot;gift relationship&quot; become glaringly apparent. We do not rely on altruistic volunteerism to research, manufacture, and distribute pharmaceuticals, MRI machines, or surgical equipment. If we demanded that the entire medical supply chain run on the moral purity of the gift economy, we would face catastrophic shortages. The market mechanism, while lacking the warm moral glow of an unbought gift, reliably delivers life-saving goods because it aligns self-interest with public need.</p>
+      <p>Sandel is absolutely right that we must aggressively protect our intimate spheres from the cold logic of utility maximization. To monetize a wedding toast or a heartfelt gift is to strip it of its meaning. But as we debate the moral limits of markets, we must not romanticize our capacity for universal benevolence. Market mechanisms are not inherently corrosive simply because they bypass virtue; they are a necessary adaptation to the limits of our moral endurance, enabling mass human flourishing where altruism alone would inevitably fall short.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-v-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-3" style="display:none;">
+      <p>Michael Sandel is right to insist that markets are not morally inert. The most useful part of his argument is his attack on the lazy assumption that adding money to a practice merely adds an incentive, leaving everything else unchanged. We know from ordinary life that this is false. A dinner invitation, a wedding toast, a favor from a neighbor, even an apology can be transformed by payment. Economists themselves have helped show this: the well-known study of Israeli day-care centers found that fining parents for late pickup increased lateness, apparently because a moral obligation was recast as a price. Sandel’s warning is therefore not anti-economics. It is better economics, and better moral philosophy.</p>
+      <p>But Sandel sometimes writes as if “the market” carries one simple meaning wherever it appears: calculation, self-interest, and corruption. That is too quick. Money can crowd out moral norms, but it can also support them. A nurse’s wage does not necessarily corrupt care; a teacher’s salary does not make teaching less of a vocation; a paid minister, musician, or therapist may still act from commitment as well as compensation. The question is not whether money is present, but what role it plays and what social meaning surrounds it. Payment can define a relationship, or it can make possible the time, training, and stability that allow nonmarket values to flourish.</p>
+      <p>This distinction matters most in hard cases such as organs, blood, and care work. Titmuss’s comparison of British and American blood systems remains a powerful challenge to market triumphalism. Yet even here the lesson is not simply “payment bad, donation good.” Blood safety depends on testing, screening, and institutions as well as donor motivation. Plasma markets operate differently from whole-blood donation. And organ transplantation presents an especially tragic tradeoff. In the United States today, tens of thousands wait for kidneys, and thousands die each year before receiving one. To say that selling a kidney may degrade the body is morally serious. But so is allowing preventable death while black markets and transplant tourism exploit the desperate in far worse conditions.</p>
+      <p>A regulated system of compensation for kidney donors might still be wrong. But it should not be dismissed by analogy to bought friendship. We could imagine a public agency, not an open auction, offering fixed compensation, medical counseling, waiting periods, lifelong health coverage, and allocation by medical need rather than ability to pay. Such a system would not treat kidneys exactly like used cars. It would try to combine reciprocity with limits, gratitude with protection, and supply with justice. Perhaps even that would corrupt the meaning of bodily integrity. But the argument has to compare real alternatives, not purity against markets in the abstract.</p>
+      <p>Sandel’s best point is that democratic citizens should debate the purposes of goods and institutions. Universities should ask whether admissions preferences for donors betray learning. Communities should ask whether cash payments for waste sites buy consent rather than earn it. Schools should ask whether paying children for grades teaches curiosity or merely compliance. But democratic debate should also recognize pluralism. Citizens disagree, reasonably, about whether a practice is degraded by money. In such cases, prohibition can impose one moral meaning by law, while also producing scarcity, hypocrisy, or underground exchange.</p>
+      <p>The real task is not to keep markets everywhere out, nor to invite them everywhere in. It is to design boundaries. Some things should not be sold at all: votes, verdicts, persons, public offices. Some may be paid for only under strict rules: medical research participation, military service, reproductive labor, organ donation if we choose that path. Some are not corrupted by payment but by bad institutions. Markets do crowd out morals when we let price become the whole language of value. But morals can also guide, discipline, and humanize markets—if we refuse both market fundamentalism and moral nostalgia.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-v">Vanilla</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-v-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-v-4" style="display:none;">
+      <p>Sandel is right that markets are not mere neutral mechanisms, and his account of the corruption objection is the most persuasive part of the essay. When money enters certain domains—whether wedding toasts, organ exchange, or admissions at elite universities—it does not merely supplement existing norms but can displace them. The Swiss nuclear waste study is particularly valuable, showing that a financial offer to accept a local burden actually reduced civic cooperation rather than increasing it. Sandel reads this correctly: the offer was perceived as an attempt to purchase consent, which bypassed the deliberative relationship that might have produced genuine acceptance. This is a serious cost, and it is one that standard economic analysis ignores when it focuses only on price effects.</p>
+      <p>Where I want to push back is on the sweeping quality of the argument. Sandel suggests that markets are systematically crowding out non-market norms across a wide range of social practices. But the crowding-out effect he describes depends heavily on context, and not all cases fit the pattern equally well. The nuclear waste scenario works as it does because civic acceptance of a shared risk is constitutively a matter of collective deliberation. Offering money substitutes a market transaction for a democratic one, and the two are incommensurable. But this is a special case. Many market transactions do not replace deliberative relationships; they replace nothing at all, or they replace inefficient or coercive non-market arrangements. The question is not whether markets can crowd out norms worth preserving but whether they do so inevitably, as Sandel&#x27;s framing sometimes implies.</p>
+      <p>On the debate between Titmuss and Arrow, Sandel&#x27;s critique of the economistic conception of virtue is philosophically compelling but sociologically incomplete. The metaphor of virtue as a muscle that grows stronger with use is appealing, but it does not settle the empirical question of whether altruism is depleted or replenished under particular institutional conditions. There is evidence for both directions, and Sandel offers little to adjudicate between them. He is right that Arrow&#x27;s view of virtue as a scarce resource to be conserved is strange, but the alternative—that virtue reliably expands with practice—is equally underargued.</p>
+      <p>The most serious limitation of Sandel&#x27;s essay is the thinness of his account of fairness. He explicitly sets the fairness objection aside to focus on corruption, but these arguments are not easily separated. Many of the cases he discusses—organ sales, sweatshop labor, admissions—involve both corruption and severe background inequality, and attending to corruption alone can obscure how structural inequality shapes what counts as a voluntary market choice. Sandel&#x27;s essay is a valuable contribution to thinking about market limits, but its framework works best when applied to honorific and relational goods, and it requires supplementing when it meets the harder cases where economic desperation and moral corruption run together.</p>
+    </div>
+  </div>
+  <div class="essays-group">
+    <div class="essays-group-head">Diversified (15 essays)</div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-0">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-0" style="display:none;">
+      <p>**The Economist&#x27;s Reply: Sandel Mistakes Sociology for Argument**</p>
+      <p>Michael Sandel&#x27;s essay is graceful and accessible, but it papers over a serious analytical problem with rhetorical questions and well-chosen anecdotes. The core move is this: Sandel observes that introducing money into certain transactions sometimes changes how people feel about them, and concludes that markets &quot;corrupt&quot; or &quot;crowd out&quot; non-market values. But noticing that an attitude shifts is not the same as showing that the shift is bad. Sandel owes us an argument, and he largely declines to give one.</p>
+      <p>Take the Swiss nuclear waste case, which Sandel treats as a damning indictment of market reasoning. The villagers were willing to accept the dump out of civic duty, but withdrew consent when compensation was offered. Sandel reads this as evidence that money &quot;crowded out&quot; a noble public-spiritedness. But there is an equally plausible reading: the offer of payment provided the villagers with new information. A government that previously framed the issue as a shared sacrifice was now suggesting—through the very act of offering compensation—that the burden was substantial enough to require purchase. The villagers may have reasonably updated their estimate of the risks, or concluded that if the state was willing to pay, they should bargain harder. The Frey and Oberholzer-Gee finding is real and interesting, but it does not by itself license Sandel&#x27;s moralized interpretation.</p>
+      <p>Or take the wedding toast. Sandel asks whether you would feel differently if your best man had paid for the words he delivered. Most of us would. But &quot;most of us would feel funny about it&quot; is the beginning of moral inquiry, not its end. We also feel funny when our parents hire a tutor rather than teaching us themselves, when politicians read speeches written by staff, when doctors consult UpToDate rather than relying on memory. The fact that we have intuitions about authenticity does not mean those intuitions should govern public policy or should be elevated into a general theory of what markets corrupt.</p>
+      <p>The deeper problem is that Sandel never specifies what counts as the &quot;constitutive norms&quot; of a practice. He gestures at friendship, at higher education, at civic life, and asserts that markets degrade them. But practices evolve. The &quot;constitutive norms&quot; of marriage once excluded romantic love, included dowries, and treated wives as property. The norms of higher education once excluded women, Jews, and Catholics. Were the reformers who changed these institutions &quot;corrupting&quot; them? Sandel&#x27;s framework offers no way to distinguish a corruption from a beneficial reform, because it treats whatever norms happen to be in place as morally privileged.</p>
+      <p>This is conservative in the technical sense: it grants standing to incumbent practices simply because they exist. And the consequences are not trivial. Sandel waves at the kidney market without quite endorsing or opposing it, but if his framework means anything, it means we should ban paid organ donation. The result is that thousands of people die each year on waiting lists while their potential donors—people who would freely choose to sell a kidney for life-changing sums—are forbidden from doing so. To say that markets in organs are &quot;degrading&quot; while the actual people involved suffer and die requires more than aesthetic discomfort. It requires an argument that the alleged corruption outweighs the very concrete harms of prohibition. Sandel doesn&#x27;t make that argument.</p>
+      <p>I will grant Sandel one substantive point. Kenneth Arrow and Lawrence Summers do go too far when they treat altruism as a strictly finite resource. The empirical evidence on whether moral motivations are depleted or strengthened by exercise is genuinely mixed. Sandel is right that the &quot;altruism as commodity&quot; metaphor is doing too much work in the economic literature. But the response is not to swing fully to Aristotle and assume virtues grow with practice in every domain. The honest answer is that we don&#x27;t know, and the answer probably varies by context. In some settings, payment crowds out intrinsic motivation; in others (think of paying nurses), it sustains the work that allows virtue to operate.</p>
+      <p>The proper attitude toward markets is empirical and case-by-case. Where introducing prices destroys information, undermines reciprocity, or genuinely changes the meaning of an exchange in ways that participants themselves would regret on reflection, restrict them. Where prohibition merely satisfies the moral aesthetics of professors at the cost of real welfare for poor people, lift the restriction. Sandel&#x27;s essay confuses the first kind of case with the second by treating discomfort as evidence. Discomfort is data; it is not yet a verdict.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-1">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-1" style="display:none;">
+      <p>**The Missing Politics of Commodification**</p>
+      <p>Sandel&#x27;s essay performs a valuable public service by reopening a question that mainstream economics had successfully ruled out of bounds: what should and should not be for sale? For a generation, &quot;everything has a price&quot; has been treated less as a hypothesis than as a precondition for serious policy analysis. Sandel pushes back, and he is right to do so. But his treatment, for all its elegance, suffers from a curious depoliticization. By framing the debate as a contest between &quot;the corruption objection&quot; and &quot;the fairness objection,&quot; and then explicitly siding with the former, Sandel removes from view the actual political economy that has made commodification such an urgent issue in our time.</p>
+      <p>Consider the timing. Sandel is writing in 2012, four years after a financial crisis triggered by the wholesale conversion of mortgages—previously embedded in long-term relationships between bankers and borrowers—into tradable securities. He is writing during a wave of austerity in Europe, in the middle of debates about the privatization of public education in the United States, amid the explosive growth of for-profit colleges preying on veterans and the poor. The question of &quot;where markets belong&quot; is not, at this moment, a philosophical puzzle about wedding toasts. It is a political question about which actors get to enclose which commons.</p>
+      <p>Sandel mentions these stakes only obliquely. His chosen examples—the bought toast, the cash gift, the legacy admission—are all individual-level transactions. They invite the reader to consult her intuitions about etiquette and intimacy. They do not invite her to ask who benefits when public utilities become private monopolies, or when the security of old age becomes a portfolio of equities to be managed by financial intermediaries. The corruption frame, taken alone, makes commodification look like a problem of cultural decline rather than a problem of power.</p>
+      <p>This matters because Sandel&#x27;s own examples often turn out, on inspection, to be about power as much as about meaning. Take legacy admissions. Sandel admits that the fairness and corruption objections both apply but says his focus is corruption. Yet what is actually objectionable about a Harvard donor purchasing a seat for his mediocre son? Is it the metaphysical degradation of the diploma, or is it that the children of the rich are buying their way past the children of the poor, locking in hereditary advantage in a society that calls itself meritocratic? The corruption framing makes this sound like a sin against the Platonic Form of the University. The fairness framing makes it sound like what it actually is: class war, conducted by means of the admissions office.</p>
+      <p>Sandel might reply that fairness arguments are well-canvassed and that his contribution lies in articulating the under-appreciated corruption argument. Fair enough. But by setting them aside, he risks endorsing a politics of taste in which what matters most about market encroachment is how it makes thoughtful people feel. The genuinely radical question—who is doing the encroaching, and at whose expense—gets muted.</p>
+      <p>There is also a class dimension to Sandel&#x27;s examples that deserves notice. The wedding-toast purchaser, the gift-card recipient, the parent buying legacy admission—these are problems of the comfortable. The actual frontier of commodification in 2012 looks quite different: payday lending in poor neighborhoods, the sale of plasma by the desperate, the privatization of water systems in Latin American cities, gestational surrogacy in India. In each of these, the corruption objection and the fairness objection are not really separable. What corrupts the practice is precisely that it is offered as a choice to people who cannot meaningfully refuse it.</p>
+      <p>This is why Titmuss remains a more politically incisive thinker than Sandel acknowledges. Titmuss did not just argue that paid blood was an aesthetic degradation of a gift relationship. He showed that paid blood systems systematically extract from the poor for the benefit of the affluent, and that they produce contaminated supplies precisely because the financial incentive selects for desperate donors with disease risks. The corruption was inseparable from the inequality.</p>
+      <p>Sandel&#x27;s call for democratic deliberation about market boundaries is welcome. But deliberation requires that we name the actors and interests at stake, not just the norms in jeopardy. To ask &quot;how we want to live together&quot; is the right question. The wrong move is to answer it as if the obstacle were merely confused thinking among economists, rather than organized power among those whose fortunes depend on selling what should not be sold. Markets do not crowd out morals on their own. They are pushed.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">Claude Opus 4.7</span>
+      <button class="essay-view-full" data-target="d-full-d-2">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-2" style="display:none;">
+      <p>**In Defense of Cash, Gifts, and the Limits of Sandel&#x27;s Intuitions**</p>
+      <p>Michael Sandel is a brilliant lecturer and a humane critic of contemporary capitalism, and there is much in his essay to commend. But I want to defend something he treats with gentle condescension: the practice of giving cash, the economist&#x27;s instinct that signaling matters, and more broadly the suspicion that many of our intuitions about &quot;corruption&quot; reflect parochial cultural prejudices rather than universal moral truths.</p>
+      <p>Start with cash gifts. Sandel quotes Waldfogel&#x27;s &quot;Scroogenomics&quot; with the air of someone exhibiting a curiosity, and dismisses Mankiw&#x27;s signaling account as &quot;strangely wooden.&quot; But the case for cash is stronger than Sandel allows, and the disdain for it is not nearly as universal as he implies. In China, the red envelope of cash is the central gift exchange of the most important holiday of the year. In Jewish tradition, bar mitzvah gifts of money in multiples of eighteen carry rich symbolic meaning. In Korean and Japanese weddings, guests bring cash in carefully calibrated amounts. None of these cultures believes that cash &quot;diminishes&quot; the relationship. The Western middle-class taboo against cash gifts is a recent and local convention, not a deliverance of moral reason.</p>
+      <p>This matters because Sandel&#x27;s whole argumentative method depends on intuitions about &quot;constitutive norms.&quot; A practice has its own internal logic, he tells us, and money corrupts that logic. But which practice, and whose logic? Sandel takes for granted that a wedding toast must be the spontaneous outpouring of a close friend&#x27;s heart. Yet professional speechwriters have ghostwritten orations for centuries. Cicero wrote speeches for clients. Hired eulogists were standard in the Roman world. Many wedding traditions across cultures have featured professional praise-singers, paid griots, or trained performers. The notion that authenticity requires that the speaker compose his own words is a Romantic-era convention dressed up as timeless moral truth.</p>
+      <p>Once we notice how culturally contingent Sandel&#x27;s intuitions are, the corruption argument starts to look less like moral philosophy and more like a sophisticated defense of a particular bourgeois sensibility. Sandel never grapples seriously with the possibility that the people whose intuitions he is consulting—educated, affluent, mostly Western readers of Boston Review and Harvard students—are not a reliable jury. They are, in fact, exactly the demographic most likely to share a particular set of aesthetic preferences about gift-giving, about higher education, about the marketplace of speech.</p>
+      <p>Now consider the signaling account that Sandel mocks. He says love is &quot;a way of being with and responding to another person,&quot; not &quot;private information that one party reports to the other.&quot; This is a false dichotomy. Of course love is more than information transfer. But it also involves communication, and communication involves the credible conveyance of states that the other party cannot directly observe. When my partner spends time choosing a gift she knows I&#x27;ll like, she is doing something that demonstrates attention—and the demonstration matters precisely because it would be costly to fake. This is exactly Mankiw&#x27;s point, and it is not wooden but illuminating. It explains why we want gifts that took thought rather than gifts that took only money: not because money is metaphysically polluted, but because money is too easy. The cost has to be the right kind of cost.</p>
+      <p>This signaling perspective also explains why monetary gifts work fine in contexts where the relationship is well-established and the signal is unnecessary—between grandparents and grandchildren, say, or in cultures with fixed conventions about wedding cash. The signal of effort is needed precisely when the relationship is being courted, tested, or affirmed in front of others. Mankiw&#x27;s wooden account turns out to track the data better than Sandel&#x27;s expressive one.</p>
+      <p>Where does this leave us? I want to be clear: I do not think markets belong everywhere. Sandel is right that there are domains—organ sales, perhaps; certainly the auctioning of political offices and judicial verdicts—where commodification corrodes something important. But the line cannot be drawn by polling the intuitions of well-educated Westerners and treating the result as moral data. It has to be drawn by asking what specific harms commodification produces, what specific goods are served by prohibition, and whose preferences and discomforts are being privileged in the answer.</p>
+      <p>Sandel&#x27;s essay invites us to renew our public moral discourse. I agree. But part of that renewal should involve interrogating our own moralized intuitions about money with at least as much skepticism as we apply to the economist&#x27;s. Cash is not tacky. Hired words are not lies. And the suspicion of markets, however congenial to my own politics, deserves better defenders than aesthetes who mistake their refinement for ethics.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-3">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-3" style="display:none;">
+      <p>Michael Sandel has placed his finger on a deep unease many of us feel in contemporary life: the steady conversion of relationships, honors, and civic duties into commodities. His argument that markets “crowd out” non-market norms is compelling, but I want to push it further. The corrosion he identifies is not only a matter of diminished personal virtues or corrupted social practices; it poses a direct threat to democratic self-government. When market thinking colonizes every sphere, it changes the way citizens understand their role in a shared political project, and that, in turn, hollows out the public realm.</p>
+      <p>Sandel points to the Swiss waste-siting study as evidence that monetary offers can displace civic spirit. That example is telling, but its full significance becomes clearer when we connect it to a broader trend: the increasing reliance on market-like mechanisms to distribute public goods and make collective decisions. School vouchers, pollution permits, congestion pricing, pay-for-performance in public services—these may seem like sensible efficiency measures, but they train us to see ourselves as consumers of government rather than as authors of our common life. If every interaction with the state is a transaction, then the virtues of deliberation, compromise, and shared sacrifice atrophy. We stop asking “What do we owe one another?” and start asking “What’s in it for me?”</p>
+      <p>Sandel’s corruption objection, which focuses on the degradation of goods and practices, can thus be extended to the practice of citizenship itself. Democracy, like friendship or academic integrity, is not a mere preference-satisfaction machine. It depends on norms of mutual respect, a willingness to be persuaded, and an orientation toward the common good. When market values dominate, these norms are displaced by instrumental reasoning. Political campaigns become advertising wars; public discourse becomes a clash of interest groups; and voters come to view the ballot box as a shopping cart. The result is not only coarser politics but also a citizenry less capable of exercising the moral judgment that genuine self-rule requires.</p>
+      <p>Some defenders of markets will reply that democracy has always been a rough-and-tumble of competing interests, and that the price system clarifies choices and makes government accountable. But this misses the point. Accountability measured by customer satisfaction is not the same as accountability achieved through democratic deliberation. In a marketplace, I express my preferences as an individual; in a polis, I am supposed to reflect on what would be just or good for the community as a whole. Those two stances are fundamentally different, and the more we are encouraged to adopt the first, the less adept we become at the second. Sandel is right that virtues are like muscles, strengthened with exercise. Democratic muscles are no exception.</p>
+      <p>Consider the realm of public service and civic honors. When universities sell naming rights to buildings or corporations sponsor museum exhibitions, the immediate worry is that these institutions are selling their integrity. But the deeper loss is the message it sends to citizens: that public recognition is just another commodity, that contributions to the common good are nothing more than transactions. Why should a young person aspire to civic greatness if she sees that honor can be purchased by anyone with a checkbook? The corruption of honorific goods thus corrupts the aspirational horizon of a democratic society.</p>
+      <p>Sandel’s critics on the left sometimes charge that his focus on the moral limits of markets distracts from material inequality. But this is a false dichotomy. The corruption of civic norms and the concentration of economic power feed each other. When the wealthy can buy political influence, university admissions, and even public honors, the sense of a shared civic enterprise breaks down, and the institutions that might check inequality lose their legitimacy. A fair society cannot be built on corrupted norms.</p>
+      <p>Ultimately, the market-moralist debate is a debate about what kind of people we want to be. If we let market thinking reign unchallenged, we will become creatures incapable of love, friendship, and democratic solidarity—not because we are inherently selfish, but because we have starved the parts of our nature that those relationships require. Sandel’s essay is a powerful invitation to reclaim those parts before they are lost.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-4">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-4" style="display:none;">
+      <p>Michael Sandel’s “How Markets Crowd Out Morals” is an elegant and provocative essay, but it is built on a shaky foundation. While he raises important questions about the scope of markets, his argument rests on a series of contestable empirical claims and a selective reading of human motivation that ultimately fails to persuade. Markets are neither the corrosive force he imagines, nor are non-market norms the fragile hothouse flowers he believes them to be.</p>
+      <p>Let’s start with the cornerstone of his corruption argument: the idea that introducing money into certain activities changes their meaning and undermines valuable norms. The Swiss nuclear waste study, which Sandel presents as a dramatic demonstration, is far from conclusive. The fact that fewer villagers were willing to accept a waste site when offered compensation does not prove that money “crowded out” civic spirit. It is equally plausible that the offer of payment signaled that the risk was greater than they had initially believed, or that it triggered concerns about distributional fairness (why should only one village be paid?). Moreover, the study examined stated preferences in a hypothetical scenario; whether this would hold up in actual decision-making is unclear. One experiment does not a general theory make.</p>
+      <p>Sandel’s treatment of gift-giving is equally strained. He criticizes the economic “signaling” account as wooden, but then replaces it with an equally reductive moral essentialism: true gifts must be “expressive of relationships that engage, challenge, and reinterpret our identities.” This romantic vision simply doesn’t capture how most people actually experience gift culture. In reality, gift-giving is a messy blend of obligation, affection, convenience, and yes, sometimes sheer utility. The fact that we often give cash or gift cards to teenagers or distant relatives doesn’t corrupt family bonds; it simply reflects the recognition that in a complex society, we cannot always know each other’s preferences intimately. That is not a moral failure; it is a sensible adaptation.</p>
+      <p>The deeper problem is that Sandel’s account treats non-market norms as static and pure, as if “sympathy, generosity, thoughtfulness” are fixed quantities that markets inevitably displace. This ignores the dynamic ways that markets and social norms co-evolve. The commercialization of social life sometimes creates new forms of connection and reciprocity. For example, paid childcare and eldercare do not destroy family love; they often enable women to participate in the workforce and support their families in ways that traditional norms did not. The market for wedding planning services does not render marriage hollow; it frees couples to focus on the relational aspects of the event by outsourcing logistical headaches. One could argue, contra Sandel, that markets here facilitate the expression of values rather than corrupting them.</p>
+      <p>Sandel also relies on a false contrast between market values and moral ones. The economist’s notion that altruism is a scarce resource may sound crass, but it contains a kernel of truth. Human beings have finite time, attention, and emotional energy. Designing institutions that channel self-interest toward productive ends—so that people don’t have to rely on saintly levels of generosity just to get by—can leave more room for voluntary altruism where it matters most. This is not the “economistic” hoarding of virtue Sandel derides; it is a recognition of limits. A society that expects everyone to be a civic hero simply because they are unpaid will end up with a few heroes and many shirkers. Impersonal market mechanisms can be more reliable and less demanding than constant moral exhortation.</p>
+      <p>Finally, Sandel is too quick to dismiss the fairness objection. Many of the examples he cites—legacy admissions, paid blood plasma—are objectionable primarily because they operate in contexts of profound inequality, not because buying and selling inherently taints the goods. If we lived in a society where everyone had roughly equal resources, would we really object to a father paying a professional to help his son write a wedding toast? Probably not with the same moral force. Sandel’s corruption framework risks taking our eye off the ball of distributive justice and economic power, substituting a cultural critique for a political one.</p>
+      <p>In the end, Sandel offers a powerful diagnosis of our discontent, but his prescription—to cordon off more and more spheres from market exchange—is both impractical and illiberal. The moral health of a society depends not on protecting fragile norms from market contact, but on ensuring that those markets are embedded in a broader framework of democratic accountability and genuine equality.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">DeepSeek V4 Pro</span>
+      <button class="essay-view-full" data-target="d-full-d-5">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-5" style="display:none;">
+      <p>Michael Sandel has written an eloquent lament for the moral corrosion wrought by markets, but his argument suffers from a fundamental blind spot: it focuses almost exclusively on the qualitative corruption of goods while downplaying the material conditions that give markets their power. In doing so, he offers a cultural critique that risks becoming an apology for the very inequalities that fuel the commodification he rightly decries. A more honest reckoning with the problem would start not with the meaning of wedding toasts, but with the political economy of desperation.</p>
+      <p>Sandel’s corruption argument holds that certain practices are “degraded” when bought and sold, regardless of whether the background conditions are fair. This is a clever philosophical move, but it abstracts too cleanly from real-world power relations. Consider his own example of kidney sales. The central objection to organ markets is not that a purchased kidney functions less well—it doesn’t—or even primarily that the transaction “corrupts” the meaning of bodily integrity. The horror is that poor people will be compelled by economic necessity to sell parts of their bodies while the rich profit from their suffering. The fairness objection and the corruption objection are not separate in practice; the corruption of the good arises precisely from the inequality that makes some people desperate enough to sell.</p>
+      <p>When Sandel writes that the fairness argument cannot explain why “it would be wrong to buy a kidney even if we could create a perfect market, one in which informed, freely consenting sellers were protected from exploitation,” he is tilting at windmills. No such market exists or could exist in a world of vast wealth disparities. The very act of “free consent” under conditions of hunger or medical bankruptcy is a fiction that liberal egalitarians have long recognized. By treating the corruption objection as a distinct and sometimes superior moral register, Sandel implicitly grants that we might, in theory, have morally permissible markets in kidneys—an idea that many on the left would regard as abhorrent regardless of market design.</p>
+      <p>The deeper issue is that Sandel’s framework gravitates toward a politics of recognition rather than redistribution. He worries about the “crowding out” of civic virtue and generosity, but says little about the political and economic forces that have systematically dismantled the social protections that once made those virtues viable. When public goods are starved of funding, when wages stagnate, and when healthcare and education become commodities, people are forced into market relationships not because they have been seduced by market ideology, but because they have no alternative. The single mother who accepts payment for her blood plasma is not expressing a preference for commodified bodily fluids; she is trying to keep the lights on. Blaming market norms for her predicament is a category mistake; the problem is poverty, not the conceptual corruption of blood as a gift.</p>
+      <p>This point has important implications for political strategy. If the primary problem is that markets corrupt our moral sensibilities, then the solution is a kind of cultural reclamation: we must deliberate about the proper ends of goods and guard them from market encroachment. But if the primary problem is that capital has broken the back of labor and eviscerated public provision, then the solution is to rebuild worker power, decommodify essential goods through universal social programs, and use the state to redistribute resources. The two are not entirely incompatible, but Sandel’s emphasis tilts heavily toward the first, which risks offering a moralized critique without the structural analysis needed to make change.</p>
+      <p>This isn’t to deny that there is something genuinely troubling about the spread of market logic into intimate life. The commercialization of care work, for example, does seem to erode relationships when it is driven by profit-maximization and low-paid, precarious labor. But the fix is not to insulate care from markets by sentimentalizing unpaid family labor (which usually means women’s unpaid labor). The fix is to fund care work generously, to unionize caregivers, and to ensure that care is accessible and valued. In other words, we need to change the political economy of care, not just the moral vocabulary.</p>
+      <p>Sandel’s essay is at its most insightful when it punctures the smug assumption that markets merely reflect pre-existing preferences. But he stops short of drawing the logical conclusion: that the preferences and norms of a society are shaped by the distribution of property and power. A democratic response to market overreach must therefore be a fight for economic democracy, not just a philosophical argument about the meaning of goods. Until we address the material conditions that make selling a kidney seem like a rational choice, the moral purity of our norms will be a luxury reserved for those who can afford them.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-6">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-6" style="display:none;">
+      <p>Michael J. Sandel is perhaps our most gifted popular philosopher, and his critique of the creeping expansion of market values is characteristically eloquent. Yet, in his eagerness to demonstrate how markets &quot;crowd out&quot; moral and civic virtues, Sandel mischaracterizes the economic way of thinking and, more troublingly, turns a blind eye to the profound human costs of restricting markets in the name of moral purity.</p>
+      <p>The crux of Sandel’s argument relies on a dismissal of Kenneth Arrow and Lawrence Summers, who warned against relying too heavily on altruism. Sandel mocks the idea that altruism is a &quot;scarce resource&quot; like fossil fuel, preferring the metaphor of a muscle that grows stronger with use. It is a beautiful sentiment, but it fundamentally misunderstands the economists’ point. Arrow and Summers do not literally believe that a person possesses a fixed volumetric tank of benevolence. Rather, they recognize that human attention, emotional energy, and the capacity for self-sacrifice are bound by cognitive and evolutionary limits.</p>
+      <p>We are biologically wired to care deeply for our kin, our friends, and our immediate communities. Our &quot;muscle&quot; for altruism works exceptionally well in these small spheres. But when it comes to coordinating the production and distribution of food, medicine, and shelter for hundreds of millions of strangers, the muscle of altruism is insufficient. The genius of the market is not that it destroys virtue, but that it does not require it. By harnessing self-interest, the market ensures that strangers cooperate to meet each other’s needs. If we demanded that every transaction be fueled by civic virtue and mutual love, the global economy would collapse, and the most vulnerable would suffer immediately. Conserving our moral energy for where it is truly needed—our families, our communities, and the marginalized—is not a cynical retreat from virtue; it is a practical necessity.</p>
+      <p>Nowhere is the danger of Sandel’s &quot;corruption&quot; argument more glaring than in his brief mention of human kidneys. Sandel casually notes that we must weigh the moral arguments for and against organ sales, treating it as an abstract philosophical puzzle akin to buying a wedding toast. But this is not an abstract puzzle. Today, in 2012, more than 90,000 Americans are waiting for a kidney. Thousands will die this year because the supply of altruistically donated organs falls tragically short of the demand.</p>
+      <p>Our current system operates exactly as Sandel wishes: it relies entirely on the non-market norm of altruistic giving. And it is failing. Economists and medical professionals who advocate for a regulated market in kidneys do not do so because they wish to &quot;commodify&quot; the human body for its own sake. They do so because they believe that saving thousands of lives is a higher moral imperative than preserving an abstract sense of bodily sanctity.</p>
+      <p>Sandel worries that introducing money into this sphere would degrade the &quot;meaning&quot; of the good. But what is more degrading to human dignity: a regulated system in which a willing donor receives compensation for providing a life-saving organ, or a system that watches thousands of people perish on dialysis because we are too morally squeamish to allow a transaction? If saving lives requires us to tolerate a degree of &quot;commodification,&quot; we should accept that trade-off without hesitation.</p>
+      <p>Sandel’s focus on the aesthetic discomfort of market transactions—his hand-wringing over gift cards, ghostwritten wedding toasts, and the creeping commercialization of holiday shopping—reveals a framework optimized for the anxieties of the affluent. It is a luxury to fret over whether giving cash instead of a sweater corrupts the spirit of Christmas. It is a luxury to debate whether legacy admissions at Ivy League universities violate the institutional integrity of higher education.</p>
+      <p>When Sandel does touch upon matters of life and death—such as the peasant selling a kidney or the sweatshop worker—he explicitly sets aside the &quot;fairness&quot; objection (which deals with poverty, coercion, and inequality) to focus on the &quot;corruption&quot; objection. But to the starving peasant, the problem with the market is not that it fails to honor the telos of the human body. The problem is starvation. By prioritizing the &quot;corruption&quot; of goods over the material welfare of human beings, Sandel elevates symbolic purity above actual human suffering.</p>
+      <p>Markets are not perfect, and they require robust regulation to ensure safety and prevent coercion. But the appropriate response to the limits of markets is to address the underlying inequalities that make them coercive, not to banish them from spheres where they could do tremendous good. Treating virtue as an infinitely renewable resource is a comforting illusion, but public policy must be built on the reality of human nature. When we prioritize the sanctity of the non-market sphere over the tangible benefits that markets can deliver, we are making a moral choice—and it is often a deadly one.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-7">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-7" style="display:none;">
+      <p>In &quot;How Markets Crowd Out Morals,&quot; Michael J. Sandel presents a compelling and elegantly written critique of the creeping commodification of everyday life. Yet, for all its philosophical sophistication, Sandel’s essay functions as a masterclass in bourgeois evasion. By explicitly decoupling his critique of markets from questions of economic inequality, Sandel offers a sanitized, comfortable version of anti-capitalism—one that allows the affluent to wring their hands over the spiritual emptiness of modern life without ever confronting the structural violence that underpins it.</p>
+      <p>Early in his essay, Sandel makes a crucial, fateful theoretical maneuver. He divides the moral objections to markets into two categories: the &quot;fairness&quot; objection and the &quot;corruption&quot; objection. The fairness objection, he notes, highlights the injustice of market exchanges made under conditions of dire economic necessity—the peasant selling a kidney to feed his family, the desperately poor worker entering a sweatshop. The corruption objection, conversely, concerns the degrading effect of market valuation on the &quot;meaning&quot; of certain goods and practices, an effect that remains even under conditions of perfect equality.</p>
+      <p>Having established this dichotomy, Sandel casually discards the fairness objection. &quot;The fairness argument is important,&quot; he writes, &quot;but my focus is on the corruption argument.&quot;</p>
+      <p>Why? Why, in the wake of the 2008 financial crisis, amidst soaring global inequality and the echoes of the Occupy Wall Street movement, would a preeminent public philosopher choose to sideline the issue of economic coercion?</p>
+      <p>The answer becomes clear as we look at the examples Sandel chooses to illustrate his thesis. Freed from the grim realities of poverty and exploitation, Sandel’s essay wanders through a landscape of distinctly upper-middle-class anxieties. He worries about the moral status of $149 ghostwritten wedding toasts. He frets over the &quot;epidemic of squandered utility&quot; in holiday gift-giving and the tacky nature of giving cash. He ponders the institutional integrity of Ivy League admissions and whether wealthy parents buying spots for their children compromises the &quot;pursuit of truth.&quot;</p>
+      <p>This is not a critique of capitalism; it is a critique of bad manners. By focusing on the &quot;corruption&quot; of elite institutions and social niceties, Sandel reduces the voracious, destructive logic of global markets to an issue of etiquette and civic aesthetics.</p>
+      <p>When Sandel argues that paying for a wedding toast &quot;diminishes its value,&quot; he is entirely correct. But comparing the diminished sentimental value of a wedding speech to the commodification of human labor or the privatization of water is a category mistake of staggering proportions. The problem with Lawrence Summers’s defense of sweatshops is not, as Sandel implies, that it promotes a &quot;starker&quot; view of virtue as a commodity. The problem with sweatshops is that they ruthlessly extract surplus value from the bodies of vulnerable people in the Global South to line the pockets of multinational shareholders.</p>
+      <p>Sandel writes that &quot;we have to ask what norms should govern the parent-child relationship and whether buying and selling children would undermine those norms.&quot; But who is actually advocating for a market in children? This is a philosophical strawman. Meanwhile, the actual, existing markets that are devastating our social fabric—the for-profit prison industry that commodifies Black and Brown bodies, the predatory lending practices that strip wealth from the working class, the healthcare system that rations life-saving care by ability to pay—are entirely absent from his analysis. These crises cannot be understood through the lens of &quot;corruption&quot; alone. They are fundamentally crises of &quot;fairness,&quot; of extreme imbalances in power and capital.</p>
+      <p>Sandel argues that markets are not mere mechanisms, but that they &quot;embody certain values.&quot; He is right. But the primary value that capitalist markets embody is not simply &quot;utilitarianism&quot;; it is the imperative of capital accumulation at the expense of labor. By decoupling market expansion from class power, Sandel paints a picture of markets as a kind of autonomous, creeping fog that mysteriously settles over our civic life. But markets do not expand on their own. They are pushed into new spheres by specific corporate interests and political decisions designed to open new avenues for profit.</p>
+      <p>Ultimately, Sandel’s &quot;corruption&quot; argument is safe. It is palatable to the very elites who benefit from the market system, because it demands no redistribution of wealth or restructuring of power. It merely asks them to be more thoughtful about where they apply their market logic, to keep their gift-giving intimate and their university admissions nominally meritocratic.</p>
+      <p>To genuinely resist the commodification of human life, we cannot afford to set the &quot;fairness&quot; objection aside. We must recognize that the degradation of our moral and civic life is not merely a philosophical side-effect of market logic; it is the direct result of an economic system built on inequality and exploitation. Until we confront the material realities of power and class, we are just arguing about the price of a wedding toast while the house burns down.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">gemini-3.1-pro-preview</span>
+      <button class="essay-view-full" data-target="d-full-d-8">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-8" style="display:none;">
+      <p>In &quot;How Markets Crowd Out Morals,&quot; Michael J. Sandel diagnoses a genuine societal malaise: the unsettling sense that financial metrics have colonized every corner of human existence. Drawing on classic studies—such as Richard Titmuss’s work on blood donation and the Swiss nuclear waste survey—Sandel argues that introducing money into a social sphere inevitably corrodes the civic and moral norms that previously governed it.</p>
+      <p>Sandel’s framework, however, rests on a profound binary. He imagines two rigidly separated, mutually exclusive &quot;spheres.&quot; On one side is the market, characterized by cold, calculating utilitarianism and the stripping of human connection. On the other side is the realm of morals, intimacy, and civic virtue. In Sandel’s view, whenever the former encroaches upon the latter, the moral sphere is &quot;corrupted.&quot;</p>
+      <p>But this &quot;hostile worlds&quot; view of money and morals simply does not reflect how human beings actually live, interact, or construct meaning. Rather than being inherent enemies, markets and moral values are constantly intertwined. Money does not inherently destroy intimacy; it frequently sustains and expresses it. By clinging to the idea that markets are inherently corrupting, Sandel misses the far more vital and complex project of our time: not keeping markets out of the moral sphere, but deliberately moralizing our markets.</p>
+      <p>Consider the reality of how we care for our loved ones. According to Sandel’s logic, introducing payment into relationships of care should crowd out genuine affection and duty. Yet, millions of families rely on paid nannies, daycare workers, and home health aides to care for their children and aging parents. Does the fact that a preschool teacher receives a paycheck &quot;dissolve&quot; the love and care she provides to the children? Do the wages paid to a hospice nurse corrupt the dignity of the end-of-life care he administers? Economic sociology has long demonstrated that people are remarkably adept at blending money and care without destroying the moral fabric of the relationship.</p>
+      <p>Even Sandel’s examples of &quot;corruption&quot; reveal less about the inherent evil of markets and more about the mechanics of deception. He points to the $149 ghostwritten wedding toast as evidence that buying a good diminishes its value. But the moral friction here isn’t the presence of money; it is the absence of transparency. If a best man paid for public speaking lessons to deliver a better toast, we would applaud his dedication. The ghostwritten toast feels hollow because it is a lie, not simply because it was purchased.</p>
+      <p>When Sandel cites the Swiss nuclear waste study—where offering cash compensation reduced the villagers’ willingness to accept a repository—he rightly identifies a phenomenon known in behavioral economics as &quot;motivation crowding out.&quot; But he draws the wrong overarching conclusion. The Swiss study does not prove that all financial incentives corrupt civic duty. It merely proves that *clumsy* financial incentives, introduced without regard for local social meaning, can be perceived as bribes.</p>
+      <p>Money is not a monolithic solvent that dissolves all values; it is a cultural tool that takes on the meaning assigned to it by its users. Historically, life insurance was vehemently opposed by 19th-century moralists who argued—in terms nearly identical to Sandel’s—that putting a monetary price on human life was a gross commodification that corrupted the sanctity of the family. Today, we view purchasing life insurance not as a corruption of love, but as an expression of profound responsibility and care for one’s dependents. The market mechanism did not destroy the moral norm; it became a vehicle for it.</p>
+      <p>We see this same synthesis happening today. If markets are inherently hostile to moral norms, how do we explain the explosive growth of fair-trade products, B-Corporations, and socially responsible investing? Millions of consumers willingly pay a premium for coffee, clothing, and food precisely to ensure that their market transactions align with their moral values regarding labor rights and environmental stewardship. They are not retreating from the market; they are using market mechanisms to exercise the very &quot;muscle&quot; of civic virtue that Sandel fears is atrophying.</p>
+      <p>The danger of Sandel’s argument is that it breeds a kind of moral fatalism about the economy. If we believe that markets are inherently toxic to virtue, our only recourse is to build defensive walls around certain sacred practices—blood donation, university admissions, friendship—while surrendering the rest of the economy to ruthless utilitarianism.</p>
+      <p>But the economy is not a law of nature; it is a human institution. The task before us in 2012 is not to draw a boundary line and declare the moral sphere off-limits to markets. The task is to reform the rules of the market itself so that economic life encourages solidarity, fairness, and human flourishing. We do not need to choose between markets and morals; we need to demand markets that are worthy of our morals.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-9">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-9" style="display:none;">
+      <p>Michael Sandel is right to insist that the debate about markets cannot be settled by asking only whether exchanges are voluntary or efficient. The harder question is what market exchange does to the meaning of the goods exchanged, and to the habits of character a democratic society needs. In an age when public schools sell advertising space, prisons are run for profit, soldiers are supplemented by private contractors, and wealthy travelers can buy their way to the front of airport security lines, the question is not merely “Who gains and who loses?” It is “What kind of people are we becoming?”</p>
+      <p>The most important part of Sandel’s argument is his distinction between fairness and corruption. Much liberal argument about markets stops with fairness: Were the parties coerced? Did they have adequate information? Were background conditions sufficiently equal to make the bargain meaningful? These are essential questions. A “choice” made under hunger, debt, unemployment, or lack of medical care may be formally voluntary and substantively desperate. But Sandel is right that fairness does not exhaust the moral terrain. Some exchanges may be troubling even under fair conditions because they transform the norms appropriate to the activity.</p>
+      <p>This is clearest in cases involving civic obligation. Paying people to vote, serve on juries, or accept burdens that belong to all citizens does not simply add an incentive to an unchanged practice. It redefines the practice. The Swiss nuclear-waste case is powerful because it shows that compensation can be understood not as gratitude or burden-sharing, but as a bribe. Residents who were willing to accept a repository as a matter of public duty became less willing when the proposal was reframed as a cash transaction. The offer told them, in effect, that their civic judgment was for sale. The insult was not imaginary. Political communities depend on reasons that citizens can share: safety, necessity, fairness, reciprocity. Money can sometimes accompany such reasons, but when it replaces them, it hollows out public consent.</p>
+      <p>The same is true of education. Universities need money; no serious person denies it. But when admission comes to be seen as purchasable—through legacy preference, donor influence, or other discreet channels—the injury is not only to the rejected applicant. It is to the university’s claim to be a community of learning rather than a credentialing club for the already powerful. Defenders often argue that donations fund scholarships. Perhaps they do. But if the institution funds opportunity by selling exceptions to its own standards, it teaches a lesson more corrosive than any lecture can repair: that merit is negotiable and ideals are ornamental.</p>
+      <p>One might object that markets are not always corrupting. That is true, and Sandel’s argument does not require denying it. Paying a doctor does not necessarily corrupt healing; paying a teacher need not corrupt education; paying a musician need not corrupt art. The question is not whether money is present, but what role it plays and what norms govern the practice. A salary can support a vocation. A bonus can distort it. A fee can make a service available. A market can also turn a relationship into a transaction and a calling into a revenue stream. The moral task is to discriminate.</p>
+      <p>This point matters especially because economic reasoning has acquired the authority of common sense. We have become accustomed to describing social life in the language of incentives, preferences, utility, and choice. That vocabulary is illuminating in many settings, but it is disabling when treated as complete. To call a gift a “signal” of private information about affection is not merely a harmless metaphor. It misses the way gifts can express attention, memory, vulnerability, and shared history. A gift is not always a failed cash transfer. Sometimes its value lies precisely in the giver’s imperfect but loving attempt to see the recipient.</p>
+      <p>The deeper issue is democratic character. Markets are excellent at organizing production and coordinating dispersed information. But a society cannot be held together by market relations alone. Citizenship requires capacities that markets do not reliably cultivate: trust, patience, sacrifice, argument, mutual recognition, and a willingness to act for reasons other than personal gain. These capacities are not natural resources we should hoard. Sandel’s muscle metaphor is apt. Civic virtue grows through use or decays through neglect.</p>
+      <p>This is why the expansion of markets into every corner of life should worry conservatives as well as liberals. A conservative who values family, religion, local attachment, and inherited practices should resist the reduction of all value to price. A liberal who values equality and democratic citizenship should resist arrangements that let wealth colonize every social good. A republican who values self-government should resist a politics in which public purposes are replaced by private incentives.</p>
+      <p>Of course we need markets. We also need moral limits on markets, and we need public argument about those limits. That argument will be contentious because it requires judgments about the purposes of institutions and the meanings of social practices. But avoiding such judgments does not make us neutral. It simply leaves market logic to decide by default. Sandel’s great service is to remind us that “efficiency” is not a substitute for moral and civic reasoning. The question is not whether markets are good or bad. It is whether we still possess the confidence to say that some things should not be for sale.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-10">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-10" style="display:none;">
+      <p>Michael Sandel’s essay is eloquent, but it proves less than it suggests. Markets can sometimes crowd out moral norms. But they can also support, extend, and protect them. The danger in Sandel’s argument is that vivid examples of tasteless commodification—bought wedding toasts, fake Facebook friends, purchased honors—are made to cast suspicion on market exchange as such. That suspicion may satisfy our moral intuitions, but it can easily become a license for paternalism, scarcity, and hypocrisy.</p>
+      <p>Begin with Sandel’s best examples. A hired friend is not a friend. A ghostwritten toast may disappoint the bride and groom if it purports to be the best man’s own words. A Nobel Prize sold at auction would not be a Nobel Prize in the morally relevant sense. These cases show that some goods are constituted by intentions, histories, or judgments incompatible with purchase. But that point is not an indictment of markets. It is a point about fraud, misdescription, and category mistake. If I pay an actor to play Hamlet, I have not bought a prince of Denmark. If I pay a therapist, I have not bought a friend. We are usually capable of distinguishing the good purchased from the good imagined.</p>
+      <p>Sandel’s more controversial cases require a different argument. Consider blood, kidneys, college admissions, and compensation for accepting public burdens. Here money does not dissolve the good in the same obvious way. A kidney works whether donated or sold. Blood can save a life whether the donor was paid or unpaid. A community may bear real costs from hosting a nuclear-waste facility, and compensation may be a matter of justice rather than bribery. The question is not simply whether money corrupts, but whether the relevant practice can be designed so that money serves appropriate ends.</p>
+      <p>The kidney example is especially revealing. Thousands of people wait for transplants; many die waiting. A blanket prohibition on kidney sales preserves our sense that body parts should not be commodities, but it does so at a cost borne by the sick. It also coexists with morally awkward practices we already tolerate. Surgeons, hospitals, pharmaceutical companies, and insurers are paid. The donor alone must be moved by altruism. Why is it ennobling to forbid compensation to the person who assumes the physical risk, while everyone else in the chain receives payment? A regulated system—perhaps with fixed compensation, long waiting periods, medical screening, and lifetime health coverage for donors—might reduce exploitation and increase supply. Sandel may still reject it on corruption grounds, but he needs to explain why preserving a symbolic norm outweighs avoidable deaths.</p>
+      <p>The same applies to blood. Richard Titmuss’s comparison of British and American blood systems is suggestive, but it does not establish that payment necessarily corrupts donation. The American system’s problems may have reflected poor screening, fragmented institutions, and reliance on high-risk sellers. Modern testing and regulation can change the equation. It is entirely possible for voluntary donation to remain central while compensation is used in limited contexts, such as plasma collection or rare blood types. The moral meaning of payment depends on institutional setting.</p>
+      <p>Sandel is also too quick to treat economic analysis as wooden. The idea of “signaling” may sound bloodless when applied to lovers, but social life is full of costly signals. Engagement rings, handwritten letters, long journeys, remembered anniversaries, even the time spent choosing a gift all communicate seriousness partly because they require effort. To describe this is not to reduce love to information. It is to notice one dimension of expression. Economists sometimes overreach, but moral philosophers sometimes caricature.</p>
+      <p>The claim that altruism is a muscle rather than a scarce resource is attractive, but it is not always true. Anyone who has cared for an elderly parent, volunteered in a struggling school, or served in a demanding nonprofit knows that moral energy can be exhausted. “Compassion fatigue” is not an economist’s fantasy. Institutions that rely entirely on unpaid virtue may become exploitative, especially toward women, family members, and the poor. Payment can recognize burdens that sentimentality conceals. A society that refuses to price care may not honor care; it may simply expect someone to provide it for free.</p>
+      <p>This does not mean everything should be for sale. Some market exchanges should be prohibited because they are coercive, fraudulent, dangerous, or incompatible with the institution in question. Selling votes undermines democracy because political equality requires that each citizen’s vote count as an expression of judgment, not purchasing power. Selling judicial verdicts destroys the rule of law. But the reasons must be specific. “Commodification” cannot be a trump card.</p>
+      <p>The language of corruption also invites a troubling question: who decides the true meaning of a good? Sandel wants democratic deliberation, and that is better than technocratic rule. But democratic majorities have often enforced moral meanings in oppressive ways. They have decided what marriage means, what sexuality means, what family means, and who may participate in honorable institutions. Markets, for all their faults, sometimes allow pluralism. They let people pursue goods without first winning a public argument about the highest purpose of life.</p>
+      <p>We should resist both market imperialism and moral imperialism. The first says that if a transaction is voluntary and efficient, nothing more need be asked. The second says that if money makes us uneasy, prohibition follows. A better approach is experimental and institutional: identify the harm, design safeguards, compare alternatives, and remain alert to unintended consequences. Sometimes money corrupts. Sometimes it compensates. Sometimes it liberates. The moral limits of markets are real, but they are not found by treating markets as a solvent that predictably dissolves virtue wherever it appears.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">GPT-5.5</span>
+      <button class="essay-view-full" data-target="d-full-d-11">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-11" style="display:none;">
+      <p>Michael Sandel gives us a needed vocabulary for describing something many people feel but cannot easily name: the sense that more and more of life is being reorganized around buying, selling, branding, ranking, and bidding. Yet his essay is most convincing when it shows that market reasoning is morally incomplete, and less convincing when it implies that our main problem is a philosophical mistake about the nature of goods. The spread of markets is not only a confusion of values. It is also a distribution of power.</p>
+      <p>Sandel distinguishes fairness objections from corruption objections, and then chooses to emphasize corruption. This is understandable. American public argument is already fluent in fairness talk, at least in principle, while corruption talk sounds more elusive and moralistic. He is right that some goods are damaged when bought and sold even if the parties are equal. Friendship, civic honor, votes, and certain forms of recognition cannot be fully understood through consent. Their meanings depend on norms that markets may displace.</p>
+      <p>But in practice, fairness and corruption are harder to separate than Sandel suggests. Markets often corrupt because inequality gives them their social force. A market in kidneys would not be populated by hedge-fund managers selling spare organs to schoolteachers. It would draw disproportionately on the poor, the indebted, the uninsured, and those with few alternatives. The corruption of the body into a revenue source would be inseparable from the injustice that makes such “choice” attractive. To say that the market degrades the meaning of the body is true; to say only that risks making exploitation look like a secondary concern.</p>
+      <p>The same is true of university admissions. Sandel’s account of “selling out” captures the injury to institutional integrity. But the more concrete scandal is that affluent families already buy educational advantage long before the admissions office opens a file. They buy houses in districts with better public schools, private tutors, SAT preparation, unpaid internships, music lessons, summer enrichment, and the kind of social confidence that admissions committees mistake for merit. Legacy preferences and donor influence are not aberrations from an otherwise pure meritocracy. They are visible tips of a much larger structure in which money quietly shapes opportunity while institutions preserve the language of talent.</p>
+      <p>This matters because the rhetoric of “markets crowding out morals” can sometimes make the remedy sound like a change in attitude. We should deliberate better, honor civic goods, and resist economistic thinking. Yes. But we also need institutions that prevent wealth from dominating social life. Without campaign-finance reform, progressive taxation, strong public schools, labor protections, universal access to health care, and serious limits on conflicts of interest, moral exhortation will not keep markets in their place. Citizens asked to practice civic virtue while watching the affluent purchase exemption from common burdens will eventually conclude that virtue is for suckers.</p>
+      <p>Sandel’s examples of gifts and wedding toasts are charming, but they also point to a limitation. The commercialization of intimate life is not always driven by a philosophical belief in efficiency. Sometimes it is driven by time scarcity, work pressure, geographic mobility, and the thinning of communal supports. People buy services once performed by relatives, neighbors, congregations, or friends because those networks are weaker, because adults work longer hours, because families live farther apart, and because care responsibilities are unevenly distributed. A purchased wedding toast may be tacky; paid child care, elder care, therapy, housekeeping, and food preparation are often necessities. The moral question is not simply whether money belongs in intimate life, but how to prevent paid care from being degraded because it is associated with dependence, women’s work, immigrant labor, or low status.</p>
+      <p>Indeed, one risk in romanticizing non-market norms is that those norms have often concealed domination. The family is governed by love, but also by unequal power. Communities cultivate solidarity, but also conformity and exclusion. Professional vocations inspire service, but also paternalism. Markets may corrode, but they may also give exit to people trapped in oppressive relationships. A woman able to earn her own income, a patient able to choose another doctor, a worker able to leave a feudal dependence for wages—these are not trivial moral achievements. The line between commodification and emancipation is historically variable.</p>
+      <p>Still, Sandel’s central warning stands. The past several decades have seen not only the use of markets, but the prestige of market metrics. Hospitals, universities, charities, and public agencies increasingly borrow the language of customers, incentives, performance targets, and revenue streams. Some of this improves accountability. But it also narrows imagination. A school becomes a producer of test scores; a student becomes an investor in human capital; a patient becomes a consumer; a citizen becomes a taxpayer shopping for services. These metaphors do not merely describe reality. They train us to notice some obligations and forget others.</p>
+      <p>The challenge, then, is not to purge money from morally significant domains. That is impossible and not always desirable. The challenge is to democratize the terms on which money enters. Compensation for hosting a waste facility, for example, need not be a bribe if it emerges from a fair public process, reflects real burdens, and accompanies rather than replaces deliberation about safety and necessity. Paying teachers need not corrupt education; tying every educational judgment to test-based bonuses might. Paying caregivers need not corrupt love; treating care as low-wage servant work does.</p>
+      <p>We need Sandel’s language of moral limits, but joined to a political economy of power. Markets do not float above society; they are made by law, custom, bargaining power, and public policy. The question is not markets or morals. It is whose morals are built into which markets, who benefits, who bears the costs, and what forms of common life remain protected from the rule of money.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-12">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-12" style="display:none;">
+      <p>Sandel&#x27;s &quot;How Markets Crowd Out Morals&quot; offers a compelling diagnosis of market overreach, but it suffers from a fundamental methodological problem: it proves too much. If we take his logic seriously, we end up not only questioning organ markets or elite college admissions, but also undermining the very institutions that allow individuals to exercise moral agency in the first place.</p>
+      <p>Consider the Swiss nuclear waste study that anchors Sandel&#x27;s crowding-out argument. The villagers, we learn, were willing to accept a storage facility out of civic duty—until offered money, at which point support collapsed. Sandel interprets this as evidence that monetary incentives corrupt civic virtue. But another reading is available: perhaps the villagers were responding to what they perceived as an insult to their civic commitment. They were saying, in effect, &quot;We didn&#x27;t need bribing; your offer implied that we would require bribery.&quot; This is a different phenomenon from what Sandel describes—it&#x27;s about perception and symbolic meaning, not about markets inherently crowding out norms.</p>
+      <p>The more troubling implication of Sandel&#x27;s argument is its implicit nostalgia for pre-market forms of social organization. He correctly notes that gift-giving expresses intimacy in ways that cash cannot. But he fails to address the practical consequences of his reasoning. If markets corrode social bonds, then the solution seems to be fewer markets. But fewer markets means less wealth, less specialization, and ultimately less capacity for individuals to pursue the moral and civic lives Sandel rightly values. A subsistence farmer worrying about next year&#x27;s harvest has limited opportunity for civic participation or the cultivation of virtue.</p>
+      <p>Sandel&#x27;s treatment of Arrow and Summers is particularly unfair. He characterizes their view as &quot;economistic&quot; and dismisses it with the counter-image of a loving couple whose love deepens through use. But this analogy conflates different levels of analysis. Whether altruism is &quot;depleted&quot; or &quot;strengthened&quot; by use is an empirical question, not a philosophical one. And at the collective level, there are real constraints on how much time and energy individuals can devote to civic engagement. Summers is not saying that families should hoard their love like misers; he&#x27;s observing that civic engagement has opportunity costs, and that market economies can liberate individuals to pursue morally valuable activities they couldn&#x27;t otherwise afford.</p>
+      <p>The deeper problem with the &quot;corruption&quot; argument is that it assumes we can identify a pristine, pre-market form of any given practice. But friendship itself is not a natural kind that precedes market exchange. In traditional societies, friendship was embedded in webs of obligation, kinship, and economic interdependency. The modern conception of friendship as a voluntary, purely affective relationship is itself a product of market societies. Sandel is not comparing markets against a baseline of pure, uncorrupted friendship; he&#x27;s comparing one form of market-embedded friendship against another.</p>
+      <p>This matters because it suggests that the solution to market overreach is not the rejection of markets per se, but the cultivation of institutional forms that preserve space for non-market norms. The question is not whether markets should exist—they obviously should—but how they should be regulated and bounded. On this question, Sandel is frustratingly vague. He offers no criteria for determining where markets &quot;belong&quot; and where they don&#x27;t, beyond the circular assertion that certain goods are &quot;diminished&quot; by commodification.</p>
+      <p>A more defensible position would acknowledge that markets are embedded in social norms that they neither create nor destroy. The real challenge is maintaining the institutional conditions—education, political participation, community organization—that keep non-market norms alive. Sandel&#x27;s rhetoric of &quot;crowding out&quot; obscures this institutional complexity and leads to the mistaken conclusion that markets themselves are the enemy.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-13">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-13" style="display:none;">
+      <p>Sandel&#x27;s essay arrives at a moment when the case for market fundamentalism has collapsed under the weight of its own contradictions. The financial crisis, widening inequality, and the commodification of public goods have exposed what Sandel calls the &quot;faith in markets&quot; for what it always was: an ideology that serves the interests of those who benefit from market expansion. The essay&#x27;s real contribution is not its philosophical taxonomy of fairness and corruption arguments, but its invitation to deliberate collectively about the kind of society we want.</p>
+      <p>Notice that Sandel&#x27;s argument is fundamentally democratic, even if he frames it in philosophical terms. He asks where markets &quot;belong&quot; and insists that this question &quot;is really about how we want to live together.&quot; This is a question that cannot be answered by technical economic expertise or market mechanisms themselves. It requires the kind of public deliberation that democracies, at their best, enable.</p>
+      <p>But here is where Sandel&#x27;s essay falls short. He offers a sophisticated account of why markets can corrupt, but he says little about the political conditions under which citizens might successfully resist corruption. The Swiss villagers, we learn, refused the bribe—but what gave them the capacity to do so? Presumably, some combination of civic education, local community, and democratic participation. These are the missing pieces in Sandel&#x27;s account. He treats the crowding-out effect as a kind of sociological inevitability, when in fact it is mediated by institutions and practices that themselves require cultivation.</p>
+      <p>The practical implication is that the fight against market overreach cannot be won through philosophical argument alone. It requires building or rebuilding the institutions that sustain non-market norms: universities that resist ranking systems, hospitals that prioritize care over profit, communities that organize collective action, and political parties that articulate a vision of the common good. This is work that cannot be done from the sidelines.</p>
+      <p>Sandel is right to be skeptical of economists who treat virtue as a scarce resource to be conserved. But the solution is not simply to reject economic reasoning. The challenge is to develop economic frameworks that take seriously the non-market values Sandel describes. Happily, some economists are already doing this. The study of &quot;pro-social&quot; behavior, the revival of institutional economics, and the growing attention to well-being measures beyond GDP all point toward a more humanistic economics.</p>
+      <p>What would such an economics look like? It would acknowledge that market efficiency is not the only value, and that sometimes efficiency gains come at the cost of things we have reason to value. It would attend to the second-order effects of market mechanisms on norms and institutions. And it would recognize that the boundaries of markets are themselves political questions that citizens should decide through democratic processes.</p>
+      <p>This points to a deeper reform than Sandel explicitly proposes. The real threat, as he correctly identifies, is not markets per se but the colonization of public life by market reasoning—the assumption that efficiency is the only legitimate criterion for evaluating social arrangements. Reversing this colonization requires not just resistance to specific market intrusions, but the reconstruction of a public sphere in which citizens can debate and decide what kinds of economic arrangements serve the common good.</p>
+    </div>
+    <div class="essay-row">
+      <span class="essay-src src-d">Diversified</span>
+      <span class="essay-by">MiniMax M2.7</span>
+      <button class="essay-view-full" data-target="d-full-d-14">View full essay</button>
+    </div>
+    <div class="essay-full" id="d-full-d-14" style="display:none;">
+      <p>Sandel&#x27;s argument turns on a distinction that is philosophically weaker than it first appears: the distinction between goods that are &quot;corrupted&quot; by market exchange and those that are not. The difficulty is that &quot;corruption&quot; is doing all the argumentative work, but Sandel never adequately explains what it means.</p>
+      <p>Consider the kidney example that opens his analysis. Sandel acknowledges that a purchased kidney &quot;will work (assuming a good match) regardless of the monetary payment.&quot; So the objection to organ markets cannot be about the kidney itself. It must be about something else—perhaps the relational context in which the exchange occurs, or the attitudes toward the body that commodification encourages. But if that&#x27;s the objection, then it&#x27;s not clear why kidneys are categorically different from other goods that Sandel doesn&#x27;t discuss. Doesn&#x27;t the purchase of an expensive automobile or a luxury vacation also express and reinforce attitudes about status, success, and the meaning of life that we might want to question?</p>
+      <p>The deeper problem is that Sandel&#x27;s corruption argument rests on a contested metaphysics of goods. He assumes that certain goods have &quot;constitutive ideals&quot; or essential natures that are damaged by commodification. But this assumption is increasingly difficult to defend in a pluralistic society. Different people, with different comprehensive doctrines, will have different views about which goods are &quot;diminished&quot; by market exchange and which are not. Catholics may object to surrogacy contracts; secular liberals may not. Communitarians may worry about the marketization of friendship; libertarians may see no problem. How are we to adjudicate these disputes?</p>
+      <p>Sandel&#x27;s answer seems to be that we should engage in &quot;moral inquiry&quot; and determine &quot;which arguments are more persuasive.&quot; But this sidesteps the difficulty. In a democracy, we cannot resolve deep moral disagreements by appealing to philosophical arguments that not everyone accepts. We need procedures for making collective decisions in the face of reasonable pluralism. Sandel gestures toward this when he says that the question of market boundaries is &quot;about how we want to live together,&quot; but he doesn&#x27;t tell us how we are to answer this question together when we disagree profoundly about the good life.</p>
+      <p>One possible response is that democracies should remain neutral among competing conceptions of the good, limiting markets only on grounds that all reasonable citizens can accept—typically, grounds having to do with preventing harm to others or addressing coercion and inequality. This is the liberal neutralist position. Sandel gestures toward this with his &quot;fairness&quot; objection, which focuses on whether market exchanges are truly voluntary given background inequalities. But then he insists that his main focus is the &quot;corruption&quot; objection, which does not depend on equality or coercion.</p>
+      <p>The corruption argument, however, cannot be neutralized in this way. It rests on substantive claims about human flourishing that not all reasonable citizens share. A perfectionist liberal might argue that certain forms of commodification are genuinely degrading, regardless of the equality conditions under which they occur. But this moves away from political liberalism and toward a comprehensive moral doctrine that some citizens will reject.</p>
+      <p>Perhaps Sandel&#x27;s argument is best understood as a pro tanto case against certain forms of market expansion, not a conclusive one. The corruption argument shows that we have reason to be suspicious of market reasoning and to deliberate carefully before extending markets into new domains. But it does not settle which markets should be permitted. That determination requires the kind of democratic deliberation that Sandel rightly values.</p>
+      <p>The essay&#x27;s greatest contribution is to make that deliberation necessary. In a culture that increasingly assumes market solutions to every problem, Sandel&#x27;s insistence that some things should remain outside the market&#x27;s reach is a valuable counterweight. Even if his philosophical foundations are shaky, his practical summons to collective moral reflection is one we should heed.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('tr.arg-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) window.location.href = href;
+  });
+});
+document.querySelectorAll('.essay-view-full').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = document.getElementById(btn.dataset.target);
+    if (!t) return;
+    const open = t.style.display !== 'none';
+    t.style.display = open ? 'none' : 'block';
+    btn.classList.toggle('open', !open);
+    btn.textContent = open ? 'View full essay' : 'Hide full essay';
+  });
+});
+</script>
+</body>
+</html>
