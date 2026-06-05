@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sub-arguments · Argument Collapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+    --src-human:  #2d8654;
+    --src-van:    #b85e3a;
+    --src-div:    #7c5e9a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  .masthead { border-bottom: 1px solid var(--line); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--paper); }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .nav { display: flex; gap: 32px; }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--quiet); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .hero { padding: 80px 40px 24px; max-width: 1280px; margin: 0 auto; }
+  .hero .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--quiet); margin-bottom: 18px; }
+  .hero h1 { font-family: 'Newsreader', serif; font-weight: 500; font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 18px; }
+  .hero h1 em { font-style: italic; color: var(--quiet); font-weight: 400; }
+  .hero .deck { font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55; color: var(--ink-soft); font-style: italic; max-width: 820px; }
+
+  .body-grid { max-width: 1280px; margin: 0 auto; padding: 32px 40px 120px; display: grid; grid-template-columns: 220px 1fr; gap: 56px; }
+  .sidebar { position: sticky; top: 32px; align-self: start; }
+  .filter-head { font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); margin: 6px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+  .filter-list { list-style: none; }
+  .filter-list li { padding: 6px 0; font-size: 13px; color: var(--ink-soft); cursor: pointer; border-bottom: 1px solid var(--line-soft); display: flex; align-items: center; justify-content: space-between; transition: color 0.15s; }
+  .filter-list li:hover { color: var(--ink); }
+  .filter-list li.active { color: var(--ink); font-weight: 500; }
+  .filter-list li .ct { font-size: 11px; color: var(--quiet); font-variant-numeric: tabular-nums; }
+  .filter-list li.active .ct { color: var(--src-van); }
+  .filter-group { margin-bottom: 32px; }
+
+  .toolbar { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+  .toolbar .title { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; }
+  .toolbar .sort { font-size: 11px; color: var(--quiet); letter-spacing: 0.06em; }
+  .sort-btn { cursor: pointer; padding: 2px 0; border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .sort-btn:hover { color: var(--ink); }
+  .sort-btn.active { color: var(--ink); font-weight: 500; border-bottom-color: var(--ink); }
+
+  .explainer {
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border-left: 3px solid var(--quiet);
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.55;
+  }
+  .explainer b { color: var(--ink); font-weight: 600; }
+
+  /* Flat table of sub-args */
+  .sub-table { display: grid; }
+  .sub-table > .col-header,
+  .sub-table > .sub-row {
+    display: grid;
+    grid-template-columns: 72px 80px minmax(280px, 1fr) minmax(180px, 220px) 130px;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .col-header {
+    padding: 4px 8px 10px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--quiet);
+    border-bottom: 1px solid var(--line);
+  }
+  .sub-row {
+    padding: 12px 8px 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background 0.15s;
+  }
+  .sub-row:hover { background: rgba(0,0,0,0.025); }
+  .sub-id {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: var(--quiet);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .sub-source {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+  }
+  .sub-source.h { background: var(--src-human); }
+  .sub-source.v { background: var(--src-van); }
+  .sub-source.d { background: var(--src-div); }
+  .sub-body { font-family: 'Newsreader', serif; font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+  .sub-cluster { font-size: 12px; color: var(--ink-soft); }
+  .sub-cluster a { color: var(--src-div); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .sub-cluster a:hover { color: var(--ink); }
+  .sub-cluster .cluster-num {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--quiet);
+    margin-right: 6px;
+  }
+  .sub-attrib { font-size: 11.5px; color: var(--quiet); font-style: italic; line-height: 1.4; }
+  .sub-attrib .author-name { font-style: normal; color: var(--ink-soft); }
+  .sub-attrib .debate-pin {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--quiet);
+    border: 1px solid var(--line);
+    padding: 1px 5px; border-radius: 2px;
+    margin-right: 4px;
+    font-style: normal;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; }
+    .hero { padding: 40px 20px 18px; }
+    .hero h1 { font-size: 32px; }
+    .hero .deck { font-size: 15px; }
+    .body-grid { padding: 24px 20px 80px; grid-template-columns: 1fr; gap: 28px; }
+    .sidebar { position: static; }
+    .filter-group { margin-bottom: 20px; }
+    .toolbar { flex-direction: column; align-items: flex-start; }
+    .sub-table > .col-header,
+    .sub-table > .sub-row {
+      grid-template-columns: 60px 1fr;
+      gap: 10px 12px;
+    }
+    .col-header > span:nth-child(n+3) { display: none; }
+    .sub-row {
+      grid-template-areas:
+        "id   source"
+        "body body"
+        "cluster cluster"
+        "attrib attrib";
+      grid-template-columns: 60px 1fr;
+    }
+    .sub-row .sub-id { grid-area: id; }
+    .sub-row .sub-source { grid-area: source; justify-self: start; }
+    .sub-row .sub-body { grid-area: body; padding-top: 4px; }
+    .sub-row .sub-cluster { grid-area: cluster; }
+    .sub-row .sub-attrib { grid-area: attrib; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="brand"><b>Argument Collapse</b></div>
+  <nav class="nav">
+    <a href="index.html">DEBATES</a>
+    <a href="main_argument.html">MAIN_ARGUMENT</a>
+    <a href="sub_argument.html" class="active">SUB_ARGUMENT</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Sub-arguments · across debates</div>
+  <h1>The supporting points each essay uses to defend its main argument.</h1>
+  <p class="deck">Main arguments are clustered across essays. Sub-arguments are <b>not</b> independently clustered — each one belongs to a specific essay, and that essay belongs to a main-argument cluster. The table below lists every sub-argument as one row, showing the essay it came from and the main cluster it lives under.</p>
+</section>
+
+<div class="body-grid">
+
+  <aside class="sidebar">
+    <div class="filter-group">
+      <div class="filter-head">Debate</div>
+      <ul class="filter-list" data-filter="debate">
+        <li class="active" data-val="all">All<span class="ct" data-ct-all></span></li>
+        <li data-val="cleanliness">Cleanliness (NYT)<span class="ct" data-ct-cleanliness></span></li>
+        <li data-val="silicon_valley">Silicon Valley (NYT)<span class="ct" data-ct-silicon_valley></span></li>
+        <li data-val="boston_review">Civil Liberties (BR)<span class="ct" data-ct-boston_review></span></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <div class="filter-head">Source</div>
+      <ul class="filter-list" data-filter="source">
+        <li class="active" data-val="all">All<span class="ct" data-ct-source-all></span></li>
+        <li data-val="h">Humans<span class="ct" data-ct-source-h></span></li>
+        <li data-val="v">Vanilla<span class="ct" data-ct-source-v></span></li>
+        <li data-val="d">Diversified<span class="ct" data-ct-source-d></span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <div class="toolbar">
+      <div class="title" id="title-counter">Sub-arguments</div>
+      <div class="sort">Sort: <span class="sort-btn active" data-sort="cluster">by cluster</span> · <span class="sort-btn" data-sort="source">by source</span> · <span class="sort-btn" data-sort="debate">by debate</span></div>
+    </div>
+
+    <div class="explainer">
+      Each row is <b>one sub-argument from one essay</b>. The same essay typically contributes 3–5 rows in a sequence (look at the Sub# column: e.g. <b>01–05</b> all come from one essay). Sub-arguments in the same main-argument cluster often <em>repeat the same evidence</em> across different essays — this is the within-cluster collapse the paper documents.
+    </div>
+
+    <div id="sub-table-container"></div>
+
+  </main>
+</div>
+
+<script>
+// === DATA ===
+// Each entry: {debate_id, cluster_idx, cluster_text, cluster_href,
+//              essay_idx, essay_author, source ('h'|'v'|'d'),
+//              subs: [string, ...]}
+// Sub# is computed per-essay (01..05)
+const debates_meta = {
+  cleanliness: {label: "NYT", title: "Are Americans Too Obsessed With Cleanliness?", short: "Cleanliness"},
+  silicon_valley: {label: "NYT", title: "What's lost and gained as Silicon Valley shapes Washington?", short: "Silicon Valley"},
+  boston_review: {label: "BR", title: "Civil Liberties after 9/11", short: "Civil Liberties"},
+};
+
+const essays = [
+  // ========== CLEANLINESS ==========
+  // Cluster 1: hedge
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"Christopher A Lowry", source:"h",
+   subs:["The hygiene hypothesis suggests early microbial exposure trains immune response.","Modern urban environments reduced exposure to environmental microbes.","Lack of microbial diversity may contribute to higher inflammation.","Simply relaxing hygiene is not a complete solution.","Targeted hygiene preserves both health and microbial balance."]},
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"Ruchi Gupta", source:"h",
+   subs:["Modern marketing drives over-reliance on antibacterial soaps.","Decreased outdoor playtime reduced children's microbial contact.","Good bacteria aid digestion and train the immune system.","Over-sanitization results in weaker bacterial flora.","Cultural anxiety inflates routine cleanliness practice."]},
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"GPT-5.5 (vanilla)", source:"v",
+   subs:["Historical public-health measures should not be conflated with cosmetic hygiene.","Hygiene hypothesis links sanitization to allergy and autoimmune disorders.","An indiscriminate war on bacteria threatens the human microbiome.","Modern cleanliness functions partly as social signaling.","Effective hygiene targets high-risk activities, not every surface."]},
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"Claude Opus 4.7 (vanilla)", source:"v",
+   subs:["Twentieth-century marketing constructed cleanliness as a moral imperative.","Essential sanitation must be distinguished from aesthetic hygiene.","Hygiene hypothesis links sterile environments to autoimmune disorders.","Antibacterial chemicals create environmental hazards.","Artificial perfection in domestic spaces is an ecological liability."]},
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"Gemini 3.1 (diversified)", source:"d",
+   subs:["Public bathroom sterility theatre has no measurable effect on illness transmission.","Hand sanitizer overuse breeds resistant strains over time.","Daily disinfection inside homes is microbiologically counterproductive.","Status-signaling drives over-purchase of cleaning products.","Children raised in moderately microbial environments show fewer allergies."]},
+  {debate:"cleanliness", cluster:1, cluster_text:"Abandon the neurotic pursuit of total sterility driven by social anxiety and marketing.", cluster_href:"cleanliness_arg_1.html", author:"DeepSeek V4 (diversified)", source:"d",
+   subs:["Cleaning chemicals release VOCs that worsen indoor air quality.","Marketing in the 20th century medicalized normal dirt.","Hand-washing and food safety remain the high-value interventions.","Antibacterial-everywhere is overkill for low-risk surfaces.","Cultural anxiety around dirt outpaces actual transmission risk."]},
+  // Cluster 2: hygiene education
+  {debate:"cleanliness", cluster:2, cluster_text:"The US must prioritize hygiene education and enforcement, specifically hand washing.", cluster_href:"cleanliness_arg_2.html", author:"Allison Aiello", source:"h",
+   subs:["Hand washing prevents 30% of diarrheal disease and 20% of respiratory infections.","Compliance among hospital workers is well below 50% in field studies.","Schools and food-service settings need enforced protocols.","Public-health messaging undersells the simple wins.","Education + enforcement combination outperforms either alone."]},
+  {debate:"cleanliness", cluster:2, cluster_text:"The US must prioritize hygiene education and enforcement, specifically hand washing.", cluster_href:"cleanliness_arg_2.html", author:"MiniMax M2.7 (diversified)", source:"d",
+   subs:["Mandated soap-and-water at food-service entry points reduces norovirus outbreaks.","Public restroom maintenance correlates with community illness rates.","Compliance varies sharply by socioeconomic context.","Existing CDC recommendations are routinely under-enforced.","School-level hygiene programs show measurable absentee reductions."]},
+  // Cluster 3: 19th-century factors
+  {debate:"cleanliness", cluster:3, cluster_text:"American obsession was initiated by 19th-century factors and sustained by advertising.", cluster_href:"cleanliness_arg_3.html", author:"Suellen Hoy", source:"h",
+   subs:["Soap advertising in the 1920s linked cleanliness to social status.","Immigrant assimilation rhetoric tied dirt to inferiority.","19th-century industrial plumbing preceded the cleanliness ideology.","Class anxiety shaped middle-class cleanliness norms.","Civic hygiene campaigns merged public health with moral instruction."]},
+  {debate:"cleanliness", cluster:3, cluster_text:"American obsession was initiated by 19th-century factors and sustained by advertising.", cluster_href:"cleanliness_arg_3.html", author:"Claude Opus (diversified)", source:"d",
+   subs:["Plumbing infrastructure in the late 1800s preceded the moralizing rhetoric.","Advertising agencies reframed soap as social currency.","Civic hygiene campaigns absorbed Progressive-Era reform language.","Mid-20th-century consumer marketing kept the ideology alive.","Decoupling from 19th-century framings is overdue."]},
+  // Cluster 4-6: single-essay singletons
+  {debate:"cleanliness", cluster:4, cluster_text:"Hygiene practices are culturally relative rather than universal.", cluster_href:"cleanliness_arg_4.html", author:"Yumiko Yagi", source:"h",
+   subs:["Japanese, Indian, and West African hygiene norms diverge sharply from American ones.","Communal bathing has different cultural meanings.","Western frameworks misread local hygiene practices.","Cleanliness norms are anthropological as much as biomedical.","Universal prescriptions ignore cultural variance."]},
+  {debate:"cleanliness", cluster:5, cluster_text:"Rigid control in suburban life is futile; grace comes from accepting messiness.", cluster_href:"cleanliness_arg_5.html", author:"Sandra Bauer", source:"h",
+   subs:["Stains and spills are inevitable in family life.","Rigid control breeds anxiety in households.","Domestic grace tolerates messiness as part of living.","Children benefit from less-controlled environments.","Surrender to imperfection is the durable strategy."]},
+  {debate:"cleanliness", cluster:6, cluster_text:"Religious purification rituals facilitate a search for the sacred.", cluster_href:"cleanliness_arg_6.html", author:"Tracy Ross", source:"h",
+   subs:["Mikvah and wudu rituals point toward an embodied sacred.","Purification is symbolic, not literal dirt-removal.","Religious traditions distinguish ritual cleanliness from hygiene.","Sacred-space frameworks reframe daily cleaning.","Civic discourse misses the symbolic dimension."]},
+  // Cluster 7-8: LLM-invented
+  {debate:"cleanliness", cluster:7, cluster_text:"Extreme cleanliness isolates Americans, blocking authentic connection.", cluster_href:"cleanliness_arg_7.html", author:"GPT-5.5 (diversified)", source:"d",
+   subs:["Touch-avoidance during the pandemic deepened existing loneliness trends.","Sterile environments correlate with reduced social interaction.","Anti-contact norms compound isolation patterns.","Public spaces lose their connective function.","Reclaiming proximity is a public-health question."]},
+  {debate:"cleanliness", cluster:8, cluster_text:"Americans are dangerously inconsistent between private and public spaces.", cluster_href:"cleanliness_arg_8.html", author:"MiniMax M2.7 (diversified)", source:"d",
+   subs:["People shower daily at home yet share unwashed handrails on public transit.","Workplace hygiene varies dramatically by sector.","Inconsistency reflects individualist hygiene logic.","Public-space hygiene is undermanaged.","Civic responsibility extends to shared surfaces."]},
+
+  // ========== SILICON VALLEY ==========
+  // Cluster 1: hedge (representative samples)
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"Lisa Eaglin", source:"h",
+   subs:["DOGE's procurement reforms cut a 6-month process to 2 weeks for low-risk services.","Federal agencies gained working pilots in months, not years.","Modernized workflows reduced contractor markups on commodity software.","But unchecked tech influence shifts who sets priorities.","Real reform must couple modernization with accountability."]},
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"Daniel Markovits", source:"h",
+   subs:["Concentrated tech wealth in policy circles undermines public-interest input.","Lobbying budgets dwarf those of consumer-advocacy groups.","Revolving doors between agencies and major tech firms blur accountability.","Selective access shapes the regulatory agenda.","Procedural reform alone cannot offset structural imbalances."]},
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"GPT-5.5 (vanilla)", source:"v",
+   subs:["Agile workflows let agencies ship pilots while traditional procurement stalls.","Lightweight cloud infrastructure replaces multi-year on-prem builds.","Cross-functional teams compress the policy-to-product loop.","But proximity to power risks regulatory capture.","Healthy reform pairs modernization with conflict-of-interest safeguards."]},
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"Claude Opus 4.7 (vanilla)", source:"v",
+   subs:["Founders who join from FAANG come with anti-regulatory instincts.","Lightweight prototypes ship faster than legacy procurement vehicles.","Cross-cutting expertise pulls capable people into critical roles.","Yet personal networks become policy channels.","Substantive guardrails matter more than symbolic ethics rules."]},
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"DeepSeek V4 (diversified)", source:"d",
+   subs:["SV's 'move fast' ethos collides with administrative law's deliberation requirement.","Statutory timelines exist for legitimate review reasons.","Bypassing them weakens future legal defensibility.","Pilots can succeed without skipping oversight.","Trust in agencies depends on procedural integrity."]},
+  {debate:"silicon_valley", cluster:1, cluster_text:"SV expertise modernizes government, but its political influence threatens democratic accountability.", cluster_href:"silicon_valley_arg_1.html", author:"Gemini 3.1 (diversified)", source:"d",
+   subs:["Tech executives serving as advisors create unresolved conflicts of interest.","Advisory roles bypass standard disclosure rules.","Selective expertise shapes policy in opaque ways.","Formal recusal frameworks are inconsistently applied.","Trust depends on visible, enforced ethics infrastructure."]},
+  // Cluster 2: state→contractor
+  {debate:"silicon_valley", cluster:2, cluster_text:"SV creates a dependency shifting power from state agencies to private contractors.", cluster_href:"silicon_valley_arg_2.html", author:"Suzanne Roy", source:"h",
+   subs:["Civil servants leaving for vendors hollow out institutional memory.","Knowledge of legacy systems leaves with them.","Reacquiring that expertise costs years of contracting.","Contracts grow as internal capacity shrinks.","Reversing the trend requires retention investment."]},
+  {debate:"silicon_valley", cluster:2, cluster_text:"SV creates a dependency shifting power from state agencies to private contractors.", cluster_href:"silicon_valley_arg_2.html", author:"Claude Opus (diversified)", source:"d",
+   subs:["Cloud lock-in makes future renegotiation prohibitively expensive.","Switching costs grow with data volume.","Custom integrations deepen vendor dependence.","Multi-cloud is harder than vendor marketing suggests.","Procurement standards should require portability."]},
+  // Cluster 3-5: singletons
+  {debate:"silicon_valley", cluster:3, cluster_text:"SV's lack of demographic diversity creates blind spots in serving all citizens.", cluster_href:"silicon_valley_arg_3.html", author:"Joelle Smith", source:"h",
+   subs:["Less than 5% Black representation in big-tech leadership.","Product decisions reflect leadership demographics.","Public-facing services exhibit predictable blind spots.","Diverse hiring at junior levels is undermined by retention failures.","Real change requires accountability at the decision-making layer."]},
+  {debate:"silicon_valley", cluster:4, cluster_text:"H-1B expansion driven by SV lobbying displaces American workers.", cluster_href:"silicon_valley_arg_4.html", author:"Ron Hira", source:"h",
+   subs:["H-1B caps fund cheaper labor pools, suppressing US engineer salaries.","Wage stagnation in entry-level engineering tracks H-1B growth.","Visa dependence reduces worker bargaining power.","Reform proposals stall under SV lobbying pressure.","Targeted reform would preserve specialized inflows without depressing wages."]},
+  {debate:"silicon_valley", cluster:5, cluster_text:"SV's influence is not different from other industries; build internal government expertise.", cluster_href:"silicon_valley_arg_5.html", author:"Aaron Wood", source:"h",
+   subs:["Pharma, banking, defense all lobby government extensively.","Singling out tech is selective alarm.","Industry influence is reduced by stronger internal expertise.","Civil service investment outperforms restriction.","Build capacity, don't ban access."]},
+  // Cluster 6-8: invented
+  {debate:"silicon_valley", cluster:6, cluster_text:"Tech-talent migration is a necessary corrective for failing public services.", cluster_href:"silicon_valley_arg_6.html", author:"MiniMax (diversified)", source:"d",
+   subs:["Public DMV-style services are so dysfunctional that any private alternative dominates.","Decades of institutional failure precede tech-talent arrivals.","Technical talent brings capability the public sector lacks.","Refusing reform protects status-quo failure.","Embrace operational competence as a public good."]},
+  {debate:"silicon_valley", cluster:7, cluster_text:"SV preserves exploitative business models by dismantling labor protections.", cluster_href:"silicon_valley_arg_7.html", author:"GPT-5.5 (diversified)", source:"d",
+   subs:["Gig-economy classifications reduce employer obligations on benefits and overtime.","Worker-status reform efforts stall under platform-company lobbying.","Vulnerable workers absorb the cost of regulatory rollback.","Existing labor frameworks were hard-won protections.","Reform should expand protections, not narrow them."]},
+  {debate:"silicon_valley", cluster:8, cluster_text:"SV risks marginalizing vulnerable populations relying on human-centric services.", cluster_href:"silicon_valley_arg_8.html", author:"DeepSeek V4 (diversified)", source:"d",
+   subs:["Algorithmic eligibility systems mistakenly deny benefits to the elderly and disabled.","Automation hides the loss of human review.","Errors compound at scale.","Recourse paths shrink under digital intake.","Public services require deliberate human-centric design."]},
+
+  // ========== BR CIVIL LIBERTIES ==========
+  // Cluster 1: erode-everyone (sample)
+  {debate:"boston_review", cluster:1, cluster_text:"Post-9/11 measures targeting noncitizens erode liberty for everyone.", cluster_href:"boston_review_civil_liberties_arg_1.html", author:"David Cole (lead)", source:"h",
+   subs:["Material-witness detentions of noncitizens later expanded to US citizens.","Padilla and Hamdi mark explicit extension across the citizenship line.","Korematsu rationale parallels post-9/11 detention rationales.","Once accepted for one population, restrictions migrate to others.","Universal rights are the only durable rights."]},
+  {debate:"boston_review", cluster:1, cluster_text:"Post-9/11 measures targeting noncitizens erode liberty for everyone.", cluster_href:"boston_review_civil_liberties_arg_1.html", author:"Anita Sami", source:"h",
+   subs:["Profiling Arab and Muslim communities damages investigation quality.","Cooperation drops when communities feel targeted.","Intelligence dependent on community trust is degraded.","Short-term security gains are offset by long-term losses.","Civil-rights protection is operationally beneficial, not just normative."]},
+  {debate:"boston_review", cluster:1, cluster_text:"Post-9/11 measures targeting noncitizens erode liberty for everyone.", cluster_href:"boston_review_civil_liberties_arg_1.html", author:"Claude Opus (vanilla)", source:"v",
+   subs:["Eroding due-process for 'them' sets the legal precedent that touches 'us.'","Surveillance authorities expand in scope after initial passage.","Material-support standards target broader populations over time.","Sunset clauses are routinely renewed.","Foundational rights protect everyone or no one."]},
+  {debate:"boston_review", cluster:1, cluster_text:"Post-9/11 measures targeting noncitizens erode liberty for everyone.", cluster_href:"boston_review_civil_liberties_arg_1.html", author:"Gemini (diversified)", source:"d",
+   subs:["Watchlist designations operate without notice or meaningful redress.","Designation criteria are opaque and inconsistently applied.","Designations migrate from targeted to broad use.","Notice-and-redress norms apply across status.","Procedural due process protects the system's legitimacy."]},
+  // Cluster 2: compromise justified
+  {debate:"boston_review", cluster:2, cluster_text:"Some compromise of civil liberties is justified during emergencies.", cluster_href:"boston_review_civil_liberties_arg_2.html", author:"Richard Posner", source:"h",
+   subs:["Wartime constitutional latitude is documented from Lincoln through FDR.","Emergencies create legitimate temporary trade-offs.","Courts have historically accepted scope variation.","Sunset and review constrain abuse.","Pragmatic accommodation is honest about the trade-off."]},
+  {debate:"boston_review", cluster:2, cluster_text:"Some compromise of civil liberties is justified during emergencies.", cluster_href:"boston_review_civil_liberties_arg_2.html", author:"GPT-5.5 (diversified)", source:"d",
+   subs:["Sunset clauses + judicial review constrain emergency overreach.","Mechanism design matters as much as principle.","Trade-offs should be transparent and bounded.","Categorical rejection misreads the constitutional record.","Pragmatic accommodation, narrowly tailored, is defensible."]},
+  // Cluster 3-5
+  {debate:"boston_review", cluster:3, cluster_text:"Historical xenophobia (Japanese internment, Palmer raids) recurs.", cluster_href:"boston_review_civil_liberties_arg_3.html", author:"David Cole", source:"h",
+   subs:["Korematsu rationale parallels post-9/11 detention rationales.","Each episode invokes external threat to justify targeting.","Each is later judged a moral and legal failure.","The pattern repeats across centuries.","Vigilance against the pattern is itself a civic duty."]},
+  {debate:"boston_review", cluster:4, cluster_text:"Belonging requires shared civic identity crossing citizenship lines.", cluster_href:"boston_review_civil_liberties_arg_4.html", author:"T. Alexander Aleinikoff", source:"h",
+   subs:["Permanent residents pay taxes and serve in the military.","Civic obligations span the citizen/noncitizen line.","Rights frameworks lag behind civic reality.","Belonging is a richer category than citizenship.","Constitutional architecture should track lived civic life."]},
+  {debate:"boston_review", cluster:5, cluster_text:"Liberty must be guaranteed universally; security framing must not erode safeguards.", cluster_href:"boston_review_civil_liberties_arg_5.html", author:"Aryeh Neier", source:"h",
+   subs:["Universal rights are robust against political shifts.","Conditional rights aren't.","Selective enforcement erodes legitimacy.","Liberty depends on universal guarantee.","Civil-rights infrastructure outlasts political weather."]},
+  // Cluster 6-8
+  {debate:"boston_review", cluster:6, cluster_text:"Targeted enforcement, not blanket restriction, is what real security requires.", cluster_href:"boston_review_civil_liberties_arg_6.html", author:"Philip Heymann", source:"h",
+   subs:["Profile-blind dragnet wastes investigative bandwidth.","Targeted enforcement is operationally more effective.","Civil-rights and security objectives align under targeting.","Blanket restriction is a false economy.","Operational discipline favors precision."]},
+  {debate:"boston_review", cluster:7, cluster_text:"The Bush response is misguided; legal system is a security tool, not expendable.", cluster_href:"boston_review_civil_liberties_arg_7.html", author:"Laurence Tribe", source:"h",
+   subs:["Open courts and adversarial process expose weak intelligence claims.","Closed proceedings erode the quality of decisions.","Civil-rights architecture is operationally beneficial.","Constitutional discipline is the structural answer.","Legal frameworks are tools, not constraints."]},
+  {debate:"boston_review", cluster:8, cluster_text:"Widening surveillance reaches beyond foreign suspects.", cluster_href:"boston_review_civil_liberties_arg_8.html", author:"DeepSeek (diversified)", source:"d",
+   subs:["Section-215 collection extends well past originally named foreign targets.","Bulk-collection scope was expanded incrementally.","Domestic populations are now routinely swept up.","Designation criteria are opaque.","Scope reduction requires explicit legislative action."]},
+];
+
+// === Flatten essays to per-sub-arg rows ===
+const flatRows = [];
+let globalIdx = 0;
+essays.forEach((e, eIdx) => {
+  e.subs.forEach((s, subIdx) => {
+    flatRows.push({
+      gid: ++globalIdx,
+      debate: e.debate,
+      cluster: e.cluster,
+      cluster_text: e.cluster_text,
+      cluster_href: e.cluster_href,
+      essay_idx: eIdx,
+      author: e.author,
+      source: e.source,
+      sub_idx: subIdx + 1,
+      sub_text: s,
+      total_subs: e.subs.length,
+    });
+  });
+});
+
+// === Counts for sidebar ===
+const counts = {
+  all: flatRows.length,
+  cleanliness: flatRows.filter(r=>r.debate==="cleanliness").length,
+  silicon_valley: flatRows.filter(r=>r.debate==="silicon_valley").length,
+  boston_review: flatRows.filter(r=>r.debate==="boston_review").length,
+  source_all: flatRows.length,
+  source_h: flatRows.filter(r=>r.source==="h").length,
+  source_v: flatRows.filter(r=>r.source==="v").length,
+  source_d: flatRows.filter(r=>r.source==="d").length,
+};
+
+document.querySelector('[data-ct-all]').textContent = counts.all;
+document.querySelector('[data-ct-cleanliness]').textContent = counts.cleanliness;
+document.querySelector('[data-ct-silicon_valley]').textContent = counts.silicon_valley;
+document.querySelector('[data-ct-boston_review]').textContent = counts.boston_review;
+document.querySelector('[data-ct-source-all]').textContent = counts.source_all;
+document.querySelector('[data-ct-source-h]').textContent = counts.source_h;
+document.querySelector('[data-ct-source-v]').textContent = counts.source_v;
+document.querySelector('[data-ct-source-d]').textContent = counts.source_d;
+
+// === Render ===
+const state = { debate: "all", source: "all", sort: "cluster" };
+
+function rowHtml(r) {
+  const srcLabel = {h:"Human", v:"Vanilla", d:"Diversified"}[r.source];
+  const dMeta = debates_meta[r.debate];
+  return `
+    <div class="sub-row" data-debate="${r.debate}" data-source="${r.source}">
+      <span class="sub-id">${String(r.sub_idx).padStart(2,'0')} / ${String(r.total_subs).padStart(2,'0')}</span>
+      <span><span class="sub-source ${r.source}">${srcLabel}</span></span>
+      <span class="sub-body">${r.sub_text}</span>
+      <span class="sub-cluster"><span class="cluster-num">Cluster ${String(r.cluster).padStart(2,'0')}</span><a href="${r.cluster_href}">${r.cluster_text}</a></span>
+      <span class="sub-attrib"><span class="debate-pin">${dMeta.short}</span><br><span class="author-name">${r.author}</span></span>
+    </div>
+  `;
+}
+
+function colHeader() {
+  return `
+    <div class="col-header">
+      <span>Sub# / Total</span>
+      <span>Source</span>
+      <span>Sub-argument</span>
+      <span>Main-argument cluster</span>
+      <span>Debate · Author</span>
+    </div>
+  `;
+}
+
+function render() {
+  // Apply filters
+  let rows = flatRows.filter(r =>
+    (state.debate === "all" || r.debate === state.debate) &&
+    (state.source === "all" || r.source === state.source)
+  );
+
+  // Sort
+  if (state.sort === "cluster") {
+    rows.sort((a,b) => {
+      const dOrder = ["cleanliness", "silicon_valley", "boston_review"];
+      const dA = dOrder.indexOf(a.debate), dB = dOrder.indexOf(b.debate);
+      if (dA !== dB) return dA - dB;
+      if (a.cluster !== b.cluster) return a.cluster - b.cluster;
+      if (a.essay_idx !== b.essay_idx) return a.essay_idx - b.essay_idx;
+      return a.sub_idx - b.sub_idx;
+    });
+  } else if (state.sort === "source") {
+    const sOrder = ["h", "v", "d"];
+    rows.sort((a,b) => {
+      const sA = sOrder.indexOf(a.source), sB = sOrder.indexOf(b.source);
+      if (sA !== sB) return sA - sB;
+      if (a.debate !== b.debate) return a.debate.localeCompare(b.debate);
+      if (a.cluster !== b.cluster) return a.cluster - b.cluster;
+      return a.sub_idx - b.sub_idx;
+    });
+  } else if (state.sort === "debate") {
+    const dOrder = ["cleanliness", "silicon_valley", "boston_review"];
+    rows.sort((a,b) => {
+      const dA = dOrder.indexOf(a.debate), dB = dOrder.indexOf(b.debate);
+      if (dA !== dB) return dA - dB;
+      const sOrder = ["h", "v", "d"];
+      const sA = sOrder.indexOf(a.source), sB = sOrder.indexOf(b.source);
+      if (sA !== sB) return sA - sB;
+      if (a.cluster !== b.cluster) return a.cluster - b.cluster;
+      return a.sub_idx - b.sub_idx;
+    });
+  }
+
+  // Counter title
+  document.getElementById('title-counter').textContent =
+    `${rows.length} sub-argument${rows.length===1?'':'s'}`;
+
+  // Build HTML
+  let html = `<div class="sub-table">${colHeader()}`;
+  rows.forEach(r => { html += rowHtml(r); });
+  html += `</div>`;
+  document.getElementById('sub-table-container').innerHTML = html;
+}
+
+// Wire filters
+document.querySelectorAll('.filter-list').forEach(list => {
+  const key = list.dataset.filter;
+  list.querySelectorAll('li').forEach(li => {
+    li.addEventListener('click', () => {
+      list.querySelectorAll('li').forEach(l => l.classList.remove('active'));
+      li.classList.add('active');
+      state[key] = li.dataset.val;
+      render();
+    });
+  });
+});
+
+// Wire sort
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.sort = btn.dataset.sort;
+    render();
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>

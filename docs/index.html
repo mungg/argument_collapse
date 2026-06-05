@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argument Collapse · Debates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-soft: #efebe1;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --quiet: #76706a;
+    --line: #d8d2c4;
+    --line-soft: #e6dfd1;
+
+    --strong-oppose: #3a6479;
+    --weak-oppose:   #7e9fac;
+    --neutral:       #b0aa9e;
+    --weak-support:  #d99070;
+    --strong-support: #b85e3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); height: 100%; }
+  body {
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding: 22px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--paper);
+  }
+  .brand { font-family: 'Newsreader', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .brand b { font-weight: 600; }
+  .brand .dot { display: inline-block; width: 6px; height: 6px; background: var(--strong-support); border-radius: 50%; vertical-align: middle; margin: 0 8px; transform: translateY(-2px); }
+  .nav { display: flex; gap: 32px; }
+  .nav a {
+    font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--quiet);
+    padding: 6px 0; border-bottom: 1.5px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav a:hover { color: var(--ink); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .nav .num { color: var(--quiet); font-size: 9.5px; margin-left: 4px; vertical-align: super; }
+
+  .hero { padding: 80px 40px 24px; max-width: 1280px; margin: 0 auto; }
+  .hero .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--quiet); margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Newsreader', serif; font-weight: 500;
+    font-size: 56px; line-height: 1.05; letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .hero h1 em { font-style: italic; color: var(--quiet); font-weight: 400; }
+  .hero .deck {
+    font-family: 'Newsreader', serif; font-size: 18px;
+    line-height: 1.55; color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* Explainer panel for vanilla / diversified */
+  .explainer {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px 32px;
+  }
+  .ex-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .ex-item h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .ex-item h4.ex-van { color: var(--strong-support); }
+  .ex-item h4.ex-div { color: #7c5e9a; }
+  .ex-item p {
+    font-family: 'Newsreader', serif;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+
+  .body-grid {
+    max-width: 1280px; margin: 0 auto;
+    padding: 0 40px 120px;
+    display: grid; grid-template-columns: 220px 1fr; gap: 56px;
+  }
+
+  .sidebar { position: sticky; top: 32px; align-self: start; }
+  .filter-head {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink);
+    margin: 6px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--ink);
+  }
+  .filter-list { list-style: none; }
+  .filter-list li {
+    padding: 6px 0; font-size: 13px; color: var(--ink-soft); cursor: pointer;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; justify-content: space-between;
+    transition: color 0.15s;
+  }
+  .filter-list li:hover { color: var(--ink); }
+  .filter-list li.active { color: var(--ink); font-weight: 500; }
+  .filter-list li .ct { font-size: 11px; color: var(--quiet); font-variant-numeric: tabular-nums; }
+  .filter-list li.active .ct { color: var(--strong-support); }
+  .filter-group { margin-bottom: 32px; }
+
+  .toolbar {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 32px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+  }
+  .toolbar .title { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.005em; }
+  .toolbar .sort { font-size: 11px; color: var(--quiet); letter-spacing: 0.06em; }
+  .toolbar .sort b { color: var(--ink); font-weight: 500; border-bottom: 1px solid var(--ink); }
+
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 28px 28px 24px;
+    transition: border-color 0.18s, transform 0.18s ease;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { border-color: var(--ink); transform: translateY(-2px); }
+  .card .topic {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--quiet); margin-bottom: 12px;
+  }
+  .card h3 {
+    font-family: 'Newsreader', serif; font-size: 22px;
+    font-weight: 500; line-height: 1.2; letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: 18px;
+    min-height: 53px;
+  }
+
+  .axis {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 6px; gap: 8px;
+  }
+  .axis-side {
+    flex: 1; font-family: 'Newsreader', serif;
+    font-size: 12.5px; line-height: 1.3;
+    font-style: italic; padding: 6px 0 7px 10px;
+    border-left: 2px solid;
+  }
+  .axis-side.oppose { color: var(--ink-soft); border-left-color: var(--strong-oppose); }
+  .axis-side.support { color: var(--ink-soft); border-left-color: var(--strong-support); }
+  .axis-tag {
+    display: block; font-family: 'Inter', sans-serif; font-style: normal;
+    font-size: 9.5px; letter-spacing: 0.16em;
+    font-weight: 600; text-transform: uppercase; margin-bottom: 3px;
+  }
+  .axis-side.oppose .axis-tag { color: var(--strong-oppose); }
+  .axis-side.support .axis-tag { color: var(--strong-support); }
+
+  .bars {
+    margin-top: 16px;
+    background: var(--paper-soft);
+    padding: 14px 14px 12px;
+    border-radius: 4px;
+  }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 64px 1fr 40px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--quiet);
+  }
+  .bar {
+    height: 14px;
+    display: flex;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .seg { height: 100%; }
+  .seg.so { background: var(--strong-oppose); }
+  .seg.wo { background: var(--weak-oppose); }
+  .seg.n  { background: var(--neutral); }
+  .seg.ws { background: var(--weak-support); }
+  .seg.ss { background: var(--strong-support); }
+  .bar-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+
+  .card-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 11px;
+    color: var(--quiet);
+    letter-spacing: 0.02em;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Open-ended card variant: shows cluster diversity instead of stance */
+  .card.card-open .question-quote {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--quiet);
+    line-height: 1.45;
+    margin: -4px 0 18px;
+  }
+  .clusters {
+    margin-top: 16px;
+    background: var(--paper-soft);
+    padding: 14px 14px 12px;
+    border-radius: 4px;
+  }
+  .cl-row {
+    display: grid;
+    grid-template-columns: 64px 1fr 70px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .cl-row:last-child { margin-bottom: 0; }
+  .cl-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--quiet);
+  }
+  .cl-bar {
+    display: flex;
+    gap: 2px;
+    height: 14px;
+  }
+  .ch {
+    height: 100%;
+    border-radius: 1px;
+    transition: opacity 0.15s;
+  }
+  .ch:hover { opacity: 0.7; }
+  .ch.h { background: var(--src-human, #2d8654); }
+  .ch.v { background: var(--src-van, #b85e3a); }
+  .ch.d { background: #7c5e9a; }
+  .cl-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .cl-header {
+    display: grid;
+    grid-template-columns: 64px 1fr 70px;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cl-header .ratio-label {
+    grid-column: 3;
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--quiet);
+    text-align: right;
+    line-height: 1.2;
+  }
+  .card-footer .open {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+  }
+
+  .card.preview { cursor: default; opacity: 0.78; }
+  .card.preview:hover { transform: none; box-shadow: none; border-color: var(--line); }
+  .preview-footer { justify-content: flex-start !important; }
+  .preview-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--quiet);
+    border: 1px dashed var(--line);
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--paper-soft);
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 900px) {
+    .masthead { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .nav { gap: 18px; }
+    .nav a { font-size: 10.5px; letter-spacing: 0.1em; }
+    .hero { padding: 40px 20px 18px; }
+    .hero h1 { font-size: 30px !important; }
+    .hero .deck { font-size: 15px !important; }
+    .body-grid { padding: 24px 20px 80px; grid-template-columns: 1fr !important; gap: 28px !important; }
+    .sidebar { position: static !important; }
+    .filter-group { margin-bottom: 20px; }
+    .toolbar { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .page { padding: 28px 20px 80px !important; }
+    h1.debate-title, h1.arg-title { font-size: 28px !important; }
+    h1.arg-title { font-size: 24px !important; }
+    .question-body { font-size: 14.5px !important; }
+    .axis { grid-template-columns: 1fr !important; }
+    .ex-grid { grid-template-columns: 1fr !important; gap: 12px !important; padding: 14px 0 !important; }
+    .matrix { font-size: 11px; }
+    .matrix .arg-head-col { width: 50% !important; }
+    .arg-table > .col-header,
+    .arg-table > .arg-row {
+      grid-template-columns: 1fr 60px 50px repeat(5, 32px) !important;
+      gap: 4px !important;
+      font-size: 12px !important;
+    }
+    .arg-text { font-size: 13px !important; padding-right: 6px !important; }
+    .model-cell .dot { width: 9px !important; height: 9px !important; }
+    /* Card grid → 1 col on mobile */
+    .card-grid { grid-template-columns: 1fr !important; }
+    .essay-item { padding: 22px 0 !important; }
+    .essay-quote { font-size: 15px !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="brand"><b>Argument Collapse</b></div>
+  <nav class="nav">
+    <a href="index.html" class="active">DEBATES</a>
+    <a href="main_argument.html">MAIN_ARGUMENT</a>
+    <a href="sub_argument.html">SUB_ARGUMENT</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow"><a href="#" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px;">Argument Collapse: LLMs Flatten Long-Form Public Debate</a> &nbsp;·&nbsp; Yekyung Kim*, Yapei Chang*, Chau Minh Pham, Mohit Iyyer (2026)</div>
+  <h1>Where five LLMs land on a <em>public debate</em></h1>
+  <p class="deck">Across 195 NYT Room for Debate debates and 61 Boston Review forums, we compare what five LLM families produce with what the writers originally published in these venues. Each model writes under two prompting conditions: vanilla (basic) and diversified (explicitly asked for varied responses).</p>
+  <p style="font-size: 12px; color: var(--quiet); letter-spacing: 0.04em; margin-top: 10px;">Models: GPT-5.5 · Claude Opus 4.7 · DeepSeek V4 Pro · Gemini 3.1 Pro · MiniMax M2.7</p>
+</section>
+
+<section class="explainer">
+  <div class="ex-grid">
+    <div class="ex-item">
+      <h4 class="ex-van">Vanilla</h4>
+      <p>The basic prompting condition. Each model is given the debate question with no further instruction and writes one essay. We report the central essay (medoid) per LLM family, so vanilla totals five essays per debate.</p>
+    </div>
+    <div class="ex-item">
+      <h4 class="ex-div">Diversified</h4>
+      <p>The same five models are asked the same question, but explicitly instructed to produce varied responses. Many essays per family are sampled, roughly twenty per family per debate.</p>
+    </div>
+  </div>
+</section>
+
+<div class="body-grid">
+
+  <aside class="sidebar">
+    <div class="filter-group">
+      <div class="filter-head">Venue</div>
+      <ul class="filter-list">
+        <li class="active">All<span class="ct">256</span></li>
+        <li>NYT Room for Debate<span class="ct">195</span></li>
+        <li>Boston Review<span class="ct">61</span></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <div class="filter-head">Question type</div>
+      <ul class="filter-list">
+        <li class="active">Binary<span class="ct">130</span></li>
+        <li>Open-ended<span class="ct">126</span></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <div class="filter-head">Topic</div>
+      <ul class="filter-list">
+        <li class="active">All<span class="ct">256</span></li>
+        <li>Politics<span class="ct">52</span></li>
+        <li>Ethics<span class="ct">14</span></li>
+        <li>Health<span class="ct">13</span></li>
+        <li>Science<span class="ct">9</span></li>
+        <li>Sports<span class="ct">11</span></li>
+        <li>Culture<span class="ct">18</span></li>
+        <li>Technology<span class="ct">7</span></li>
+        <li>Economy<span class="ct">9</span></li>
+        <li>Religion<span class="ct">9</span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <div class="toolbar">
+      <div class="title">Binary debates</div>
+      <div class="sort">Sort: <b>alphabet</b> · # writers</div>
+    </div>
+
+    <div class="cards">
+
+      <!-- CLEANLINESS -->
+      <div class="card" data-href="cleanliness.html">
+        <div class="topic">Health · Culture</div>
+        <h3>Are Americans Too Obsessed With Cleanliness?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            Americans are not too obsessed with cleanliness
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            Americans are too obsessed with cleanliness
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 22%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 33%;"></div>
+              <div class="seg ws" style="width: 11%;"></div>
+              <div class="seg ss" style="width: 34%;"></div>
+            </div>
+            <span class="bar-num">n=9</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 60%;"></div>
+              <div class="seg ss" style="width: 40%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 15%;"></div>
+              <div class="seg wo" style="width: 5%;"></div>
+              <div class="seg n"  style="width: 10%;"></div>
+              <div class="seg ws" style="width: 19%;"></div>
+              <div class="seg ss" style="width: 51%;"></div>
+            </div>
+            <span class="bar-num">n=99</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="cleanliness.html" class="open">Open →</a>
+        </div>
+      </div>
+
+      <!-- DOPING -->
+      <div class="card preview" data-href="#">
+        <div class="topic">Sports · Ethics</div>
+        <h3>Should Doping Be Allowed in Sports?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            Doping should not be allowed in sports
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            Doping should be allowed in sports
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 50%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 50%;"></div>
+            </div>
+            <span class="bar-num">n=6</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 100%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 0%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 55%;"></div>
+              <div class="seg wo" style="width: 1%;"></div>
+              <div class="seg n"  style="width: 5%;"></div>
+              <div class="seg ws" style="width: 12%;"></div>
+              <div class="seg ss" style="width: 27%;"></div>
+            </div>
+            <span class="bar-num">n=66</span>
+          </div>
+        </div>
+        <div class="card-footer preview-footer"><span class="preview-tag">Preview only · detail page coming</span></div>
+      </div>
+
+      <!-- TIP -->
+      <div class="card preview" data-href="#">
+        <div class="topic">Culture · Economy</div>
+        <h3>Should Restaurants Eliminate Tipping?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            Restaurants should not eliminate tipping
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            Restaurants should eliminate tipping
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 50%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 17%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 33%;"></div>
+            </div>
+            <span class="bar-num">n=6</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 100%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 38%;"></div>
+              <div class="seg wo" style="width: 8%;"></div>
+              <div class="seg n"  style="width: 9%;"></div>
+              <div class="seg ws" style="width: 15%;"></div>
+              <div class="seg ss" style="width: 30%;"></div>
+            </div>
+            <span class="bar-num">n=66</span>
+          </div>
+        </div>
+        <div class="card-footer preview-footer"><span class="preview-tag">Preview only · detail page coming</span></div>
+      </div>
+
+      <!-- LIBRARIES -->
+      <div class="card preview" data-href="#">
+        <div class="topic">Culture · Technology</div>
+        <h3>Do We Still Need Libraries?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            We no longer need libraries
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            We still need libraries
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 100%;"></div>
+            </div>
+            <span class="bar-num">n=4</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 100%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 5%;"></div>
+              <div class="seg n"  style="width: 2%;"></div>
+              <div class="seg ws" style="width: 5%;"></div>
+              <div class="seg ss" style="width: 88%;"></div>
+            </div>
+            <span class="bar-num">n=44</span>
+          </div>
+        </div>
+        <div class="card-footer preview-footer"><span class="preview-tag">Preview only · detail page coming</span></div>
+      </div>
+
+      <!-- VEGANISM -->
+      <div class="card preview" data-href="#">
+        <div class="topic">Health · Science</div>
+        <h3>Is Veganism Good for Everyone?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            Veganism is not good for everyone
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            Veganism is good for everyone
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 50%;"></div>
+              <div class="seg wo" style="width: 17%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 33%;"></div>
+            </div>
+            <span class="bar-num">n=6</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 40%;"></div>
+              <div class="seg wo" style="width: 60%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 0%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 45%;"></div>
+              <div class="seg wo" style="width: 8%;"></div>
+              <div class="seg n"  style="width: 6%;"></div>
+              <div class="seg ws" style="width: 12%;"></div>
+              <div class="seg ss" style="width: 29%;"></div>
+            </div>
+            <span class="bar-num">n=66</span>
+          </div>
+        </div>
+        <div class="card-footer preview-footer"><span class="preview-tag">Preview only · detail page coming</span></div>
+      </div>
+
+      <!-- HOLIDAYS -->
+      <div class="card preview" data-href="#">
+        <div class="topic">Religion · Culture</div>
+        <h3>Can Holidays Have Meaning Without God?</h3>
+        <div class="axis">
+          <div class="axis-side oppose">
+            <span class="axis-tag">Oppose</span>
+            You cannot give holiday gifts without religious significance
+          </div>
+          <div class="axis-side support">
+            <span class="axis-tag">Support</span>
+            You can give holiday gifts without religious significance
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-label">Humans</span>
+            <div class="bar">
+              <div class="seg so" style="width: 25%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 25%;"></div>
+              <div class="seg ss" style="width: 50%;"></div>
+            </div>
+            <span class="bar-num">n=4</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Vanilla</span>
+            <div class="bar">
+              <div class="seg so" style="width: 0%;"></div>
+              <div class="seg wo" style="width: 0%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 0%;"></div>
+              <div class="seg ss" style="width: 100%;"></div>
+            </div>
+            <span class="bar-num">n=5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Diversified</span>
+            <div class="bar div-bar">
+              <div class="seg so" style="width: 23%;"></div>
+              <div class="seg wo" style="width: 5%;"></div>
+              <div class="seg n"  style="width: 0%;"></div>
+              <div class="seg ws" style="width: 16%;"></div>
+              <div class="seg ss" style="width: 56%;"></div>
+            </div>
+            <span class="bar-num">n=44</span>
+          </div>
+        </div>
+        <div class="card-footer preview-footer"><span class="preview-tag">Preview only · detail page coming</span></div>
+      </div>
+
+    </div>
+
+    <div class="toolbar" style="margin-top: 56px;">
+      <div class="title">Open-ended debates</div>
+      <div class="sort">Sort: <b>alphabet</b> · # writers</div>
+    </div>
+
+    <div class="cards">
+      <!-- SILICON VALLEY (OPEN-ENDED EXAMPLE) -->
+      <div class="card card-open" data-href="silicon_valley.html">
+        <div class="topic">Politics · Technology · NYT</div>
+        <h3>What's lost and gained as Silicon Valley shapes Washington?</h3>
+        <p class="question-quote">Tech companies spent more than double what banks did on lobbying last year, and a revolving door now connects the Valley and the Capital.</p>
+        <div class="clusters">
+          <div class="cl-header">
+            <span class="ratio-label">Unique<br>Ratio</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Humans</span>
+            <div class="cl-bar">
+              <span class="ch h" style="width: 17%;" title="Corporate capture (Anne Weismann)"></span>
+              <span class="ch h" style="width: 17%;" title="Lobbying spending drives policy (Felicia Wong)"></span>
+              <span class="ch h" style="width: 17%;" title="State-to-contractor dependency (Frank Pasquale)"></span>
+              <span class="ch h" style="width: 17%;" title="Demographic diversity blind spots (Betsy Williams)"></span>
+              <span class="ch h" style="width: 17%;" title="H-1B labor displacement (George Borjas)"></span>
+              <span class="ch h" style="width: 15%;" title="Not unique among industries (Bryant Walker Smith)"></span>
+            </div>
+            <span class="cl-num">100%</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Vanilla</span>
+            <div class="cl-bar">
+              <span class="ch v" style="width: 100%;" title="Hedge: While SV modernizes services, it threatens democratic accountability"></span>
+            </div>
+            <span class="cl-num">20%</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Diversified</span>
+            <div class="cl-bar">
+              <span class="ch d" style="width: 50%;" title="Invented: tech-talent migration as necessary corrective (5/5 families)"></span>
+              <span class="ch d" style="width: 14%;" title="State-to-contractor dependency recovered (2/5)"></span>
+              <span class="ch d" style="width: 12%;" title="Surveillance complex (Claude+MiniMax)"></span>
+              <span class="ch d" style="width: 10%;" title="Dismantling labor protections (Gemini)"></span>
+              <span class="ch d" style="width: 10%;" title="Marginalizing vulnerable populations (Claude)"></span>
+            </div>
+            <span class="cl-num">17%</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="silicon_valley.html" class="open">Open →</a>
+        </div>
+      </div>
+
+      <!-- BOSTON REVIEW (LEAD-ESSAY EXAMPLE) -->
+      <div class="card card-open" data-href="boston_review_civil_liberties.html">
+        <div class="topic">BR · Politics · Civil Liberties</div>
+        <h3>Civil Liberties after 9/11</h3>
+        <p class="question-quote">Lead essay by David Cole: post-9/11 detentions and surveillance erode liberty for everyone, not only the noncitizens they target.</p>
+        <div class="clusters">
+          <div class="cl-header">
+            <span class="ratio-label">Unique<br>Ratio</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Humans</span>
+            <div class="cl-bar">
+              <span class="ch h" style="width: 30%;" title="Liberty for all (Cole, Tribe, Honig, Matsuda)"></span>
+              <span class="ch h" style="width: 22%;" title="Pragmatic balance (Dershowitz, Kayyem, Etzioni)"></span>
+              <span class="ch h" style="width: 16%;" title="Historical xenophobia (Honig, Matsuda)"></span>
+              <span class="ch h" style="width: 12%;" title="Targeted security (Neuman, Gross)"></span>
+              <span class="ch h" style="width: 10%;" title="Belonging (Etzioni)"></span>
+              <span class="ch h" style="width: 10%;" title="Misguided legal response (Gross)"></span>
+            </div>
+            <span class="cl-num">67%</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Vanilla</span>
+            <div class="cl-bar">
+              <span class="ch v" style="width: 100%;" title="All five medoids converge on Cole's frame: erosion of liberty for everyone"></span>
+            </div>
+            <span class="cl-num">20%</span>
+          </div>
+          <div class="cl-row">
+            <span class="cl-label">Diversified</span>
+            <div class="cl-bar">
+              <span class="ch d" style="width: 36%;" title="Erosion of liberty for everyone"></span>
+              <span class="ch d" style="width: 18%;" title="Pragmatic balance"></span>
+              <span class="ch d" style="width: 16%;" title="Targeted security"></span>
+              <span class="ch d" style="width: 12%;" title="Widening surveillance circle (invented)"></span>
+              <span class="ch d" style="width: 10%;" title="Misguided legal response"></span>
+            </div>
+            <span class="cl-num">14%</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="boston_review_civil_liberties.html" class="open">Open →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  document.querySelectorAll('.card[data-href]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      // Don't trigger if the click was on the explicit link or other interactive child
+      if (e.target.closest('a') || e.target.closest('button')) return;
+      window.location.href = card.dataset.href;
+    });
+  });
+</script>
+
+</body>
+</html>
