@@ -89,46 +89,114 @@ def diversified_bar(cohort):
     return bar_pcts(d, sum(d.values()))
 
 
+# ===== Paper's main-argument metric: E[K|m] / m =====
+# E[K | m] = Σ_i (1 - C(|G|-n_i, m) / C(|G|, m))
+# where n_i = size of cluster i in the source's main-arg cluster partition
+# Clustering uses STRICT (equivalent only) per paper.
+# Sample size m = min(|source|, TARGET=5) per source (humans, per-LLM-family).
+from math import comb
+
+LOOSE_REL = {"equivalent", "strong_overlap"}  # paper default for main-arg
+TARGET_M = 5
+
+print("Loading toulmin essay→kind+debate...")
+_ESSAY_TO_KIND = {}; _ESSAY_DEBATE = {}
+for p in ["data/nyt/toulmin.jsonl.gz", "data/br/toulmin.jsonl.gz"]:
+    for line in gzip.open(ROOT / p, "rt"):
+        d = json.loads(line)
+        _ESSAY_TO_KIND[d["essay_id"]] = d["kind"]
+        _ESSAY_DEBATE[d["essay_id"]] = (d["venue"], d["debate_id"])
+
+print("Loading vanilla medoid flags...")
+_VANILLA_REPS = set()
+for p in ["data/nyt/llm_essays.jsonl.gz", "data/br/llm_essays.jsonl.gz"]:
+    for line in gzip.open(ROOT / p, "rt"):
+        d = json.loads(line)
+        if d["kind"] == "vanilla" and d.get("is_representative"):
+            _VANILLA_REPS.add(d["essay_id"])
+
+_GROUP_ESSAYS = {}  # (venue, debate_id) -> {"h":[], "v":[], "d":[], "p":[]}
+for eid, (venue, debate_id) in _ESSAY_DEBATE.items():
+    key = (venue, debate_id)
+    g = _GROUP_ESSAYS.setdefault(key, {"h": [], "v": [], "d": [], "p": []})
+    kind = _ESSAY_TO_KIND[eid]
+    if kind == "human": g["h"].append(eid)
+    elif kind == "vanilla" and eid in _VANILLA_REPS: g["v"].append(eid)
+    elif kind == "diversified": g["d"].append(eid)
+    elif kind == "position-guided": g["p"].append(eid)
+
+print("Loading main_argument_pairs...")
+_MAIN_PAIRS_BY_DEBATE = {}  # (venue, debate_id) -> dict {(essay_i, essay_j): relation}
+for p in ["data/nyt/main_argument_pairs.jsonl.gz", "data/br/main_argument_pairs.jsonl.gz"]:
+    for line in gzip.open(ROOT / p, "rt"):
+        d = json.loads(line)
+        key = (d["venue"], d["debate_id"])
+        if key not in _MAIN_PAIRS_BY_DEBATE:
+            _MAIN_PAIRS_BY_DEBATE[key] = {}
+        _MAIN_PAIRS_BY_DEBATE[key][(d["essay_i"], d["essay_j"])] = d["relation"]
+        _MAIN_PAIRS_BY_DEBATE[key][(d["essay_j"], d["essay_i"])] = d["relation"]
+print(f"  loaded main_arg pairs for {len(_MAIN_PAIRS_BY_DEBATE)} debates")
+
+
+def _cluster_sizes(essay_ids, pair_rel, relation_set):
+    """Union-Find within-group clustering using given relation_set.
+    Returns list of cluster sizes (essay counts)."""
+    if not essay_ids: return []
+    in_group = set(essay_ids)
+    parent = {e: e for e in essay_ids}
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]
+        return x
+    for (a, b), rel in pair_rel.items():
+        if rel not in relation_set: continue
+        if a in in_group and b in in_group and a != b:
+            ra, rb = find(a), find(b)
+            if ra != rb: parent[ra] = rb
+    from collections import Counter
+    return sorted(Counter(find(e) for e in essay_ids).values(), reverse=True)
+
+
+def _expected_K_at_m(cluster_sizes, m):
+    """E[K|m] = Σ_i (1 - C(H-n_i, m) / C(H, m)).
+    If H <= m, returns # of non-empty clusters (full sample)."""
+    sizes = [n for n in cluster_sizes if n > 0]
+    H = sum(sizes)
+    if H <= 0 or m <= 0: return 0.0
+    if H <= m: return float(len(sizes))
+    denom = comb(H, m)
+    return sum(1.0 - (comb(H - n, m) / denom) for n in sizes)
+
+
 def open_card_clusters(venue, debate_id):
-    """Return cluster size distributions for open-card render.
-    {humans:[seg%...], vanilla:[seg%...], diversified:[seg%...], ratios:{humans:.., vanilla:.., diversified:..}}"""
-    clusters = _PER_DEBATE_CLUSTERS.get((venue, debate_id), [])
-    out = {"humans": [], "vanilla": [], "diversified": [], "ratios": {}}
-    h_cluster_sizes = []  # list of human-essay counts per cluster
-    v_cluster_sizes = []
-    d_cluster_sizes = []
-    n_h_essays = 0
-    n_v_essays = 0
-    n_d_essays = 0
-    n_h_clusters = 0
-    n_v_clusters = 0
-    n_d_clusters = 0
-    for c in clusters:
-        n_h_in_c = c["n_humans"]
-        n_v_in_c = sum(c["vanilla_families"].values())
-        n_d_in_c = sum(c["diversified_families"].values())
-        if n_h_in_c > 0:
-            h_cluster_sizes.append(n_h_in_c); n_h_essays += n_h_in_c; n_h_clusters += 1
-        if n_v_in_c > 0:
-            v_cluster_sizes.append(n_v_in_c); n_v_essays += n_v_in_c; n_v_clusters += 1
-        if n_d_in_c > 0:
-            d_cluster_sizes.append(n_d_in_c); n_d_essays += n_d_in_c; n_d_clusters += 1
+    """Paper's % unique = singleton ratio within source group.
+    A main argument is 'unique' if no other essay in the same source group has a
+    loose-equivalent (equivalent or strong_overlap) main argument."""
+    key = (venue, debate_id)
+    pair_rel = _MAIN_PAIRS_BY_DEBATE.get(key, {})
+    groups = _GROUP_ESSAYS.get(key, {"h": [], "v": [], "d": [], "p": []})
 
-    def to_pct(sizes, total):
-        if total == 0: return []
-        sorted_sizes = sorted(sizes, reverse=True)
-        return [round(s / total * 100) for s in sorted_sizes]
+    n_h, n_v, n_d = len(groups["h"]), len(groups["v"]), len(groups["d"])
 
-    out["humans"]      = to_pct(h_cluster_sizes, n_h_essays)
-    out["vanilla"]     = to_pct(v_cluster_sizes, n_v_essays)
-    out["diversified"] = to_pct(d_cluster_sizes, n_d_essays)
-    out["ratios"]["humans"]      = round(n_h_clusters / n_h_essays * 100) if n_h_essays else 0
-    out["ratios"]["vanilla"]     = round(n_v_clusters / n_v_essays * 100) if n_v_essays else 0
-    out["ratios"]["diversified"] = round(n_d_clusters / n_d_essays * 100) if n_d_essays else 0
-    out["counts"] = {"humans_essays": n_h_essays, "humans_clusters": n_h_clusters,
-                     "vanilla_essays": n_v_essays, "vanilla_clusters": n_v_clusters,
-                     "diversified_essays": n_d_essays, "diversified_clusters": n_d_clusters}
-    return out
+    def singleton_rate(essay_ids):
+        if not essay_ids: return None
+        sizes = _cluster_sizes(essay_ids, pair_rel, LOOSE_REL)
+        singletons = sum(1 for s in sizes if s == 1)
+        total = sum(sizes)
+        return singletons / total if total else 0
+
+    U_h = singleton_rate(groups["h"])
+    U_v = singleton_rate(groups["v"])
+    U_d = singleton_rate(groups["d"])
+
+    def pct(v): return round(v * 100) if v is not None else 0
+
+    return {
+        "ratios": {"humans": pct(U_h), "vanilla": pct(U_v), "diversified": pct(U_d)},
+        "counts": {
+            "humans_essays": n_h, "vanilla_essays": n_v, "diversified_essays": n_d,
+        },
+    }
 
 
 TOY_MAP = {
@@ -348,18 +416,19 @@ HTML = '''<!DOCTYPE html>
   }
 
   .clusters { margin-top: 16px; background: var(--paper-soft); padding: 14px 14px 12px; border-radius: 4px; }
-  .cl-row { display: grid; grid-template-columns: 64px 1fr 70px; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .cl-row { display: grid; grid-template-columns: 64px 1fr 60px; gap: 8px; align-items: center; margin-bottom: 12px; }
   .cl-row:last-child { margin-bottom: 0; }
   .cl-label { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.12em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
-  .cl-bar { display: flex; gap: 2px; height: 14px; }
-  .ch { height: 100%; border-radius: 1px; transition: opacity 0.15s; }
-  .ch:hover { opacity: 0.7; }
-  .ch.h { background: var(--src-h); }
-  .ch.v { background: var(--src-v); }
-  .ch.d { background: var(--src-d); }
-  .cl-num { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
-  .cl-header { display: grid; grid-template-columns: 64px 1fr 70px; gap: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
-  .cl-header .ratio-label { grid-column: 3; font-family: 'Inter', sans-serif; font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--quiet); text-align: right; line-height: 1.2; }
+  .ratio-track { background: rgba(0,0,0,0.06); height: 14px; border-radius: 2px; overflow: hidden; min-width: 0; }
+  .ratio-fill { height: 100%; border-radius: 2px; transition: opacity 0.15s; }
+  .ratio-fill.h { background: var(--src-h); }
+  .ratio-fill.v { background: var(--src-v); }
+  .ratio-fill.d { background: var(--src-d); }
+  .cl-num { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+  .cl-num b { font-weight: 700; }
+  .cl-num-denom { color: var(--quiet); font-size: 10.5px; font-weight: 500; }
+  .cl-header { display: grid; grid-template-columns: 64px 1fr 60px; gap: 8px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .cl-header .ratio-label { grid-column: 2 / span 2; font-family: 'Inter', sans-serif; font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--quiet); text-align: right; line-height: 1.2; }
 
   .empty { padding: 60px 20px; text-align: center; color: var(--quiet); font-size: 14px; font-style: italic; font-family: 'Newsreader', serif; }
 
@@ -518,30 +587,24 @@ function binaryCardHtml(c) {
 function openCardHtml(c) {
   const exc = c.excerpt || '';
   const byline = c.lead_byline ? `<p class="question-quote">${c.lead_byline}: ${exc}</p>` : `<p class="question-quote">${exc}</p>`;
-  const cd = c.clusters || {humans:[], vanilla:[], diversified:[], ratios:{humans:0, vanilla:0, diversified:0}};
-  const seg = (kind, w) => `<span class="ch ${kind}" style="width: ${w}%;"></span>`;
-  const segs = (kind, arr) => arr.length ? arr.map(w => seg(kind, w)).join('') : '<span style="color:var(--quiet); font-size:10px; font-style:italic; padding-left:4px;">no data</span>';
+  const cd = c.clusters || {ratios:{humans:0, vanilla:0, diversified:0}, counts:{}};
+  const ratioBar = (kind, pct) => `
+    <div class="cl-row">
+      <span class="cl-label">${ {h:"Humans", v:"Vanilla", d:"Diversified"}[kind] }</span>
+      <div class="ratio-track">
+        <div class="ratio-fill ${kind}" style="width: ${pct}%;"></div>
+      </div>
+      <span class="cl-num">${pct}<span class="cl-num-denom">%</span></span>
+    </div>`;
   return `<div class="card card-open" data-href="${c.href}">
     <div class="topic">${c.topic_chip}</div>
     <h3>${c.title}</h3>
     ${byline}
     <div class="clusters">
-      <div class="cl-header"><span class="ratio-label">Unique<br>Ratio</span></div>
-      <div class="cl-row">
-        <span class="cl-label">Humans</span>
-        <div class="cl-bar">${segs('h', cd.humans)}</div>
-        <span class="cl-num">${cd.ratios.humans}%</span>
-      </div>
-      <div class="cl-row">
-        <span class="cl-label">Vanilla</span>
-        <div class="cl-bar">${segs('v', cd.vanilla)}</div>
-        <span class="cl-num">${cd.ratios.vanilla}%</span>
-      </div>
-      <div class="cl-row">
-        <span class="cl-label">Diversified</span>
-        <div class="cl-bar">${segs('d', cd.diversified)}</div>
-        <span class="cl-num">${cd.ratios.diversified}%</span>
-      </div>
+      <div class="cl-header"><span class="ratio-label">% Unique main args<br>within source (paper, loose)</span></div>
+      ${ratioBar('h', cd.ratios.humans)}
+      ${ratioBar('v', cd.ratios.vanilla)}
+      ${ratioBar('d', cd.ratios.diversified)}
     </div>
     <div class="card-footer"><a href="${c.href}" class="open">Open →</a></div>
   </div>`;

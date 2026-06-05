@@ -69,7 +69,7 @@ def cluster_per_debate():
             uf = per_debate_uf[key]
             # Ensure essays exist as nodes
             uf.find(d["essay_i"]); uf.find(d["essay_j"])
-            if d["relation"] == "equivalent":
+            if d["relation"] in ("equivalent", "strong_overlap"):
                 uf.union(d["essay_i"], d["essay_j"])
     out = {}
     for key, uf in per_debate_uf.items():
