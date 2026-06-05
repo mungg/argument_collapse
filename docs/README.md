@@ -4,13 +4,16 @@ Static HTML site for the paper *Argument Collapse: LLMs Flatten Long-Form Public
 
 ## Structure
 
-- `index.html` — landing page with the debate catalog
-- `main_argument.html` — flat browse of all main-argument clusters across debates
-- `sub_argument.html` — flat browse of every sub-argument with its parent cluster
-- `cleanliness.html`, `silicon_valley.html`, `boston_review_civil_liberties.html` — per-debate matrix pages (humans × 5 LLM families × vanilla/diversified)
-- `<debate>_arg_<N>.html` — per-cluster detail pages showing every essay (human or LLM) with its sub-arguments
+- `index.html` — catalog of all 256 debates (195 NYT + 61 Boston Review) with venue/question-type/topic filters and search
+- `main_argument.html` — flat browse of main-argument clusters (currently 3 toy debates with full cluster annotation)
+- `sub_argument.html` — flat browse of every sub-argument with its parent cluster (3 toy debates)
+- `cleanliness.html`, `silicon_valley.html`, `boston_review_civil_liberties.html` — three fully-built debate matrix pages with cluster annotations
+- `cleanliness_arg_<N>.html`, `silicon_valley_arg_<N>.html`, `boston_review_civil_liberties_arg_<N>.html` — 24 cluster detail pages (8 per toy debate)
+- `debate_nyt_<id>.html`, `debate_br_<id>.html` — 253 thin debate-detail pages for all remaining debates (title, question, source counts). Cluster matrix is being built in a follow-up pass.
 
-Only three debates are fully built out as the visible toy slice; placeholder cards on `index.html` are marked **Preview only · detail page coming**.
+## Generation
+
+`_gen_full_site.py` reads `data/nyt/debates.jsonl.gz` and `data/br/debates.jsonl.gz`, generates `index.html` and all 253 thin detail pages. Re-run after data updates.
 
 ## Local preview
 

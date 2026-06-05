@@ -209,21 +209,21 @@
   <aside class="sidebar">
     <div class="filter-group">
       <div class="filter-head">Debate</div>
-      <ul class="filter-list">
-        <li class="active">All<span class="ct">24</span></li>
-        <li>Cleanliness (NYT)<span class="ct">8</span></li>
-        <li>Silicon Valley (NYT)<span class="ct">8</span></li>
-        <li>Civil Liberties (BR)<span class="ct">8</span></li>
+      <ul class="filter-list" data-filter="debate">
+        <li class="active" data-val="all">All<span class="ct">24</span></li>
+        <li data-val="cleanliness">Cleanliness (NYT)<span class="ct">8</span></li>
+        <li data-val="silicon_valley">Silicon Valley (NYT)<span class="ct">8</span></li>
+        <li data-val="boston_review_civil_liberties">Civil Liberties (BR)<span class="ct">8</span></li>
       </ul>
     </div>
     <div class="filter-group">
       <div class="filter-head">Source produced</div>
-      <ul class="filter-list">
-        <li class="active">All<span class="ct">24</span></li>
-        <li>Has humans<span class="ct">18</span></li>
-        <li>Has vanilla<span class="ct">3</span></li>
-        <li>Has diversified<span class="ct">20</span></li>
-        <li>LLM-only (no humans)<span class="ct">6</span></li>
+      <ul class="filter-list" data-filter="source">
+        <li class="active" data-val="all">All<span class="ct">24</span></li>
+        <li data-val="has_humans">Has humans<span class="ct">18</span></li>
+        <li data-val="has_vanilla">Has vanilla<span class="ct">3</span></li>
+        <li data-val="has_diversified">Has diversified<span class="ct">20</span></li>
+        <li data-val="llm_only">LLM-only (no humans)<span class="ct">6</span></li>
       </ul>
     </div>
   </aside>
@@ -419,20 +419,112 @@ function renderUniqueness() {
   renderFlat(all);
 }
 
+// === Filter state ===
+const filterState = { debate: 'all', source: 'all', sort: 'debate' };
+
+function passesFilters(r) {
+  // r already has debate id and row data
+  if (filterState.debate !== 'all' && r._debateId !== filterState.debate) return false;
+  if (filterState.source !== 'all') {
+    const llmCt = r.models.reduce((sum, [v,d]) => sum + (v?1:0) + (d?1:0), 0);
+    const hasV = r.models.some(([v,d]) => v);
+    const hasD = r.models.some(([v,d]) => d);
+    if (filterState.source === 'has_humans' && !(r.h > 0)) return false;
+    if (filterState.source === 'has_vanilla' && !hasV) return false;
+    if (filterState.source === 'has_diversified' && !hasD) return false;
+    if (filterState.source === 'llm_only' && r.h > 0) return false;
+  }
+  return true;
+}
+
+// Tag each row with its debate id (mutate once)
+debates.forEach(d => d.rows.forEach(r => { r._debateId = d.id; }));
+
+// Wrap original render functions to apply filters
+function renderByDebateFiltered() {
+  const container = document.getElementById('all-rows');
+  container.innerHTML = '';
+  let totalShown = 0;
+  debates.forEach(d => {
+    const visibleRows = d.rows.filter(passesFilters);
+    if (visibleRows.length === 0 && filterState.debate !== 'all') return;
+    if (visibleRows.length === 0 && filterState.source !== 'all') return;
+    let html = `<div class="debate-section">`;
+    html += `<div class="debate-head"><h2><a href="${d.href}">${d.title}</a></h2><span class="meta">${d.meta}</span></div>`;
+    html += `<div class="arg-table">`;
+    html += colHeaderHtml(d.type==="binary");
+    visibleRows.forEach(r => { html += rowHtml(r); });
+    html += `</div></div>`;
+    container.insertAdjacentHTML('beforeend', html);
+    totalShown += visibleRows.length;
+  });
+  updateTitle(totalShown);
+}
+
+function renderSpreadFiltered() {
+  const all = getAllRowsWithDebate().filter(passesFilters);
+  all.forEach(r => {
+    let spread = (r.h > 0 ? 1 : 0);
+    r.models.forEach(([v,d]) => { if(v) spread++; if(d) spread++; });
+    r._spread = spread;
+  });
+  all.sort((a,b) => b._spread - a._spread);
+  renderFlat(all);
+  updateTitle(all.length);
+}
+
+function renderUniquenessFiltered() {
+  const all = getAllRowsWithDebate().filter(passesFilters);
+  all.forEach(r => {
+    let llmCt = 0;
+    r.models.forEach(([v,d]) => { if(v) llmCt++; if(d) llmCt++; });
+    if (r.invented) r._uniq = 1000 - llmCt;
+    else if (r.h > 0 && llmCt === 0) r._uniq = 500;
+    else r._uniq = 100 - llmCt - r.h*2;
+  });
+  all.sort((a,b) => b._uniq - a._uniq);
+  renderFlat(all);
+  updateTitle(all.length);
+}
+
+function updateTitle(n) {
+  const t = document.querySelector('.toolbar .title');
+  if (t) t.textContent = `${n} argument cluster${n===1?'':'s'} · ${
+    filterState.debate === 'all' ? '3 debates' : '1 debate'
+  }`;
+}
+
+function applyAll() {
+  if (filterState.sort === 'debate') renderByDebateFiltered();
+  else if (filterState.sort === 'spread') renderSpreadFiltered();
+  else if (filterState.sort === 'uniqueness') renderUniquenessFiltered();
+}
+
 // Wire sort buttons
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const sort = btn.dataset.sort;
-    if (sort === 'debate') renderByDebate();
-    else if (sort === 'spread') renderSpread();
-    else if (sort === 'uniqueness') renderUniqueness();
+    filterState.sort = btn.dataset.sort;
+    applyAll();
+  });
+});
+
+// Wire sidebar filters
+document.querySelectorAll('.filter-list[data-filter]').forEach(list => {
+  const key = list.dataset.filter;
+  list.querySelectorAll('li').forEach(li => {
+    li.addEventListener('click', () => {
+      list.querySelectorAll('li').forEach(l => l.classList.remove('active'));
+      li.classList.add('active');
+      filterState[key] = li.dataset.val;
+      applyAll();
+    });
   });
 });
 
 // Initial render
-renderByDebate();
+applyAll();
 </script>
 
 </body>
