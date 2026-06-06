@@ -387,6 +387,9 @@ HTML = '''<!DOCTYPE html>
   .axis-side.support .axis-tag { color: var(--strong-support); }
 
   .bars { margin-top: 16px; background: var(--paper-soft); padding: 14px 14px 12px; border-radius: 4px; }
+  .bars-header { display: grid; grid-template-columns: 64px 1fr 40px; gap: 10px; align-items: baseline; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .bars-title { grid-column: 2; font-family: 'Inter', sans-serif; font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--quiet); }
+  .bars-sub { grid-column: 3; font-family: 'Inter', sans-serif; font-size: 8.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--quiet); text-align: right; }
   .bar-row { display: grid; grid-template-columns: 64px 1fr 40px; gap: 10px; align-items: center; margin-bottom: 12px; }
   .bar-row:last-child { margin-bottom: 0; }
   .bar-label { font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: 0.12em; font-weight: 500; text-transform: uppercase; color: var(--quiet); }
@@ -546,6 +549,10 @@ function binaryCardHtml(c) {
       <div class="axis-side support"><span class="axis-tag">Support</span>${c.support_side}</div>
     </div>
     <div class="bars">
+      <div class="bars-header">
+        <span class="bars-title">Stance distribution per source</span>
+        <span class="bars-sub"># essays</span>
+      </div>
       <div class="bar-row">
         <span class="bar-label">Humans</span>
         <div class="bar">
@@ -555,7 +562,7 @@ function binaryCardHtml(c) {
           <div class="seg ws" style="width: ${hWs}%;"></div>
           <div class="seg ss" style="width: ${hSs}%;"></div>
         </div>
-        <span class="bar-num">n=${hN_}</span>
+        <span class="bar-num">${hN_}</span>
       </div>
       <div class="bar-row">
         <span class="bar-label">Vanilla</span>
@@ -566,7 +573,7 @@ function binaryCardHtml(c) {
           <div class="seg ws" style="width: ${vWs}%;"></div>
           <div class="seg ss" style="width: ${vSs}%;"></div>
         </div>
-        <span class="bar-num">n=${vN_}</span>
+        <span class="bar-num">${vN_}</span>
       </div>
       <div class="bar-row">
         <span class="bar-label">Diversified</span>
@@ -577,7 +584,7 @@ function binaryCardHtml(c) {
           <div class="seg ws" style="width: ${dWs}%;"></div>
           <div class="seg ss" style="width: ${dSs}%;"></div>
         </div>
-        <span class="bar-num">n=${dN_}</span>
+        <span class="bar-num">${dN_}</span>
       </div>
     </div>
     <div class="card-footer"><a href="${c.href}" class="open">Open →</a></div>
