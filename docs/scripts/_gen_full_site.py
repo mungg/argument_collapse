@@ -231,7 +231,7 @@ def build_index(debates):
     out.append('</style>\n</head>\n<body>')
 
     out.append('<header class="masthead">')
-    out.append('  <div class="brand"><b>Argument Collapse</b></div>')
+    out.append('  <div class="brand"><a href="index.html"><b>Argument Collapse</b></a></div>')
     out.append('  <nav class="nav">')
     out.append('    <a href="index.html" class="active">DEBATES</a>')
     out.append('    <a href="main_argument.html">MAIN_ARGUMENT</a>')
@@ -515,7 +515,7 @@ def build_thin_debate_page(d):
     out.append(MOBILE_CSS)
     out.append('</style>\n</head>\n<body>')
     out.append('<header class="masthead">')
-    out.append('  <div class="brand"><b>Argument Collapse</b></div>')
+    out.append('  <div class="brand"><a href="index.html"><b>Argument Collapse</b></a></div>')
     out.append('  <nav class="nav">')
     out.append('    <a href="index.html" class="active">DEBATES</a>')
     out.append('    <a href="main_argument.html">MAIN_ARGUMENT</a>')

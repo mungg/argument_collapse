@@ -376,7 +376,7 @@ def build_main_argument_html(per_debate_clusters, debate_meta):
 <body>
 
 <header class="masthead">
-  <div class="brand"><b>Argument Collapse</b></div>
+  <div class="brand"><a href="index.html"><b>Argument Collapse</b></a></div>
   <nav class="nav">
     <a href="index.html">DEBATES</a>
     <a href="main_argument.html" class="active">MAIN_ARGUMENT</a>
