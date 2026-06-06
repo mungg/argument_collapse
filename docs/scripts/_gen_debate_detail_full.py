@@ -233,8 +233,13 @@ CSS = """  :root {
     h1.debate-title { font-size: 28px; }
     .axis { grid-template-columns: 1fr; }
     .ex-grid { grid-template-columns: 1fr; }
-    .matrix .arg-col { width: 60%; }
-    .matrix .model-col { width: 7%; }
+    .matrix-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
+    .matrix { min-width: 640px; }
+    .matrix .arg-col { width: 50%; }
+    .matrix .model-col { width: 50px; }
+    .matrix th.model-row-th { font-size: 8.5px; padding: 2px 2px 8px; }
+    .matrix th.gh-human { font-size: 8.5px; }
+    .matrix .arg-row .arg-text { font-size: 12.5px; }
   }
 """
 
@@ -398,7 +403,7 @@ def render_debate(meta, clusters, human_essays_lookup, llm_essays_lookup):
     out.append('  </div>')
 
     # Matrix
-    out.append('  <table class="matrix" id="cluster-matrix"><colgroup>')
+    out.append('  <div class="matrix-wrap"><table class="matrix" id="cluster-matrix"><colgroup>')
     out.append('    <col class="arg-col"><col class="humans-col"><col class="gap-col">')
     out.append('    <col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col"><col class="model-col">')
     out.append('  </colgroup><thead>')
@@ -426,7 +431,7 @@ def render_debate(meta, clusters, human_essays_lookup, llm_essays_lookup):
             out.append(f'      <td><div class="model-dots"><div class="dot v {v_cls}"></div><div class="dot d {d_cls}"></div></div></td>')
         out.append('    </tr>')
 
-    out.append('  </tbody></table>')
+    out.append('  </tbody></table></div>')
 
     # === All essays section ===
     out.append('  <div style="margin-top: 56px;"></div>')
