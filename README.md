@@ -260,10 +260,13 @@ Human essay bodies are not redistributed because the original publishers retain 
 ## Citation
 
 ```bibtex
-@inproceedings{argument_collapse_2026,
-  title = {Argument Collapse: LLMs Narrow the Argument Content and Structure in Public Debate},
-  author = {{TBD}},
-  booktitle = {Proceedings of the Annual Meeting of the Association for Computational Linguistics},
-  year = {2026},
+@misc{kim2026argumentcollapsellmsflatten,
+      title={Argument Collapse: LLMs Flatten Long-Form Public Debate}, 
+      author={Yekyung Kim and Yapei Chang and Chau Minh Pham and Mohit Iyyer},
+      year={2026},
+      eprint={2606.01736},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2606.01736}, 
 }
 ```
